@@ -1,0 +1,162 @@
+{
+  "analysis_date": "2026-02-10T11:53:41.018569",
+  "sample_sizes": {
+    "human_proposals": 23,
+    "ai_proposals": 69,
+    "ai_by_model": {
+      "gpt-5.2": 23,
+      "gemini-3-pro-preview": 23,
+      "claude-opus-4-5": 23
+    }
+  },
+  "pairwise_diversity": {
+    "human": {
+      "mean": 0.06606221944093704,
+      "median": 0.06390684843063354,
+      "std": 0.01747395657002926
+    },
+    "ai_combined": {
+      "mean": 0.17327995598316193,
+      "median": 0.049501776695251465,
+      "std": 0.26640766859054565
+    },
+    "by_model": {
+      "claude-opus-4-5": {
+        "mean": 0.34011411666870117,
+        "median": 0.07239162921905518,
+        "std": 0.334054172039032
+      },
+      "gemini-3-pro-preview": {
+        "mean": 0.0964396744966507,
+        "median": 0.03718060255050659,
+        "std": 0.19642005860805511
+      },
+      "gpt-5.2": {
+        "mean": 0.021548544988036156,
+        "median": 0.021251201629638672,
+        "std": 0.004716173745691776
+      }
+    },
+    "statistical_comparisons": [
+      {
+        "group": "All AI",
+        "mann_whitney_u": 210665.0,
+        "p_value_mw": 3.1312770648872995e-14,
+        "cliffs_delta": -0.29013812089537655,
+        "effect_size": "small",
+        "p_value_permutation": 0.0
+      },
+      {
+        "group": "claude-opus-4-5",
+        "mann_whitney_u": 39951.0,
+        "p_value_mw": 1.3526078771527548e-06,
+        "cliffs_delta": 0.24829320876751707,
+        "effect_size": "small",
+        "p_value_permutation": 0.0
+      },
+      {
+        "group": "gemini-3-pro-preview",
+        "mann_whitney_u": 8782.0,
+        "p_value_mw": 2.819238797839824e-45,
+        "cliffs_delta": -0.7256010873470918,
+        "effect_size": "large",
+        "p_value_permutation": 0.0163
+      },
+      {
+        "group": "gpt-5.2",
+        "mann_whitney_u": 13.0,
+        "p_value_mw": 2.731095897913271e-84,
+        "cliffs_delta": -0.9995938071208736,
+        "effect_size": "large",
+        "p_value_permutation": 0.0
+      }
+    ]
+  },
+  "centroid_dispersion": {
+    "human": {
+      "mean": 0.03211907297372818,
+      "median": 0.029447734355926514,
+      "variance": 8.479900134261698e-05
+    },
+    "ai_combined": {
+      "mean": 0.08943124115467072,
+      "median": 0.026782989501953125,
+      "variance": 0.03369465097784996
+    },
+    "by_model": {
+      "claude-opus-4-5": {
+        "mean": 0.1788613647222519,
+        "median": 0.07359933853149414,
+        "variance": 0.034044697880744934
+      },
+      "gemini-3-pro-preview": {
+        "mean": 0.04725141078233719,
+        "median": 0.017837882041931152,
+        "variance": 0.018163379281759262
+      },
+      "gpt-5.2": {
+        "mean": 0.010359963402152061,
+        "median": 0.010050773620605469,
+        "variance": 5.2451264309638645e-06
+      }
+    },
+    "statistical_comparisons": [
+      {
+        "group": "All AI",
+        "mann_whitney_u": 657.0,
+        "p_value_mw": 0.22008275767515018,
+        "cliffs_delta": -0.1720226843100189,
+        "effect_size": "small",
+        "p_value_permutation": 0.1747
+      },
+      {
+        "group": "claude-opus-4-5",
+        "mann_whitney_u": 527.0,
+        "p_value_mw": 8.616848381392504e-09,
+        "cliffs_delta": 0.9924385633270322,
+        "effect_size": "large",
+        "p_value_permutation": 0.0
+      },
+      {
+        "group": "gemini-3-pro-preview",
+        "mann_whitney_u": 48.0,
+        "p_value_mw": 2.0815331202081276e-06,
+        "cliffs_delta": -0.8185255198487713,
+        "effect_size": "large",
+        "p_value_permutation": 1.0
+      },
+      {
+        "group": "gpt-5.2",
+        "mann_whitney_u": 0.0,
+        "p_value_mw": 6.6368856429973785e-09,
+        "cliffs_delta": -1.0,
+        "effect_size": "large",
+        "p_value_permutation": 0.0
+      }
+    ]
+  },
+  "nearest_neighbor": {
+    "human": {
+      "mean": 0.03721660375595093,
+      "median": 0.03493267297744751,
+      "outliers": 3,
+      "outlier_percentage": 13.043478260869565,
+      "nn_same_group": 10,
+      "nn_diff_group": 13
+    },
+    "ai_combined": {
+      "mean": 0.03387376293540001,
+      "median": 0.01910454034805298,
+      "outliers": 7,
+      "outlier_percentage": 10.144927536231885,
+      "nn_same_group": 69,
+      "nn_diff_group": 0
+    },
+    "by_model": {
+      "claude-opus-4-5": {
+        "mean": 0.013935358263552189,
+        "median": 0.013767004013061523,
+        "outliers": 0,
+        "outlier_percentage": 0.0,
+        "nn_group_analysis": {
+          "from_human": 

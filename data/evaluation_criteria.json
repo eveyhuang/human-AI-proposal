@@ -1,0 +1,140 @@
+{
+  "categories": [
+    {
+      "id": "1",
+      "name": "Scientific Merit and Innovation",
+      "subcriteria": [
+        {
+          "id": "1a",
+          "name": "Relevance to Emergent Phenomena",
+          "question": "Does the research explicitly address emergent phenomena at the mesoscale in molecular/cellular biosciences?",
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "levels": [
+              { "score": 1, "label": "Not relevant; does not address emergent phenomena" },
+              { "score": 2, "label": "Minimally relevant; tangential connection to emergent phenomena" },
+              { "score": 3, "label": "Moderately relevant; addresses emergent phenomena but not as central focus" },
+              { "score": 4, "label": "Highly relevant; emergent phenomena is a key focus" },
+              { "score": 5, "label": "Exceptionally relevant; directly and explicitly addresses mesoscale emergent phenomena" }
+            ]
+          }
+        },
+        {
+          "id": "1b",
+          "name": "Novelty & Significance",
+          "question": "Are the questions and approaches innovative? Do they have potential to advance knowledge?",
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "levels": [
+              { "score": 1, "label": "Not novel; incremental work with limited significance" },
+              { "score": 2, "label": "Somewhat novel; modest advancement expected" },
+              { "score": 3, "label": "Novel; clear advancement in the field" },
+              { "score": 4, "label": "Highly novel; significant potential to advance knowledge" },
+              { "score": 5, "label": "Groundbreaking; transformative potential for the field" }
+            ]
+          }
+        },
+        {
+          "id": "1c",
+          "name": "Rigor of Approach",
+          "question": "Is the proposed methodology clear, logical, and grounded in established or emerging research practices?",
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "levels": [
+              { "score": 1, "label": "Poor; unclear or illogical methodology" },
+              { "score": 2, "label": "Fair; methodology has significant gaps or concerns" },
+              { "score": 3, "label": "Good; solid methodology with minor concerns" },
+              { "score": 4, "label": "Very good; clear, logical, and well-grounded methodology" },
+              { "score": 5, "label": "Excellent; exceptionally rigorous and well-justified approach" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Feasibility",
+      "subcriteria": [
+        {
+          "id": "2a",
+          "name": "Scope & Timeline",
+          "question": "Are the goals and milestones realistic for the proposed time frame and planned approach?",
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "levels": [
+              { "score": 1, "label": "Unrealistic; goals are unattainable within proposed timeline" },
+              { "score": 2, "label": "Questionable; significant concerns about feasibility" },
+              { "score": 3, "label": "Reasonable; achievable with noted challenges" },
+              { "score": 4, "label": "Realistic; well-planned scope and timeline" },
+              { "score": 5, "label": "Highly feasible; excellent planning with contingencies" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Data Sources and Limitations",
+      "subcriteria": [
+        {
+          "id": "3a",
+          "name": "Synthesis Focus",
+          "question": "Does the proposal clearly demonstrate a synthesis project?",
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "levels": [
+              { "score": 1, "label": "No synthesis; appears to be primarily generating new data" },
+              { "score": 2, "label": "Minimal synthesis; mostly new data generation with some integration" },
+              { "score": 3, "label": "Moderate synthesis; balanced between existing and new data" },
+              { "score": 4, "label": "Strong synthesis; primarily uses existing data with clear integration plan" },
+              { "score": 5, "label": "Exemplary synthesis; exclusively uses existing data with comprehensive integration" }
+            ]
+          }
+        },
+        {
+          "id": "3b",
+          "name": "Data Identification",
+          "question": "Are the data sources explicitly identified, and are limitations appropriately acknowledged?",
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "levels": [
+              { "score": 1, "label": "Poor; data sources vague and limitations not addressed" },
+              { "score": 2, "label": "Fair; some data sources identified but incomplete or limitations ignored" },
+              { "score": 3, "label": "Good; data sources identified and basic limitations acknowledged" },
+              { "score": 4, "label": "Very good; clear data sources with thoughtful discussion of limitations" },
+              { "score": 5, "label": "Excellent; comprehensive data source specification with thorough limitation analysis" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "name": "Open Science Compliance",
+      "subcriteria": [
+        {
+          "id": "4a",
+          "name": "Open Science Commitment",
+          "question": "Does the proposal demonstrate a commitment to open, team, and reproducible science principles?",
+          "scale": {
+            "min": 1,
+            "max": 5,
+            "levels": [
+              { "score": 1, "label": "No commitment; does not address open science" },
+              { "score": 2, "label": "Minimal commitment; vague statements without concrete plans" },
+              { "score": 3, "label": "Moderate commitment; some open science practices mentioned" },
+              { "score": 4, "label": "Strong commitment; clear plans for open and reproducible science" },
+              { "score": 5, "label": "Exemplary commitment; comprehensive open science framework with detailed implementation" }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
