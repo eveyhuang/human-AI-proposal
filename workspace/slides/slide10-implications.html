@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+  background: #ffffff;
+}
+.topbar {
+  background: #1B2A4A;
+  padding: 14pt 40pt;
+}
+.topbar h2 {
+  color: #ffffff;
+  font-size: 20pt;
+  margin: 0;
+}
+.body-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 16pt 40pt 16pt 40pt;
+}
+h3 {
+  color: #1B2A4A;
+  font-size: 12pt;
+  margin: 0 0 6pt 0;
+  font-weight: bold;
+}
+p {
+  color: #2C3E50;
+  font-size: 10pt;
+  margin: 0 0 5pt 0;
+  line-height: 1.35;
+}
+.accent-line {
+  background: #E8505B;
+  height: 2pt;
+  width: 35pt;
+  margin: 0 0 10pt 0;
+}
+.impl-row {
+  display: flex;
+  flex-direction: row;
+  gap: 16pt;
+  margin: 0 0 12pt 0;
+}
+.impl-card {
+  flex: 1;
+  background: #F7F9FC;
+  border-left: 3pt solid #2E86AB;
+  padding: 10pt 12pt;
+}
+.impl-card-accent {
+  flex: 1;
+  background: #FDF8F8;
+  border-left: 3pt solid #E8505B;
+  padding: 10pt 12pt;
+}
+.limitation-box {
+  background: #F5F5F5;
+  padding: 8pt 12pt;
+  margin: 8pt 0 0 0;
+  border-radius: 3pt;
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h2>Implications &amp; Limitations</h2>
+</div>
+<div class="body-content">
+  <h3>What This Means</h3>
+  <div class="accent-line"></div>
+  <div class="impl-row">
+    <div class="impl-card">
+      <p><b>AI models are not interchangeable for scientific ideation</b></p>
+      <p style="font-size: 9pt; color: #5D6D7E;">The range from GPT-5.2's mode collapse to Claude's subcluster diversity shows that model choice drastically affects the space of ideas generated.</p>
+    </div>
+    <div class="impl-card-accent">
+      <p><b>AI-generated proposals occupy a distinct region from humans</b></p>
+      <p style="font-size: 9pt; color: #5D6D7E;">100% of AI nearest neighbors are other AI. Even the most diverse AI model (Claude) does not fully overlap with human idea space, suggesting systematic framing differences.</p>
+    </div>
+  </div>
+  <div class="impl-row">
+    <div class="impl-card">
+      <p><b>Human proposals contribute unique outlier ideas</b></p>
+      <p style="font-size: 9pt; color: #5D6D7E;">13% of human proposals occupy territory far from both human and AI clusters. These "edge of the idea space" proposals represent novel thinking that AI may not replicate.</p>
+    </div>
+    <div class="impl-card">
+      <p><b>Aggregated comparisons mask critical model differences</b></p>
+      <p style="font-size: 9pt; color: #5D6D7E;">Combined "AI vs Human" comparisons show small or null effects because Claude's diversity offsets GPT-5.2's homogeneity. Per-model analysis is essential.</p>
+    </div>
+  </div>
+  <div class="limitation-box">
+    <p style="font-size: 9pt; color: #5D6D7E;"><b>Limitations:</b> Single funding call (NCEMS); embedding similarity does not capture all dimensions of scientific novelty (e.g., feasibility, interdisciplinarity); 23 proposals per group; single generation per prompt per model; BioLinkBERT may not capture all domain-specific semantic distinctions.</p>
+  </div>
+</div>
+</body>
+</html>

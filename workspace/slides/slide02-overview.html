@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+  background: #ffffff;
+}
+.topbar {
+  background: #1B2A4A;
+  padding: 14pt 40pt;
+}
+.topbar h2 {
+  color: #ffffff;
+  font-size: 20pt;
+  margin: 0;
+}
+.body-content {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  margin: 18pt 40pt 24pt 40pt;
+  gap: 30pt;
+}
+.col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+h3 {
+  color: #1B2A4A;
+  font-size: 13pt;
+  margin: 0 0 8pt 0;
+  font-weight: bold;
+}
+.accent-line {
+  background: #E8505B;
+  height: 2pt;
+  width: 40pt;
+  margin: 0 0 10pt 0;
+}
+.accent-line-teal {
+  background: #2E86AB;
+  height: 2pt;
+  width: 40pt;
+  margin: 0 0 10pt 0;
+}
+p {
+  color: #2C3E50;
+  font-size: 10.5pt;
+  margin: 0 0 6pt 0;
+  line-height: 1.4;
+}
+.stat-box {
+  background: #F0F4F8;
+  border-left: 3pt solid #2E86AB;
+  padding: 8pt 12pt;
+  margin: 6pt 0;
+}
+.stat-box-coral {
+  background: #FDF0F0;
+  border-left: 3pt solid #E8505B;
+  padding: 8pt 12pt;
+  margin: 6pt 0;
+}
+.stat-num {
+  color: #1B2A4A;
+  font-size: 20pt;
+  margin: 0;
+  font-weight: bold;
+}
+.stat-label {
+  color: #5D6D7E;
+  font-size: 9pt;
+  margin: 2pt 0 0 0;
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h2>Study Design</h2>
+</div>
+<div class="body-content">
+  <div class="col">
+    <h3>Research Question</h3>
+    <div class="accent-line"></div>
+    <p>Do AI-generated research proposals exhibit less diversity than human-written proposals when responding to the same funding call?</p>
+    <p>We compare proposals written by humans and three frontier AI models for the NSF NCEMS call on emergence in molecular and cellular biosciences.</p>
+
+    <h3 style="margin-top: 14pt;">Sample</h3>
+    <div class="accent-line-teal"></div>
+    <div class="stat-box-coral">
+      <p class="stat-num">23</p>
+      <p class="stat-label">Human proposals (from 2 cohorts)</p>
+    </div>
+    <div class="stat-box">
+      <p class="stat-num">69</p>
+      <p class="stat-label">AI proposals (23 per model)</p>
+    </div>
+  </div>
+  <div class="col">
+    <h3>AI Models Tested</h3>
+    <div class="accent-line-teal"></div>
+    <div class="stat-box">
+      <p style="font-weight: bold; color: #5D6D7E; font-size: 11pt; margin: 0;">Claude Opus 4.5</p>
+      <p class="stat-label">Anthropic</p>
+    </div>
+    <div class="stat-box">
+      <p style="font-weight: bold; color: #8E44AD; font-size: 11pt; margin: 0;">Gemini 3 Pro Preview</p>
+      <p class="stat-label">Google DeepMind</p>
+    </div>
+    <div class="stat-box">
+      <p style="font-weight: bold; color: #E67E22; font-size: 11pt; margin: 0;">GPT-5.2</p>
+      <p class="stat-label">OpenAI</p>
+    </div>
+
+    <h3 style="margin-top: 14pt;">Approach</h3>
+    <div class="accent-line"></div>
+    <p>All models received the same funding call, background literature, and evaluation criteria that the human applicants had.</p>
+    <p>Diversity is measured via three complementary embedding-space analyses with non-parametric statistical tests.</p>
+  </div>
+</div>
+</body>
+</html>

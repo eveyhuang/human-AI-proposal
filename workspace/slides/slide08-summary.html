@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+  background: #ffffff;
+}
+.topbar {
+  background: #1B2A4A;
+  padding: 14pt 40pt;
+}
+.topbar h2 {
+  color: #ffffff;
+  font-size: 20pt;
+  margin: 0;
+}
+.body-content {
+  flex: 1;
+  margin: 16pt 40pt 16pt 40pt;
+  display: flex;
+  flex-direction: column;
+}
+h3 {
+  color: #1B2A4A;
+  font-size: 12pt;
+  margin: 0 0 6pt 0;
+  font-weight: bold;
+}
+p {
+  color: #2C3E50;
+  font-size: 9.5pt;
+  margin: 0 0 4pt 0;
+  line-height: 1.3;
+}
+.accent-line {
+  background: #E8505B;
+  height: 2pt;
+  width: 35pt;
+  margin: 0 0 10pt 0;
+}
+.table-placeholder {
+  flex: 1;
+}
+.note {
+  color: #5D6D7E;
+  font-size: 8.5pt;
+  margin: 8pt 0 0 0;
+  line-height: 1.3;
+}
+.consistency-box {
+  background: #E8F8E8;
+  border-left: 3pt solid #27AE60;
+  padding: 8pt 12pt;
+  margin: 8pt 0 0 0;
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h2>Cross-Analysis Consistency</h2>
+</div>
+<div class="body-content">
+  <h3>Summary of Cliff's Delta Effect Sizes vs Human Baseline</h3>
+  <div class="accent-line"></div>
+  <div id="summary-table" class="placeholder" style="width: 640pt; height: 160pt; background: #f0f0f0;"></div>
+  <p class="note">Positive = more diverse/dispersed/outlier-prone than humans. Negative = less. *** p &lt; 0.001, ns = not significant.</p>
+  <div class="consistency-box">
+    <p style="font-size: 10pt; color: #1B2A4A;"><b>Findings are highly consistent across all three analyses:</b></p>
+    <p style="font-size: 9pt; color: #2C3E50;">The diversity ranking Claude &gt; Human &gt; Gemini &gt; GPT-5.2 holds across pairwise, centroid, and nearest-neighbor metrics. The sole exception is GPT-5.2's high outlier rate, which reflects its isolation as a cluster rather than true diversity. Aggregating across models masks these dramatic differences.</p>
+  </div>
+</div>
+</body>
+</html>

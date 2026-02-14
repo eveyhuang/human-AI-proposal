@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+  background: #ffffff;
+}
+.topbar {
+  background: #1B2A4A;
+  padding: 14pt 40pt;
+}
+.topbar h2 {
+  color: #ffffff;
+  font-size: 20pt;
+  margin: 0;
+}
+.body-content {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  margin: 14pt 40pt 40pt 40pt;
+  gap: 20pt;
+}
+.col-left {
+  flex: 1.1;
+  display: flex;
+  flex-direction: column;
+}
+.col-right {
+  flex: 0.9;
+  display: flex;
+  flex-direction: column;
+}
+h3 {
+  color: #1B2A4A;
+  font-size: 12pt;
+  margin: 0 0 4pt 0;
+  font-weight: bold;
+}
+.accent-line {
+  background: #2E86AB;
+  height: 2pt;
+  width: 40pt;
+  margin: 0 0 6pt 0;
+}
+p {
+  color: #2C3E50;
+  font-size: 9pt;
+  margin: 0 0 3pt 0;
+  line-height: 1.25;
+}
+.step-box {
+  background: #F0F4F8;
+  padding: 5pt 8pt;
+  margin: 3pt 0;
+  border-radius: 3pt;
+}
+.step-title {
+  color: #1B2A4A;
+  font-size: 9.5pt;
+  font-weight: bold;
+  margin: 0 0 1pt 0;
+}
+.step-desc {
+  color: #5D6D7E;
+  font-size: 8.5pt;
+  margin: 0;
+  line-height: 1.2;
+}
+.analysis-box {
+  border-left: 3pt solid #E8505B;
+  background: #FDF8F8;
+  padding: 5pt 8pt;
+  margin: 3pt 0;
+}
+.analysis-title {
+  color: #1B2A4A;
+  font-size: 9.5pt;
+  font-weight: bold;
+  margin: 0 0 1pt 0;
+}
+.analysis-desc {
+  color: #5D6D7E;
+  font-size: 8.5pt;
+  margin: 0;
+  line-height: 1.2;
+}
+.stat-tag {
+  background: #E8F4F8;
+  border: 1pt solid #2E86AB;
+  border-radius: 3pt;
+  padding: 3pt 6pt;
+  margin: 1pt 3pt 1pt 0;
+  display: inline-block;
+}
+.stat-tag p {
+  color: #1B2A4A;
+  font-size: 8pt;
+  margin: 0;
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h2>Methodology</h2>
+</div>
+<div class="body-content">
+  <div class="col-left">
+    <h3>Embedding Pipeline</h3>
+    <div class="accent-line"></div>
+    <div class="step-box">
+      <p class="step-title">1. BioLinkBERT-large</p>
+      <p class="step-desc">340M param biomedical model pretrained on PubMed with citation links. SOTA on biomedical NLP.</p>
+    </div>
+    <div class="step-box">
+      <p class="step-title">2. Overlapping Chunk Averaging</p>
+      <p class="step-desc">400-word chunks, 50-word overlap. Averaged to one 1024-dim vector per proposal. Uses 100% of text.</p>
+    </div>
+    <div class="step-box">
+      <p class="step-title">3. Cosine Distance</p>
+      <p class="step-desc">All diversity metrics computed as cosine distance in 1024-dim embedding space.</p>
+    </div>
+
+    <h3 style="margin-top: 8pt;">Statistical Tests</h3>
+    <div class="accent-line"></div>
+    <div style="display: flex; flex-wrap: wrap;">
+      <div class="stat-tag"><p>Mann-Whitney U</p></div>
+      <div class="stat-tag"><p>Cliff's Delta</p></div>
+      <div class="stat-tag"><p>Permutation (10K)</p></div>
+    </div>
+  </div>
+  <div class="col-right">
+    <h3>Three Complementary Analyses</h3>
+    <div class="accent-line" style="background: #E8505B;"></div>
+    <div class="analysis-box">
+      <p class="analysis-title">Pairwise Diversity</p>
+      <p class="analysis-desc">Within-group cosine distances between all pairs. Measures how different proposals are from each other.</p>
+    </div>
+    <div class="analysis-box">
+      <p class="analysis-title">Centroid Dispersion</p>
+      <p class="analysis-desc">Distance from each proposal to its group centroid. Measures spread around central tendency.</p>
+    </div>
+    <div class="analysis-box">
+      <p class="analysis-title">Nearest-Neighbor Outlier Detection</p>
+      <p class="analysis-desc">NN distance in combined space (92 proposals). Top 10% = outliers. Tracks which group NN belongs to.</p>
+    </div>
+    <p style="margin-top: 6pt; font-size: 8.5pt; color: #5D6D7E;">Consistent findings across all three analyses strengthens conclusions.</p>
+  </div>
+</div>
+</body>
+</html>

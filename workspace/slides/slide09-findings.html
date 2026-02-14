@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+  background: #ffffff;
+}
+.topbar {
+  background: #1B2A4A;
+  padding: 14pt 40pt;
+}
+.topbar h2 {
+  color: #ffffff;
+  font-size: 20pt;
+  margin: 0;
+}
+.body-content {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  margin: 16pt 40pt 16pt 40pt;
+  gap: 20pt;
+}
+.col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+h3 {
+  color: #1B2A4A;
+  font-size: 11pt;
+  margin: 0 0 4pt 0;
+  font-weight: bold;
+}
+p {
+  color: #2C3E50;
+  font-size: 9.5pt;
+  margin: 0 0 4pt 0;
+  line-height: 1.35;
+}
+.finding-card {
+  background: #F7F9FC;
+  border-radius: 4pt;
+  padding: 10pt 12pt;
+  margin: 0 0 10pt 0;
+  border-top: 3pt solid #2E86AB;
+}
+.finding-card-alert {
+  background: #FDF8F8;
+  border-radius: 4pt;
+  padding: 10pt 12pt;
+  margin: 0 0 10pt 0;
+  border-top: 3pt solid #E8505B;
+}
+.finding-num {
+  color: #2E86AB;
+  font-size: 18pt;
+  font-weight: bold;
+  margin: 0 0 4pt 0;
+}
+.finding-num-alert {
+  color: #E8505B;
+  font-size: 18pt;
+  font-weight: bold;
+  margin: 0 0 4pt 0;
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h2>Key Findings</h2>
+</div>
+<div class="body-content">
+  <div class="col">
+    <div class="finding-card-alert">
+      <p class="finding-num-alert">1</p>
+      <h3>Model-specific diversity varies dramatically</h3>
+      <p>There is no single "AI diversity" story. Claude is more diverse than humans, Gemini moderately less, and GPT-5.2 dramatically less. Aggregating across models produces misleading results.</p>
+    </div>
+    <div class="finding-card">
+      <p class="finding-num">2</p>
+      <h3>GPT-5.2 exhibits mode collapse</h3>
+      <p>Near-identical proposals with virtually zero internal variation across all 23 generations. Effect sizes hit the theoretical maximum (|delta| = 1.0) on pairwise and centroid measures.</p>
+    </div>
+  </div>
+  <div class="col">
+    <div class="finding-card">
+      <p class="finding-num">3</p>
+      <h3>Claude produces diverse subclusters</h3>
+      <p>High overall diversity but with local clustering. Explores different proposal "modes" (indicated by subclusters in UMAP), yet within each mode, proposals share similarities. Zero outliers despite highest spread.</p>
+    </div>
+    <div class="finding-card">
+      <p class="finding-num">4</p>
+      <h3>Human proposals uniquely occupy shared and novel territory</h3>
+      <p>Moderate diversity with genuine outliers (13%). 56.5% of humans' nearest neighbors are AI proposals, meaning humans overlap with AI space. But humans also produce truly unique ideas not found in any AI output.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

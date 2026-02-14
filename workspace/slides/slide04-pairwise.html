@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+  background: #ffffff;
+}
+.topbar {
+  background: #1B2A4A;
+  padding: 14pt 40pt;
+}
+.topbar h2 {
+  color: #ffffff;
+  font-size: 20pt;
+  margin: 0;
+}
+.body-content {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  margin: 14pt 40pt 14pt 40pt;
+  gap: 20pt;
+}
+.col-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.col-right {
+  flex: 1.3;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+h3 {
+  color: #1B2A4A;
+  font-size: 12pt;
+  margin: 0 0 6pt 0;
+  font-weight: bold;
+}
+p {
+  color: #2C3E50;
+  font-size: 9.5pt;
+  margin: 0 0 4pt 0;
+  line-height: 1.3;
+}
+.accent-line {
+  background: #E8505B;
+  height: 2pt;
+  width: 35pt;
+  margin: 0 0 8pt 0;
+}
+.finding-box {
+  background: #F0F4F8;
+  border-left: 3pt solid #2E86AB;
+  padding: 6pt 10pt;
+  margin: 4pt 0;
+}
+.finding-alert {
+  background: #FDF0F0;
+  border-left: 3pt solid #E8505B;
+  padding: 6pt 10pt;
+  margin: 4pt 0;
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h2>Analysis 1: Within-Group Pairwise Diversity</h2>
+</div>
+<div class="body-content">
+  <div class="col-left">
+    <h3>Results</h3>
+    <div class="accent-line"></div>
+    <div id="chart1" class="placeholder" style="width: 280pt; height: 170pt; background: #f0f0f0;"></div>
+    <p style="margin-top: 8pt; font-size: 8.5pt; color: #5D6D7E;">Cliff's Delta effect sizes vs Human baseline. Positive = AI more diverse. *** p &lt; 0.001</p>
+  </div>
+  <div class="col-right">
+    <h3>Key Findings</h3>
+    <div class="accent-line" style="background: #2E86AB;"></div>
+    <div class="finding-box">
+      <p><b>Claude Opus 4.5</b> is the only model MORE diverse than humans</p>
+      <p style="font-size: 8.5pt; color: #5D6D7E;">Mean pairwise distance: 0.340 vs Human 0.066 (small effect, p &lt; 0.001). However, highly skewed distribution: median 0.072 with long tail to 0.8.</p>
+    </div>
+    <div class="finding-alert">
+      <p><b>GPT-5.2</b> shows extreme homogeneity</p>
+      <p style="font-size: 8.5pt; color: #5D6D7E;">Mean pairwise distance: 0.022 (3x lower than humans). Cliff's Delta = -1.00 (maximum possible effect). Proposals are near-identical.</p>
+    </div>
+    <div class="finding-box">
+      <p><b>Gemini 3 Pro</b> is moderately less diverse than humans</p>
+      <p style="font-size: 8.5pt; color: #5D6D7E;">Mean: 0.096. Cliff's Delta = -0.73 (large effect, p &lt; 0.001). More varied than GPT-5.2 but still significantly less than human.</p>
+    </div>
+    <div class="finding-box">
+      <p><b>All AI combined</b> shows a small negative effect</p>
+      <p style="font-size: 8.5pt; color: #5D6D7E;">Cliff's Delta = -0.29 (small). Aggregating masks dramatic between-model differences.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

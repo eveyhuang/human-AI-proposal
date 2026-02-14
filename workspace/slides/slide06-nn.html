@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+  background: #ffffff;
+}
+.topbar {
+  background: #1B2A4A;
+  padding: 14pt 40pt;
+}
+.topbar h2 {
+  color: #ffffff;
+  font-size: 20pt;
+  margin: 0;
+}
+.body-content {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  margin: 14pt 40pt 14pt 40pt;
+  gap: 20pt;
+}
+.col-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.col-right {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+}
+h3 {
+  color: #1B2A4A;
+  font-size: 12pt;
+  margin: 0 0 6pt 0;
+  font-weight: bold;
+}
+p {
+  color: #2C3E50;
+  font-size: 9.5pt;
+  margin: 0 0 4pt 0;
+  line-height: 1.3;
+}
+.accent-line {
+  background: #E8505B;
+  height: 2pt;
+  width: 35pt;
+  margin: 0 0 8pt 0;
+}
+.outlier-row {
+  display: flex;
+  flex-direction: row;
+  gap: 8pt;
+  margin: 3pt 0;
+}
+.outlier-card {
+  flex: 1;
+  background: #F0F4F8;
+  padding: 6pt 8pt;
+  border-radius: 3pt;
+  text-align: center;
+}
+.outlier-pct {
+  color: #1B2A4A;
+  font-size: 16pt;
+  font-weight: bold;
+  margin: 0;
+}
+.outlier-label {
+  color: #5D6D7E;
+  font-size: 8pt;
+  margin: 2pt 0 0 0;
+}
+.finding-box {
+  background: #F0F4F8;
+  border-left: 3pt solid #2E86AB;
+  padding: 6pt 10pt;
+  margin: 4pt 0;
+}
+.finding-alert {
+  background: #FDF0F0;
+  border-left: 3pt solid #E8505B;
+  padding: 6pt 10pt;
+  margin: 4pt 0;
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h2>Analysis 3: Nearest-Neighbor Outlier Detection</h2>
+</div>
+<div class="body-content">
+  <div class="col-left">
+    <h3>Outlier Rates (top 10% NN distance)</h3>
+    <div class="accent-line"></div>
+    <div class="outlier-row">
+      <div class="outlier-card" style="border-bottom: 3pt solid #E74C3C;">
+        <p class="outlier-pct">13.0%</p>
+        <p class="outlier-label">Human</p>
+      </div>
+      <div class="outlier-card" style="border-bottom: 3pt solid #5D6D7E;">
+        <p class="outlier-pct">0.0%</p>
+        <p class="outlier-label">Claude</p>
+      </div>
+    </div>
+    <div class="outlier-row">
+      <div class="outlier-card" style="border-bottom: 3pt solid #8E44AD;">
+        <p class="outlier-pct">4.3%</p>
+        <p class="outlier-label">Gemini</p>
+      </div>
+      <div class="outlier-card" style="border-bottom: 3pt solid #E67E22;">
+        <p class="outlier-pct">26.1%</p>
+        <p class="outlier-label">GPT-5.2</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 10pt;">Nearest Neighbor Origins</h3>
+    <div class="accent-line" style="background: #2E86AB;"></div>
+    <div id="chart1" class="placeholder" style="width: 280pt; height: 120pt; background: #f0f0f0;"></div>
+  </div>
+  <div class="col-right">
+    <h3>Key Findings</h3>
+    <div class="accent-line" style="background: #2E86AB;"></div>
+    <div class="finding-alert">
+      <p><b>GPT-5.2 paradox: most outliers despite least diverse</b></p>
+      <p style="font-size: 8.5pt; color: #5D6D7E;">26.1% outliers. Its extreme internal similarity creates a tight, isolated cluster far from everyone else. Individual proposals appear as outliers in the global space.</p>
+    </div>
+    <div class="finding-box">
+      <p><b>Claude: zero outliers despite highest diversity</b></p>
+      <p style="font-size: 8.5pt; color: #5D6D7E;">0% outliers, smallest NN distances (mean 0.014). Claude forms subclusters that are individually tight but spread across the space. Each proposal has a close neighbor.</p>
+    </div>
+    <div class="finding-box">
+      <p><b>Human proposals produce genuine outliers</b></p>
+      <p style="font-size: 8.5pt; color: #5D6D7E;">13% outliers. 43.5% have NN from own group; 56.5% NN from AI. Humans occupy shared territory but also produce truly unique ideas.</p>
+    </div>
+    <div class="finding-alert">
+      <p><b>100% of AI proposals' nearest neighbors are other AI</b></p>
+      <p style="font-size: 8.5pt; color: #5D6D7E;">No AI proposal is closest to a human proposal. 95.7% of Claude's NN are from Claude itself. Suggests systematic framing differences between AI and human approaches.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

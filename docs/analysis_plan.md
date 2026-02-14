@@ -117,11 +117,14 @@ For each set of AI proposals (23 from each AI models), conduct following analysi
 #### Analysis 2.2.1: Compute Novelty Scores
 
 **Steps:**
-1. [done] Fetch PubMed abstracts with relevant terms from the call for proposal; saved in `data/literature/call-relevant-corpus.json`
-2. Embed all abstracts with same model used for proposals
+1. [done] Fetch PubMed abstracts with relevant terms from the call for proposal; saved in `data/literature/call-relevant-corpus.json`; there are 350 abstracts in total, fetched from relevant search terms based on the call (7 distinct queries), and each article has title, abstract, and publication date (e.g., "2018 Aug")
+2. Embed all abstracts with same model used for proposals (BioLinkBERT-Large)
+3. Since all the PubMed articles only have abstracts, only use abstracts from humans' and AI proposals as well. and re-embed them with only title and abstracts. 
 3. For each proposal, find k nearest neighbors in corpus (k=10)
-4. Novelty score = mean distance to k nearest neighbors
-5. Higher score = farther from existing work = more novel
+4. Novelty score = mean distance to k nearest neighbors;  Higher score = farther from existing work = more novel
+5. Create visulization of the projected embedding with nearest neighbors and outliers. 
+
+
 <!-- REVIEW: Distance from corpus captures both genuine novelty AND incoherence/nonsense. A proposal far from all literature could be novel or simply infeasible. Add a feasibility filter: only compute novelty for proposals passing a minimum quality threshold, or compute novelty conditional on quality. Also: corpus construction is critical — report N abstracts, date range, subfield distribution, MeSH terms used. Test sensitivity to corpus composition. See Critique §2b and §5b. -->
 
 
@@ -157,14 +160,14 @@ Reviewers will ask: "What are the actual conceptual differences?" Topic modeling
 ###$ Analysis 2.4.1: BERTopic Modeling
 
 **Steps:**
-1. Preprocess proposals (remove boilerplate, keep substantive content)
-2. Fit BERTopic model on all 144 proposals <!-- REVIEW: Where does 144 come from? 23 human + (10×3 models × 3 conditions) = 113, or a different calculation? Clarify. See Critique §4c. -->
+1. Only use title and abstracts for human and AI proposals.
+2. Fit BERTopic model on all proposals (23 for each group)
 3. Extract topics, top words, and representative documents
 4. Create interpretable topic labels (domain expert review)
 
 **Parameters:**
-- Embedding model: nomic-embed-text-v1 (same as diversity analysis)
-- min_topic_size: 3 (small given n=144) <!-- REVIEW: min_topic_size=3 on ~100-150 docs will produce unstable topics. Consider increasing to 5. -->
+- Embedding model: BioLinkBERT-Large (same as diversity analysis)
+- min_topic_size: 5 
 - nr_topics: "auto"
 
 **Library:** bertopic, sentence-transformers
@@ -188,7 +191,7 @@ Reviewers will ask: "What are the actual conceptual differences?" Topic modeling
 **Steps:**
 1. Compute topic coverage: how many topics does each group cover?
 2. Identify exclusive topics (only in one group)
-3. Compute Shannon entropy of topic distribution per group <!-- REVIEW: Entropy comparison between groups of different sizes is tricky. Normalize by group size or use rarefaction. -->
+3. Compute Shannon entropy of topic distribution per group 
 4. Higher entropy = more even spread = higher diversity
 
 **Metrics:**

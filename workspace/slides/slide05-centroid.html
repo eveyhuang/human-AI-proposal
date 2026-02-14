@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #ffffff; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  font-family: Arial, sans-serif;
+  display: flex; flex-direction: column;
+  background: #ffffff;
+}
+.topbar {
+  background: #1B2A4A;
+  padding: 14pt 40pt;
+}
+.topbar h2 {
+  color: #ffffff;
+  font-size: 20pt;
+  margin: 0;
+}
+.body-content {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  margin: 14pt 40pt 14pt 40pt;
+  gap: 20pt;
+}
+.col-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.col-right {
+  flex: 1.3;
+  display: flex;
+  flex-direction: column;
+}
+h3 {
+  color: #1B2A4A;
+  font-size: 12pt;
+  margin: 0 0 6pt 0;
+  font-weight: bold;
+}
+p {
+  color: #2C3E50;
+  font-size: 9.5pt;
+  margin: 0 0 4pt 0;
+  line-height: 1.3;
+}
+.accent-line {
+  background: #E8505B;
+  height: 2pt;
+  width: 35pt;
+  margin: 0 0 8pt 0;
+}
+.finding-box {
+  background: #F0F4F8;
+  border-left: 3pt solid #2E86AB;
+  padding: 6pt 10pt;
+  margin: 4pt 0;
+}
+.finding-alert {
+  background: #FDF0F0;
+  border-left: 3pt solid #E8505B;
+  padding: 6pt 10pt;
+  margin: 4pt 0;
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h2>Analysis 2: Centroid Dispersion</h2>
+</div>
+<div class="body-content">
+  <div class="col-left">
+    <h3>Results</h3>
+    <div class="accent-line"></div>
+    <div id="chart1" class="placeholder" style="width: 280pt; height: 170pt; background: #f0f0f0;"></div>
+    <p style="margin-top: 8pt; font-size: 8.5pt; color: #5D6D7E;">Mean distance from each proposal to its group centroid. Larger = more spread out from center.</p>
+  </div>
+  <div class="col-right">
+    <h3>Key Findings</h3>
+    <div class="accent-line" style="background: #2E86AB;"></div>
+    <div class="finding-box">
+      <p><b>Claude</b> shows massive dispersion from its centroid</p>
+      <p style="font-size: 8.5pt; color: #5D6D7E;">Mean dist: 0.179 vs Human 0.032. Cliff's Delta = +0.99 (near-maximum large effect, p &lt; 0.001). Proposals spread widely around center.</p>
+    </div>
+    <div class="finding-alert">
+      <p><b>GPT-5.2</b> is tightly clustered around its centroid</p>
+      <p style="font-size: 8.5pt; color: #5D6D7E;">Mean dist: 0.010. Cliff's Delta = -1.00 (p &lt; 0.001). Variance: 0.000005 vs Human 0.00008. Near-zero spread: all proposals essentially the same point in embedding space.</p>
+    </div>
+    <div class="finding-box">
+      <p><b>Gemini</b> is less dispersed than humans</p>
+      <p style="font-size: 8.5pt; color: #5D6D7E;">Mean dist: 0.047. Cliff's Delta = -0.82 (large effect, p &lt; 0.001). Moderate clustering, though has some high-distance outlier proposals.</p>
+    </div>
+    <div class="finding-box">
+      <p><b>All AI combined vs Human: not significant</b></p>
+      <p style="font-size: 8.5pt; color: #5D6D7E;">Cliff's Delta = -0.17, p = 0.22. Claude's high dispersion offsets GPT-5.2's low dispersion, producing a misleading null result when aggregated.</p>
+    </div>
+    <p style="margin-top: 6pt; font-size: 9pt; color: #1B2A4A;"><b>Consistency:</b> Confirms pairwise analysis ranking: Claude &gt; Human &gt; Gemini &gt; GPT-5.2</p>
+  </div>
+</div>
+</body>
+</html>
