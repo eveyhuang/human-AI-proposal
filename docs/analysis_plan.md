@@ -128,7 +128,6 @@ For each set of AI proposals (23 from each AI models), conduct following analysi
 <!-- REVIEW: Distance from corpus captures both genuine novelty AND incoherence/nonsense. A proposal far from all literature could be novel or simply infeasible. Add a feasibility filter: only compute novelty for proposals passing a minimum quality threshold, or compute novelty conditional on quality. Also: corpus construction is critical — report N abstracts, date range, subfield distribution, MeSH terms used. Test sensitivity to corpus composition. See Critique §2b and §5b. -->
 
 
-
 #### Analysis 2.2.2: Compare Novelty Distributions
 
 **Steps:**
@@ -143,83 +142,214 @@ For each set of AI proposals (23 from each AI models), conduct following analysi
 
 
 
-### 2.3 QUALITY: Can AI create proposals of higher quality than teams of human scientists?
+### 2.3 Thematic and Cluster Analysis
+
+###$ Rationale
+Reviewers will ask: "What are the actual conceptual differences?" This section examines whether human and AI proposals cluster in distinct semantic regions and whether they differ in thematic coverage.
+
+**⚠️ Sample Size Consideration:** With n=23 human and n=69 AI proposals, automated topic modeling is underpowered. We combine conservative automated approaches with visualization-based exploratory analysis.
+
+---
+
+###$ Analysis 2.3.1: Topic Modeling (Exploratory)
+
+**Approach:** Use Latent Dirichlet Allocation (LDA) instead of BERTopic due to small sample size. LDA allows strong priors that stabilize topics with limited data.
+
+**Steps:**
+1. Use only title and abstracts for both human and AI proposals
+2. Create TF-IDF representations (remove stop words, min_df=2, max_df=0.7)
+3. Fit LDA with conservative parameters:
+   - n_topics = 5 (fixed, not "auto")
+   - doc_topic_prior (alpha) = 0.5 (strong prior for document regularization)
+   - topic_word_prior (beta) = 0.5 (strong prior for topic regularization)
+   - max_iter = 100
+4. Extract top 10 words per topic
+5. Domain expert review to create interpretable topic labels
+6. Compute per-document topic distributions (soft assignment)
+
+**Parameters:**
+- Embedding: TF-IDF (for LDA input)
+- n_topics: 5 (manual selection based on sample size)
+- Priors: alpha=0.5, beta=0.5 (strong regularization)
+
+**Library:** sklearn.decomposition.LatentDirichletAllocation
+
+**Validation:**
+- Assess topic coherence (c_v metric using gensim)
+- Report perplexity
+- Stability check: run with 10 different random seeds, report average topic-word distributions
+- Label as **EXPLORATORY** - interpret with caution given sample size
+
+---
+
+###$ Analysis 2.3.2: Topic Distribution Comparison
+
+**Steps:**
+1. Create contingency table: topics × source (human/AI/per-model)
+2. **Primary test:** Permutation test for distribution difference
+   - Null: shuffle labels 10,000 times, compute chi-square statistic
+   - p-value: proportion of permutations with χ² ≥ observed
+   - This avoids chi-square assumptions about cell counts
+3. **Per-topic tests:** Fisher's exact test for each topic's over/under-representation
+   - Test: Is this topic more common in human vs. all AI?
+   - Test: Is this topic more common in human vs. each AI model?
+4. **Multiple testing correction:** Benjamini-Hochberg FDR at q=0.10 (exploratory threshold)
+5. Identify topics significantly over-represented in each group
+
+**Sample Size Adjustment:**
+- For human vs. AI comparisons: subsample AI to n=23, repeat 1000 times
+- Report: "Topic X is over-represented in human proposals in 847/1000 subsamples (p=0.015)"
+- This accounts for the 3:1 imbalance in group sizes
+
+**Metrics:**
+- Permutation p-value (overall distribution difference)
+- Odds ratios per topic with 95% CI
+- FDR-corrected p-values per topic
+- Effect size: Cramér's V
+
+**Visualization:**
+- Heatmap of topic × source with count proportions
+- Bar plot of topic prevalence by group (with error bars from subsampling)
+
+---
+
+###$ Analysis 2.3.3: Topic Coverage and Entropy (with Sample Size Correction)
+
+**Steps:**
+1. **Topic coverage:** Count unique topics represented per group (threshold: topic probability > 0.20)
+2. **Exclusive topics:** 
+   - Identify topics appearing in one group but not the other
+   - **Permutation test:** Shuffle labels 10,000 times, count exclusive topics in null
+   - Report: "X topics human-exclusive vs. Y expected by chance (p=...)"
+   - Only consider "exclusive" if topic appears in ≥5 proposals from one group, 0 from other
+3. **Shannon entropy:** 
+   - Compute entropy of topic distribution for each group
+   - **Account for sample size:** Subsample AI to n=23, compute entropy, repeat 1000 times
+   - Report: "Human entropy = X, AI entropy = Y ± Z (mean ± SD from subsampling)"
+   - Use Miller-Madow bias correction: H_corrected = H + (K-1)/(2*N) where K=topics, N=samples
+4. Higher entropy = more even spread across topics
+
+**Metrics:**
+- Number of topics covered per group (threshold > 0.20)
+- Number of exclusive topics (observed vs. permutation null)
+- Shannon entropy (with Miller-Madow correction and subsample validation)
+- Normalized entropy: H / log(K) where K = number of topics
+
+**Interpretation:**
+- Topic coverage indicates breadth of thematic exploration
+- Entropy indicates evenness of distribution across themes
+- **Caution:** With only 5 topics and small sample, differences may reflect noise
+
+---
+
+###$ Analysis 2.3.4: Cluster Composition/Segregation Analysis
+
+**Rationale:** Do human and AI proposals occupy the same conceptual regions or segregate into different clusters in embedding space?
+
+**Steps:**
+
+**1. Optimal k Selection (Data-Driven)**
+- Use embeddings from diversity analysis (BioLinkBERT-Large, full text)
+- Test k = 3, 4, 5, 6, 7, 8 using Gaussian Mixture Models (GMM)
+- For each k, compute:
+  - Silhouette score (higher = better separation)
+  - Davies-Bouldin index (lower = better)
+  - Bayesian Information Criterion (BIC, lower = better fit)
+- Select k using "elbow method" on BIC and validate with silhouette
+- **Rationale for GMM:** Allows soft clustering, arbitrary cluster shapes, better than k-means for embeddings
+
+**2. Clustering with Best k**
+```python
+from sklearn.mixture import GaussianMixture
+gmm = GaussianMixture(n_components=k_best, covariance_type='full', random_state=42)
+cluster_labels = gmm.fit_predict(embeddings)
+cluster_probs = gmm.predict_proba(embeddings)  # Soft assignment
+```
+
+**3. Cluster Composition Analysis**
+- For each cluster: compute % human, % AI (by model)
+- Identify:
+  - Human-dominated clusters (>60% human)
+  - AI-dominated clusters (>80% AI)
+  - Mixed clusters (40-60% human)
+- **Account for base rates:** With 23 human / 69 AI (25% baseline), "mixed" means ~25% ± 10%
+
+**4. Segregation Metrics with Permutation Tests**
+
+**Normalized Mutual Information (NMI):**
+- Compute: NMI(cluster_labels, source_labels)
+- **Permutation test:** Shuffle source labels 10,000 times, compute NMI_null distribution
+- Report: "Observed NMI = X, null mean = Y ± Z, p = ..."
+- Interpretation: Does clustering recover source better than chance?
+
+**Adjusted Rand Index (ARI):**
+- Compute: ARI(cluster_labels, source_labels)  
+- **Permutation test:** Same as NMI
+- ARI corrects for chance, but still validate against permutation null
+
+**Within-group vs. Between-group Distance:**
+- Mean distance within human proposals
+- Mean distance within AI proposals  
+- Mean distance between human and AI proposals
+- **Permutation test:** Shuffle labels, compute distances, compare to observed
+
+**5. Visualization**
+- 2D UMAP projection colored by:
+  - (a) Cluster assignment
+  - (b) Source (human vs. AI)
+  - (c) Cluster composition (pie charts showing human/AI mix per cluster)
+- Dendrogram from hierarchical clustering for comparison
+
+**Metrics:**
+- Silhouette score for chosen k
+- NMI score with permutation p-value
+- Adjusted Rand Index with permutation p-value  
+- Per-cluster composition (% human, % AI by model)
+- Number of human-dominated, AI-dominated, mixed clusters
+- Within-group vs. between-group distance ratios
+
+**Interpretation:**
+- **High NMI/ARI (p < 0.05):** Clusters predict source → segregation → human and AI generate different KINDS of ideas
+- **Low NMI/ARI (p > 0.10):** Clustering independent of source → integration → ideas intermixed regardless of source
+- **Intermediate:** Some thematic clustering but not strictly by source
+
+**Limitations:**
+- With n=92 total, clusters with k>5 may be unstable
+- Interpret conservatively and compare to embedding space visualizations
+- Segregation may reflect prompt/instruction differences, not inherent idea differences
+
+---
+
+###$ Multiple Testing Correction Strategy (Section 2.3)
+
+**Test Families:**
+1. **Topic distribution tests:** Per-topic Fisher's exact (n ≈ 5 topics × 4 comparisons = 20 tests)
+   - FDR correction at q = 0.10 (exploratory threshold)
+2. **Topic exclusivity:** One test per comparison (n = 4)
+   - No correction (single test per hypothesis)
+3. **Segregation metrics:** NMI and ARI (n = 2 primary metrics)
+   - No correction (planned comparisons, permutation-based)
+
+**Global Strategy Across Study:**
+- Section 2.1 (diversity): 3 metrics × 4 comparisons = 12 tests → FDR q=0.05
+- Section 2.2 (novelty): 1 metric × 4 comparisons = 4 tests → FDR q=0.05  
+- Section 2.3 (topics/clusters): ~25 tests → FDR q=0.10 (exploratory)
+- **Total:** ~40 tests across study
+- **Strategy:** Correct within sections, report raw p-values in appendix, clearly label exploratory analyses
+
+---
+
+
+### 2.4 QUALITY: Can AI create proposals of higher quality than teams of human scientists?
 
 - Give the criteria `data/evaluation_criteria.json` to AI models and instruct them to evaluate all human and AI proposals (blinded to authorship), then compare the evaluations
 - Invite human experts to blindly review a subset of human and AI proposals, and compare
 - Compare the similarity between AI's and human experts' reviews to see whether AI's reviews are reliable proxy
-<!-- REVIEW: CRITICAL — Using AI to evaluate AI-generated proposals creates circularity (self-preference bias; see Zheng et al. 2023 "Judging LLM-as-a-Judge"). AI models may favor their own stylistic patterns and miss domain-specific issues. Human expert evaluation should be PRIMARY, not supplementary. Specify: minimum 3 independent reviewers per proposal, recruited from relevant domain, blinded to source, with inter-rater reliability (Krippendorff's alpha or ICC). Add explicit "AI self-preference" test: do models rate their own outputs higher? Also: how are structured criteria scores aggregated — averaged? weighted? See Critique §3. -->
+- "AI self-preference" test: do models rate their own outputs higher? Also: how are structured criteria scores aggregated — averaged? weighted?
+- [TODO] Find human experts to evaluate top human and AI proposals (blinded about authorship)
 
 
 
-### 2.4 More differences through topic modeling and cluster analysis
-
-###$ Rationale
-Reviewers will ask: "What are the actual conceptual differences?" Topic modeling provides interpretable insight into how human and AI ideation differs.
-
-###$ Analysis 2.4.1: BERTopic Modeling
-
-**Steps:**
-1. Only use title and abstracts for human and AI proposals.
-2. Fit BERTopic model on all proposals (23 for each group)
-3. Extract topics, top words, and representative documents
-4. Create interpretable topic labels (domain expert review)
-
-**Parameters:**
-- Embedding model: BioLinkBERT-Large (same as diversity analysis)
-- min_topic_size: 5 
-- nr_topics: "auto"
-
-**Library:** bertopic, sentence-transformers
-
-###$ Analysis 2.4.2: Topic Distribution Comparison
-
-**Steps:**
-1. Create contingency table: topics × source (human/AI)
-2. Overall chi-square test for distribution difference <!-- REVIEW: Chi-square may have cells with expected count <5. Fisher's exact as backup is correct but should be the default with this sample size. -->
-3. Per-topic Fisher's exact test for over/under-representation
-4. Apply FDR correction for multiple comparisons <!-- REVIEW: FDR is applied here but not across the entire study. With 3 AI conditions × 4 dimensions × multiple sub-analyses, define a global correction strategy. See Critique §1c. -->
-5. Identify topics significantly over-represented in each group
-
-**Metrics:**
-- Chi-square statistic and p-value (overall)
-- Odds ratios per topic
-- FDR-corrected p-values per topic
-
-###$ Analysis 2.4.3: Topic Coverage and Entropy
-
-**Steps:**
-1. Compute topic coverage: how many topics does each group cover?
-2. Identify exclusive topics (only in one group)
-3. Compute Shannon entropy of topic distribution per group 
-4. Higher entropy = more even spread = higher diversity
-
-**Metrics:**
-- Number of topics covered per group
-- Number of exclusive topics per group
-- Shannon entropy (normalized by max possible)
-
-#### Analysis 2.4.4: Cluster Composition/Segregation Analysis
-
-**Rationale:** Do human and AI proposals occupy the same conceptual regions or segregate into different clusters?
-
-**Steps:**
-1. Run K-means clustering on all embeddings (try k = 3, 5, 7, 10)
-2. For each cluster, compute composition (% human, % AI)
-3. Compute Normalized Mutual Information (NMI) between cluster labels and source labels
-4. High NMI = clusters predict source = segregation
-
-**Metrics:**
-- NMI score (0 = no segregation, 1 = perfect segregation)
-- Adjusted Rand Index
-- Per-cluster dominance (how far from 50-50)
-- Number of human-dominated, AI-dominated, and mixed clusters
-
-**Interpretation:**
-- High segregation: human and AI generate different KINDS of ideas
-- Low segregation: ideas intermixed regardless of source
-
----
 ---
 
 ## CRITIQUE AND REVIEW
