@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="ascii"?>
+<p:sld xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
+  <p:cSld>
+    <p:bg><p:bgPr><a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill><a:effectLst/></p:bgPr></p:bg>
+    <p:spTree>
+      <p:nvGrpSpPr><p:cNvPr id="1" name=""/><p:cNvGrpSpPr/><p:nvPr/></p:nvGrpSpPr>
+      <p:grpSpPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="0" cy="0"/><a:chOff x="0" y="0"/><a:chExt cx="0" cy="0"/></a:xfrm></p:grpSpPr>
+      <p:sp>
+        <p:nvSpPr><p:cNvPr id="2" name="Text 0"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="0" y="0"/><a:ext cx="9144000" cy="650677"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom>
+          <a:solidFill><a:srgbClr val="1B2A4A"/></a:solidFill>
+        </p:spPr>
+        <p:txBody><a:bodyPr wrap="square" rtlCol="0" anchor="ctr"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0"><a:buNone/></a:pPr><a:endParaRPr lang="en-US" dirty="0"/></a:p>
+        </p:txBody>
+      </p:sp>
+      <p:sp>
+        <p:nvSpPr><p:cNvPr id="3" name="Text 1"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="507950" y="177701"/><a:ext cx="8290661" cy="295275"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/>
+          <a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l"><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="2000" b="1" dirty="0">
+              <a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>Implications &#38; Limitations</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="2000" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="4" name="Text 2"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="507950" y="853827"/><a:ext cx="8290661" cy="171450"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l"><a:spcAft><a:spcPts val="600"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="1200" b="1" dirty="0">
+              <a:solidFill><a:srgbClr val="1B2A4A"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>What This Means</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="1200" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="5" name="Text 3"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="507950" y="1101477"/><a:ext cx="444401" cy="25301"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom>
+          <a:solidFill><a:srgbClr val="E8505B"/></a:solidFill>
+        </p:spPr>
+        <p:txBody><a:bodyPr wrap="square" rtlCol="0" anchor="ctr"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0"><a:buNone/></a:pPr><a:endParaRPr lang="en-US" dirty="0"/></a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="6" name="Text 4"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="507950" y="1253728"/><a:ext cx="3962400" cy="900000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom>
+          <a:solidFill><a:srgbClr val="F7F9FC"/></a:solidFill>
+        </p:spPr>
+        <p:txBody><a:bodyPr wrap="square" rtlCol="0" anchor="ctr"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0"><a:buNone/></a:pPr><a:endParaRPr lang="en-US" dirty="0"/></a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="7" name="Shape 5"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="527000" y="1253728"/><a:ext cx="0" cy="900000"/></a:xfrm>
+          <a:prstGeom prst="line"><a:avLst/></a:prstGeom><a:noFill/>
+          <a:ln w="38100"><a:solidFill><a:srgbClr val="2E86AB"/></a:solidFill><a:prstDash val="solid"/></a:ln>
+        </p:spPr>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="8" name="Text 6"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="698450" y="1329928"/><a:ext cx="3682400" cy="171301"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1350"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="1000" b="1" dirty="0">
+              <a:solidFill><a:srgbClr val="2C3E50"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>AI models are not interchangeable for scientific ideation</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="1000" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="9" name="Text 7"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="698450" y="1543728"/><a:ext cx="3682400" cy="550000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1150"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="850" dirty="0">
+              <a:solidFill><a:srgbClr val="5D6D7E"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>GPT-5.2&#8217;s mode collapse vs Claude&#8217;s subcluster diversity means model choice drastically affects the space of ideas. Researchers should test multiple models and evaluate outputs comparatively, not assume one model represents &#8220;AI.&#8221;</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="850" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="10" name="Text 8"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="507950" y="2270000"/><a:ext cx="3962400" cy="900000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom>
+          <a:solidFill><a:srgbClr val="F7F9FC"/></a:solidFill>
+        </p:spPr>
+        <p:txBody><a:bodyPr wrap="square" rtlCol="0" anchor="ctr"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0"><a:buNone/></a:pPr><a:endParaRPr lang="en-US" dirty="0"/></a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="11" name="Shape 9"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="527000" y="2270000"/><a:ext cx="0" cy="900000"/></a:xfrm>
+          <a:prstGeom prst="line"><a:avLst/></a:prstGeom><a:noFill/>
+          <a:ln w="38100"><a:solidFill><a:srgbClr val="16A085"/></a:solidFill><a:prstDash val="solid"/></a:ln>
+        </p:spPr>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="12" name="Text 10"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="698450" y="2346200"/><a:ext cx="3682400" cy="171301"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1350"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="1000" b="1" dirty="0">
+              <a:solidFill><a:srgbClr val="2C3E50"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>Human novelty advantage suggests complementary roles</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="1000" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="13" name="Text 11"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="698450" y="2560000"/><a:ext cx="3682400" cy="550000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1150"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="850" dirty="0">
+              <a:solidFill><a:srgbClr val="5D6D7E"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>Human proposals venture further from published literature, indicating that human scientists bring perspectives not derivable from training data alone. AI may be most valuable for extending existing lines of inquiry, while humans contribute genuinely novel framings.</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="850" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="14" name="Text 12"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="507950" y="3290000"/><a:ext cx="3962400" cy="900000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom>
+          <a:solidFill><a:srgbClr val="F0F4F8"/></a:solidFill>
+        </p:spPr>
+        <p:txBody><a:bodyPr wrap="square" rtlCol="0" anchor="ctr"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0"><a:buNone/></a:pPr><a:endParaRPr lang="en-US" dirty="0"/></a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="15" name="Shape 13"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="527000" y="3290000"/><a:ext cx="0" cy="900000"/></a:xfrm>
+          <a:prstGeom prst="line"><a:avLst/></a:prstGeom><a:noFill/>
+          <a:ln w="38100"><a:solidFill><a:srgbClr val="8E44AD"/></a:solidFill><a:prstDash val="solid"/></a:ln>
+        </p:spPr>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="16" name="Text 14"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="698450" y="3366200"/><a:ext cx="3682400" cy="171301"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1350"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="1000" b="1" dirty="0">
+              <a:solidFill><a:srgbClr val="2C3E50"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>Semantic segregation raises questions about AI&#8217;s &#8220;idea space&#8221;</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="1000" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="17" name="Text 15"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="698450" y="3580000"/><a:ext cx="3682400" cy="550000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1150"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="850" dirty="0">
+              <a:solidFill><a:srgbClr val="5D6D7E"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>The consistent finding that AI and human proposals occupy distinct territories &#8212; confirmed by NN, LDA, and GMM analyses &#8212; suggests systematic differences in how AI frames research. This may limit AI&#8217;s ability to surface truly unconventional ideas.</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="850" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="18" name="Text 16"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="4673501" y="1253728"/><a:ext cx="3962549" cy="2800000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom>
+          <a:solidFill><a:srgbClr val="FDF8F8"/></a:solidFill>
+        </p:spPr>
+        <p:txBody><a:bodyPr wrap="square" rtlCol="0" anchor="ctr"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0"><a:buNone/></a:pPr><a:endParaRPr lang="en-US" dirty="0"/></a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="19" name="Shape 17"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="4692551" y="1253728"/><a:ext cx="0" cy="2800000"/></a:xfrm>
+          <a:prstGeom prst="line"><a:avLst/></a:prstGeom><a:noFill/>
+          <a:ln w="38100"><a:solidFill><a:srgbClr val="E8505B"/></a:solidFill><a:prstDash val="solid"/></a:ln>
+        </p:spPr>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="20" name="Text 18"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="4864001" y="1350000"/><a:ext cx="3600000" cy="200000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1600"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="1200" b="1" dirty="0">
+              <a:solidFill><a:srgbClr val="E8505B"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>Limitations</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="1200" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="21" name="Text 19"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="4864001" y="1600000"/><a:ext cx="3600000" cy="200000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1050"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="800" dirty="0">
+              <a:solidFill><a:srgbClr val="2C3E50"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>&#8226; Single funding call (NCEMS) &#8212; generalizability is unknown.</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="800" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="21" name="Text 19"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="4864001" y="1870000"/><a:ext cx="3600000" cy="200000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1050"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="800" dirty="0">
+              <a:solidFill><a:srgbClr val="2C3E50"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>&#8226; Small, unbalanced sample (23 human vs. 69 AI). Power is limited for subtle effects.</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="800" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="21" name="Text 19"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="4864001" y="2140000"/><a:ext cx="3600000" cy="200000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1050"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="800" dirty="0">
+              <a:solidFill><a:srgbClr val="2C3E50"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>&#8226; Embedding distance &#8800; conceptual diversity. BioLinkBERT may conflate stylistic with semantic differences. Expert validation is needed.</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="800" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="21" name="Text 19"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="4864001" y="2410000"/><a:ext cx="3600000" cy="200000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1050"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="800" dirty="0">
+              <a:solidFill><a:srgbClr val="2C3E50"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>&#8226; Novelty score conflates novelty with incoherence. High distance from literature could mean a genuinely new idea OR a poorly formulated one.</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="800" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="21" name="Text 19"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="4864001" y="2680000"/><a:ext cx="3600000" cy="200000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1050"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="800" dirty="0">
+              <a:solidFill><a:srgbClr val="2C3E50"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>&#8226; Topic separation may be an artifact of writing style or prompt templating, not genuine thematic differences. LDA results are exploratory.</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="800" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="21" name="Text 19"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="4864001" y="2950000"/><a:ext cx="3600000" cy="200000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1050"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="800" dirty="0">
+              <a:solidFill><a:srgbClr val="2C3E50"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>&#8226; Population mismatch: humans wrote under real funding stakes; AI under zero stakes. This confounds any comparison of quality or effort.</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="800" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="21" name="Text 19"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="4864001" y="3220000"/><a:ext cx="3600000" cy="200000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1050"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="800" dirty="0">
+              <a:solidFill><a:srgbClr val="2C3E50"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>&#8226; No quality evaluation yet &#8212; diversity and novelty do not imply good science. Human expert review (planned) is the critical missing piece.</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="800" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="30" name="Text 28"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="507950" y="4200000"/><a:ext cx="8128099" cy="380000"/></a:xfrm>
+          <a:prstGeom prst="roundRect"><a:avLst><a:gd name="adj" fmla="val 3000"/></a:avLst></a:prstGeom>
+          <a:solidFill><a:srgbClr val="1B2A4A"/></a:solidFill>
+        </p:spPr>
+        <p:txBody><a:bodyPr wrap="square" rtlCol="0" anchor="ctr"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0"><a:buNone/></a:pPr><a:endParaRPr lang="en-US" dirty="0"/></a:p>
+        </p:txBody>
+      </p:sp><p:sp>
+        <p:nvSpPr><p:cNvPr id="31" name="Text 29"/><p:cNvSpPr/><p:nvPr/></p:nvSpPr>
+        <p:spPr>
+          <a:xfrm><a:off x="660350" y="4260000"/><a:ext cx="7900000" cy="260000"/></a:xfrm>
+          <a:prstGeom prst="rect"><a:avLst/></a:prstGeom><a:noFill/>
+        </p:spPr>
+        <p:txBody>
+          <a:bodyPr wrap="square" lIns="0" tIns="0" rIns="0" bIns="0" rtlCol="0" anchor="t"/><a:lstStyle/>
+          <a:p><a:pPr marL="0" indent="0" algn="l">
+            <a:lnSpc><a:spcPts val="1200"/></a:lnSpc>
+            <a:spcAft><a:spcPts val="400"/></a:spcAft><a:buNone/></a:pPr>
+            <a:r><a:rPr lang="en-US" sz="900" b="1" dirty="0">
+              <a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill><a:latin typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="0"/>
+                <a:ea typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-122"/>
+                <a:cs typeface="Arial" panose="020B0604020202090204" pitchFamily="34" charset="-120"/>
+            </a:rPr><a:t>Next steps: (1) Human expert evaluation of proposal quality; (2) Augmented conditions (literature-enriched, persona-based prompts); (3) Construct validation of embedding metrics; (4) Larger sample sizes across multiple funding calls.</a:t></a:r>
+            <a:endParaRPr lang="en-US" sz="900" dirty="0"/>
+          </a:p>
+        </p:txBody>
+      </p:sp>
+    </p:spTree>
+  </p:cSld>
+  <p:clrMapOvr><a:masterClrMapping/></p:clrMapOvr>
+</p:sld>

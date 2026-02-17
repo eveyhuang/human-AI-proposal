@@ -1,0 +1,585 @@
+<?xml version="1.0" encoding="ascii"?>
+<c:chartSpace xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+  <c:date1904 val="0"/>
+  <c:lang val="zh-CN"/>
+  <c:roundedCorners val="1"/>
+  <mc:AlternateContent xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    <mc:Choice xmlns:c14="http://schemas.microsoft.com/office/drawing/2007/8/2/chart" Requires="c14">
+      <c14:style val="102"/>
+    </mc:Choice>
+    <mc:Fallback>
+      <c:style val="2"/>
+    </mc:Fallback>
+  </mc:AlternateContent>
+  <c:chart>
+    <c:autoTitleDeleted val="1"/>
+    <c:plotArea>
+      <c:layout/>
+      <c:barChart>
+        <c:barDir val="bar"/>
+        <c:grouping val="stacked"/>
+        <c:varyColors val="0"/>
+        <c:ser>
+          <c:idx val="0"/>
+          <c:order val="0"/>
+          <c:tx>
+            <c:strRef>
+              <c:f>Sheet1!$B$1</c:f>
+              <c:strCache>
+                <c:ptCount val="1"/>
+                <c:pt idx="0">
+                  <c:v>Same Group</c:v>
+                </c:pt>
+              </c:strCache>
+            </c:strRef>
+          </c:tx>
+          <c:spPr>
+            <a:solidFill>
+              <a:srgbClr val="2E86AB"/>
+            </a:solidFill>
+            <a:effectLst/>
+          </c:spPr>
+          <c:invertIfNegative val="0"/>
+          <c:dLbls>
+            <c:dLbl>
+              <c:idx val="0"/>
+              <c:delete val="1"/>
+            </c:dLbl>
+            <c:dLbl>
+              <c:idx val="1"/>
+              <c:delete val="1"/>
+            </c:dLbl>
+            <c:dLbl>
+              <c:idx val="2"/>
+              <c:delete val="1"/>
+            </c:dLbl>
+            <c:dLbl>
+              <c:idx val="3"/>
+              <c:delete val="1"/>
+            </c:dLbl>
+            <c:numFmt formatCode="#,##0" sourceLinked="0"/>
+            <c:spPr>
+              <a:noFill/>
+              <a:ln>
+                <a:noFill/>
+              </a:ln>
+              <a:effectLst/>
+            </c:spPr>
+            <c:txPr>
+              <a:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="ellipsis" vert="horz" wrap="square" lIns="38100" tIns="19050" rIns="38100" bIns="19050" anchor="ctr" anchorCtr="1"/>
+              <a:lstStyle/>
+              <a:p>
+                <a:pPr>
+                  <a:defRPr lang="en-US" sz="1200" b="0" i="0" u="none" strike="noStrike" kern="1200" baseline="0">
+                    <a:solidFill>
+                      <a:srgbClr val="000000"/>
+                    </a:solidFill>
+                    <a:latin typeface="Arial" panose="020B0604020202090204"/>
+                    <a:ea typeface="+mn-ea"/>
+                    <a:cs typeface="+mn-cs"/>
+                  </a:defRPr>
+                </a:pPr>
+              </a:p>
+            </c:txPr>
+            <c:dLblPos val="ctr"/>
+            <c:showLegendKey val="0"/>
+            <c:showVal val="0"/>
+            <c:showCatName val="0"/>
+            <c:showSerName val="0"/>
+            <c:showPercent val="0"/>
+            <c:showBubbleSize val="0"/>
+            <c:showLeaderLines val="0"/>
+            <c:extLst>
+              <c:ext xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart" uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}">
+                <c15:layout/>
+                <c15:showLeaderLines val="0"/>
+                <c15:leaderLines/>
+              </c:ext>
+            </c:extLst>
+          </c:dLbls>
+          <c:cat>
+            <c:strRef>
+              <c:f>Sheet1!$A$2:$A$5</c:f>
+              <c:strCache>
+                <c:ptCount val="4"/>
+                <c:pt idx="0">
+                  <c:v>Human</c:v>
+                </c:pt>
+                <c:pt idx="1">
+                  <c:v>Claude</c:v>
+                </c:pt>
+                <c:pt idx="2">
+                  <c:v>Gemini</c:v>
+                </c:pt>
+                <c:pt idx="3">
+                  <c:v>GPT-5.2</c:v>
+                </c:pt>
+              </c:strCache>
+            </c:strRef>
+          </c:cat>
+          <c:val>
+            <c:numRef>
+              <c:f>Sheet1!$B$2:$B$5</c:f>
+              <c:numCache>
+                <c:formatCode>General</c:formatCode>
+                <c:ptCount val="4"/>
+                <c:pt idx="0">
+                  <c:v>43.5</c:v>
+                </c:pt>
+                <c:pt idx="1">
+                  <c:v>95.7</c:v>
+                </c:pt>
+                <c:pt idx="2">
+                  <c:v>69.6</c:v>
+                </c:pt>
+                <c:pt idx="3">
+                  <c:v>69.6</c:v>
+                </c:pt>
+              </c:numCache>
+            </c:numRef>
+          </c:val>
+        </c:ser>
+        <c:ser>
+          <c:idx val="1"/>
+          <c:order val="1"/>
+          <c:tx>
+            <c:strRef>
+              <c:f>Sheet1!$C$1</c:f>
+              <c:strCache>
+                <c:ptCount val="1"/>
+                <c:pt idx="0">
+                  <c:v>Other AI Model</c:v>
+                </c:pt>
+              </c:strCache>
+            </c:strRef>
+          </c:tx>
+          <c:spPr>
+            <a:solidFill>
+              <a:srgbClr val="B0C4DE"/>
+            </a:solidFill>
+            <a:effectLst/>
+          </c:spPr>
+          <c:invertIfNegative val="0"/>
+          <c:dLbls>
+            <c:dLbl>
+              <c:idx val="0"/>
+              <c:delete val="1"/>
+            </c:dLbl>
+            <c:dLbl>
+              <c:idx val="1"/>
+              <c:delete val="1"/>
+            </c:dLbl>
+            <c:dLbl>
+              <c:idx val="2"/>
+              <c:delete val="1"/>
+            </c:dLbl>
+            <c:dLbl>
+              <c:idx val="3"/>
+              <c:delete val="1"/>
+            </c:dLbl>
+            <c:numFmt formatCode="#,##0" sourceLinked="0"/>
+            <c:spPr>
+              <a:noFill/>
+              <a:ln>
+                <a:noFill/>
+              </a:ln>
+              <a:effectLst/>
+            </c:spPr>
+            <c:txPr>
+              <a:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="ellipsis" vert="horz" wrap="square" lIns="38100" tIns="19050" rIns="38100" bIns="19050" anchor="ctr" anchorCtr="1"/>
+              <a:lstStyle/>
+              <a:p>
+                <a:pPr>
+                  <a:defRPr lang="en-US" sz="1200" b="0" i="0" u="none" strike="noStrike" kern="1200" baseline="0">
+                    <a:solidFill>
+                      <a:srgbClr val="000000"/>
+                    </a:solidFill>
+                    <a:latin typeface="Arial" panose="020B0604020202090204"/>
+                    <a:ea typeface="+mn-ea"/>
+                    <a:cs typeface="+mn-cs"/>
+                  </a:defRPr>
+                </a:pPr>
+              </a:p>
+            </c:txPr>
+            <c:dLblPos val="ctr"/>
+            <c:showLegendKey val="0"/>
+            <c:showVal val="0"/>
+            <c:showCatName val="0"/>
+            <c:showSerName val="0"/>
+            <c:showPercent val="0"/>
+            <c:showBubbleSize val="0"/>
+            <c:showLeaderLines val="0"/>
+            <c:extLst>
+              <c:ext xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart" uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}">
+                <c15:layout/>
+                <c15:showLeaderLines val="0"/>
+                <c15:leaderLines/>
+              </c:ext>
+            </c:extLst>
+          </c:dLbls>
+          <c:cat>
+            <c:strRef>
+              <c:f>Sheet1!$A$2:$A$5</c:f>
+              <c:strCache>
+                <c:ptCount val="4"/>
+                <c:pt idx="0">
+                  <c:v>Human</c:v>
+                </c:pt>
+                <c:pt idx="1">
+                  <c:v>Claude</c:v>
+                </c:pt>
+                <c:pt idx="2">
+                  <c:v>Gemini</c:v>
+                </c:pt>
+                <c:pt idx="3">
+                  <c:v>GPT-5.2</c:v>
+                </c:pt>
+              </c:strCache>
+            </c:strRef>
+          </c:cat>
+          <c:val>
+            <c:numRef>
+              <c:f>Sheet1!$C$2:$C$5</c:f>
+              <c:numCache>
+                <c:formatCode>General</c:formatCode>
+                <c:ptCount val="4"/>
+                <c:pt idx="0">
+                  <c:v>0</c:v>
+                </c:pt>
+                <c:pt idx="1">
+                  <c:v>4.3</c:v>
+                </c:pt>
+                <c:pt idx="2">
+                  <c:v>30.4</c:v>
+                </c:pt>
+                <c:pt idx="3">
+                  <c:v>30.4</c:v>
+                </c:pt>
+              </c:numCache>
+            </c:numRef>
+          </c:val>
+        </c:ser>
+        <c:ser>
+          <c:idx val="2"/>
+          <c:order val="2"/>
+          <c:tx>
+            <c:strRef>
+              <c:f>Sheet1!$D$1</c:f>
+              <c:strCache>
+                <c:ptCount val="1"/>
+                <c:pt idx="0">
+                  <c:v>Different Group Type</c:v>
+                </c:pt>
+              </c:strCache>
+            </c:strRef>
+          </c:tx>
+          <c:spPr>
+            <a:solidFill>
+              <a:srgbClr val="E8505B"/>
+            </a:solidFill>
+            <a:effectLst/>
+          </c:spPr>
+          <c:invertIfNegative val="0"/>
+          <c:dLbls>
+            <c:dLbl>
+              <c:idx val="0"/>
+              <c:delete val="1"/>
+            </c:dLbl>
+            <c:dLbl>
+              <c:idx val="1"/>
+              <c:delete val="1"/>
+            </c:dLbl>
+            <c:dLbl>
+              <c:idx val="2"/>
+              <c:delete val="1"/>
+            </c:dLbl>
+            <c:dLbl>
+              <c:idx val="3"/>
+              <c:delete val="1"/>
+            </c:dLbl>
+            <c:numFmt formatCode="#,##0" sourceLinked="0"/>
+            <c:spPr>
+              <a:noFill/>
+              <a:ln>
+                <a:noFill/>
+              </a:ln>
+              <a:effectLst/>
+            </c:spPr>
+            <c:txPr>
+              <a:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="ellipsis" vert="horz" wrap="square" lIns="38100" tIns="19050" rIns="38100" bIns="19050" anchor="ctr" anchorCtr="1"/>
+              <a:lstStyle/>
+              <a:p>
+                <a:pPr>
+                  <a:defRPr lang="en-US" sz="1200" b="0" i="0" u="none" strike="noStrike" kern="1200" baseline="0">
+                    <a:solidFill>
+                      <a:srgbClr val="000000"/>
+                    </a:solidFill>
+                    <a:latin typeface="Arial" panose="020B0604020202090204"/>
+                    <a:ea typeface="+mn-ea"/>
+                    <a:cs typeface="+mn-cs"/>
+                  </a:defRPr>
+                </a:pPr>
+              </a:p>
+            </c:txPr>
+            <c:dLblPos val="ctr"/>
+            <c:showLegendKey val="0"/>
+            <c:showVal val="0"/>
+            <c:showCatName val="0"/>
+            <c:showSerName val="0"/>
+            <c:showPercent val="0"/>
+            <c:showBubbleSize val="0"/>
+            <c:showLeaderLines val="0"/>
+            <c:extLst>
+              <c:ext xmlns:c15="http://schemas.microsoft.com/office/drawing/2012/chart" uri="{CE6537A1-D6FC-4f65-9D91-7224C49458BB}">
+                <c15:layout/>
+                <c15:showLeaderLines val="0"/>
+                <c15:leaderLines/>
+              </c:ext>
+            </c:extLst>
+          </c:dLbls>
+          <c:cat>
+            <c:strRef>
+              <c:f>Sheet1!$A$2:$A$5</c:f>
+              <c:strCache>
+                <c:ptCount val="4"/>
+                <c:pt idx="0">
+                  <c:v>Human</c:v>
+                </c:pt>
+                <c:pt idx="1">
+                  <c:v>Claude</c:v>
+                </c:pt>
+                <c:pt idx="2">
+                  <c:v>Gemini</c:v>
+                </c:pt>
+                <c:pt idx="3">
+                  <c:v>GPT-5.2</c:v>
+                </c:pt>
+              </c:strCache>
+            </c:strRef>
+          </c:cat>
+          <c:val>
+            <c:numRef>
+              <c:f>Sheet1!$D$2:$D$5</c:f>
+              <c:numCache>
+                <c:formatCode>General</c:formatCode>
+                <c:ptCount val="4"/>
+                <c:pt idx="0">
+                  <c:v>56.5</c:v>
+                </c:pt>
+                <c:pt idx="1">
+                  <c:v>0</c:v>
+                </c:pt>
+                <c:pt idx="2">
+                  <c:v>0</c:v>
+                </c:pt>
+                <c:pt idx="3">
+                  <c:v>0</c:v>
+                </c:pt>
+              </c:numCache>
+            </c:numRef>
+          </c:val>
+        </c:ser>
+        <c:dLbls>
+          <c:showLegendKey val="0"/>
+          <c:showVal val="0"/>
+          <c:showCatName val="0"/>
+          <c:showSerName val="0"/>
+          <c:showPercent val="0"/>
+          <c:showBubbleSize val="0"/>
+        </c:dLbls>
+        <c:gapWidth val="50"/>
+        <c:overlap val="100"/>
+        <c:axId val="2094734554"/>
+        <c:axId val="2094734552"/>
+      </c:barChart>
+      <c:catAx>
+        <c:axId val="2094734554"/>
+        <c:scaling>
+          <c:orientation val="minMax"/>
+        </c:scaling>
+        <c:delete val="0"/>
+        <c:axPos val="l"/>
+        <c:numFmt formatCode="General" sourceLinked="1"/>
+        <c:majorTickMark val="out"/>
+        <c:minorTickMark val="none"/>
+        <c:tickLblPos val="nextTo"/>
+        <c:spPr>
+          <a:ln w="12700" cap="flat" cmpd="sng" algn="ctr">
+            <a:solidFill>
+              <a:srgbClr val="888888"/>
+            </a:solidFill>
+            <a:prstDash val="solid"/>
+            <a:round/>
+          </a:ln>
+        </c:spPr>
+        <c:txPr>
+          <a:bodyPr rot="-60000000" spcFirstLastPara="0" vertOverflow="ellipsis" vert="horz" wrap="square" anchor="ctr" anchorCtr="1"/>
+          <a:lstStyle/>
+          <a:p>
+            <a:pPr>
+              <a:defRPr lang="en-US" sz="700" b="0" i="0" u="none" strike="noStrike" kern="1200" baseline="0">
+                <a:solidFill>
+                  <a:srgbClr val="000000"/>
+                </a:solidFill>
+                <a:latin typeface="Arial" panose="020B0604020202090204"/>
+                <a:ea typeface="+mn-ea"/>
+                <a:cs typeface="+mn-cs"/>
+              </a:defRPr>
+            </a:pPr>
+          </a:p>
+        </c:txPr>
+        <c:crossAx val="2094734552"/>
+        <c:crosses val="autoZero"/>
+        <c:auto val="1"/>
+        <c:lblAlgn val="ctr"/>
+        <c:lblOffset val="100"/>
+        <c:noMultiLvlLbl val="1"/>
+      </c:catAx>
+      <c:valAx>
+        <c:axId val="2094734552"/>
+        <c:scaling>
+          <c:orientation val="minMax"/>
+          <c:max val="100"/>
+          <c:min val="0"/>
+        </c:scaling>
+        <c:delete val="0"/>
+        <c:axPos val="b"/>
+        <c:majorGridlines>
+          <c:spPr>
+            <a:ln w="12700" cap="flat" cmpd="sng" algn="ctr">
+              <a:solidFill>
+                <a:srgbClr val="888888"/>
+              </a:solidFill>
+              <a:prstDash val="solid"/>
+              <a:round/>
+            </a:ln>
+          </c:spPr>
+        </c:majorGridlines>
+        <c:title>
+          <c:tx>
+            <c:rich>
+              <a:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="ellipsis" vert="horz" wrap="square" anchor="ctr" anchorCtr="1"/>
+              <a:lstStyle/>
+              <a:p>
+                <a:pPr>
+                  <a:defRPr lang="en-US" sz="700" b="0" i="0" u="none" strike="noStrike" kern="1200" baseline="0">
+                    <a:solidFill>
+                      <a:srgbClr val="000000"/>
+                    </a:solidFill>
+                    <a:latin typeface="Arial" panose="020B0604020202090204"/>
+                    <a:ea typeface="+mn-ea"/>
+                    <a:cs typeface="+mn-cs"/>
+                  </a:defRPr>
+                </a:pPr>
+                <a:r>
+                  <a:rPr sz="700" b="0" i="0" u="none" strike="noStrike">
+                    <a:solidFill>
+                      <a:srgbClr val="000000"/>
+                    </a:solidFill>
+                    <a:latin typeface="Arial" panose="020B0604020202090204"/>
+                  </a:rPr>
+                  <a:t>% of Proposals</a:t>
+                </a:r>
+                <a:endParaRPr sz="700" b="0" i="0" u="none" strike="noStrike">
+                  <a:solidFill>
+                    <a:srgbClr val="000000"/>
+                  </a:solidFill>
+                  <a:latin typeface="Arial" panose="020B0604020202090204"/>
+                </a:endParaRPr>
+              </a:p>
+            </c:rich>
+          </c:tx>
+          <c:layout/>
+          <c:overlay val="0"/>
+        </c:title>
+        <c:numFmt formatCode="General" sourceLinked="0"/>
+        <c:majorTickMark val="out"/>
+        <c:minorTickMark val="none"/>
+        <c:tickLblPos val="low"/>
+        <c:spPr>
+          <a:ln w="12700" cap="flat" cmpd="sng" algn="ctr">
+            <a:solidFill>
+              <a:srgbClr val="888888"/>
+            </a:solidFill>
+            <a:prstDash val="solid"/>
+            <a:round/>
+          </a:ln>
+        </c:spPr>
+        <c:txPr>
+          <a:bodyPr rot="-60000000" spcFirstLastPara="0" vertOverflow="ellipsis" vert="horz" wrap="square" anchor="ctr" anchorCtr="1"/>
+          <a:lstStyle/>
+          <a:p>
+            <a:pPr>
+              <a:defRPr lang="en-US" sz="700" b="0" i="0" u="none" strike="noStrike" kern="1200" baseline="0">
+                <a:solidFill>
+                  <a:srgbClr val="000000"/>
+                </a:solidFill>
+                <a:latin typeface="Arial" panose="020B0604020202090204"/>
+                <a:ea typeface="+mn-ea"/>
+                <a:cs typeface="+mn-cs"/>
+              </a:defRPr>
+            </a:pPr>
+          </a:p>
+        </c:txPr>
+        <c:crossAx val="2094734554"/>
+        <c:crosses val="autoZero"/>
+        <c:crossBetween val="between"/>
+      </c:valAx>
+      <c:spPr>
+        <a:noFill/>
+        <a:ln>
+          <a:noFill/>
+        </a:ln>
+        <a:effectLst/>
+      </c:spPr>
+    </c:plotArea>
+    <c:legend>
+      <c:legendPos val="b"/>
+      <c:layout/>
+      <c:overlay val="0"/>
+      <c:txPr>
+        <a:bodyPr rot="0" spcFirstLastPara="0" vertOverflow="ellipsis" vert="horz" wrap="square" anchor="ctr" anchorCtr="1"/>
+        <a:lstStyle/>
+        <a:p>
+          <a:pPr>
+            <a:defRPr lang="en-US" sz="600" b="0" i="0" u="none" strike="noStrike" kern="1200" baseline="0">
+              <a:solidFill>
+                <a:schemeClr val="tx1"/>
+              </a:solidFill>
+              <a:latin typeface="+mn-lt"/>
+              <a:ea typeface="+mn-ea"/>
+              <a:cs typeface="+mn-cs"/>
+            </a:defRPr>
+          </a:pPr>
+        </a:p>
+      </c:txPr>
+    </c:legend>
+    <c:plotVisOnly val="1"/>
+    <c:dispBlanksAs val="span"/>
+    <c:showDLblsOverMax val="0"/>
+    <c:extLst>
+      <c:ext uri="{0b15fc19-7d7d-44ad-8c2d-2c3a37ce22c3}">
+        <chartProps xmlns="https://web.wps.cn/et/2018/main" chartId="{62dcc2d8-c056-4d1b-baa9-212a3f35dbee}"/>
+      </c:ext>
+    </c:extLst>
+  </c:chart>
+  <c:spPr>
+    <a:noFill/>
+    <a:ln>
+      <a:noFill/>
+    </a:ln>
+    <a:effectLst/>
+  </c:spPr>
+  <c:txPr>
+    <a:bodyPr/>
+    <a:lstStyle/>
+    <a:p>
+      <a:pPr>
+        <a:defRPr lang="en-US"/>
+      </a:pPr>
+    </a:p>
+  </c:txPr>
+  <c:externalData r:id="rId1">
+    <c:autoUpdate val="0"/>
+  </c:externalData>
+</c:chartSpace>

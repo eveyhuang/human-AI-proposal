@@ -19,7 +19,7 @@ Target publication venues:
 
 
 
-##  PART 1: Use AI models to generate proposals
+#  PART 1: Use AI models to generate proposals
 
 ### [DONE] Baseline condition:  AI generate proposals with only  the call for proposal and information about NCEMS. Each AI model receives the same prompt 
 - First use generate_ideas_baseline prompt in `src/prompt_templates.py`,  instruct AI models (GPT, Gemini, Claude as specified in `src/ai_models_interface.py`) to each generate 23 research ideas (same as total amount of human proposals). In the prompt, includes the call for proposal and information about NCEMS from `data/call_and_info.json`. Save all the titles and abstracts of ideas into a single csv file in `data/ai-proposals/baseline` , distinguish which model is used to generate that idea.
@@ -42,16 +42,16 @@ Target publication venues:
 
 Save all proposals from each condition and merge with human proposals into a single CSV file for easy access and comparison later.
 
-## PART 2: Compare AI proposals against human proposals
+# PART 2: Compare AI proposals against human proposals
 - Embedding model: Use biomedical domain specific embedding model (BioLinkBERT-Large, rank 1 on BLURB as of 02/10/2026) to transfrom each proposal into vectors (AI proposals stored in `data/ai-proposals`, human proposals stored in `data/human-proposals`)
 
 - Save the embedding vectors of all proposals in one single file for easy access and comparison later.
 
 For each set of AI proposals (23 from each AI models), conduct following analysis with human proposals: 
 
-### 2.1 DIVERSITY: Can AI generate more diverse proposals than teams of human scientists? 
+## PART 2-I DIVERSITY: Can AI generate more diverse proposals than teams of human scientists? 
 
-#### Analysis 2.1.1 With-in group diversity
+#### Analysis 1.1 With-in group diversity
 - Pair-wise comparison within group: human proposals vs AI proposals (from each model and ALL AI) to calculate cosine similarity 
 - Compute pairwise cosine distances within each group
 - Compare distributions using Mann-Whitney U test 
@@ -65,7 +65,7 @@ For each set of AI proposals (23 from each AI models), conduct following analysi
 - Cliff's delta (effect size): <0.147 negligible, <0.33 small, <0.474 medium, ≥0.474 large
 
 
-#### Analysis 2.1.2: Centroid Dispersion Metric
+#### Analysis 1.2: Centroid Dispersion Metric
 
 **Rationale:** Complementary to pairwise distances. Measures how scattered proposals are from their group center.
 
@@ -86,7 +86,7 @@ For each set of AI proposals (23 from each AI models), conduct following analysi
 
 ---
 
-#### Analysis 2.1.3: Nearest-Neighbor Outlier Detection
+#### Analysis 1.3: Nearest-Neighbor Outlier Detection
 
 **Rationale:** Identifies "lone wolf" ideas far from everything else. High pairwise diversity could come from everyone being moderately different OR a few extreme outliers.
 
@@ -110,9 +110,10 @@ For each set of AI proposals (23 from each AI models), conduct following analysi
 
 -
 
-### 2.2 NOVELTY: Can AI create more novel proposals than teams of human scientists?
+## PART 2-II NOVELTY: Can AI create more novel proposals than human scientists?
 
 - given the corpus of relevant literature and papers published by human scientists, where do human proposals and AI proposals fit? 
+- REPORT stats and info on literature corpus
 
 #### Analysis 2.2.1: Compute Novelty Scores
 
@@ -124,8 +125,6 @@ For each set of AI proposals (23 from each AI models), conduct following analysi
 4. Novelty score = mean distance to k nearest neighbors;  Higher score = farther from existing work = more novel
 5. Create visulization of the projected embedding with nearest neighbors and outliers. 
 
-
-<!-- REVIEW: Distance from corpus captures both genuine novelty AND incoherence/nonsense. A proposal far from all literature could be novel or simply infeasible. Add a feasibility filter: only compute novelty for proposals passing a minimum quality threshold, or compute novelty conditional on quality. Also: corpus construction is critical — report N abstracts, date range, subfield distribution, MeSH terms used. Test sensitivity to corpus composition. See Critique §2b and §5b. -->
 
 
 #### Analysis 2.2.2: Compare Novelty Distributions
@@ -142,16 +141,16 @@ For each set of AI proposals (23 from each AI models), conduct following analysi
 
 
 
-### 2.3 Thematic and Cluster Analysis
+## PART 2-III Thematic and Cluster Analysis
 
-###$ Rationale
+#### Rationale
 Reviewers will ask: "What are the actual conceptual differences?" This section examines whether human and AI proposals cluster in distinct semantic regions and whether they differ in thematic coverage.
 
 **⚠️ Sample Size Consideration:** With n=23 human and n=69 AI proposals, automated topic modeling is underpowered. We combine conservative automated approaches with visualization-based exploratory analysis.
 
 ---
 
-###$ Analysis 2.3.1: Topic Modeling (Exploratory)
+### Analysis 2.3.1: Topic Modeling (Exploratory)
 
 **Approach:** Use Latent Dirichlet Allocation (LDA) instead of BERTopic due to small sample size. LDA allows strong priors that stabilize topics with limited data.
 
@@ -182,7 +181,7 @@ Reviewers will ask: "What are the actual conceptual differences?" This section e
 
 ---
 
-###$ Analysis 2.3.2: Topic Distribution Comparison
+### Analysis 2.3.2: Topic Distribution Comparison
 
 **Steps:**
 1. Create contingency table: topics × source (human/AI/per-model)
@@ -213,7 +212,7 @@ Reviewers will ask: "What are the actual conceptual differences?" This section e
 
 ---
 
-###$ Analysis 2.3.3: Topic Coverage and Entropy (with Sample Size Correction)
+### Analysis 2.3.3: Topic Coverage and Entropy (with Sample Size Correction)
 
 **Steps:**
 1. **Topic coverage:** Count unique topics represented per group (threshold: topic probability > 0.20)
@@ -242,7 +241,7 @@ Reviewers will ask: "What are the actual conceptual differences?" This section e
 
 ---
 
-###$ Analysis 2.3.4: Cluster Composition/Segregation Analysis
+### Analysis 2.3.4: Cluster Composition/Segregation Analysis
 
 **Rationale:** Do human and AI proposals occupy the same conceptual regions or segregate into different clusters in embedding space?
 
@@ -320,7 +319,70 @@ cluster_probs = gmm.predict_proba(embeddings)  # Soft assignment
 
 ---
 
-###$ Multiple Testing Correction Strategy (Section 2.3)
+### Analysis 2.3.5: Style vs. Content Diagnostics (Style-Only Baseline)
+
+**Rationale:** Before interpreting embedding distances, clustering segregation (NMI/ARI), or topic separation as “conceptual” differences, quantify how much **purely stylistic** signals can separate Human vs. AI. If a style-only model predicts source well, then a substantial portion of downstream “segregation/diversity” effects may be stylistic rather than conceptual.
+
+**Inputs:**
+- Same proposal text used for downstream analyses (abstract-only vs full text should be evaluated separately).
+- Labels: `group ∈ {Human, AI}` and optionally `model` for model-specific effects.
+
+**Style feature set (no domain semantics):**
+- **Length/structure**: word count, character count, sentence count, avg sentence length, paragraph count, section header count (if structured).
+- **Function-word profile**: rates of common stopwords/function words, pronoun rates, determiners/prepositions/conjunctions.
+- **Punctuation/formatting**: comma/semicolon/colon/dash rates, parentheses rate, citation-like patterns, bullet/list markers.
+- **Readability**: Flesch-Kincaid / Gunning Fog (or similar), type-token ratio / lexical richness proxies.
+- **Hedging/stance markers**: rates of “may/might/could/suggest”, “we propose/aim”, “novel”, “significant”, etc. (predefined lexicon).
+- **POS distribution (optional)**: coarse POS tag proportions (noun/verb/adj/adv), if a tagger is available.
+
+**Modeling / evaluation:**
+- Train a simple classifier on style features only (e.g., regularized logistic regression).
+- Report: **AUROC**, balanced accuracy, calibration (optional), and **permutation test** for AUROC (shuffle labels 10,000×).
+- **Cross-validation:** stratified CV; report mean ± std. If evaluating by AI model, report one-vs-rest AUROC as a secondary analysis.
+
+**Interpretation:**
+- **High AUROC (e.g., ≥0.8):** strong style separability → downstream embedding/topic separation likely includes a large stylistic component.
+- **Moderate AUROC (0.6–0.8):** style contributes but does not fully explain separation.
+- **Near chance (~0.5):** style-only signals weak → downstream separation more plausibly content-driven (still not guaranteed).
+
+---
+
+### Analysis 2.3.6: Style-Controlled Sensitivity Analyses 
+
+**Rationale:** Reduce stylistic confounding without altering proposal content. Two complementary approaches: (A) adjust outcome metrics for style covariates, (B) perform matched comparisons between Human and AI proposals with similar style/structure.
+
+**A) Residualization / covariate control**
+- Define a compact style covariate set (pre-registered from 2.3.5), e.g.:
+  - length (log word count), avg sentence length
+  - readability score
+  - lexical richness proxy
+  - hedging rate
+  - section/header count (if applicable)
+- For each downstream outcome \(Y\) (examples below), fit a regression model \(Y \sim \text{group} + \text{style covariates}\) and evaluate the **group coefficient**:
+  - **Embedding distance metrics** (within/between means; centroid dispersion; nearest-neighbor outliers)
+  - **Segregation metrics** (NMI/ARI): treat as summary statistics; use permutation tests that preserve style covariates where feasible, and interpret as sensitivity (not definitive causal adjustment).
+  - **Topic mixture diversity** (entropy over full topic-probability vectors; avoid dominant-topic-only where it acts as a source classifier)
+- Report both:
+  - **Unadjusted** group differences (baseline)
+  - **Style-adjusted** group differences (residualized or covariate-controlled), with uncertainty (bootstrap or permutation where appropriate)
+
+**B) Matched comparisons (style/structure matching)**
+- Construct matched sets pairing each Human proposal with \(m\) AI proposals (e.g., \(m=1\) or \(m=3\)) using nearest-neighbor matching on standardized style covariates:
+  - log word count, avg sentence length, readability, header count, hedging rate (minimum set)
+- Validate match quality: standardized mean differences for covariates before/after matching.
+- Re-run key comparisons on the matched dataset:
+  - within/between embedding distances
+  - cluster composition and segregation metrics
+  - topic mixture diversity (entropy over mixtures)
+- **Interpretation:** If results persist after matching, they are less likely to be driven by trivial style differences; if they attenuate substantially, that supports the “style confound” concern.
+
+**Reporting guidance:**
+- Label these as **construct-validity / robustness** checks (not primary claims).
+- If results change materially after style control, explicitly state which conclusions are sensitive to style normalization.
+
+---
+
+### Multiple Testing Correction Strategy (Section 2.3)
 
 **Test Families:**
 1. **Topic distribution tests:** Per-topic Fisher's exact (n ≈ 5 topics × 4 comparisons = 20 tests)
@@ -340,7 +402,8 @@ cluster_probs = gmm.predict_proba(embeddings)  # Soft assignment
 ---
 
 
-### 2.4 QUALITY: Can AI create proposals of higher quality than teams of human scientists?
+
+### PART IV QUALITY: Can AI create proposals of higher quality than teams of human scientists?
 
 - Give the criteria `data/evaluation_criteria.json` to AI models and instruct them to evaluate all human and AI proposals (blinded to authorship), then compare the evaluations
 - Invite human experts to blindly review a subset of human and AI proposals, and compare
@@ -352,7 +415,7 @@ cluster_probs = gmm.predict_proba(embeddings)  # Soft assignment
 
 ---
 
-## CRITIQUE AND REVIEW
+# CRITIQUE AND REVIEW
 
 *This section provides a structured critique of the analysis plan above, identifying issues that should be addressed before submission to a top venue. Issues are organized by severity and type. Inline `<!-- REVIEW: ... -->` comments are placed throughout the plan above at specific locations where issues arise.*
 
@@ -372,15 +435,12 @@ The human proposals were written by motivated teams responding to a real funding
 
 **Suggested fixes:**
 - Reframe the study as "AI ideation capability" rather than "AI vs. human scientists"
-- Alternatively, add a condition where human scientists are given the same constrained task (generate ideas in a short timeframe without their usual resources) — though this may be infeasible
 - At minimum, acknowledge this prominently in the introduction and discussion, and discuss how it limits interpretation of all results
 
 #### 1b. Sample Size and Statistical Power
 
 - 23 human proposals (12 Y1 + 11 Y2) is very small
-- No power analysis is presented
-- Y1 and Y2 are different cohorts responding to potentially different calls — can they be pooled?
-- With n=12 vs. n=30 (per AI condition), Mann-Whitney U has limited power to detect moderate effects
+- No power analysis is presented 
 - Permutation tests help with p-value robustness but cannot create statistical power from thin air
 
 **Suggested fixes:**
