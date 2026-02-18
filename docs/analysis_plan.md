@@ -49,6 +49,8 @@ Save all proposals from each condition and merge with human proposals into a sin
 
 For each set of AI proposals (23 from each AI models), conduct following analysis with human proposals: 
 
+
+
 ## PART 2-I DIVERSITY: Can AI generate more diverse proposals than teams of human scientists? 
 
 #### Analysis 1.1 With-in group diversity
@@ -351,6 +353,7 @@ cluster_probs = gmm.predict_proba(embeddings)  # Soft assignment
 
 **Rationale:** Reduce stylistic confounding without altering proposal content. Two complementary approaches: (A) adjust outcome metrics for style covariates, (B) perform matched comparisons between Human and AI proposals with similar style/structure.
 
+
 **A) Residualization / covariate control**
 - Define a compact style covariate set (pre-registered from 2.3.5), e.g.:
   - length (log word count), avg sentence length
@@ -366,20 +369,60 @@ cluster_probs = gmm.predict_proba(embeddings)  # Soft assignment
   - **Unadjusted** group differences (baseline)
   - **Style-adjusted** group differences (residualized or covariate-controlled), with uncertainty (bootstrap or permutation where appropriate)
 
-**B) Matched comparisons (style/structure matching)**
-- Construct matched sets pairing each Human proposal with \(m\) AI proposals (e.g., \(m=1\) or \(m=3\)) using nearest-neighbor matching on standardized style covariates:
-  - log word count, avg sentence length, readability, header count, hedging rate (minimum set)
-- Validate match quality: standardized mean differences for covariates before/after matching.
-- Re-run key comparisons on the matched dataset:
-  - within/between embedding distances
-  - cluster composition and segregation metrics
-  - topic mixture diversity (entropy over mixtures)
-- **Interpretation:** If results persist after matching, they are less likely to be driven by trivial style differences; if they attenuate substantially, that supports the “style confound” concern.
-
 **Reporting guidance:**
 - Label these as **construct-validity / robustness** checks (not primary claims).
 - If results change materially after style control, explicitly state which conclusions are sensitive to style normalization.
 
+#### how does it work
+What “style-adjustment” is (simple version)
+Goal: separate “what the idea is about” from how it’s written.
+You first measure something in embedding space (centroid-dispersion, NN distance, clustering). Then you try to subtract the part of that measurement that can be predicted from style features (length, sentence structure, hedging, readability, headers, punctuation).
+In practice you’re doing: metric = style‑predictable part + leftover part
+and you keep the leftover as “style-adjusted”.
+Centroid dispersion: how style-adjustment works
+Unadjusted centroid dispersion:
+For each group (Human, each AI model), you compute that group’s centroid (average embedding), then for each proposal you compute distance to its group centroid. Bigger distance → more “spread out” within that group.
+Style-adjusted centroid dispersion (what your code does):
+Compute each proposal’s distance-to-its-group-centroid (y_raw).
+Fit a simple linear model: y_raw ~ (style features).
+Subtract the model’s prediction from y_raw to get a residual.
+Add back the overall mean (just to keep numbers on a similar scale).
+Result: y_adj = “dispersion after removing what style can explain”.
+Statistical tests on style-adjusted dispersion:
+Same tests, just run on y_adj instead of y_raw.
+So your MW / Cliff’s delta / permutation test become: “Are groups still different in dispersion after removing style effects?”
+Nearest-neighbor (NN) outlier detection: how style-adjustment works
+Unadjusted NN distance:
+For each proposal, find its closest neighbor (smallest cosine distance). Larger NN distance → more isolated/outlier.
+Style-adjusted NN (Option A you added):
+Instead of adjusting the distance numbers, you adjust the embeddings themselves.
+Fit a linear model per embedding dimension: embedding_dim ~ (style features).
+Subtract predicted “style component” → residual embeddings.
+Re-normalize residual embeddings and recompute cosine distances + NN distances.
+Interpretation: “Is this proposal still an outlier when you remove embedding variation that’s linearly associated with writing style?”
+Gaussian mixture clustering: how style-adjustment would work
+There are two common ways:
+Approach 1 (embedding residuals, recommended):
+Residualize embeddings on style (same as NN Option A), then run GMM clustering on the residual embeddings.
+Then recompute segregation metrics (NMI/ARI), cluster composition, etc., using cluster labels from residual space.
+Approach 2 (cluster on original embeddings, then adjust tests):
+Keep clusters, but when you test “Human vs AI separation,” control for style in a downstream model. This is usually weaker/less clean than residualizing embeddings first.
+If style is driving the separation, you’d expect cluster segregation to drop after residualization.
+Is this a valid way to “counter” stylistic differences, given your style-only AUROC = 1.0?
+It’s useful as a sensitivity analysis, but it’s not a silver bullet.
+What it can do well: remove linear, measurable style effects captured by your covariates (length/readability/hedging/headers, etc.). If group differences shrink but don’t disappear, that’s evidence there’s something beyond those style signals.
+Key limitation: your result (“style alone perfectly separates Human vs AI”) implies style differences are huge. In that case:
+embeddings may already encode style strongly,
+“content vs style” may be partially entangled,
+residualization might remove not only “style,” but also real content variation that correlates with style (e.g., humans write longer and also cover topics differently).
+So the right claim is: “After removing the embedding components predictable from style features, do we still see separation?”
+Not: “We’ve fully removed style and now what remains is pure content.”
+Practical guidance (how to report it)
+Report both unadjusted and style-adjusted results side-by-side.
+Phrase conclusions as robustness checks:
+“Separation persists after style adjustment” (stronger evidence of content/idea differences)
+“Separation largely disappears after style adjustment” (suggests style is a major driver)
+Be explicit that adjustment is linear and depends on the chosen style covariates.
 ---
 
 ### Multiple Testing Correction Strategy (Section 2.3)
