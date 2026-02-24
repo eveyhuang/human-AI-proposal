@@ -40,45 +40,48 @@ class AIResponse:
 class AIModelsInterface:
     """Unified interface for multiple AI models"""
     
-    def __init__(self, config_path: str = "config.env", prompt_template: str = "standard_extension"):
+    def __init__(
+        self,
+        config_path: str = "human-AI-proposal/.env",
+        prompt_template: str = "standard_extension",
+        override_env: bool = False,
+    ):
         """Initialize the interface with API keys from config file"""
-        self.load_config(config_path)
+        self.load_config(config_path, override_env=override_env)
         self.setup_models()
         self.prompt_manager = PromptManager()
         self.current_template = prompt_template
         
-    def load_config(self, config_path: str):
-        """Load API keys from environment or config file"""
-        # Try to load from environment first
-        self.openai_key = os.getenv('OPENAI_API_KEY')
-        self.google_key = os.getenv('GOOGLE_API_KEY')
-        self.xai_key = os.getenv('XAI_API_KEY')
-        self.ncems_api_key = os.getenv('NCEMS_API_KEY')
-        self.ncems_api_url = os.getenv('NCEMS_API_URL')
-        self.anthropic_key = os.getenv('ANTHROPIC_API_KEY')
+    def load_config(self, config_path: str, override_env: bool = False):
+        """
+        Load API keys from environment or config file.
 
-        # Load from config file if environment variables not set
-        if os.path.exists(config_path):
-            with open(config_path, 'r') as f:
-                for line in f:
-                    if '=' in line and not line.startswith('#'):
-                        key, value = line.strip().split('=', 1)
-                        # Remove quotes if present
-                        value = value.strip().strip('"').strip("'")
-                        if key == 'OPENAI_API_KEY' and not self.openai_key:
-                            self.openai_key = value
-                        elif key == 'GOOGLE_API_KEY' and not self.google_key:
-                            self.google_key = value
-                        elif key == 'XAI_API_KEY' and not self.xai_key:
-                            self.xai_key = value
-                        elif key == 'NCEMS_API_KEY' and not self.ncems_api_key:
-                            self.ncems_api_key = value
-                        elif key == 'NCEMS_API_URL' and not self.ncems_api_url:
-                            self.ncems_api_url = value
-                        elif key == 'ANTHROPIC_API_KEY' and not self.anthropic_key:
-                            self.anthropic_key = value
-                        # elif key == 'DASHSCOPE_API_KEY' and not self.dashscope_key:
-                        #     self.dashscope_key = value
+        By default, existing environment variables take precedence.
+        Set override_env=True (recommended for Jupyter) to force values from `config_path`
+        (e.g., a local `.env`) to overwrite already-set environment variables.
+        """
+
+        # If a config file exists, optionally inject it into os.environ first.
+        # This avoids the common "stale key in the kernel env" issue.
+        if config_path and os.path.exists(config_path):
+            with open(config_path, "r", encoding="utf-8") as f:
+                for raw_line in f:
+                    line = raw_line.strip()
+                    if not line or line.startswith("#") or "=" not in line:
+                        continue
+                    key, value = line.split("=", 1)
+                    key = key.strip()
+                    value = value.strip().strip('"').strip("'")
+                    if override_env or key not in os.environ:
+                        os.environ[key] = value
+
+        # Read final values from environment (possibly updated above)
+        self.openai_key = os.getenv("OPENAI_API_KEY")
+        self.google_key = os.getenv("GOOGLE_API_KEY")
+        self.xai_key = os.getenv("XAI_API_KEY")
+        self.ncems_api_key = os.getenv("NCEMS_API_KEY")
+        self.ncems_api_url = os.getenv("NCEMS_API_URL")
+        self.anthropic_key = os.getenv("ANTHROPIC_API_KEY")
     
     def setup_models(self):
         """Initialize AI model clients"""

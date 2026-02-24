@@ -1,0 +1,19 @@
+metric,n_group1,n_group2,u_stat,p_value,cliffs_delta,delta_magnitude,comparison,strategy,n_proposals,q_value
+cosine_similarity,9,9,26.0,0.21637300805763737,-0.35802469135802467,medium,human-ai vs human-human,exact_only,9,0.21637300805763737
+cosine_similarity,9,9,60.0,0.09339767452879258,0.48148148148148145,large,ai-ai vs human-human,exact_only,9,0.14009651179318888
+cosine_similarity,9,9,76.0,0.0019976900972723025,0.8765432098765432,large,ai-ai vs human-ai,exact_only,9,0.005993070291816907
+sentiment_alignment,9,9,55.0,0.21637300805763737,0.35802469135802467,medium,human-ai vs human-human,exact_only,9,0.32455951208645606
+sentiment_alignment,9,9,55.0,0.21637300805763737,0.35802469135802467,medium,ai-ai vs human-human,exact_only,9,0.32455951208645606
+sentiment_alignment,9,9,51.0,0.37722461666745344,0.25925925925925924,small,ai-ai vs human-ai,exact_only,9,0.3772246166674534
+categorical_agreement_num,9,9,39.5,0.959814158756925,-0.024691358024691357,negligible,human-ai vs human-human,exact_only,9,0.959814158756925
+categorical_agreement_num,9,9,49.0,0.3301911186033427,0.20987654320987653,small,ai-ai vs human-human,exact_only,9,0.49528667790501407
+categorical_agreement_num,9,9,52.5,0.19836906812532984,0.2962962962962963,small,ai-ai vs human-ai,exact_only,9,0.49528667790501407
+cosine_similarity,12,12,51.0,0.23658409332187624,-0.2916666666666667,small,human-ai vs human-human,exact_plus_fuzzy,12,0.23658409332187624
+cosine_similarity,12,12,114.0,0.01657492674985327,0.5833333333333334,large,ai-ai vs human-human,exact_plus_fuzzy,12,0.024862390124779907
+cosine_similarity,12,12,139.0,0.00012334575440397442,0.9305555555555556,large,ai-ai vs human-ai,exact_plus_fuzzy,12,0.00037003726321192327
+sentiment_alignment,12,12,78.0,0.7508318840891169,0.08333333333333333,negligible,human-ai vs human-human,exact_plus_fuzzy,12,0.7508318840891169
+sentiment_alignment,12,12,97.0,0.1572127533400038,0.3472222222222222,medium,ai-ai vs human-human,exact_plus_fuzzy,12,0.2358191300100057
+sentiment_alignment,12,12,100.0,0.11235119769046394,0.3888888888888889,medium,ai-ai vs human-ai,exact_plus_fuzzy,12,0.2358191300100057
+categorical_agreement_num,12,12,78.0,0.7371017964331977,0.08333333333333333,negligible,human-ai vs human-human,exact_plus_fuzzy,12,0.7371017964331977
+categorical_agreement_num,12,12,93.0,0.15575565558416463,0.2916666666666667,small,ai-ai vs human-human,exact_plus_fuzzy,12,0.23363348337624695
+categorical_agreement_num,12,12,96.0,0.11814773602424077,0.3333333333333333,medium,ai-ai vs human-ai,exact_plus_fuzzy,12,0.23363348337624695

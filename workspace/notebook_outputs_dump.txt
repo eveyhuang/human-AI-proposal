@@ -1,0 +1,2034 @@
+
+========================================================================================================================
+CELL 2
+HEADERS: # Compare AI vs Human Research Proposals | # Setup and Imports
+SOURCE_FIRST: import sys
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+✓ Imports successful
+✓ Working directory: /Users/eveyhuang/Documents/NICO/human-AI-proposal
+✓ PyTorch version: 2.9.1
+✓ CUDA available: False
+
+
+========================================================================================================================
+CELL 6
+HEADERS: # Compare AI vs Human Research Proposals | # Setup and Imports | ## Helper Functions
+SOURCE_FIRST: def cliffs_delta(group1, group2):
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+✓ Helper functions defined
+
+
+========================================================================================================================
+CELL 8
+HEADERS: # Setup and Imports | ## Helper Functions | ## Load Data
+SOURCE_FIRST: # Load AI proposals
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+✓ Loaded AI proposals from: ai_proposals_baseline_complete_20260209_205423.csv
+  Shape: (69, 10)
+  Models: {'gpt-5.2': 23, 'gemini-3-pro-preview': 23, 'claude-opus-4-5': 23}
+
+✓ Loaded human proposals from 2 files
+  Total proposals: 23
+  Source files: ['human-proposals-y1.json', 'human-proposals-y2.json']
+
+
+========================================================================================================================
+CELL 10
+HEADERS: ## Helper Functions | ## Load Data | ## Prepare Proposal Texts
+SOURCE_FIRST: def create_full_text(row, is_ai=True):
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+✓ Created full proposal texts
+  AI avg length: 20276 characters
+  Human avg length: 15009 characters
+
+
+========================================================================================================================
+CELL 12
+HEADERS: ## Load Data | ## Prepare Proposal Texts | ## Generate Embeddings with BioLinkBERT (ONLY RUN ONCE; retrieve saved embedding for repeated analysis)
+SOURCE_FIRST: # Load BioLinkBERT model (state-of-the-art for biomedical tasks)
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+Loading BioLinkBERT model: michiyasunaga/BioLinkBERT-large
+Note: BioLinkBERT outperforms PubMedBERT on all biomedical benchmarks
+
+[OUTPUT 2]
+tokenizer_config.json:   0%|          | 0.00/379 [00:00<?, ?B/s]
+
+[OUTPUT 3]
+vocab.txt: 0.00B [00:00, ?B/s]
+
+[OUTPUT 4]
+tokenizer.json: 0.00B [00:00, ?B/s]
+
+[OUTPUT 5]
+special_tokens_map.json:   0%|          | 0.00/112 [00:00<?, ?B/s]
+
+[OUTPUT 6]
+config.json:   0%|          | 0.00/560 [00:00<?, ?B/s]
+
+[OUTPUT 7]
+pytorch_model.bin:   0%|          | 0.00/1.33G [00:00<?, ?B/s]
+
+[OUTPUT 8]
+Cancellation requested; stopping current tasks.
+
+
+========================================================================================================================
+CELL 13
+HEADERS: ## Load Data | ## Prepare Proposal Texts | ## Generate Embeddings with BioLinkBERT (ONLY RUN ONCE; retrieve saved embedding for repeated analysis)
+SOURCE_FIRST: def get_embeddings_with_chunking(texts, chunk_size=400, overlap=50, batch_size=8):
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+✓ Chunked embedding function defined
+  Splits each proposal into ~400-word chunks with 50-word overlap
+  Embeds each chunk, then averages to get one embedding per proposal
+  This uses 100% of proposal text instead of just 15%!
+
+
+========================================================================================================================
+CELL 14
+HEADERS: ## Load Data | ## Prepare Proposal Texts | ## Generate Embeddings with BioLinkBERT (ONLY RUN ONCE; retrieve saved embedding for repeated analysis)
+SOURCE_FIRST: # Generate embeddings using chunking approach
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+======================================================================
+GENERATING EMBEDDINGS WITH BIOLINKBERT + CHUNKING
+======================================================================
+Proposals are ~20276 chars (AI) and ~15009 chars (human)
+Chunking ensures we use 100% of text, not just first 15%
+
+Embedding AI proposals (this may take a few minutes)...
+
+[OUTPUT 2]
+Embedding proposals: 100%|██████████| 69/69 [04:04<00:00,  3.54s/it]
+
+[OUTPUT 3]
+✓ AI embeddings shape: (69, 1024)
+
+Embedding human proposals...
+
+[OUTPUT 4]
+Embedding proposals: 100%|██████████| 23/23 [01:08<00:00,  2.99s/it]
+
+[OUTPUT 5]
+✓ Human embeddings shape: (23, 1024)
+
+✓ All embeddings generated successfully!
+======================================================================
+
+
+========================================================================================================================
+CELL 16
+HEADERS: ## Prepare Proposal Texts | ## Generate Embeddings with BioLinkBERT (ONLY RUN ONCE; retrieve saved embedding for repeated analysis) | ## Save Embeddings
+SOURCE_FIRST: # Create output directory
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+✓ Saved embeddings to: data/embeddings/proposal_embeddings_20260210_113543.pkl
+  File size: 0.37 MB
+
+
+========================================================================================================================
+CELL 21
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: def compute_pairwise_distances(embeddings):
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+COMPUTING PAIRWISE DISTANCES FOR ALL GROUPS
+=====================================================================================
+
+GROUP                               N        Pairs      Mean       Median     Std       
+-------------------------------------------------------------------------------------
+Human                               23       253        0.0661     0.0639     0.0175    
+
+claude-opus-4-5                     23       253        0.3401     0.0724     0.3341    
+gemini-3-pro-preview                23       253        0.0964     0.0372     0.1964    
+gpt-5.2                             23       253        0.0215     0.0213     0.0047    
+
+All AI (combined)                   69       2346       0.1733     0.0495     0.2664    
+=====================================================================================
+
+💡 INTERPRETATION:
+   - MEAN: Average distance (affected by outliers)
+   - MEDIAN: Typical distance (robust to outliers)
+   - Higher median = more consistently diverse proposals
+   - Mean > Median = distribution has high outliers
+
+💡 INTERPRETATION:
+   - Higher mean distance = more diverse proposals within group
+   - Compare each AI model to Human to see which produces human-like diversity
+=====================================================================================
+
+💡 INTERPRETATION:
+   - MEAN: Average distance (affected by outliers)
+   - MEDIAN: Typical distance (robust to outliers)
+   - Higher median = more consistently diverse proposals
+   - Mean > Median = distribution has high outliers
+
+
+========================================================================================================================
+CELL 22
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: # DIAGNOSTIC: Verify pairwise distance calculations and Cliff's Delta
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+DIAGNOSTIC CHECK: Pairwise Distances and Statistical Tests
+=====================================================================================
+
+1. ACTUAL MEAN PAIRWISE DISTANCES:
+-------------------------------------------------------------------------------------
+Human:                         0.066062
+claude-opus-4-5                0.340114
+gemini-3-pro-preview           0.096440
+gpt-5.2                        0.021549
+All AI (combined):             0.173280
+
+2. MANUAL CLIFF'S DELTA VERIFICATION (gemini vs human):
+-------------------------------------------------------------------------------------
+Gemini pairwise distances: n=253, mean=0.096440
+Human pairwise distances:  n=253, mean=0.066062
+
+Difference in means: 0.030377
+Cliff's Delta (manual calculation): -0.7256
+
+Interpretation:
+  → Negative δ means Human values tend to be HIGHER than Gemini
+  → Human proposals are MORE diverse
+
+3. DISTRIBUTION DETAILS:
+-------------------------------------------------------------------------------------
+Gemini: min=0.014817, max=0.773963, q25=0.029260, q75=0.046637
+Human:  min=0.031374, max=0.122377, q25=0.052780, q75=0.077511
+
+4. DISTRIBUTION OVERLAP:
+-------------------------------------------------------------------------------------
+Gemini pairs above human mean: 23/253 (9.1%)
+Human pairs above gemini mean: 14/253 (5.5%)
+
+=====================================================================================
+KEY INSIGHT:
+Cliff's Delta looks at ALL pairwise comparisons, not just means.
+A negative δ means the MAJORITY of individual comparisons favor the second group.
+=====================================================================================
+
+=====================================================================================
+EXPLANATION OF THE PARADOX:
+=====================================================================================
+
+Gemini mean (0.0964) > Human mean (0.0661)
+BUT Gemini median (0.0372) < Human median (0.0639)
+
+This means:
+  ✓ Gemini has extreme outliers (max=0.774) pulling mean UP
+  ✓ But MOST Gemini pairs have LOW distances (Q75=0.047)
+  ✓ Human pairs are more CONSISTENTLY diverse (Q25-Q75: 0.053-0.078)
+
+  → Cliffs Delta correctly identifies that TYPICAL Gemini pairs are less diverse
+  → The few outliers do not represent typical diversity
+=====================================================================================
+
+=====================================================================================
+EXPLANATION OF THE PARADOX:
+=====================================================================================
+
+Gemini mean (0.0964) > Human mean (0.0661)
+BUT Gemini median (0.0372) < Human median (0.0639)
+
+This means:
+  ✓ Gemini has extreme outliers (max=0.774) pulling mean UP
+  ✓ But MOST Gemini pairs have LOW distances (Q75=0.047)
+  ✓ Human pairs are more CONSISTENTLY diverse (Q25-Q75: 0.053-0.078)
+
+  → Cliffs Delta correctly identifies that TYPICAL Gemini pairs are less diverse
+  → The few outliers do not represent typical diversity
+=====================================================================================
+
+
+========================================================================================================================
+CELL 23
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: # Statistical tests - Compare each group to Human
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+
+=====================================================================================
+STATISTICAL TESTS: Pairwise Diversity (All Groups vs Human)
+=====================================================================================
+
+-------------------------------------------------------------------------------------
+Comparison: All AI (combined) vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 210,665, p-value: 3.1313e-14
+
+Cliff's Delta:
+  δ = -0.2901 (small effect)
+  → Human proposals are MORE diverse than all AI proposals
+
+Permutation Test (10,000 permutations):
+  Observed difference: 0.1072, p-value: 0.0000
+
+-------------------------------------------------------------------------------------
+Comparison: claude-opus-4-5 vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 39,951, p-value: 1.3526e-06
+
+Cliff's Delta:
+  δ = 0.2483 (small effect)
+  → claude-opus-4-5 proposals are MORE diverse than human proposals
+
+Permutation Test (10,000 permutations):
+  Observed difference: 0.2741, p-value: 0.0000
+
+-------------------------------------------------------------------------------------
+Comparison: gemini-3-pro-preview vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 8,782, p-value: 2.8192e-45
+
+Cliff's Delta:
+  δ = -0.7256 (large effect)
+  → Human proposals are MORE diverse than gemini-3-pro-preview proposals
+
+Permutation Test (10,000 permutations):
+  Observed difference: 0.0304, p-value: 0.0163
+
+-------------------------------------------------------------------------------------
+Comparison: gpt-5.2 vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 13, p-value: 2.7311e-84
+
+Cliff's Delta:
+  δ = -0.9996 (large effect)
+  → Human proposals are MORE diverse than gpt-5.2 proposals
+
+Permutation Test (10,000 permutations):
+  Observed difference: -0.0445, p-value: 0.0000
+
+=====================================================================================
+SUMMARY: Effect Sizes (Cliff's Delta) - All Groups vs Human
+=====================================================================================
+Group                          δ            Effect Size          p-value (MW)   
+-------------------------------------------------------------------------------------
+All AI                         -0.2901      small                3.1313e-14     
+claude-opus-4-5                0.2483       small                1.3526e-06     
+gemini-3-pro-preview           -0.7256      large                2.8192e-45     
+gpt-5.2                        -0.9996      large                2.7311e-84     
+=====================================================================================
+
+IMPORTANT NOTE:
+  Cliff's Delta measures TYPICAL diversity (distribution-based), not mean.
+  A group can have higher mean due to outliers but lower typical diversity.
+  Check both mean AND median in the summary table above.
+
+IMPORTANT NOTE:
+  Cliffs Delta measures TYPICAL diversity (distribution-based), not mean.
+  A group can have higher mean due to outliers but lower typical diversity.
+  Check both mean AND median in the summary table above.
+
+💡 Positive δ = AI more diverse; Negative δ = Human more diverse
+=====================================================================================
+
+
+========================================================================================================================
+CELL 24
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: # Visualization: Improved distribution comparison for all groups
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+<Figure size 2000x1200 with 4 Axes>
+
+[OUTPUT 2]
+✓ Figure saved to: results/figures/pairwise_diversity_by_model.png
+
+📊 Visualization improvements:
+  1. Ridge plot with FOCUSED 0.0-0.2 range (where 90%+ of data is)
+  2. Distinct colors: RED (Human - prominent!), Blue (Claude), Purple (Gemini), Orange (GPT)
+  3. Log-scale histogram for full range context
+  4. Violin plots with quartile markers
+  5. Statistical summary table highlighting mean-median differences
+
+
+========================================================================================================================
+CELL 26
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: def compute_centroid_distances(embeddings):
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+COMPUTING CENTROID DISPERSION FOR ALL GROUPS
+=====================================================================================
+
+GROUP                               N        Mean       Median     Std        Variance  
+------------------------------------------------------------------------------------------
+Human                               23       0.0321     0.0294     0.0092     0.0001    
+
+claude-opus-4-5                     23       0.1789     0.0736     0.1845     0.0340    
+gemini-3-pro-preview                23       0.0473     0.0178     0.1348     0.0182    
+gpt-5.2                             23       0.0104     0.0101     0.0023     0.0000    
+
+All AI (combined)                   69       0.0894     0.0268     0.1836     0.0337    
+==========================================================================================
+
+💡 INTERPRETATION:
+   - Higher variance = more dispersed proposals (higher diversity)
+   - Lower variance = proposals cluster tightly around center
+==========================================================================================
+
+
+========================================================================================================================
+CELL 27
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: # Statistical tests - Compare each group to Human
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+
+=====================================================================================
+STATISTICAL TESTS: Centroid Dispersion (All Groups vs Human)
+=====================================================================================
+
+-------------------------------------------------------------------------------------
+Comparison: All AI (combined) vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 657, p-value: 2.2008e-01
+
+Cliff's Delta:
+  δ = -0.1720 (small effect)
+  → Human proposals are MORE dispersed from center
+
+Permutation Test (10,000 permutations):
+  Observed difference: 0.0573, p-value: 0.1747
+
+-------------------------------------------------------------------------------------
+Comparison: claude-opus-4-5 vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 527, p-value: 8.6168e-09
+
+Cliff's Delta:
+  δ = 0.9924 (large effect)
+  → claude-opus-4-5 proposals are MORE dispersed from center
+
+Permutation Test (10,000 permutations):
+  Observed difference: 0.1467, p-value: 0.0000
+
+-------------------------------------------------------------------------------------
+Comparison: gemini-3-pro-preview vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 48, p-value: 2.0815e-06
+
+Cliff's Delta:
+  δ = -0.8185 (large effect)
+  → Human proposals are MORE dispersed from center
+
+Permutation Test (10,000 permutations):
+  Observed difference: 0.0151, p-value: 1.0000
+
+-------------------------------------------------------------------------------------
+Comparison: gpt-5.2 vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 0, p-value: 6.6369e-09
+
+Cliff's Delta:
+  δ = -1.0000 (large effect)
+  → Human proposals are MORE dispersed from center
+
+Permutation Test (10,000 permutations):
+  Observed difference: -0.0218, p-value: 0.0000
+
+=====================================================================================
+SUMMARY: Effect Sizes (Cliff's Delta) - Centroid Dispersion
+=====================================================================================
+Group                          δ            Effect Size          p-value (MW)   
+-------------------------------------------------------------------------------------
+All AI                         -0.1720      small                2.2008e-01     
+claude-opus-4-5                0.9924       large                8.6168e-09     
+gemini-3-pro-preview           -0.8185      large                2.0815e-06     
+gpt-5.2                        -1.0000      large                6.6369e-09     
+=====================================================================================
+
+💡 Positive δ = AI more dispersed; Negative δ = Human more dispersed
+=====================================================================================
+
+
+========================================================================================================================
+CELL 28
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: # Visualization: Centroid dispersion for all groups
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+<Figure size 1600x600 with 2 Axes>
+
+
+========================================================================================================================
+CELL 30
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: # Combine all embeddings for global nearest-neighbor analysis
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+COMPUTING NEAREST-NEIGHBOR DISTANCES FOR ALL GROUPS
+=====================================================================================
+
+GROUP                               N        Mean       Median     Min        Max       
+-------------------------------------------------------------------------------------
+Human                               23       0.0372     0.0349     0.0236     0.0646    
+
+claude-opus-4-5                     23       0.0563     0.0392     0.0144     0.3112    
+gemini-3-pro-preview                23       0.0313     0.0230     0.0148     0.2322    
+gpt-5.2                             23       0.0139     0.0138     0.0111     0.0191    
+
+All AI (combined)                   69       0.0339     0.0191     0.0111     0.3112    
+=====================================================================================
+
+💡 INTERPRETATION:
+   - Higher mean NN distance = more isolated proposals (outliers)
+   - Lower mean NN distance = proposals cluster together
+=====================================================================================
+
+
+========================================================================================================================
+CELL 31
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: # Identify outliers (top 10% of NN distances)
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+
+=====================================================================================
+OUTLIER DETECTION (Top 10% Nearest-Neighbor Distance)
+=====================================================================================
+Threshold distance: 0.0488
+
+GROUP                               Outliers        Total      Percentage     
+-------------------------------------------------------------------------------------
+Human                               3               23         13.0           %
+
+claude-opus-4-5                     6               23         26.1           %
+gemini-3-pro-preview                1               23         4.3            %
+gpt-5.2                             0               23         0.0            %
+
+All AI (combined)                   7               69         10.1           %
+=====================================================================================
+
+
+========================================================================================================================
+CELL 32
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: # Find nearest neighbor's group for each proposal
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+
+=====================================================================================
+NEAREST NEIGHBOR GROUP ANALYSIS
+=====================================================================================
+
+Human proposals:                                  
+  NN from same group (human): 10 (43.5%)
+  NN from different group (AI): 13 (56.5%)
+
+All AI proposals (combined):                      
+  NN from same group (AI): 69 (100.0%)
+  NN from different group (human): 0 (0.0%)
+
+-------------------------------------------------------------------------------------
+Per-Model NN Group Breakdown:
+-------------------------------------------------------------------------------------
+
+claude-opus-4-5:
+  NN from Human: 0 (0.0%)
+  NN from same model: 16 (69.6%)
+  NN from other AI models: 7 (30.4%)
+
+gemini-3-pro-preview:
+  NN from Human: 0 (0.0%)
+  NN from same model: 16 (69.6%)
+  NN from other AI models: 7 (30.4%)
+
+gpt-5.2:
+  NN from Human: 0 (0.0%)
+  NN from same model: 22 (95.7%)
+  NN from other AI models: 1 (4.3%)
+
+=====================================================================================
+
+💡 INTERPRETATION:
+   - High 'NN from same model' = model produces similar proposals
+   - High 'NN from Human' = model proposals resemble human work
+=====================================================================================
+
+
+========================================================================================================================
+CELL 33
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: # Statistical tests - Compare each group to Human
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+
+=====================================================================================
+STATISTICAL TESTS: Nearest-Neighbor Distances (All Groups vs Human)
+=====================================================================================
+
+-------------------------------------------------------------------------------------
+Comparison: All AI (combined) vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 344, p-value: 5.1476e-05
+
+Cliff's Delta:
+  δ = -0.5665 (large effect)
+  → Human proposals have MORE unique/outlier ideas
+
+Permutation Test (10,000 permutations):
+  Observed difference: -0.0033, p-value: 0.8019
+
+-------------------------------------------------------------------------------------
+Comparison: claude-opus-4-5 vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 280, p-value: 7.4170e-01
+
+Cliff's Delta:
+  δ = 0.0586 (negligible effect)
+  → claude-opus-4-5 proposals have MORE unique/outlier ideas
+
+Permutation Test (10,000 permutations):
+  Observed difference: 0.0191, p-value: 0.1223
+
+-------------------------------------------------------------------------------------
+Comparison: gemini-3-pro-preview vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 64, p-value: 1.1109e-05
+
+Cliff's Delta:
+  δ = -0.7580 (large effect)
+  → Human proposals have MORE unique/outlier ideas
+
+Permutation Test (10,000 permutations):
+  Observed difference: -0.0059, p-value: 0.8113
+
+-------------------------------------------------------------------------------------
+Comparison: gpt-5.2 vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 0, p-value: 6.5945e-09
+
+Cliff's Delta:
+  δ = -1.0000 (large effect)
+  → Human proposals have MORE unique/outlier ideas
+
+Permutation Test (10,000 permutations):
+  Observed difference: -0.0233, p-value: 0.0000
+
+=====================================================================================
+SUMMARY: Effect Sizes (Cliff's Delta) - Nearest-Neighbor Distances
+=====================================================================================
+Group                          δ            Effect Size          p-value (MW)   
+-------------------------------------------------------------------------------------
+All AI                         -0.5665      large                5.1476e-05     
+claude-opus-4-5                0.0586       negligible           7.4170e-01     
+gemini-3-pro-preview           -0.7580      large                1.1109e-05     
+gpt-5.2                        -1.0000      large                6.5945e-09     
+=====================================================================================
+
+💡 Positive δ = AI more outlier-prone; Negative δ = Human more outlier-prone
+=====================================================================================
+
+
+========================================================================================================================
+CELL 34
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: import numpy as np
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+
+=====================================================================================
+UNADJUSTED NN OUTLIERS: TITLES + AUTHOR
+=====================================================================================
+Outlier threshold (90th percentile): 0.0488
+Total outliers: 10 / 92 (10.9%)
+Outliers by source (model):
+model
+claude-opus-4-5         6
+Human                   3
+gemini-3-pro-preview    1
+
+[OUTPUT 2]
+   global_index    who                 model  nn_distance  \
+0            89     AI       claude-opus-4-5     0.311175   
+1            48     AI  gemini-3-pro-preview     0.232178   
+2            90     AI       claude-opus-4-5     0.113226   
+3            85     AI       claude-opus-4-5     0.092681   
+4            91     AI       claude-opus-4-5     0.092681   
+5            82     AI       claude-opus-4-5     0.080993   
+6            86     AI       claude-opus-4-5     0.080993   
+7             0  Human                 Human     0.064560   
+8             3  Human                 Human     0.053078   
+9            16  Human                 Human     0.048998   
+
+                                                                                                                                        title  
+0      Emergent Mechanics of Bacterial Microcompartments: Synthesizing Structural and Metabolic Data to Model Encapsulated Pathway Efficiency  
+1                                            The Emergence of Metabolic Channeling: Mapping Transient Metabolons via Integrated Interactomics  
+2     Emergent Receptor Clustering in Immune Synapses: Synthesizing Super-Resolution and Signaling Data to Model T Cell Activation Thresholds  
+3  Emergent Prion Strain Properties: Synthesizing Cryo-EM Structures with Clinical Data to Model How Fibril Architecture Determines Pathology  
+4                   Emergent DNA Repair Pathway Choice: Synthesizing Damage Proteomics and Chromatin Data to Model Repair Mechanism Selection  
+5   Emergent Cooperativity in Transcription Factor Clusters: Synthesizing ChIP-seq, Structural, and Imaging Data to Model Enhancer Activation  
+6             Emergent Cell Polarity from Protein Localization Networks: Synthesizing Imaging and Interactome Data to Model Symmetry Breaking  
+7                                                                                                       CYTOKINETIC BOTTLENECKS OF HEAT WAVES  
+8                                                               Synthesizing gene expression data to create an atlas of bacterial cell states  
+9                                          Integrative Multi-Omics Synthesis to Identify Shared Molecular Mechanisms of Mammalian Hibernation
+
+
+========================================================================================================================
+CELL 35
+HEADERS: ## Save Embeddings | ## Retrieve saved embeddings | # PART I: DIVERSITY
+SOURCE_FIRST: # Visualization: Nearest-neighbor analysis by group
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+<Figure size 1800x500 with 3 Axes>
+
+[OUTPUT 2]
+✓ Figure saved to: results/figures/nearest_neighbor_by_model.png
+
+
+========================================================================================================================
+CELL 39
+HEADERS: # PART I: DIVERSITY | ### The Key Insight: Location vs. Distance | ### Embedding Space Visualization
+SOURCE_FIRST: print("\n" + "="*85)
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+
+=====================================================================================
+VISUALIZING PROPOSALS IN 2D EMBEDDING SPACE
+=====================================================================================
+
+Reducing embeddings to 2D using UMAP...
+✓ UMAP completed: 92 proposals reduced to 2D
+
+[OUTPUT 2]
+<Figure size 1400x1000 with 1 Axes>
+
+[OUTPUT 3]
+
+✓ Figure saved to: results/figures/embedding_space_2d.png
+
+💡 INTERPRETATION:
+   - Clusters = similar proposals
+   - Outliers (magenta circles) = unique/distant proposals
+   - X markers = group centroids
+   - Distance between groups shows overall similarity
+=====================================================================================
+
+
+========================================================================================================================
+CELL 40
+HEADERS: # PART I: DIVERSITY | ### The Key Insight: Location vs. Distance | ### Embedding Space Visualization
+SOURCE_FIRST: # Alternative visualization: t-SNE (complementary to UMAP)
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+
+=====================================================================================
+ALTERNATIVE VIEW: t-SNE Projection (metadata-aligned)
+=====================================================================================
+
+Reducing embeddings to 2D using t-SNE...
+(This may take a minute...)
+
+[OUTPUT 2]
+<Figure size 1400x1000 with 1 Axes>
+
+[OUTPUT 3]
+
+✓ Figure saved to: results/figures/embedding_space_tsne.png
+=====================================================================================
+
+
+========================================================================================================================
+CELL 43
+HEADERS: ### The Key Insight: Location vs. Distance | ### Embedding Space Visualization | ## Step 1: Load Literature Corpus
+SOURCE_FIRST: import json
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+LOADING LITERATURE CORPUS
+=====================================================================================
+
+✓ Loaded 350 PubMed articles
+  Search queries: 7
+
+✓ Prepared 350 literature texts
+  Average length: 1351 characters
+=====================================================================================
+
+
+========================================================================================================================
+CELL 44
+HEADERS: ### The Key Insight: Location vs. Distance | ### Embedding Space Visualization | ## Step 1: Load Literature Corpus
+SOURCE_FIRST: # Visualize literature corpus: articles per query + publication year distribution
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+<Figure size 1200x900 with 2 Axes>
+
+[OUTPUT 2]
+✓ Figure saved to: results/figures/literature_corpus_overview.png
+
+=====================================================================================
+SEARCH TERMS (QUERIES) USED PER CATEGORY
+=====================================================================================
+
+• emergent properties molecular cellular biology (n=59 articles):
+  ("emergent properties" OR "emergence") AND ("molecular biology" OR "cellular biology" OR "cell biology")
+
+• mesoscale biology biomolecular organization (n=49 articles):
+  ("mesoscale" OR "mesoscopic") AND ("protein" OR "biomolecular" OR "cellular" OR "organelle")
+
+• biomolecular condensates phase separation (n=49 articles):
+  ("biomolecular condensates" OR "phase separation") AND ("cell biology" OR "molecular biology")
+
+• multi-omics data integration molecular cellular (n=50 articles):
+  ("multi-omics" OR "multiomics" OR "integrative omics") AND ("data integration" OR "data synthesis") AND ("molecular" OR "cellular")
+
+• AI machine learning molecular cellular biology (n=59 articles):
+  ("machine learning" OR "artificial intelligence" OR "deep learning") AND ("molecular biology" OR "cell biology" OR "proteomics" OR "genomics")
+
+• systems biology network analysis cellular (n=44 articles):
+  ("systems biology" OR "biological networks") AND ("data synthesis" OR "data integration") AND ("molecular" OR "cellular")
+
+• protein self-assembly supramolecular organization (n=40 articles):
+  ("protein self-assembly" OR "supramolecular" OR "macromolecular complex") AND ("emergent" OR "organization" OR "cellular function")
+=====================================================================================
+
+
+========================================================================================================================
+CELL 46
+HEADERS: ### Embedding Space Visualization | ## Step 1: Load Literature Corpus | ## Step 2: Embed Literature Corpus 
+SOURCE_FIRST: # Embed literature corpus using the same chunking approach
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+EMBEDDING LITERATURE CORPUS
+=====================================================================================
+Using BioLinkBERT-Large with chunking (same as proposals)
+
+✓ Loading cached literature embeddings from data/embeddings/literature/relevant_literature_embeddings.pkl
+✓ Loaded 350 embeddings
+=====================================================================================
+
+
+========================================================================================================================
+CELL 48
+HEADERS: ## Step 1: Load Literature Corpus | ## Step 2: Embed Literature Corpus  | ## Step 3: Re-embed Proposals (Title + Abstract Only)
+SOURCE_FIRST: # Re-embed proposals using only title + abstract (for fair comparison with literature)
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+RE-EMBEDDING PROPOSALS (TITLE + ABSTRACT ONLY)
+=====================================================================================
+
+Prepared 69 AI abstracts
+Prepared 23 human abstracts
+Average length - AI: 2122 chars
+Average length - Human: 1663 chars
+
+✓ Loading cached abstract embeddings from data/embeddings/titles-abstracts/abstracts_embeddings_human_ai_baseline.pkl
+✓ Loaded embeddings: AI (69, 1024), Human (23, 1024)
+=====================================================================================
+
+
+========================================================================================================================
+CELL 50
+HEADERS: ## Step 2: Embed Literature Corpus  | ## Step 3: Re-embed Proposals (Title + Abstract Only) | ## Step 4: Compute Novelty Scores
+SOURCE_FIRST: from sklearn.metrics.pairwise import cosine_distances
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+COMPUTING NOVELTY SCORES
+=====================================================================================
+Novelty = Mean distance to 10 nearest neighbors in literature corpus
+Higher score = farther from existing work = more novel
+
+Computing novelty scores for AI proposals...
+Computing novelty scores for human proposals...
+
+=====================================================================================
+NOVELTY SCORE STATISTICS
+=====================================================================================
+
+GROUP                               N        Mean       Median     Min        Max       
+-------------------------------------------------------------------------------------
+Human                               23       0.1512     0.1528     0.0742     0.2598    
+
+claude-opus-4-5                     23       0.1100     0.0914     0.0815     0.1911    
+gemini-3-pro-preview                23       0.1091     0.1045     0.0587     0.1773    
+gpt-5.2                             23       0.1329     0.1000     0.0884     0.2774    
+
+All AI (combined)                   69       0.1173     0.0981     0.0587     0.2774    
+=====================================================================================
+
+💡 INTERPRETATION:
+   - Higher novelty score = more distant from existing literature
+   - Lower novelty score = more similar to published work
+=====================================================================================
+
+
+========================================================================================================================
+CELL 52
+HEADERS: ## Step 3: Re-embed Proposals (Title + Abstract Only) | ## Step 4: Compute Novelty Scores | ## Step 5: Statistical Tests for Novelty
+SOURCE_FIRST: # Statistical tests - Compare each group to Human
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+STATISTICAL TESTS: Novelty Scores (All Groups vs Human)
+=====================================================================================
+
+-------------------------------------------------------------------------------------
+Comparison: All AI (combined) vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 520, p-value: 1.3831e-02
+
+Cliff's Delta:
+  δ = -0.3447 (medium effect)
+  → Human proposals are MORE novel than all AI proposals
+
+Permutation Test (10,000 permutations):
+  Observed difference: -0.0339, p-value: 0.0057
+
+-------------------------------------------------------------------------------------
+Comparison: claude-opus-4-5 vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 208, p-value: 2.1859e-01
+
+Cliff's Delta:
+  δ = -0.2136 (small effect)
+  → Human proposals are MORE novel than claude-opus-4-5 proposals
+
+Permutation Test (10,000 permutations):
+  Observed difference: -0.0183, p-value: 0.3369
+
+-------------------------------------------------------------------------------------
+Comparison: gemini-3-pro-preview vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 154, p-value: 1.5666e-02
+
+Cliff's Delta:
+  δ = -0.4178 (medium effect)
+  → Human proposals are MORE novel than gemini-3-pro-preview proposals
+
+Permutation Test (10,000 permutations):
+  Observed difference: -0.0421, p-value: 0.0046
+
+-------------------------------------------------------------------------------------
+Comparison: gpt-5.2 vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 158, p-value: 1.9873e-02
+
+Cliff's Delta:
+  δ = -0.4026 (medium effect)
+  → Human proposals are MORE novel than gpt-5.2 proposals
+
+Permutation Test (10,000 permutations):
+  Observed difference: -0.0412, p-value: 0.0064
+
+=====================================================================================
+SUMMARY: Effect Sizes (Cliff's Delta) - Novelty Scores
+=====================================================================================
+Group                          δ            Effect Size          p-value (MW)   
+-------------------------------------------------------------------------------------
+All AI                         -0.3447      medium               1.3831e-02     
+claude-opus-4-5                -0.2136      small                2.1859e-01     
+gemini-3-pro-preview           -0.4178      medium               1.5666e-02     
+gpt-5.2                        -0.4026      medium               1.9873e-02     
+=====================================================================================
+
+💡 Positive δ = AI more novel; Negative δ = Human more novel
+=====================================================================================
+
+
+========================================================================================================================
+CELL 54
+HEADERS: ## Step 4: Compute Novelty Scores | ## Step 5: Statistical Tests for Novelty | ## Step 6: Visualize Novelty Results
+SOURCE_FIRST: # Visualization: Novelty scores by group
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+<Figure size 1800x1200 with 4 Axes>
+
+[OUTPUT 2]
+
+✓ Figure saved to: results/figures/novelty_analysis.png
+
+
+========================================================================================================================
+CELL 56
+HEADERS: ## Step 5: Statistical Tests for Novelty | ## Step 6: Visualize Novelty Results | ## Step 7: Visualize Proposals in Literature Context
+SOURCE_FIRST: import umap
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+VISUALIZING PROPOSALS IN LITERATURE CONTEXT
+=====================================================================================
+
+Total embeddings: 442
+  Literature: 350
+  Human proposals: 23
+  AI proposals: 69
+
+Reducing to 2D using UMAP...
+✓ UMAP completed
+
+[OUTPUT 2]
+<Figure size 1600x1200 with 1 Axes>
+
+[OUTPUT 3]
+
+✓ Figure saved to: results/figures/novelty_embedding_space.png
+
+💡 INTERPRETATION:
+   - Gray dots = existing literature (context)
+   - Colored points = proposals
+   - Gold/Lime rings = top 10% most novel proposals
+   - Proposals FAR from gray cloud = more novel
+   - Proposals WITHIN gray cloud = building on existing work
+=====================================================================================
+
+
+========================================================================================================================
+CELL 58
+HEADERS: ## Step 6: Visualize Novelty Results | ## Step 7: Visualize Proposals in Literature Context | ## Additional Analysis: Examine Nearest Neighbors in Literature
+SOURCE_FIRST: # Examine most and least novel proposals
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+EXAMINING MOST AND LEAST NOVEL PROPOSALS
+=====================================================================================
+
+🏆 MOST NOVEL HUMAN PROPOSAL:
+  Title: CYTOKINETIC BOTTLENECKS OF HEAT WAVES
+  Novelty Score: 0.2598
+  Nearest neighbors in literature:
+    1. [39389033] MX2 forms nucleoporin-comprising cytoplasmic biomolecular condensates that lure ...
+       Distance: 0.2439, Published: 2024 Oct 9
+    2. [32151949] Emergent properties of mitotic chromosomes....
+       Distance: 0.2470, Published: 2020 Jun
+    3. [31086336] Molecular recording of mammalian embryogenesis....
+       Distance: 0.2541, Published: 2019 Jun
+    4. [29937223] mTORC1 Controls Phase Separation and the Biophysical Properties of the Cytoplasm...
+       Distance: 0.2565, Published: 2018 Jul 12
+    5. [34850074] 3D mesoscopic architecture of a heterogeneous cellular network in the cementum-p...
+       Distance: 0.2568, Published: 2022 Jan 29
+
+📚 LEAST NOVEL HUMAN PROPOSAL:
+  Title: Elucidating genome structure-function relationships in human brain cells
+  Novelty Score: 0.0742
+  Nearest neighbors in literature:
+    1. [38495443] Progress in single-cell multimodal sequencing and multi-omics data integration....
+       Distance: 0.0558, Published: 2024 Feb
+    2. [33949787] Systems biology for crop improvement....
+       Distance: 0.0670, Published: 2021 Jul
+    3. [37681092] Protein nanocondensates: the next frontier....
+       Distance: 0.0676, Published: 2023 Aug
+    4. [33746904] Mesoscopic Optical Imaging of the Pancreas-Revisiting Pancreatic Anatomy and Pat...
+       Distance: 0.0726, Published: 2021
+    5. [41237758] Bridging single cells to organs: Mesoscale modules as fundamental units of tissu...
+       Distance: 0.0741, Published: 2025 Nov 13
+
+🏆 MOST NOVEL AI PROPOSAL:
+  Model: gpt-5.2
+  Title: Emergent Chromatin Nanodomain Topology: Integrating Hi-C, Super-Resolution Imaging, and Epigenomics to Explain Cell-Type-Specific Gene Regulation
+  Novelty Score: 0.2774
+  Nearest neighbors in literature:
+    1. [39178831] Toward a foundation model of causal cell and tissue biology with a Perturbation ...
+       Distance: 0.2686, Published: 2024 Aug 22
+    2. [32393329] MOFA+: a statistical framework for comprehensive integration of multi-modal sing...
+       Distance: 0.2707, Published: 2020 May 11
+    3. [32039240] Artificial Intelligence for Cardiac Imaging-Genetics Research....
+       Distance: 0.2733, Published: 2019
+    4. [37218279] Transcriptional condensates and phase separation: condensing information across ...
+       Distance: 0.2769, Published: 2023 Dec
+    5. [32413324] Art and Science of the Cellular Mesoscale....
+       Distance: 0.2780, Published: 2020 Jun
+
+📚 LEAST NOVEL AI PROPOSAL:
+  Model: gemini-3-pro-preview
+  Title: Emergent Antibiotic Resistance in Biofilms: The Role of Matrix Architecture
+  Novelty Score: 0.0587
+  Nearest neighbors in literature:
+    1. [41237758] Bridging single cells to organs: Mesoscale modules as fundamental units of tissu...
+       Distance: 0.0449, Published: 2025 Nov 13
+    2. [38495443] Progress in single-cell multimodal sequencing and multi-omics data integration....
+       Distance: 0.0550, Published: 2024 Feb
+    3. [37681092] Protein nanocondensates: the next frontier....
+       Distance: 0.0551, Published: 2023 Aug
+    4. [31084567] ARF GTPases and their GEFs and GAPs: concepts and challenges....
+       Distance: 0.0560, Published: 2019 May 15
+    5. [33746904] Mesoscopic Optical Imaging of the Pancreas-Revisiting Pancreatic Anatomy and Pat...
+       Distance: 0.0577, Published: 2021
+=====================================================================================
+
+
+========================================================================================================================
+CELL 59
+HEADERS: ## Step 6: Visualize Novelty Results | ## Step 7: Visualize Proposals in Literature Context | ## Additional Analysis: Examine Nearest Neighbors in Literature
+SOURCE_FIRST: # Create detailed 2D visualization
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+<Figure size 2000x900 with 3 Axes>
+
+[OUTPUT 2]
+
+✓ Figure saved to: results/figures/novelty_embedding_space_detailed.png
+=====================================================================================
+
+
+========================================================================================================================
+CELL 62
+HEADERS: ## Step 7: Visualize Proposals in Literature Context | ## Additional Analysis: Examine Nearest Neighbors in Literature | ## Analysis 3.1: Topic Modeling (LDA - Exploratory)
+SOURCE_FIRST: from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+TOPIC MODELING WITH LDA (EXPLORATORY)
+=====================================================================================
+
+✓ Prepared 92 abstracts
+  Human: 23, AI: 69
+
+Most common unigrams in corpus (doc frequency):
+  data: 1.00
+  abstract: 1.00
+  title: 1.00
+  project: 1.00
+  outcomes: 0.99
+  computational: 0.99
+  datasets: 0.98
+  integration: 0.96
+  models: 0.96
+  biology: 0.93
+  understanding: 0.93
+  model: 0.92
+  single: 0.92
+  research: 0.91
+  synthesis: 0.91
+  methods: 0.91
+  expertise: 0.89
+  emergent: 0.88
+  questions: 0.88
+  analysis: 0.88
+
+✓ Domain unigram stopwords (auto+manual): 241
+
+Creating document-term matrix...
+✓ Document-term matrix: (92, 1836)
+  Documents: 92, Vocabulary: 1836
+  Dropped domain unigrams: 164 (kept bigrams intact)
+
+Fitting LDA with conservative parameters...
+  n_topics=5, alpha=0.5, beta=0.5 (strong regularization)
+✓ LDA fitted
+  Perplexity: 1207.75
+  Log-likelihood: -630752.69
+
+=====================================================================================
+TOP 10 WORDS PER TOPIC
+=====================================================================================
+
+Topic 1: mechanical, membrane, cryo, seq, ribosome, physical, image, cryo et, cytoskeletal, microscopy
+
+Topic 2: transport, diffusion, imaging, filament, phenotypes, pore, metabolic, metadata, descriptors, flux
+
+Topic 3: sequence, species, allosteric, rna, evolutionary, bacterial, gene expression, metadata, idrs, md
+
+Topic 4: imaging, size, cargo, feature, perturbation, distributions, motif, metadata, idr, depmap
+
+Topic 5: sequence, allosteric, splicing, transport, disease, 000 year, isoform, speckle, machine learning, selectivity
+
+=====================================================================================
+DOCUMENT-TOPIC DISTRIBUTION SUMMARY
+=====================================================================================
+
+Mean topic probabilities per document:
+  Topic 1: 0.258 ± 0.383
+  Topic 2: 0.110 ± 0.262
+  Topic 3: 0.240 ± 0.406
+  Topic 4: 0.184 ± 0.333
+  Topic 5: 0.208 ± 0.341
+
+Dominant topic assignment:
+dominant_topic
+Topic_1    26
+Topic_2    10
+Topic_3    23
+Topic_4    15
+Topic_5    18
+Name: count, dtype: int64
+
+⚠️ LABEL AS EXPLORATORY - Small sample size limits topic stability
+=====================================================================================
+
+
+========================================================================================================================
+CELL 63
+HEADERS: ## Step 7: Visualize Proposals in Literature Context | ## Additional Analysis: Examine Nearest Neighbors in Literature | ## Analysis 3.1: Topic Modeling (LDA - Exploratory)
+SOURCE_FIRST: # Stability check: Run LDA with multiple random seeds
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+TOPIC STABILITY VALIDATION
+=====================================================================================
+Running LDA with 10 different random seeds to assess stability (with topic alignment)...
+✓ Completed 10 stability runs
+
+Topic stability (aligned to reference run):
+  Run 1: mean top-10 overlap=64.0%, mean cosine=0.867
+  Run 2: mean top-10 overlap=62.0%, mean cosine=0.835
+  Run 3: mean top-10 overlap=46.0%, mean cosine=0.810
+  Run 4: mean top-10 overlap=58.0%, mean cosine=0.772
+  Run 5: mean top-10 overlap=54.0%, mean cosine=0.766
+  Run 6: mean top-10 overlap=56.0%, mean cosine=0.790
+  Run 7: mean top-10 overlap=50.0%, mean cosine=0.789
+  Run 8: mean top-10 overlap=62.0%, mean cosine=0.815
+  Run 9: mean top-10 overlap=66.0%, mean cosine=0.879
+
+Per-topic stability (mean across aligned runs):
+  Topic 1: 77.8% ± 14.0% top-10 overlap, 0.963 ± 0.034 cosine
+  Topic 2: 32.2% ± 16.2% top-10 overlap, 0.649 ± 0.202 cosine
+  Topic 3: 45.6% ± 21.7% top-10 overlap, 0.701 ± 0.149 cosine
+  Topic 4: 50.0% ± 14.1% top-10 overlap, 0.785 ± 0.077 cosine
+  Topic 5: 82.2% ± 19.9% top-10 overlap, 0.970 ± 0.029 cosine
+
+💡 If overlap/cosine are still very low AFTER alignment, that reflects true instability.
+=====================================================================================
+
+
+========================================================================================================================
+CELL 65
+HEADERS: ## Additional Analysis: Examine Nearest Neighbors in Literature | ## Analysis 3.1: Topic Modeling (LDA - Exploratory) | ## Analysis 3.2: Topic Distribution Comparison
+SOURCE_FIRST: from scipy.stats import fisher_exact, chi2_contingency
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+TOPIC DISTRIBUTION COMPARISON
+=====================================================================================
+
+Contingency table (dominant topic × source):
+group           AI  Human
+dominant_topic           
+Topic_1         26      0
+Topic_2         10      0
+Topic_3          0     23
+Topic_4         15      0
+Topic_5         18      0
+
+Row percentages:
+group            AI  Human
+dominant_topic            
+Topic_1         1.0    0.0
+Topic_2         1.0    0.0
+Topic_3         0.0    1.0
+Topic_4         1.0    0.0
+Topic_5         1.0    0.0
+
+-------------------------------------------------------------------------------------
+PERMUTATION TEST: Overall topic distribution difference
+-------------------------------------------------------------------------------------
+Observed chi-square statistic: 92.0000
+
+Permutation test results (10,000 permutations):
+  Null mean chi-square: 4.0611 ± 2.7906
+  Observed chi-square: 92.0000
+  p-value: 0.0000
+  → Significant difference in topic distributions (p < 0.05)
+
+-------------------------------------------------------------------------------------
+PER-TOPIC TESTS: Fisher's Exact (Human vs. All AI)
+-------------------------------------------------------------------------------------
+
+Topic        Human %    AI %       OR       p-value    FDR q      Result
+-------------------------------------------------------------------------------------
+Topic_1      0.0        37.7       0.00     0.0001     0.0004     AI↑ ***
+Topic_2      0.0        14.5       0.00     0.0612     0.0612     AI↑ *
+Topic_3      100.0      0.0        inf      0.0000     0.0000     Human↑ ***
+Topic_4      0.0        21.7       0.00     0.0184     0.0230     AI↑ **
+Topic_5      0.0        26.1       0.00     0.0048     0.0081     AI↑ ***
+
+*** p<0.01, ** p<0.05, * p<0.10 (FDR-corrected)
+OR > 1 = over-represented in human; OR < 1 = over-represented in AI
+=====================================================================================
+
+
+========================================================================================================================
+CELL 67
+HEADERS: ## Analysis 3.1: Topic Modeling (LDA - Exploratory) | ## Analysis 3.2: Topic Distribution Comparison | ### key question: does this mean “Humans and AI have totally different topics”?
+SOURCE_FIRST: # Subsample validation to account for group size imbalance (23 human vs 69 AI)
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+SUBSAMPLE VALIDATION (Accounting for 3:1 group size imbalance)
+=====================================================================================
+Subsampling AI to n=23, repeating 1000 times...
+
+Subsample validation results:
+Topic        Sig. in N subsamples      Proportion   Interpretation
+-------------------------------------------------------------------------------------
+Topic_1      989/1000                 98.90%       Robust
+Topic_2      185/1000                 18.50%       Weak
+Topic_3      1000/1000                 100.00%      Robust
+Topic_4      632/1000                 63.20%       Moderate
+Topic_5      788/1000                 78.80%       Moderate
+
+💡 Proportion >80% = robust difference even with balanced sample sizes
+=====================================================================================
+
+
+========================================================================================================================
+CELL 68
+HEADERS: ## Analysis 3.1: Topic Modeling (LDA - Exploratory) | ## Analysis 3.2: Topic Distribution Comparison | ### key question: does this mean “Humans and AI have totally different topics”?
+SOURCE_FIRST: # Visualization: Topic distribution by group
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+<Figure size 1600x600 with 3 Axes>
+
+[OUTPUT 2]
+✓ Figure saved to: results/figures/topic_distribution_comparison.png
+
+
+========================================================================================================================
+CELL 70
+HEADERS: ## Analysis 3.2: Topic Distribution Comparison | ### key question: does this mean “Humans and AI have totally different topics”? | ## Analysis 3.3: Topic Coverage and Entropy
+SOURCE_FIRST: from scipy.stats import entropy
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+TOPIC COVERAGE AND ENTROPY ANALYSIS
+=====================================================================================
+
+1. TOPIC COVERAGE (topics with at least one proposal >20% probability):
+  Human: 4/5 topics
+  AI: 4/5 topics
+
+2. EXCLUSIVE TOPICS:
+  Human-exclusive topics (≥5 proposals, 0 in AI): 1
+    Topic_3
+  AI-exclusive topics (≥5 proposals, 0 in Human): 1
+    Topic_5
+
+  Permutation test for exclusive topics:
+    Human: 1 observed vs. 0.00 ± 0.00 expected, p=0.0000
+    AI: 1 observed vs. 0.01 ± 0.12 expected, p=0.0135
+
+3. SHANNON ENTROPY (with Miller-Madow bias correction):
+  Human: H = 0.0000, H_normalized = 0.0000
+  AI: H = 1.9405, H_normalized = 0.9703
+
+  Subsample validation (AI subsampled to n=23, 1000 iterations):
+    AI (subsampled): H = 1.9209 ± 0.0981
+    AI (subsampled): H_normalized = 0.9623 ± 0.0455
+
+  Comparison (subsample test):
+    Difference (Human - AI_subsample_mean): -1.9209
+    p_one_sided (observed direction): 0.0000
+    p_two_sided: 0.0000
+    → AI proposals have significantly HIGHER entropy (more even dominant-topic distribution)
+
+💡 Higher entropy = more even spread across topics = higher thematic diversity
+=====================================================================================
+
+
+========================================================================================================================
+CELL 73
+HEADERS: ### key question: does this mean “Humans and AI have totally different topics”? | ## Analysis 3.3: Topic Coverage and Entropy | ## Analysis 3.4: Cluster Composition/Segregation Analysis
+SOURCE_FIRST: from sklearn.mixture import GaussianMixture
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+CLUSTER ANALYSIS: STEP 1 - OPTIMAL k SELECTION
+=====================================================================================
+
+Using embeddings: (92, 1024)
+  Human: 23, AI: 69
+
+Testing k = [3, 4, 5, 6, 7, 8]...
+
+k     Silhouette   Davies-Bouldin   BIC         
+--------------------------------------------------
+3     0.1009       1.9845           6058609.70  
+4     0.1197       2.1773           8416661.77  
+5     0.1234       1.9119           10787636.03 
+6     0.1145       1.7012           13165324.67 
+7     0.1160       1.6928           15540335.04 
+8     0.1131       1.8885           17915506.25 
+
+✓ Best k by BIC (elbow method): 3
+✓ Best k by Silhouette score: 5
+
+→ Selected k = 3 (using BIC)
+
+[OUTPUT 2]
+<Figure size 1800x500 with 3 Axes>
+
+[OUTPUT 3]
+✓ Figure saved to: results/figures/cluster_k_selection.png
+=====================================================================================
+
+
+========================================================================================================================
+CELL 74
+HEADERS: ### key question: does this mean “Humans and AI have totally different topics”? | ## Analysis 3.3: Topic Coverage and Entropy | ## Analysis 3.4: Cluster Composition/Segregation Analysis
+SOURCE_FIRST: print("="*85)
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+CLUSTER ANALYSIS: STEP 2 - CLUSTERING WITH k=3
+=====================================================================================
+
+✓ Clustered 92 proposals into 3 clusters
+  Cluster sizes: [27  7 58]
+
+-------------------------------------------------------------------------------------
+CLUSTER COMPOSITION ANALYSIS
+-------------------------------------------------------------------------------------
+
+Cluster    Total    Human    AI       %Human     %AI        Dominance
+-------------------------------------------------------------------------------------
+0          27       0        27       0.0        100.0      AI-dominated
+1          7        0        7        0.0        100.0      AI-dominated
+2          58       23       35       39.7       60.3       Mixed
+
+Dominance            Count
+------------------------------
+AI-dominated         2
+Mixed                1
+
+💡 Baseline: 25% human, 75% AI
+   Human-dominated: >60% human
+   AI-dominated: <15% human
+   Mixed: 15-60% human
+=====================================================================================
+
+
+========================================================================================================================
+CELL 75
+HEADERS: ### key question: does this mean “Humans and AI have totally different topics”? | ## Analysis 3.3: Topic Coverage and Entropy | ## Analysis 3.4: Cluster Composition/Segregation Analysis
+SOURCE_FIRST: print("="*85)
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+CLUSTER ANALYSIS: STEP 3 - SEGREGATION METRICS (with Permutation Tests)
+=====================================================================================
+
+1. NORMALIZED MUTUAL INFORMATION (NMI):
+   Observed NMI: 0.1972
+   Null distribution: 0.0170 ± 0.0166
+   p-value: 0.0000
+   → Significant segregation: clusters predict source better than chance
+
+2. ADJUSTED RAND INDEX (ARI):
+   Observed ARI: -0.0353
+   Null distribution: 0.0003 ± 0.0375
+   p-value: 0.8627
+   → No significant agreement: random overlap
+
+3. WITHIN-GROUP VS. BETWEEN-GROUP DISTANCES:
+   Within-human mean distance: 0.0661 ± 0.0175
+   Within-AI mean distance: 0.1733 ± 0.2664
+   Between human-AI mean distance: 0.1299 ± 0.1945
+
+   Between/Within ratio: 1.0854
+   Null distribution: 1.0007 ± 0.0224
+   p-value: 0.0038
+   → Human and AI proposals are significantly MORE distant from each other than within groups
+
+=====================================================================================
+INTERPRETATION SUMMARY
+=====================================================================================
+✓ SEGREGATION: Human and AI proposals cluster in distinct semantic regions
+  → They generate different KINDS of ideas
+=====================================================================================
+
+
+========================================================================================================================
+CELL 76
+HEADERS: ### key question: does this mean “Humans and AI have totally different topics”? | ## Analysis 3.3: Topic Coverage and Entropy | ## Analysis 3.4: Cluster Composition/Segregation Analysis
+SOURCE_FIRST: import umap
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+CLUSTER ANALYSIS: STEP 4 - VISUALIZATION
+=====================================================================================
+Reducing to 2D with UMAP for visualization...
+
+[OUTPUT 2]
+OMP: Info #276: omp_set_nested routine deprecated, please use omp_set_max_active_levels instead.
+
+[OUTPUT 3]
+✓ UMAP projection complete: (92, 2)
+
+[OUTPUT 4]
+<Figure size 1800x1600 with 4 Axes>
+
+[OUTPUT 5]
+✓ Figure saved to: results/figures/cluster_analysis_visualization.png
+=====================================================================================
+
+
+========================================================================================================================
+CELL 78
+HEADERS: ## Analysis 3.3: Topic Coverage and Entropy | ## Analysis 3.4: Cluster Composition/Segregation Analysis | ### PART III Summary
+SOURCE_FIRST: print("="*85)
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+ANALYSIS 2.3: THEMATIC AND CLUSTER ANALYSIS - COMPREHENSIVE SUMMARY
+=====================================================================================
+
+=====================================================================================
+1. TOPIC MODELING (LDA with n=5 topics)
+=====================================================================================
+  Model: Latent Dirichlet Allocation
+  Parameters: alpha=0.5, beta=0.5 (strong regularization)
+  Perplexity: 1207.75
+
+  Topics identified:
+    Topic 1: mechanical, membrane, cryo, seq, ribosome...
+    Topic 2: transport, diffusion, imaging, filament, phenotypes...
+    Topic 3: sequence, species, allosteric, rna, evolutionary...
+    Topic 4: imaging, size, cargo, feature, perturbation...
+    Topic 5: sequence, allosteric, splicing, transport, disease...
+
+=====================================================================================
+2. TOPIC DISTRIBUTION COMPARISON
+=====================================================================================
+  Overall distribution test (permutation):
+    Chi-square: 92.0000, p=0.0000
+    → Significant difference in topic distributions
+
+  Per-topic tests (Fisher's exact with FDR correction):
+    5 topics show significant over/under-representation:
+      Topic_1: OR=0.00, p_fdr=0.0004 (AI↑)
+      Topic_2: OR=0.00, p_fdr=0.0612 (AI↑)
+      Topic_3: OR=inf, p_fdr=0.0000 (Human↑)
+      Topic_4: OR=0.00, p_fdr=0.0230 (AI↑)
+      Topic_5: OR=0.00, p_fdr=0.0081 (AI↑)
+
+=====================================================================================
+3. TOPIC COVERAGE AND ENTROPY
+=====================================================================================
+  Coverage (topics with >20% probability):
+    Human: 4/5 topics
+    AI: 4/5 topics
+
+  Exclusive topics (≥5 proposals):
+    Human-exclusive: 1 (p=0.0000)
+    AI-exclusive: 1 (p=0.0135)
+
+  Shannon entropy (Miller-Madow corrected):
+    Human: H=0.0000, H_norm=0.0000
+    AI (subsampled): H=1.9209±0.0981
+    Difference: p=1.0000
+
+=====================================================================================
+4. CLUSTER ANALYSIS (GMM with k=3)
+=====================================================================================
+  Model selection:
+    Best k by BIC: 3
+    Silhouette score: 0.1009
+
+  Cluster composition:
+    Human-dominated clusters: 0
+    AI-dominated clusters: 2
+    Mixed clusters: 1
+
+  Segregation metrics:
+    NMI: 0.1972 (null: 0.0170±0.0166, p=0.0000)
+    ARI: -0.0353 (null: 0.0003±0.0375, p=0.8627)
+    Between/Within distance ratio: 1.0854 (p=0.0038)
+
+=====================================================================================
+OVERALL INTERPRETATION
+=====================================================================================
+✓ Topics: Human and AI differ in topic distributions
+✓ Entropy: Similar thematic diversity between groups
+✓ Clustering: SEGREGATION - Human and AI occupy distinct semantic regions
+  → Generate different KINDS of ideas
+
+⚠️  LIMITATIONS:
+  • Small sample size (n=23 human, n=69 AI)
+  • Topic modeling labeled as EXPLORATORY
+  • Results should be validated with larger samples
+  • Segregation may reflect prompt differences, not inherent ideation differences
+
+=====================================================================================
+📊 FIGURES GENERATED:
+=====================================================================================
+  1. results/figures/cluster_k_selection.png
+  2. results/figures/topic_distribution_comparison.png
+  3. results/figures/cluster_analysis_visualization.png
+=====================================================================================
+
+
+========================================================================================================================
+CELL 81
+HEADERS: ## Analysis 3.4: Cluster Composition/Segregation Analysis | ### PART III Summary | ### Exract stylistic features
+SOURCE_FIRST: # =============================================================================
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+STYLE FEATURES: EXTRACTED
+=====================================================================================
+✓ Built style feature table: 92 docs × 18 features
+       avg_sent_len_words  stopword_rate  hedge_rate  fk_grade_level
+group                                                               
+AI                 18.786          0.268       0.012          17.755
+Human              22.741          0.336       0.014          18.189
+
+
+========================================================================================================================
+CELL 83
+HEADERS: ### PART III Summary | ### Exract stylistic features | #### Visualization: Style feature distributions by group (Human vs each AI model)
+SOURCE_FIRST: import numpy as np
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+<Figure size 1800x960 with 6 Axes>
+
+[OUTPUT 2]
+✓ Figure saved to: results/figures/style_features_by_model_boxplots.png
+
+Summary (mean / median / std) by group:
+                     avg_sent_len_words                type_token_ratio               stopword_rate               hedge_rate               fk_grade_level               
+                                   mean  median    std             mean median    std          mean median    std       mean median    std           mean  median    std
+group_model                                                                                                                                                             
+Human                            22.741  22.448  2.667            0.353  0.328  0.060         0.336  0.345  0.033      0.014  0.014  0.005         18.189  18.429  1.347
+claude-opus-4-5                  19.614  20.125  1.573            0.467  0.536  0.133         0.242  0.239  0.012      0.010  0.010  0.001         19.744  19.461  1.356
+gemini-3-pro-preview             17.306  16.946  1.644            0.406  0.396  0.068         0.323  0.324  0.015      0.017  0.017  0.002         15.389  15.474  1.155
+gpt-5.2                          19.438  19.242  1.850            0.291  0.292  0.011         0.238  0.238  0.009      0.008  0.008  0.002         18.132  17.933  0.632
+
+
+========================================================================================================================
+CELL 85
+HEADERS: ### Exract stylistic features | #### Visualization: Style feature distributions by group (Human vs each AI model) | ### Analysis 2.3.5: Style-only baseline (can style predict source?)
+SOURCE_FIRST: from sklearn.model_selection import StratifiedKFold, cross_val_score, permutation_test_score
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+STYLE-ONLY BASELINE: HUMAN VS AI
+=====================================================================================
+CV AUROC: 0.980 ± 0.028
+CV balanced accuracy: 0.894 ± 0.093
+
+Permutation test (AUROC, 1,000 label shuffles):
+  Observed AUROC: 0.980
+  Null mean AUROC: 0.509 ± 0.099
+  p-value: 0.0010
+  → Strong evidence that style alone separates Human vs AI.
+
+
+========================================================================================================================
+CELL 87
+HEADERS: #### Visualization: Style feature distributions by group (Human vs each AI model) | ### Analysis 2.3.5: Style-only baseline (can style predict source?) | #### Visualization: Style-only baseline results (CV + permutation test)
+SOURCE_FIRST: # Visualization for style-only baseline results
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+<Figure size 1400x500 with 2 Axes>
+
+[OUTPUT 2]
+✓ Figure saved to: results/figures/style_only_baseline_viz.png
+
+Interpretation:
+- Left: tighter boxes/points = stable CV estimates; higher = better separation.
+- Right: if the red line is far to the right of the gray histogram, the result is unlikely under chance (small p).
+
+
+========================================================================================================================
+CELL 89
+HEADERS: ### Analysis 2.3.5: Style-only baseline (can style predict source?) | #### Visualization: Style-only baseline results (CV + permutation test) | ### Analysis 2.3.6A: Style-controlled sensitivity via residualization
+SOURCE_FIRST: from sklearn.metrics.pairwise import cosine_distances
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+STYLE-CONTROLLED EMBEDDING OUTCOMES (RESIDUALIZATION)
+=====================================================================================
+
+Outcome: Cosine distance to overall centroid
+  Unadjusted means: Human=0.0393, AI=0.0901, (AI-Human)=+0.0508
+  Style-adjusted group coef (AI indicator): +0.043093
+  Permutation p (two-sided, 5,000 shuffles): 0.0002
+
+Outcome: Cosine distance to own-group centroid
+  Unadjusted means: Human=0.0321, AI=0.0894, (AI-Human)=+0.0573
+  Style-adjusted group coef (AI indicator): +0.048566
+  Permutation p (two-sided, 5,000 shuffles): 0.0002
+
+
+========================================================================================================================
+CELL 92
+HEADERS: #### Visualization: Style-only baseline results (CV + permutation test) | ### Analysis 2.3.6A: Style-controlled sensitivity via residualization | ### Style-adjusted centroid dispersion (All Groups vs Human)
+SOURCE_FIRST: import numpy as np
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+
+=====================================================================================
+STATISTICAL TESTS: Style-adjusted Centroid Dispersion (All Groups vs Human)
+=====================================================================================
+
+-------------------------------------------------------------------------------------
+Comparison: All AI (combined) vs Human [STYLE-ADJUSTED]
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 619, p-value: 1.1666e-01
+
+Cliff's Delta:
+  δ = -0.2199 (small effect)
+  → Human proposals are MORE dispersed from center (after style adjustment)
+
+Permutation Test (10,000 permutations):
+  Observed difference (mean AI - mean Human): 0.0049, p-value: 0.0002
+
+-------------------------------------------------------------------------------------
+Comparison: claude-opus-4-5 vs Human [STYLE-ADJUSTED]
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 297, p-value: 4.8205e-01
+
+Cliff's Delta:
+  δ = 0.1229 (negligible effect)
+  → claude-opus-4-5 proposals are MORE dispersed from center (after style adjustment)
+
+Permutation Test (10,000 permutations):
+  Observed difference (mean claude-opus-4-5 - mean Human): 0.0326, p-value: 0.0001
+
+-------------------------------------------------------------------------------------
+Comparison: gemini-3-pro-preview vs Human [STYLE-ADJUSTED]
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 103, p-value: 4.0464e-04
+
+Cliff's Delta:
+  δ = -0.6106 (large effect)
+  → Human proposals are MORE dispersed from center (after style adjustment)
+
+Permutation Test (10,000 permutations):
+  Observed difference (mean gemini-3-pro-preview - mean Human): -0.0137, p-value: 0.0001
+
+-------------------------------------------------------------------------------------
+Comparison: gpt-5.2 vs Human [STYLE-ADJUSTED]
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 219, p-value: 3.2285e-01
+
+Cliff's Delta:
+  δ = -0.1720 (small effect)
+  → Human proposals are MORE dispersed from center (after style adjustment)
+
+Permutation Test (10,000 permutations):
+  Observed difference (mean gpt-5.2 - mean Human): -0.0043, p-value: 0.0002
+
+=====================================================================================
+SUMMARY: Effect Sizes (Cliff's Delta) - Style-adjusted Centroid Dispersion
+=====================================================================================
+Group                          δ            Effect Size          p-value (MW)   
+-------------------------------------------------------------------------------------
+All AI                         -0.2199      small                1.1666e-01     
+claude-opus-4-5                0.1229       negligible           4.8205e-01     
+gemini-3-pro-preview           -0.6106      large                4.0464e-04     
+gpt-5.2                        -0.1720      small                3.2285e-01     
+=====================================================================================
+
+💡 Positive δ = AI more dispersed; Negative δ = Human more dispersed (style-adjusted)
+=====================================================================================
+
+
+========================================================================================================================
+CELL 93
+HEADERS: #### Visualization: Style-only baseline results (CV + permutation test) | ### Analysis 2.3.6A: Style-controlled sensitivity via residualization | ### Style-adjusted centroid dispersion (All Groups vs Human)
+SOURCE_FIRST: # ----------------------------
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+CENTROID DISPERSION: UNADJUSTED vs STYLE-ADJUSTED (RESIDUALIZED)
+=====================================================================================
+
+[OUTPUT 2]
+<Figure size 1800x1100 with 4 Axes>
+
+[OUTPUT 3]
+✓ Figure saved to: results/figures/centroid_dispersion_style_adjusted.png
+
+Note: 'Style-adjusted' removes linear effects of selected style covariates (not group).
+
+
+========================================================================================================================
+CELL 95
+HEADERS: ### Analysis 2.3.6A: Style-controlled sensitivity via residualization | ### Style-adjusted centroid dispersion (All Groups vs Human) | ### Style-adjust nearest-neighbor (NN) distances by residualizing embeddings
+SOURCE_FIRST: from sklearn.metrics.pairwise import cosine_distances
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+=====================================================================================
+STYLE-ADJUSTED NEAREST-NEIGHBOR (NN) ANALYSIS (Metadata-aligned)
+=====================================================================================
+
+=====================================================================================
+COMPUTING STYLE-ADJUSTED NEAREST-NEIGHBOR DISTANCES FOR ALL GROUPS
+=====================================================================================
+
+GROUP                               N        Mean       Median     Min        Max       
+-------------------------------------------------------------------------------------
+Human                               23       0.5306     0.5353     0.1873     0.6765    
+
+claude-opus-4-5                     23       0.2973     0.2266     0.1129     0.5995    
+gemini-3-pro-preview                23       0.4117     0.3944     0.2784     0.6000    
+gpt-5.2                             23       0.5667     0.6000     0.3527     0.7583    
+
+All AI (combined)                   69       0.4252     0.4096     0.1129     0.7583    
+=====================================================================================
+
+💡 INTERPRETATION:
+   - Higher mean NN distance = more isolated proposals (outliers)
+   - Lower mean NN distance = proposals cluster together
+   - Distances are computed AFTER removing linear embedding variation explained by style covariates
+=====================================================================================
+
+=====================================================================================
+OUTLIER DETECTION (Top 10% NN distance) — STYLE-ADJUSTED
+=====================================================================================
+Threshold distance: 0.6509
+
+GROUP                               Outliers        Total      Percentage     
+-------------------------------------------------------------------------------------
+Human                               3               23         13.0           %
+
+claude-opus-4-5                     0               23         0.0            %
+gemini-3-pro-preview                0               23         0.0            %
+gpt-5.2                             7               23         30.4           %
+
+All AI (combined)                   7               69         10.1           %
+=====================================================================================
+
+=====================================================================================
+NEAREST NEIGHBOR GROUP ANALYSIS — STYLE-ADJUSTED
+=====================================================================================
+
+Human proposals:                                  
+  NN from same group (human): 4 (17.4%)
+  NN from different group (AI): 19 (82.6%)
+
+All AI proposals (combined):                      
+  NN from same group (AI): 65 (94.2%)
+  NN from different group (human): 4 (5.8%)
+
+-------------------------------------------------------------------------------------
+Per-Model NN Group Breakdown:
+-------------------------------------------------------------------------------------
+
+claude-opus-4-5:
+  NN from Human: 1 (4.3%)
+  NN from same model: 17 (73.9%)
+  NN from other AI models: 5 (21.7%)
+
+gemini-3-pro-preview:
+  NN from Human: 1 (4.3%)
+  NN from same model: 2 (8.7%)
+  NN from other AI models: 20 (87.0%)
+
+gpt-5.2:
+  NN from Human: 2 (8.7%)
+  NN from same model: 7 (30.4%)
+  NN from other AI models: 14 (60.9%)
+
+=====================================================================================
+
+💡 INTERPRETATION:
+   - High 'NN from same model' = model produces similar proposals
+   - High 'NN from Human' = model proposals resemble human work
+   - All computed in style-adjusted residual embedding space
+=====================================================================================
+
+=====================================================================================
+STATISTICAL TESTS: NN Distances (All Groups vs Human) — STYLE-ADJUSTED
+=====================================================================================
+
+-------------------------------------------------------------------------------------
+Comparison: All AI (combined) vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 470, p-value: 3.6357e-03
+
+Cliff's Delta:
+  δ = -0.4071 (medium effect)
+  → Human proposals have MORE unique/outlier ideas (style-adjusted)
+
+Permutation Test (10,000 permutations):
+  Observed difference: -0.1054, p-value: 0.0055
+
+-------------------------------------------------------------------------------------
+Comparison: claude-opus-4-5 vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 68, p-value: 1.5763e-05
+
+Cliff's Delta:
+  δ = -0.7448 (large effect)
+  → Human proposals have MORE unique/outlier ideas (style-adjusted)
+
+Permutation Test (10,000 permutations):
+  Observed difference: -0.2334, p-value: 0.0000
+
+-------------------------------------------------------------------------------------
+Comparison: gemini-3-pro-preview vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 89, p-value: 1.2063e-04
+
+Cliff's Delta:
+  δ = -0.6635 (large effect)
+  → Human proposals have MORE unique/outlier ideas (style-adjusted)
+
+Permutation Test (10,000 permutations):
+  Observed difference: -0.1190, p-value: 0.0003
+
+-------------------------------------------------------------------------------------
+Comparison: gpt-5.2 vs Human
+-------------------------------------------------------------------------------------
+
+Mann-Whitney U Test:
+  U-statistic: 314, p-value: 2.8168e-01
+
+Cliff's Delta:
+  δ = 0.1871 (small effect)
+  → gpt-5.2 proposals have MORE unique/outlier ideas (style-adjusted)
+
+Permutation Test (10,000 permutations):
+  Observed difference: 0.0361, p-value: 0.2849
+
+=====================================================================================
+SUMMARY: Effect Sizes (Cliff's Delta) - NN Distances (Style-adjusted)
+=====================================================================================
+Group                          δ            Effect Size          p-value (MW)   
+-------------------------------------------------------------------------------------
+All AI                         -0.4071      medium               3.6357e-03     
+claude-opus-4-5                -0.7448      large                1.5763e-05     
+gemini-3-pro-preview           -0.6635      large                1.2063e-04     
+gpt-5.2                        0.1871       small                2.8168e-01     
+=====================================================================================
+
+💡 Positive δ = AI more outlier-prone; Negative δ = Human more outlier-prone (style-adjusted)
+=====================================================================================
+
+[OUTPUT 2]
+<Figure size 1800x500 with 3 Axes>
+
+[OUTPUT 3]
+
+✓ Figure saved to: results/figures/nearest_neighbor_by_model_style_adjusted.png
+
+Note: This mirrors the unadjusted NN pipeline, but all distances are computed in residual (style-adjusted) embedding space.
+
+
+========================================================================================================================
+CELL 97
+HEADERS: ### Style-adjusted centroid dispersion (All Groups vs Human) | ### Style-adjust nearest-neighbor (NN) distances by residualizing embeddings | ### Visualization: Style-adjusted NN analysis in 2D (UMAP on residual embeddings)
+SOURCE_FIRST: import umap
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+
+=====================================================================================
+STYLE-ADJUSTED: UMAP PROJECTION FOR NN/OUTLIER ANALYSIS
+=====================================================================================
+
+Style-adjustment diagnostic (lower is better):
+  Mean |corr(style covariate, PC score)| (raw embeddings):  0.2036
+  Mean |corr(style covariate, PC score)| (residual embeddings): 0.0405
+
+Reducing residual embeddings to 2D using UMAP...
+✓ UMAP completed: 92 proposals reduced to 2D
+
+[OUTPUT 2]
+<Figure size 1400x1000 with 1 Axes>
+
+[OUTPUT 3]
+
+✓ Figure saved to: results/figures/embedding_space_2d_style_adjusted.png
+
+💡 INTERPRETATION:
+   - Clusters = similar proposals in style-adjusted residual space
+   - Magenta rings = outliers by NN distance in residual space
+   - X markers = group centroids in residual space
+=====================================================================================
+
+
+========================================================================================================================
+CELL 99
+HEADERS: ### Style-adjust nearest-neighbor (NN) distances by residualizing embeddings | ### Visualization: Style-adjusted NN analysis in 2D (UMAP on residual embeddings) | #### Outlier proposals (style-adjusted NN)
+SOURCE_FIRST: import pandas as pd
+------------------------------------------------------------------------------------------------------------------------
+[OUTPUT 1]
+
+=====================================================================================
+STYLE-ADJUSTED NN OUTLIERS: TITLES + AUTHOR
+=====================================================================================
+Outlier threshold (90th percentile): 0.6509
+Total outliers: 10 / 92 (10.9%)
+Outliers by source (model):
+model
+gpt-5.2    7
+Human      3
+
+[OUTPUT 2]
+   global_index    who    model  nn_distance_style_adj  \
+0            27     AI  gpt-5.2               0.758288   
+1            43     AI  gpt-5.2               0.724806   
+2            33     AI  gpt-5.2               0.700161   
+3            32     AI  gpt-5.2               0.681226   
+4            13  Human    Human               0.676526   
+5             3  Human    Human               0.659495   
+6            25     AI  gpt-5.2               0.653094   
+7            40     AI  gpt-5.2               0.653094   
+8            28     AI  gpt-5.2               0.652111   
+9            16  Human    Human               0.651200   
+
+                                                                                                                                         title  
+0        Protein Crowding as an Emergent Mesoscale Regulator: A Pan-Proteome Synthesis of Cytoplasmic Viscosity, Diffusion, and Reaction Rates  
+1                                   Mesoscale Emergence in DNA Damage Repair Foci: Integrating Live Imaging, Proteomics, and 3D Genome Context  
+2  Mesoscale Proteasome and Autophagy Hub Organization: Integrating Spatial Proteomics, Imaging, and Ubiquitinome Data to Explain Proteosta...  
+3                   Emergent Cell Wall Nanomechanics: Synthesizing Fungal and Plant Cell Wall Composition, Ultrastructure, and Growth Patterns  
+4                                               From Protein Knots to Pierced Lassos: Unraveling the Evolutionary Origin of Complex Topologies  
+5                                                                Synthesizing gene expression data to create an atlas of bacterial cell states  
+6    Mesoscale Cytoskeletal Percolation: A Synthesis of Actin/Microtubule Network Architecture and Emergent Intracellular Transport Efficiency  
+7             Emergent Endocytic Pit Nanoscale Heterogeneity: Integrating Single-Molecule Imaging and Proteomics to Explain Uptake Variability  
+8  Emergent Ribosome Assembly Landscapes: Integrating Cryo-EM Intermediates, rRNA Processing Maps, and Proteomics to Explain Assembly Robus...  
+9                                           Integrative Multi-Omics Synthesis to Identify Shared Molecular Mechanisms of Mammalian Hibernation

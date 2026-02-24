@@ -145,7 +145,7 @@ For each set of AI proposals (23 from each AI models), conduct following analysi
 
 ## PART 2-III Thematic and Cluster Analysis
 
-#### Rationale
+### Rationale
 Reviewers will ask: "What are the actual conceptual differences?" This section examines whether human and AI proposals cluster in distinct semantic regions and whether they differ in thematic coverage.
 
 **⚠️ Sample Size Consideration:** With n=23 human and n=69 AI proposals, automated topic modeling is underpowered. We combine conservative automated approaches with visualization-based exploratory analysis.
@@ -446,19 +446,60 @@ Be explicit that adjustment is linear and depends on the chosen style covariates
 
 
 
-### PART IV QUALITY: Can AI create proposals of higher quality than teams of human scientists?
+## PART IV QUALITY: Can AI create proposals of higher quality than teams of human scientists?
 
-- Give the criteria `data/evaluation_criteria.json` to AI models and instruct them to evaluate all human and AI proposals (blinded to authorship), then compare the evaluations
-- Invite human experts to blindly review a subset of human and AI proposals, and compare
-- Compare the similarity between AI's and human experts' reviews to see whether AI's reviews are reliable proxy
-- "AI self-preference" test: do models rate their own outputs higher? Also: how are structured criteria scores aggregated — averaged? weighted?
-- [TODO] Find human experts to evaluate top human and AI proposals (blinded about authorship)
+- Use the prompt `eval_ncems_criteria` in `human-AI-proposal/src/prompt_templates.py` to instruct EACH AI model (GPT, Gemini, Claude) to evaluate each human proposal (`human-AI-proposal/data/human-proposals/human-proposals-y1.json` and `human-AI-proposal/data/human-proposals/human-proposals-y2.json`) and AI proposals in `human-AI-proposal/data/ai-proposals/baseline/ai_proposals_baseline_complete_20260209_205423.csv`(the model is blinded to authorship, one proposal per API call). save the evaluataions for all proposals from all AI model in a single json file in `data/reviews/ai_reviews` with fields for title, author (human-y1, human-y2, or which AI model), evaluator (which model), and evaluations (should already be json from AI's output).  
+
+- Compare the reviews for human proposals (Y1, Y2, or Y1Y2 combined) and AI proposals, questions we want to answer: (1) whose proposals are rated as higher quality, and on what criteria? (2) are AI reviews a good proxy for expert humans' reviews? 
+- Conduct and visualize Mann-Whitney U statistic and p-value and Cliff's delta (effect size) for all comparisons
+
+- Define global color scheme for visualization to have consistent colors for each group
+```python 
+   colors = {
+      'Human': '#DC143C',  # Crimson red (PROMINENT)
+      'claude-opus-4-5': '#4A90E2',  # Blue
+      'gemini-3-pro-preview': '#7B68EE',  # Purple
+      'gpt-5.2': '#FF8C00',  # Dark orange
+   }
+```
+
+(1) 
+   Compare the similarity between AI's qualitative review (reasoning behind their rating) and human experts' qualitative reviews on human-y1 proposals (human reviews: `human-AI-proposal/data/reviews/human_reviews/human_reviews_human-y1.xlsx`, AI reviews: `human-AI-proposal/data/reviews/ai_reviews/ai_reviews_ncems_criteria_20260223_153411.json`) to see whether AI's reviews are a reliable proxy
+
+   - Similarity: 
+      - cosine semantic similarity (same embedding model for comparing proposals: BioLinkBERT-Large)
+      - Sentiment alignment: agreement in evaluative tone 
+         - Sentiment alignment was computed as follows:
+            - Polarity scores (-1 to +1) were extracted using TextBlob
+            - Reviews were labeled positive (polarity > 0.1), negative (< -0.1), or neutral
+            - Alignment score = 1 - (|polarity_1 - polarity_2| / 2), yielding values from 0 (opposite sentiment) to 1 (identical sentiment)
+         - We also compute categorical sentiment agreement (agree/partial/disagree) based on whether review pairs shared the same sentiment label.  It is computed from the sentiment labels of each pair of reviews. So:
+            - Agree = same category (fully aligned at the label level).
+            - Disagree = opposite categories (positive vs negative).
+            - Partial = one is neutral, and the other is positive or negative (neither fully agrees nor fully disagrees).
+   
+   To establish baseline inter-rater similarity, we compute the same metrics for human-human review pairs (since each proposal has multiple human reviewers). Then we conduct a Mann-Whitney U test on the differences between the two groups (human-AI comparisons, human-human comparisons) on each metric to see whether the differences are significant.
+
+
+(2) 
+   - Create summary statistics and visualizations (histogram, box plots, radar chart) for reviews `human-AI-proposal/data/reviews/ai_reviews/ai_reviews_ncems_criteria_20260223_153411.json` for each author (human-y1, human-y2, human-all, each AI model) on overall score (average across criteria) and each review criteria ['Relevance_to_Emergent_Phenomena', 'Novelty_and_Significance', 'Rigor_of_Approach', 'Scope_and_Timeline', 'Synthesis_Focus', 'Data_Identification', 'Open_Science_Commitment']. 
+   - Which author scores higher? on what criteria? is the difference statistically significant (p value)? what is the effect size (cliff's delta)?
+   - Are there differences in reviews from different AI reviewer? 
+      - "AI self-preference" test: do models rate their own outputs higher? Also: how are structured criteria scores aggregated — averaged? weighted?
+
+
+(3) [TODO] Find human experts to evaluate top human and AI proposals (blinded about authorship)
 
 
 
 ---
 
-# CRITIQUE AND REVIEW
+
+
+
+
+
+## CRITIQUE AND REVIEW
 
 *This section provides a structured critique of the analysis plan above, identifying issues that should be addressed before submission to a top venue. Issues are organized by severity and type. Inline `<!-- REVIEW: ... -->` comments are placed throughout the plan above at specific locations where issues arise.*
 

@@ -1,0 +1,10 @@
+metric,n_group1,n_group2,u_stat,p_value,cliffs_delta,delta_magnitude,group1,group2,ai_model,q_value
+cosine_similarity,12,12,73.0,0.9769702553219757,0.013888888888888888,negligible,human-ai::claude-opus-4-5,human-human,claude-opus-4-5,0.9769702553219757
+cosine_similarity,12,12,54.0,0.3123214216762161,-0.25,small,human-ai::gemini-3-pro-preview,human-human,gemini-3-pro-preview,0.4684821325143242
+cosine_similarity,12,12,28.0,0.01202282540761744,-0.6111111111111112,large,human-ai::gpt-5.2,human-human,gpt-5.2,0.03606847622285232
+sentiment_alignment,12,12,74.0,0.9309874465595671,0.027777777777777776,negligible,human-ai::claude-opus-4-5,human-human,claude-opus-4-5,0.9309874465595671
+sentiment_alignment,12,12,85.0,0.47048642205878966,0.18055555555555555,small,human-ai::gemini-3-pro-preview,human-human,gemini-3-pro-preview,0.8750407000540549
+sentiment_alignment,12,12,82.0,0.5833604667027033,0.1388888888888889,negligible,human-ai::gpt-5.2,human-human,gpt-5.2,0.8750407000540549
+categorical_agreement_num,12,12,81.5,0.5767057861338974,0.13194444444444445,negligible,human-ai::claude-opus-4-5,human-human,claude-opus-4-5,0.7602884320774902
+categorical_agreement_num,12,12,81.5,0.5767057861338974,0.13194444444444445,negligible,human-ai::gemini-3-pro-preview,human-human,gemini-3-pro-preview,0.7602884320774902
+categorical_agreement_num,12,12,66.5,0.7602884320774902,-0.0763888888888889,negligible,human-ai::gpt-5.2,human-human,gpt-5.2,0.7602884320774902
