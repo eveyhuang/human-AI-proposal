@@ -87,7 +87,8 @@ def rephrase_field(client: genai.Client, text: str, is_title: bool = False,
     return text
 
 
-def rephrase_ai_proposals(client: genai.Client, ai_csv_path: Path) -> pd.DataFrame:
+def rephrase_ai_proposals(client: genai.Client, ai_csv_path: Path,
+                          checkpoint_path: Path = None) -> pd.DataFrame:
     """Rephrase all AI proposal fields. Returns modified DataFrame."""
     df = pd.read_csv(ai_csv_path)
     logger.info(f"Loaded {len(df)} AI proposals from {ai_csv_path.name}")
@@ -104,8 +105,8 @@ def rephrase_ai_proposals(client: genai.Client, ai_csv_path: Path) -> pd.DataFra
 
     rephrased_df = df.copy()
 
-    for idx, row in tqdm(df.iterrows(), total=len(df),
-                         desc="Rephrasing AI proposals"):
+    for row_num, (idx, row) in enumerate(tqdm(df.iterrows(), total=len(df),
+                         desc="Rephrasing AI proposals"), start=1):
         model_label = row.get('model', 'unknown')
         title_orig = str(row.get('title', ''))
 
@@ -118,7 +119,9 @@ def rephrase_ai_proposals(client: genai.Client, ai_csv_path: Path) -> pd.DataFra
             orig = str(row.get(field, ''))
             rephrased_df.at[idx, field] = rephrase_field(client, orig)
 
-        logger.info(f"  [{idx+1}/{len(df)}] {model_label}: {title_orig[:60]}...")
+        logger.info(f"  [{row_num}/{len(df)}] {model_label}: {title_orig[:60]}...")
+        if checkpoint_path is not None:
+            rephrased_df.to_csv(checkpoint_path, index=False)
 
     return rephrased_df
 
@@ -172,11 +175,16 @@ def main():
         sys.exit(1)
 
     ai_csv_path = ai_csv_files[-1]  # most recent
-    rephrased_ai_df = rephrase_ai_proposals(client, ai_csv_path)
-
     ai_out_path = Path('data/ai-proposals/rephrased') / f'ai_proposals_rephrased_{timestamp}.csv'
+    checkpoint_path = ai_out_path.with_suffix('.csv.tmp')
+    rephrased_ai_df = rephrase_ai_proposals(client, ai_csv_path,
+                                            checkpoint_path=checkpoint_path)
+
+    ai_out_path.parent.mkdir(parents=True, exist_ok=True)
     rephrased_ai_df.to_csv(ai_out_path, index=False)
     logger.info(f"Saved rephrased AI proposals -> {ai_out_path}")
+    if checkpoint_path.exists():
+        checkpoint_path.unlink()
 
     # ── Rephrase human proposals ──────────────────────────────────────────────
     for cohort in ['y1', 'y2']:
@@ -188,6 +196,7 @@ def main():
         rephrased_data = rephrase_human_proposals(client, human_path)
         out_path = (Path('data/human-proposals/rephrased') /
                     f'human_proposals_rephrased_{cohort}_{timestamp}.json')
+        out_path.parent.mkdir(parents=True, exist_ok=True)
         with open(out_path, 'w') as f:
             json.dump(rephrased_data, f, indent=2, ensure_ascii=False)
         logger.info(f"Saved rephrased human proposals -> {out_path}")
