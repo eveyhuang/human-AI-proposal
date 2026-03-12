@@ -30,11 +30,24 @@ load_dotenv(Path('.env'), override=True)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 logger = logging.getLogger(__name__)
 
-GEMINI_MODEL = 'gemini-2.0-flash'
+GEMINI_MODEL = 'gemini-3.1-flash-lite-preview'
 RETRY_DELAYS = [5, 15, 30]   # seconds between retries on API errors
 
+# ─── Per-field word count targets (total ~800 words per proposal) ─────────────
+# AI proposals: abstract(150) + background(150) + RQ(130) + methods(160) + outcomes(130) + budget(80) = 800
+# Human proposals: abstract(150) + full_draft(650) = 800
+FIELD_TARGET_WORDS = {
+    'abstract': 150,
+    'background_and_significance': 160,
+    'research_questions_and_hypotheses': 160,
+    'methods_and_approach': 160,
+    'expected_outcomes_and_impact': 160,
+    'budget_and_resources': 160,
+    'full_draft': 800,
+}
+
 # ─── Rephrasing prompt ────────────────────────────────────────────────────────
-REPHRASE_SYSTEM = """You are a scientific editor. Your task is to rephrase text into a standardized neutral academic style. Rules:
+REPHRASE_SYSTEM = """You are a scientific editor. Your task is to rephrase text into a standardized neutral academic style at a specified target length. Rules:
 1. Preserve ALL scientific content exactly: hypotheses, methods, data sources, expected outcomes, findings.
 2. Use neutral, formal academic register (similar to Nature Methods).
 3. Write in third person ("This project...", "The study...") — no "I will" or "we propose to".
@@ -43,7 +56,8 @@ REPHRASE_SYSTEM = """You are a scientific editor. Your task is to rephrase text 
 6. Avoid bullet lists; write in prose.
 7. Avoid redundant phrases like "cutting-edge", "groundbreaking", "revolutionary", "novel approach".
 8. Keep sentence length 18–28 words on average.
-9. Return ONLY the rephrased text with no preamble, explanation, or quotes."""
+9. TARGET LENGTH: Write approximately {target_words} words. Do not significantly exceed or fall short of this target. Expand or compress (without losing the original meaning) proportionally across all content points to meet it.
+10. Return ONLY the rephrased text with no preamble, explanation, or quotes."""
 
 TITLE_SYSTEM = """You are a scientific editor. Rephrase this research proposal title into standard academic title format. Rules:
 1. Preserve ALL scientific content and meaning.
@@ -55,12 +69,16 @@ TITLE_SYSTEM = """You are a scientific editor. Rephrase this research proposal t
 
 
 def rephrase_field(client: genai.Client, text: str, is_title: bool = False,
-                   max_retries: int = 3) -> Optional[str]:
-    """Call gemini-2.0-flash to rephrase a single text field. Returns None on failure."""
+                   target_words: int = None, max_retries: int = 3) -> Optional[str]:
+    """Call gemini model to rephrase a single text field. Returns original on failure."""
     if not text or not str(text).strip():
         return text
 
-    system_prompt = TITLE_SYSTEM if is_title else REPHRASE_SYSTEM
+    if is_title:
+        system_prompt = TITLE_SYSTEM
+    else:
+        tw = target_words or 200
+        system_prompt = REPHRASE_SYSTEM.format(target_words=tw)
     prompt = f"{system_prompt}\n\n---\nORIGINAL TEXT:\n{str(text).strip()}\n---\nREPHRASED:"
 
     for attempt, delay in enumerate([0] + RETRY_DELAYS[:max_retries - 1]):
@@ -114,10 +132,11 @@ def rephrase_ai_proposals(client: genai.Client, ai_csv_path: Path,
         rephrased_df.at[idx, 'title'] = rephrase_field(
             client, title_orig, is_title=True)
 
-        # Rephrase all text fields
+        # Rephrase all text fields with per-field word count targets
         for field in text_fields:
             orig = str(row.get(field, ''))
-            rephrased_df.at[idx, field] = rephrase_field(client, orig)
+            rephrased_df.at[idx, field] = rephrase_field(
+                client, orig, target_words=FIELD_TARGET_WORDS.get(field))
 
         logger.info(f"  [{row_num}/{len(df)}] {model_label}: {title_orig[:60]}...")
         if checkpoint_path is not None:
@@ -145,11 +164,13 @@ def rephrase_human_proposals(client: genai.Client,
 
         # Rephrase abstract
         p['abstract'] = rephrase_field(
-            client, proposal.get('abstract', ''))
+            client, proposal.get('abstract', ''),
+            target_words=FIELD_TARGET_WORDS['abstract'])
 
-        # Rephrase full_draft (may be long — send as-is, model handles length)
+        # Rephrase full_draft, targeting 650 words so total ~800 with abstract
         p['full_draft'] = rephrase_field(
-            client, proposal.get('full_draft', ''))
+            client, proposal.get('full_draft', ''),
+            target_words=FIELD_TARGET_WORDS['full_draft'])
 
         logger.info(f"  [{i+1}/{len(proposals)}] {proposal.get('proposal_title', '')[:60]}...")
         rephrased_proposals.append(p)
