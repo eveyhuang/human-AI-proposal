@@ -106,9 +106,10 @@ def make_prompt(proposal: Dict[str, Any], research_call: str,
 
     return prompt_manager.format_prompt('eval_ncems_criteria', {
         'research_call': research_call,
-        'title': title,
-        'abstract': abstract,
-        'full_proposal': full_text,
+        'proposal_id': proposal.get('proposal_id', 'N/A'),
+        'proposal_title': title,
+        'proposal_abstract': abstract,
+        'proposal_full': full_text,
     })
 
 
