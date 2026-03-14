@@ -120,24 +120,53 @@ For each set of AI proposals (23 from each AI models), conduct following analysi
 #### Analysis 2.2.1: Compute Novelty Scores
 
 **Steps:**
-1. [done] Fetch PubMed abstracts with relevant terms from the call for proposal; saved in `data/literature/call-relevant-corpus.json`; there are 350 abstracts in total, fetched from relevant search terms based on the call (7 distinct queries), and each article has title, abstract, and publication date (e.g., "2018 Aug")
+1. [done] Fetch PubMed abstracts with relevant terms from the call for proposal; saved in `data/literature/call-relevant-corpus.json`; 600 abstracts in total (350 original + 250 supplemental), fetched from relevant search terms based on the call and under-represented topics identified via LDA. Each article has title, abstract, and publication date (e.g., "2018 Aug").
 2. Embed all abstracts with same model used for proposals (BioLinkBERT-Large)
-3. Since all the PubMed articles only have abstracts, only use abstracts from humans' and AI proposals as well. and re-embed them with only title and abstracts. 
-3. For each proposal, find k nearest neighbors in corpus (k=10)
-4. Novelty score = mean distance to k nearest neighbors;  Higher score = farther from existing work = more novel
-5. Create visulization of the projected embedding with nearest neighbors and outliers. 
+3. Since all the PubMed articles only have abstracts, only use Section 1 ("Scientific Background and Research Question") from the standardized proposal template as the embedding input — this section is the closest in register and content to a PubMed abstract and avoids the document-register confound (proposals written in future-tense vs. papers in results-tense).
+4. For each proposal, find k=10 nearest neighbors in corpus
+5. Raw novelty score = mean cosine distance to k nearest neighbors; higher = farther from existing work
+6. Create visualization of the projected embedding with nearest neighbors and outliers.
 
+#### Analysis 2.2.1b: Literature-Normalized Novelty Scores
+
+**Rationale:** Raw k-NN distances are *corpus-relative* — a score of 0.15 vs 0.10 only tells you one proposal is farther, but neither value is interpretable as "objectively novel" because it depends on how densely the corpus covers the topic. If the corpus is sparse in a given area, proposals in that area will always score high regardless of true novelty.
+
+**Normalization approach:** Compute the same k=10 NN distance for each article *against the rest of the corpus* (excluding self). This yields a baseline distribution representing how spread-out the literature itself is. Proposal scores are then expressed relative to that baseline.
+
+**Steps:**
+1. Compute within-corpus k=10 NN distances for all literature articles (diagonal excluded)
+2. Compute baseline mean (μ_lit) and std (σ_lit) of within-corpus distances
+3. **z-score**: `z = (proposal_novelty − μ_lit) / σ_lit`
+   - z > 0: proposal farther from literature than the typical inter-article gap → genuinely novel relative to corpus density
+   - z ≈ 0: proposal sits at the same distance as a typical article in the corpus
+   - z < 0: proposal closer to literature than articles are to each other
+4. **Ratio**: `ratio = proposal_novelty / μ_lit`
+   - >1: farther from literature than articles are from each other
+   - <1: closer to existing work than typical within-corpus spacing
+
+**Metrics:**
+- Mean z-score per group (human, each AI model, all AI)
+- Mean ratio per group
+- Both raw and normalized scores reported side-by-side
+- Statistical tests (Mann-Whitney U + Cliff's delta + permutation) run on z-scores
+
+**Visualization:**
+- Three-panel plot: raw scores, z-score, and ratio side-by-side with reference lines
+- Within-literature baseline distribution (histogram) with group means overlaid as vertical lines
+
+**Interpretation note:** z-scores answer "how far is this proposal relative to how spread out the literature already is?" making results corpus-size-independent and more comparable across different literature collections.
 
 
 #### Analysis 2.2.2: Compare Novelty Distributions
 
 **Steps:**
-1. Compute novelty scores for all human and AI proposals
-2. Compare distributions: Mann-Whitney U + Cliff's delta
-3. Sensitivity analysis: vary k (5, 10, 20, 50) and check robustness
+1. Compute raw and literature-normalized (z-score) novelty scores for all human and AI proposals
+2. Compare distributions: Mann-Whitney U + Cliff's delta + permutation test
+3. Report both raw and z-score results side-by-side; flag if conclusions differ
+4. Sensitivity analysis: vary k (5, 10, 20, 50) and check robustness
 
 **Metrics:**
-- Mean/median novelty score per group
+- Mean/median novelty score per group (raw and z-score)
 - Effect size (Cliff's delta)
 - Consistency across different k values
 
@@ -185,60 +214,63 @@ Reviewers will ask: "What are the actual conceptual differences?" This section e
 
 ### Analysis 2.3.2: Topic Distribution Comparison
 
+**Operationalization (soft assignment throughout):** All topic analyses use a soft participation threshold of >20% LDA probability. A proposal "belongs to" a topic if its LDA-assigned probability for that topic exceeds 0.20. A single proposal can contribute to multiple topics. This is consistent with the coverage metric in 2.3.3 and avoids the information loss of winner-takes-all dominant-topic assignment.
+
 **Steps:**
-1. Create contingency table: topics × source (human/AI/per-model)
+1. Build soft participation table: for each topic, count proposals in each group with >20% probability
 2. **Primary test:** Permutation test for distribution difference
-   - Null: shuffle labels 10,000 times, compute chi-square statistic
+   - Shuffle group labels 10,000 times, recompute soft counts, compute chi-square statistic on soft table
    - p-value: proportion of permutations with χ² ≥ observed
-   - This avoids chi-square assumptions about cell counts
-3. **Per-topic tests:** Fisher's exact test for each topic's over/under-representation
+3. **Per-topic tests:** Fisher's exact test on binary soft participation (has >20% for topic or not)
    - Test: Is this topic more common in human vs. all AI?
-   - Test: Is this topic more common in human vs. each AI model?
 4. **Multiple testing correction:** Benjamini-Hochberg FDR at q=0.10 (exploratory threshold)
 5. Identify topics significantly over-represented in each group
 
 **Sample Size Adjustment:**
-- For human vs. AI comparisons: subsample AI to n=23, repeat 1000 times
+- For human vs. AI comparisons: subsample AI to n=23, repeat 1000 times using same soft counts
 - Report: "Topic X is over-represented in human proposals in 847/1000 subsamples (p=0.015)"
 - This accounts for the 3:1 imbalance in group sizes
 
 **Metrics:**
-- Permutation p-value (overall distribution difference)
-- Odds ratios per topic with 95% CI
+- Permutation p-value (overall distribution difference, soft counts)
+- Odds ratios per topic with soft binary participation
 - FDR-corrected p-values per topic
-- Effect size: Cramér's V
 
 **Visualization:**
-- Heatmap of topic × source with count proportions
-- Bar plot of topic prevalence by group (with error bars from subsampling)
+- Heatmap of topic × source showing % of group with >20% probability (not dominant-topic %)
+- Bar plot of soft-participation prevalence by group (with subsample error bars)
 
 ---
 
 ### Analysis 2.3.3: Topic Coverage and Entropy (with Sample Size Correction)
 
+**All metrics use the same soft assignment threshold (>20% probability) for consistency with 2.3.2.**
+
 **Steps:**
-1. **Topic coverage:** Count unique topics represented per group (threshold: topic probability > 0.20)
-2. **Exclusive topics:** 
-   - Identify topics appearing in one group but not the other
-   - **Permutation test:** Shuffle labels 10,000 times, count exclusive topics in null
+1. **Topic coverage:** Count unique topics where at least one proposal in the group has >20% probability. Already uses soft assignment — unchanged.
+2. **Exclusive topics:**
+   - Identify topics where one group has ≥2 proposals with >20% probability AND the other group has 0 proposals with >20% probability
+   - Threshold lowered from ≥5 to ≥2: with n=23 human proposals, requiring ≥5 is too strict and would suppress all human-exclusive topics by design
+   - **Permutation test:** Shuffle labels 10,000 times, count exclusive topics in null using same soft rule
    - Report: "X topics human-exclusive vs. Y expected by chance (p=...)"
-   - Only consider "exclusive" if topic appears in ≥5 proposals from one group, 0 from other
-3. **Shannon entropy:** 
-   - Compute entropy of topic distribution for each group
-   - **Account for sample size:** Subsample AI to n=23, compute entropy, repeat 1000 times
+3. **Shannon entropy on mean soft topic distribution:**
+   - Compute mean LDA probability vector across all proposals in each group (not dominant-topic counts)
+   - Apply Miller-Madow bias correction: H_corrected = H + (K−1)/(2N)
+   - **Account for sample size:** Subsample AI to n=23, compute soft entropy, repeat 1000 times
    - Report: "Human entropy = X, AI entropy = Y ± Z (mean ± SD from subsampling)"
-   - Use Miller-Madow bias correction: H_corrected = H + (K-1)/(2*N) where K=topics, N=samples
-4. Higher entropy = more even spread across topics
+   - Using mean soft distribution avoids the dominant-topic discretization artifact where a proposal with 35%/33%/32% across three topics is forced into one bin
+
+**Rationale for soft assignment throughout:** Using dominant-topic (winner-takes-all) assignment for coverage, exclusive topics, and entropy produces internally inconsistent results — a topic can appear "100% AI" in the dominant-topic proportion table while Human coverage of that topic is 4/5, because some human proposals have >20% soft probability for that topic without it being their dominant assignment. Soft assignment throughout eliminates this contradiction.
 
 **Metrics:**
 - Number of topics covered per group (threshold > 0.20)
-- Number of exclusive topics (observed vs. permutation null)
-- Shannon entropy (with Miller-Madow correction and subsample validation)
+- Number of exclusive topics (observed vs. permutation null, min_count=2)
+- Shannon entropy of mean soft topic distribution (with Miller-Madow correction and subsample validation)
 - Normalized entropy: H / log(K) where K = number of topics
 
 **Interpretation:**
 - Topic coverage indicates breadth of thematic exploration
-- Entropy indicates evenness of distribution across themes
+- Entropy indicates evenness of probability mass spread across topics
 - **Caution:** With only 5 topics and small sample, differences may reflect noise
 
 ---

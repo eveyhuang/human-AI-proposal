@@ -84,8 +84,15 @@ RULES:
 - Write in third-person neutral academic register ("This project...", "The proposed study...").
 - Do not use first person ("I", "we").
 - Avoid evaluative language ("cutting-edge", "groundbreaking", "novel approach", "revolutionary").
-- Use consistent hedging: "may", "is expected to", "will be investigated", "suggests".
-- Maintain average sentence length of 20–30 words.
+- Use declarative academic style with minimal hedging. Write outcomes and methods as direct statements ("This project will...", "The study examines...", "Results will be validated..."). Reserve hedging words ("may", "suggests", "is expected to") only when the original proposal itself expresses explicit uncertainty — do not add hedging that is not in the source.
+- Maintain average sentence length of 18–22 words. Prefer simple clause structure: one main clause with at most one subordinate clause per sentence. Avoid stacking multiple conditions or qualifications.
+- VOCABULARY CONSISTENCY: Use the same term for the same concept throughout — do not introduce synonyms or paraphrases for technical terms. Prefer common academic vocabulary over rare or specialized alternatives.
+- FUNCTION WORDS: Write using full prepositional phrases rather than noun stacks. For example, use "the analysis of protein dynamics" not "protein dynamics analysis"; use "a model for predicting X" not "an X prediction model". Include articles ("the", "a", "an") and prepositions naturally — do not compress phrases.
+- READING LEVEL: Keep sentence structure simple and avoid long chains of embedded clauses.
+- SENTENCE COUNT: Adhere strictly to the sentence count specified for each section. Do not add extra sentences, do not split any specified sentence into two, and do not merge two specified sentences into one.
+- COMMA USE: Minimize commas. Do not use serial/Oxford commas in lists — instead restructure as prose using "and" without a preceding comma, or write separate sentences. Use a comma only when grammatically required to separate a subordinate clause from a main clause.
+- PARENTHESES: Use parentheses for brief inline clarifications, acronym definitions on first use, and examples — for example "(e.g., satellite imagery)" or "machine learning (ML)". This matches standard academic prose and should appear naturally where appropriate.
+- NO LISTS OR COLONS: Do not use bullet points, numbered lists, or colons to introduce enumerated items. Write all content as flowing prose sentences. Do not add extra line breaks within a section.
 - If the proposal does not address a sentence's topic, write one sentence stating that the proposal does not specify this information.
 - Output ONLY the filled template with the five section headings and their sentences. No preamble, no commentary."""
 
