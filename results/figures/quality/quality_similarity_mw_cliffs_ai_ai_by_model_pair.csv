@@ -1,10 +1,10 @@
 metric,n_group1,n_group2,u_stat,p_value,cliffs_delta,delta_magnitude,group1,group2,ai_model_pair,q_value
-cosine_similarity,12,12,144.0,3.6584553538971e-05,1.0,large,ai-ai::claude-opus-4-5 vs gemini-3-pro-preview,human-human,claude-opus-4-5 vs gemini-3-pro-preview,0.00010975366061691301
-cosine_similarity,12,12,86.0,0.43573066003173655,0.19444444444444445,small,ai-ai::claude-opus-4-5 vs gpt-5.2,human-human,claude-opus-4-5 vs gpt-5.2,0.43573066003173655
-cosine_similarity,12,12,93.0,0.23658409332187624,0.2916666666666667,small,ai-ai::gemini-3-pro-preview vs gpt-5.2,human-human,gemini-3-pro-preview vs gpt-5.2,0.35487613998281436
-sentiment_alignment,12,12,102.0,0.08853377201422956,0.4166666666666667,medium,ai-ai::claude-opus-4-5 vs gemini-3-pro-preview,human-human,claude-opus-4-5 vs gemini-3-pro-preview,0.12602212177037309
-sentiment_alignment,12,12,99.0,0.12602212177037309,0.375,medium,ai-ai::claude-opus-4-5 vs gpt-5.2,human-human,claude-opus-4-5 vs gpt-5.2,0.12602212177037309
-sentiment_alignment,12,12,102.0,0.08853377201422956,0.4166666666666667,medium,ai-ai::gemini-3-pro-preview vs gpt-5.2,human-human,gemini-3-pro-preview vs gpt-5.2,0.12602212177037309
-categorical_agreement_num,12,12,108.0,0.006947418151072244,0.5,large,ai-ai::claude-opus-4-5 vs gemini-3-pro-preview,human-human,claude-opus-4-5 vs gemini-3-pro-preview,0.020842254453216733
-categorical_agreement_num,12,12,90.0,0.22777223597817498,0.25,small,ai-ai::claude-opus-4-5 vs gpt-5.2,human-human,claude-opus-4-5 vs gpt-5.2,0.22777223597817498
-categorical_agreement_num,12,12,90.0,0.22777223597817498,0.25,small,ai-ai::gemini-3-pro-preview vs gpt-5.2,human-human,gemini-3-pro-preview vs gpt-5.2,0.22777223597817498
+cosine_similarity,8,8,64.0,0.0001554001554001554,1.0,large,ai-ai::claude-opus-4-5 vs gemini-3-pro-preview,human-human,claude-opus-4-5 vs gemini-3-pro-preview,0.0004662004662004662
+cosine_similarity,8,8,33.0,0.959129759129759,0.03125,negligible,ai-ai::claude-opus-4-5 vs gpt-5.2,human-human,claude-opus-4-5 vs gpt-5.2,0.959129759129759
+cosine_similarity,8,8,35.0,0.7984459984459983,0.09375,negligible,ai-ai::gemini-3-pro-preview vs gpt-5.2,human-human,gemini-3-pro-preview vs gpt-5.2,0.959129759129759
+sentiment_alignment,8,8,57.0,0.006993006993006993,0.78125,large,ai-ai::claude-opus-4-5 vs gemini-3-pro-preview,human-human,claude-opus-4-5 vs gemini-3-pro-preview,0.02097902097902098
+sentiment_alignment,8,8,47.0,0.13038073038073036,0.46875,medium,ai-ai::claude-opus-4-5 vs gpt-5.2,human-human,claude-opus-4-5 vs gpt-5.2,0.19557109557109553
+sentiment_alignment,8,8,43.0,0.2786324786324786,0.34375,medium,ai-ai::gemini-3-pro-preview vs gpt-5.2,human-human,gemini-3-pro-preview vs gpt-5.2,0.2786324786324786
+categorical_agreement_num,8,8,42.0,0.22460981258016444,0.3125,small,ai-ai::claude-opus-4-5 vs gemini-3-pro-preview,human-human,claude-opus-4-5 vs gemini-3-pro-preview,0.5936485310183339
+categorical_agreement_num,8,8,24.0,0.39576568734555595,-0.25,small,ai-ai::claude-opus-4-5 vs gpt-5.2,human-human,claude-opus-4-5 vs gpt-5.2,0.5936485310183339
+categorical_agreement_num,8,8,30.0,0.8615735437982803,-0.0625,negligible,ai-ai::gemini-3-pro-preview vs gpt-5.2,human-human,gemini-3-pro-preview vs gpt-5.2,0.8615735437982804
