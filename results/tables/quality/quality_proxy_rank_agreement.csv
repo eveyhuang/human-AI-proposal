@@ -1,4 +1,0 @@
-evaluator,spearman_rank_rho,spearman_rank_p,kendall_rank_tau,kendall_rank_p,n_proposals,spearman_rank_q,kendall_rank_q
-claude-opus-4-5,,,,,7,1.0,1.0
-gemini-3-pro-preview,,,,,7,1.0,1.0
-gpt-5.2,,,,,7,1.0,1.0

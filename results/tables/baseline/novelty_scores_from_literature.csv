@@ -1,0 +1,93 @@
+title,group,raw_novelty,novelty_z,novelty_ratio,is_most_novel_raw,is_most_novel_z,is_most_novel_ratio
+CYTOKINETIC BOTTLENECKS OF HEAT WAVES,Human,0.23675253987312317,2.0769715309143066,2.191251039505005,True,True,True
+Elucidating genome structure-function relationships in human brain cells,Human,0.07165811955928802,-0.5871689915657043,0.6632280945777893,False,False,False
+MaiTool - LLM-powered bioinformatics tools for microbiome analysis,Human,0.2113172709941864,1.6665207147598267,1.955836296081543,True,True,True
+Synthesizing gene expression data to create an atlas of bacterial cell states,Human,0.18310272693634033,1.211220622062683,1.6946979761123657,False,False,False
+Energetic Origins of Connectivity within Protein Interaction Networks,Human,0.24142451584339142,2.1523635387420654,2.234492301940918,True,True,True
+Elucidating emergent structures in cellular RNA-protein interaction networks,Human,0.11188574880361557,0.061987146735191345,1.0355528593063354,False,False,False
+Oceans of Disorder: Elucidating the Role of Disordered Proteins in Cellular Adaptation,Human,0.18498893082141876,1.2416584491729736,1.7121555805206299,False,False,False
+Multimodel single-cell frameworks for cell lines with extensive multi-omics data,Human,0.08101928979158401,-0.4361070990562439,0.7498698830604553,False,False,False
+From image data and biophysical simulations to principles of mesoscale organization through integrated transfer learning,Human,0.16357718408107758,0.8961355090141296,1.5139802694320679,False,False,False
+Transposable elements and the emergence of genomic innovation,Human,0.15544068813323975,0.764836311340332,1.4386733770370483,False,False,False
+Searching the crosslinking mass spectrometry universe for new protein-protein interactions,Human,0.1492929458618164,0.6656297445297241,1.3817732334136963,False,False,False
+Intelligent metadata compilation to enhance the reusability and discoverability of mass spectrometry-based proteomics data,Human,0.21051402390003204,1.653558611869812,1.9484018087387085,True,True,True
+Emergent Order Parameters of Allostery: An AI Framework for Predicting and Engineering Protein Regulation,Human,0.24234631657600403,2.167238712310791,2.2430238723754883,True,True,True
+From Protein Knots to Pierced Lassos: Unraveling the Evolutionary Origin of Complex Topologies,Human,0.0876772478222847,-0.32866716384887695,0.8114923238754272,False,False,False
+Deciphering systemic biological networks through AI-driven multi-omic integration,Human,0.12108707427978516,0.210469588637352,1.1207152605056763,False,False,False
+Conserved Disorder: Learning Sequence Conservation from Functional Constraints in Intrinsically Disordered Regions,Human,0.09328451007604599,-0.23818238079547882,0.8633900284767151,False,False,False
+Integrative Multi-Omics Synthesis to Identify Shared Molecular Mechanisms of Mammalian Hibernation,Human,0.13024663925170898,0.35827815532684326,1.2054911851882935,False,False,False
+Revealing the Ontology of Allostery through Community-Scale Synthesis,Human,0.12205934524536133,0.2261592000722885,1.129714012145996,False,False,False
+SynEvo: Discovering Evolutionary Principles of Molecular Organization through Cross-Species Data Synthesis,Human,0.08554454892873764,-0.3630826771259308,0.7917532324790955,False,False,False
+A Unified Framework for Analyses of Proteome Turnover Dynamics,Human,0.15568259358406067,0.7687399387359619,1.4409123659133911,False,False,False
+Predictive Synthesis Framework for Elucidating Biophysical Cell State from Spatial Transcriptomics and Proteomics,Human,0.16268734633922577,0.8817761540412903,1.505744457244873,False,False,False
+Integrating AI and Molecular Dynamics Simulations for Quantitative Prediction of Enzyme Functions,Human,0.0807170495390892,-0.4409843683242798,0.7470725178718567,False,False,False
+Discovery and functional analysis of bacterial organelles through mining and refinement of omics data,Human,0.09118588268756866,-0.27204808592796326,0.8439663052558899,False,False,False
+A Cross-Cell-Type Atlas of Biomolecular Condensate Material States and Their Emergent Control of Gene Expression Noise,gpt-5.2,0.2487303912639618,2.270258903503418,2.3021113872528076,True,True,True
+"Emergent Membrane Curvature Codes: Synthesizing Cryo-ET, Proteomics, and Lipidomics to Predict Organelle Contact Site Morphologies",gpt-5.2,0.10087978839874268,-0.1156168282032013,0.9336877465248108,False,False,False
+Mesoscale Cytoskeletal Percolation: A Synthesis of Actin/Microtubule Network Architecture and Emergent Intracellular Transport Efficiency,gpt-5.2,0.09022554755210876,-0.2875450849533081,0.8350779414176941,False,False,False
+"Emergent Chromatin Nanodomain Topology: Integrating Hi-C, Super-Resolution Imaging, and Epigenomics to Explain Cell-Type-Specific Gene Regulation",gpt-5.2,0.26210659742355347,2.486111640930176,2.4259142875671387,True,True,True
+"Protein Crowding as an Emergent Mesoscale Regulator: A Pan-Proteome Synthesis of Cytoplasmic Viscosity, Diffusion, and Reaction Rates",gpt-5.2,0.23114819824695587,1.986533761024475,2.13938045501709,True,True,True
+"Emergent Ribosome Assembly Landscapes: Integrating Cryo-EM Intermediates, rRNA Processing Maps, and Proteomics to Explain Assembly Robustness",gpt-5.2,0.23536360263824463,2.054558038711548,2.1783957481384277,True,True,True
+"Mesoscale Signaling Microclusters as Emergent Computation: A Synthesis of Immune Receptor Imaging, Phosphoproteomics, and Single-Cell Responses",gpt-5.2,0.08945988118648529,-0.29990068078041077,0.8279913663864136,False,False,False
+"Emergent Mitochondrial Cristae Morphodynamics: Integrating Cryo-ET, Live Imaging, and Proteogenomics to Explain Bioenergetic Plasticity",gpt-5.2,0.10487216711044312,-0.05119152367115021,0.9706389904022217,False,False,False
+Mesoscale Assembly of Viral Replication Compartments: A Cross-Virus Synthesis of Host Factor Recruitment and Emergent Replication Efficiency,gpt-5.2,0.24123914539813995,2.149372100830078,2.232776641845703,True,True,True
+"Emergent Cell Wall Nanomechanics: Synthesizing Fungal and Plant Cell Wall Composition, Ultrastructure, and Growth Patterns",gpt-5.2,0.10202672332525253,-0.09710865467786789,0.9443031549453735,False,False,False
+"Mesoscale Proteasome and Autophagy Hub Organization: Integrating Spatial Proteomics, Imaging, and Ubiquitinome Data to Explain Proteostasis Emergence",gpt-5.2,0.09146839380264282,-0.26748916506767273,0.8465810418128967,False,False,False
+"Emergent Bacterial Microcompartment Design Rules: Synthesizing Genomes, Structures, and Metabolic Flux to Predict Organelle-Like Function",gpt-5.2,0.08400537073612213,-0.3879204988479614,0.7775074243545532,False,False,False
+Mesoscale Vesicle Coat Self-Organization: Integrating Structural Proteomics and Imaging to Explain Cargo Selectivity Emergence,gpt-5.2,0.09331519901752472,-0.2376871407032013,0.8636740446090698,False,False,False
+"Emergent Nuclear Pore Selectivity at the Mesoscale: A Synthesis of FG-Nup Disorder, Transport Kinetics, and NPC Ultrastructure",gpt-5.2,0.0948803648352623,-0.2124299556016922,0.8781603574752808,False,False,False
+"Mesoscale Emergence in Bacterial Biofilm Matrix Nanostructure: Integrating Omics, Imaging, and Rheology to Predict Community Robustness",gpt-5.2,0.09693679958581924,-0.17924511432647705,0.8971936106681824,False,False,False
+"Emergent Spliceosome Nano-Organization: Integrating RNP Structural States, Proximity Proteomics, and Single-Cell Isoform Variability",gpt-5.2,0.08815359324216843,-0.32098034024238586,0.8159011006355286,False,False,False
+Mesoscale Organization of Metabolic Enzyme Filaments: A Cross-Species Synthesis of Cytoophidia and Emergent Metabolic Regulation,gpt-5.2,0.08812642842531204,-0.3214187026023865,0.815649688243866,False,False,False
+Emergent Endocytic Pit Nanoscale Heterogeneity: Integrating Single-Molecule Imaging and Proteomics to Explain Uptake Variability,gpt-5.2,0.09578640758991241,-0.19780907034873962,0.8865461945533752,False,False,False
+"Mesoscale Emergence of Synaptic Active Zone Nanoclusters: A Synthesis of Proteomics, Super-Resolution Maps, and Functional Plasticity",gpt-5.2,0.09007756412029266,-0.28993308544158936,0.8337082862854004,False,False,False
+Emergent Organelle Size Control via Mesoscale Substructure: Integrating Imaging Atlases and Omics to Explain Scaling Laws,gpt-5.2,0.0881439819931984,-0.32113543152809143,0.8158121109008789,False,False,False
+"Mesoscale Emergence in DNA Damage Repair Foci: Integrating Live Imaging, Proteomics, and 3D Genome Context",gpt-5.2,0.09470012038946152,-0.2153385728597641,0.8764921426773071,False,False,False
+"Emergent Mesoscale Patterning in Bacterial Division Machinery: A Synthesis of FtsZ Ring Architecture, Dynamics, and Cell Shape Outcomes",gpt-5.2,0.08580505847930908,-0.35887882113456726,0.7941643595695496,False,False,False
+"Mesoscale Emergence of Exosome Biogenesis Microdomains: Integrating Endosomal Proteomics, Lipidomics, and Imaging",gpt-5.2,0.10703527927398682,-0.016285227611660957,0.9906595945358276,False,False,False
+Deciphering the Sequence Grammar of Mesoscale Viscoelasticity in Biomolecular Condensates,gemini-3-pro-preview,0.08646553754806519,-0.3482206165790558,0.8002773523330688,False,False,False
+Emergent Chromatin Rheology: Synthesizing 1D Sequence and 3D Topology to Predict Nuclear Stiffness,gemini-3-pro-preview,0.16706684231758118,0.9524483680725098,1.5462785959243774,False,False,False
+The Emergence of Metabolic Channeling: Mapping Transient Metabolons via Integrated Interactomics,gemini-3-pro-preview,0.11895863711833954,0.17612284421920776,1.101015567779541,False,False,False
+Lipid Raft Dynamics and the Emergence of Signal Fidelity in T-Cell Activation,gemini-3-pro-preview,0.17610175907611847,1.0982455015182495,1.6299008131027222,False,False,False
+Emergent Mechanics of the Cytoskeleton: From Molecular Motors to Cellular Tensegrity,gemini-3-pro-preview,0.08745782822370529,-0.33220794796943665,0.8094614744186401,False,False,False
+Viral Capsid Polymorphism: Emergent Geometry from Identical Subunits,gemini-3-pro-preview,0.09221512824296951,-0.25543907284736633,0.8534924387931824,False,False,False
+The Emergence of Synaptic Memory: Nanocolumns and PSD Stability,gemini-3-pro-preview,0.14024366438388824,0.5196008682250977,1.2980180978775024,False,False,False
+Emergent Selectivity in the Nuclear Pore Complex: A Data-Driven Transport Model,gemini-3-pro-preview,0.09441031515598297,-0.22001518309116364,0.8738098740577698,False,False,False
+Mitochondrial Cristae Morphodynamics and the Emergence of Bioenergetic Efficiency,gemini-3-pro-preview,0.1426258087158203,0.5580416917800903,1.3200658559799194,False,False,False
+Ribosome Collisions and the Emergence of Translational Quality Control,gemini-3-pro-preview,0.10032512992620468,-0.12456738948822021,0.928554117679596,False,False,False
+Emergent Synchronization in Ciliary Arrays: Hydrodynamics and Coupling,gemini-3-pro-preview,0.0875050500035286,-0.33144593238830566,0.8098985552787781,False,False,False
+The Extracellular Matrix as a Mechanical Memory: Emergent Reciprocity in Tissue Homeostasis,gemini-3-pro-preview,0.07177030295133591,-0.5853586792945862,0.6642664074897766,False,False,False
+The Glycocalyx Code: Emergent Immune Evasion via Bulky Glycan Shields,gemini-3-pro-preview,0.12759926915168762,0.3155573606491089,1.1809885501861572,False,False,False
+Symmetry Breaking in the Centrosome: Emergent Spindle Bipolarity,gemini-3-pro-preview,0.10099241882562637,-0.11379929631948471,0.9347301721572876,False,False,False
+Autophagosome Biogenesis: Emergent Membrane Remodeling from Protein Scaffolds,gemini-3-pro-preview,0.09031850844621658,-0.2860449552536011,0.8359383344650269,False,False,False
+Stress Granules vs. P-Bodies: Emergent Sorting in RNA Phase Separation,gemini-3-pro-preview,0.0791352242231369,-0.4665104150772095,0.7324320077896118,False,False,False
+Collapse of the Chaperone Network: Emergent Proteostasis Failure in Aging,gemini-3-pro-preview,0.10030442476272583,-0.12490151077508926,0.9283624887466431,False,False,False
+Emergent Antibiotic Resistance in Biofilms: The Role of Matrix Architecture,gemini-3-pro-preview,0.05696551874279976,-0.8242645263671875,0.5272414684295654,False,False,False
+GPCR Oligomerization Landscapes: Emergent Signaling Bias via Allostery,gemini-3-pro-preview,0.10381488502025604,-0.06825295835733414,0.9608533978462219,False,False,False
+Nuclear Speckles as Splicing Hubs: Emergent Amplification of Gene Expression,gemini-3-pro-preview,0.09907360374927521,-0.14476335048675537,0.9169706702232361,False,False,False
+Thylakoid Stacking and the Emergence of Photosynthetic Robustness,gemini-3-pro-preview,0.1193600445985794,0.18260039389133453,1.1047308444976807,False,False,False
+Exosome Loading and Sorting: Emergent Communication Packets,gemini-3-pro-preview,0.10538278520107269,-0.04295164346694946,0.9753649830818176,False,False,False
+Synthetic Cell Assembly: Predicting Emergent Life-like Behaviors from Component Integration,gemini-3-pro-preview,0.0938149243593216,-0.22962303459644318,0.8682992458343506,False,False,False
+Emergent Phase Separation Grammar: Decoding How Intrinsically Disordered Region Sequence Patterns Drive Mesoscale Condensate Properties,claude-opus-4-5,0.08154021948575974,-0.42770081758499146,0.7546913623809814,False,False,False
+Temporal Dynamics of Ribosome Clustering: Synthesizing Cryo-ET and Ribosome Profiling Data to Understand Emergent Translation Factories,claude-opus-4-5,0.09157686680555344,-0.26573872566223145,0.8475850224494934,False,False,False
+"Emergent Mechanics of the Nuclear Pore Complex: Integrating Structural, Biophysical, and Transport Data to Model Collective Gating Behavior",claude-opus-4-5,0.09002763777971268,-0.2907387614250183,0.8332462310791016,False,False,False
+"Chromatin Compartmentalization Dynamics: Synthesizing Hi-C, Imaging, and Epigenomic Data to Model Emergent Nuclear Organization",claude-opus-4-5,0.07482776045799255,-0.5360202789306641,0.6925645470619202,False,False,False
+Emergent Allostery in Protein Complexes: Mining Structural Databases to Discover Long-Range Communication Networks,claude-opus-4-5,0.08936648070812225,-0.30140790343284607,0.8271269202232361,False,False,False
+Cytoskeletal Crosstalk at the Mesoscale: Integrating Structural and Live-Cell Data to Model Emergent Mechanical Properties,claude-opus-4-5,0.08428335934877396,-0.38343459367752075,0.7800803184509277,False,False,False
+Emergent Specificity in Kinase-Substrate Networks: Synthesizing Phosphoproteomics and Structural Data to Decode Signaling Fidelity,claude-opus-4-5,0.08463989198207855,-0.3776811957359314,0.7833802103996277,False,False,False
+"Metabolon Assembly and Emergent Metabolic Channeling: Integrating Structural, Metabolomic, and Interactome Data",claude-opus-4-5,0.08362510800361633,-0.3940568268299103,0.7739879488945007,False,False,False
+Emergent Selectivity of Autophagy Receptors: Synthesizing Structural and Proteomic Data to Decode Cargo Recognition Networks,claude-opus-4-5,0.08689375221729279,-0.3413105010986328,0.8042407035827637,False,False,False
+Emergent Timing in Circadian Protein Networks: Integrating Structural Dynamics with Systems-Level Oscillations,claude-opus-4-5,0.08410544693470001,-0.386305570602417,0.7784336805343628,False,False,False
+Emergent Proton Gradients in Mitochondrial Cristae: Synthesizing Cryo-ET and Bioenergetic Data to Model Mesoscale Energy Transduction,claude-opus-4-5,0.101163350045681,-0.11104097217321396,0.9363122582435608,False,False,False
+Emergent Antigen Processing in the Immunoproteasome: Integrating Structural and Immunopeptidomic Data to Model Epitope Generation,claude-opus-4-5,0.10532468557357788,-0.04388920217752457,0.9748272895812988,False,False,False
+Emergent Selectivity in Nuclear Export: Synthesizing Structural and Transport Data to Model CRM1-Mediated Cargo Recognition,claude-opus-4-5,0.10060229152441025,-0.12009481340646744,0.9311193823814392,False,False,False
+"Emergent Cooperativity in Transcription Factor Clusters: Synthesizing ChIP-seq, Structural, and Imaging Data to Model Enhancer Activation",claude-opus-4-5,0.0875561386346817,-0.33062151074409485,0.8103713989257812,False,False,False
+Emergent Viral Assembly: Synthesizing Cryo-EM and Sequence Data to Model How Capsid Geometry Arises from Protein Interactions,claude-opus-4-5,0.08723580092191696,-0.33579081296920776,0.807406485080719,False,False,False
+Emergent Membrane Curvature Sensing: Integrating Structural and Lipidomic Data to Model BAR Domain Collective Behavior,claude-opus-4-5,0.08467541635036469,-0.3771079480648041,0.7837089896202087,False,False,False
+Emergent Prion Strain Properties: Synthesizing Cryo-EM Structures with Clinical Data to Model How Fibril Architecture Determines Pathology,claude-opus-4-5,0.11039934307336807,0.038000911474227905,1.0217955112457275,False,False,False
+Emergent Cell Polarity from Protein Localization Networks: Synthesizing Imaging and Interactome Data to Model Symmetry Breaking,claude-opus-4-5,0.16690118610858917,0.949775218963623,1.5447454452514648,False,False,False
+Emergent Specificity in Ubiquitin Chain Recognition: Synthesizing Structural and Proteomic Data to Decode the Ubiquitin Code,claude-opus-4-5,0.09058106690645218,-0.2818080186843872,0.8383684754371643,False,False,False
+Emergent RNA Localization: Synthesizing Spatial Transcriptomics and RNA Structure Data to Model mRNA Targeting Networks,claude-opus-4-5,0.17980897426605225,1.158069133758545,1.6642128229141235,False,False,False
+Emergent Mechanics of Bacterial Microcompartments: Synthesizing Structural and Metabolic Data to Model Encapsulated Pathway Efficiency,claude-opus-4-5,0.1577407568693161,0.8019526600837708,1.4599615335464478,False,False,False
+Emergent Receptor Clustering in Immune Synapses: Synthesizing Super-Resolution and Signaling Data to Model T Cell Activation Thresholds,claude-opus-4-5,0.19042935967445374,1.3294509649276733,1.7625092267990112,False,False,False
+Emergent DNA Repair Pathway Choice: Synthesizing Damage Proteomics and Chromatin Data to Model Repair Mechanism Selection,claude-opus-4-5,0.15749885141849518,0.7980490326881409,1.457722544670105,False,False,False
