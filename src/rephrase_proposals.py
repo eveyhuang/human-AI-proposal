@@ -1,6 +1,13 @@
 """
-Extract all AI and human proposals into a fixed evaluation-aligned template,
+Summarize all AI and human proposals into a fixed evaluation-aligned template,
 neutralizing stylistic and structural differences while preserving scientific content.
+
+Uses a two-step pipeline to maximize style removal:
+  Step 1 (SUMMARIZE): Extract core semantic facts from the original text,
+          stripping all stylistic patterns (sentence rhythms, punctuation habits,
+          vocabulary choices, rhetorical framing) into a compact neutral summary.
+  Step 2 (FILL): Generate the standardized template from the summary only,
+          so template prose is driven by formatting rules rather than source style.
 
 The template mirrors the NCEMS call for proposals and evaluation criteria:
   Section 1 – Scientific Background & Research Question  → criteria 1a (emergent phenomena), 1b (novelty)
@@ -40,60 +47,82 @@ logger = logging.getLogger(__name__)
 GEMINI_MODEL = 'gemini-3.1-flash-lite-preview'
 RETRY_DELAYS = [5, 15, 30]   # seconds between retries on API errors
 
-# ─── Fixed extraction template ────────────────────────────────────────────────
-# Each section maps directly to NCEMS evaluation criteria and call requirements.
-# Both human and AI proposals are extracted into this identical skeleton so that
-# the classifier cannot exploit source-structure differences.
+# ─── Two-step summarize → fill pipeline ───────────────────────────────────────
+# Step 1: Extract semantic facts from the original, stripping all style.
+# Step 2: Fill the fixed template from the summary only, so output prose is
+#         governed by formatting rules rather than the source's stylistic patterns.
 
-EXTRACTION_SYSTEM = """You are a scientific editor standardizing research proposals for blind review.
-Extract the proposal content into the EXACT fixed template below.
-Follow the section headings, sentence counts, and guidance precisely.
+SUMMARIZE_SYSTEM = """You are a scientific content extractor. Read the research proposal and extract its core semantic content as a compact, neutral summary.
+
+Your ONLY goal is to capture what the proposal says — its scientific facts, methods, data, and plans — while stripping every stylistic element: sentence rhythms, punctuation habits, vocabulary preferences, hedging patterns, rhetorical framing, and evaluative language.
+
+Extract facts for each of the following categories. Write each as a plain declarative statement in your own neutral words — do not quote or echo the source phrasing. If a category is not addressed, write "Not specified."
+
+CATEGORIES:
+1. Research domain and the specific phenomenon or system being studied
+2. The scientific gap or open question being addressed
+3. Current state of knowledge: what is known and where understanding is incomplete
+4. Primary research question or objective
+5. Why this research question is significant or novel for the field
+6. Overall study design and analytical strategy
+7. Key methods, models, tools, or algorithms to be used
+8. How results will be validated or benchmarked
+9. Datasets or databases to be used (include names if mentioned)
+10. How the datasets will be integrated or synthesized
+11. Known data limitations and how they will be addressed
+12. Project milestones and overall timeline
+13. Why multi-lab or cross-disciplinary collaboration is needed
+14. Plans for open science: sharing of data, code, and findings
+15. Team composition: disciplines, career stages, training opportunities
+
+Output ONLY the numbered fact statements. No preamble, no commentary, no section headers."""
+
+
+FILL_SYSTEM = """You are a scientific writer. You will be given a numbered list of semantic facts extracted from a research proposal. Use ONLY these facts to write the standardized template below.
+
+Your task is to compose fresh, uniform prose from the facts — do not echo the wording of the facts themselves. The output style must follow the rules below exactly, regardless of how the facts are phrased.
 
 TEMPLATE:
 
 SCIENTIFIC BACKGROUND AND RESEARCH QUESTION
 (Write exactly 3 sentences.)
-Sentence 1: State the research domain, the specific emergent or mesoscale phenomenon being studied, and the key scientific gap or open question.
-Sentence 2: Describe current state of knowledge — what is known, what data exist, and where understanding is incomplete.
-Sentence 3: State the primary research question or objective, and explain why it is novel or significant for the field.
+Sentence 1: State the research domain, the specific phenomenon being studied, and the key scientific gap or open question. (Draw from facts 1, 2.)
+Sentence 2: Describe current state of knowledge — what is known and where understanding is incomplete. (Draw from fact 3.)
+Sentence 3: State the primary research question and explain why it is significant or novel. (Draw from facts 4, 5.)
 
 METHODOLOGY AND ANALYTICAL APPROACH
 (Write exactly 3 sentences.)
-Sentence 1: Describe the overall study design and the core analytical or computational strategy.
-Sentence 2: Specify the key methods, models, tools, or algorithms to be applied.
-Sentence 3: Explain how results will be validated, benchmarked, or compared.
+Sentence 1: Describe the overall study design and core analytical strategy. (Draw from fact 6.)
+Sentence 2: Specify the key methods, models, tools, or algorithms to be applied. (Draw from fact 7.)
+Sentence 3: Explain how results will be validated or benchmarked. (Draw from fact 8.)
 
 DATA SOURCES AND SYNTHESIS PLAN
 (Write exactly 3 sentences.)
-Sentence 1: Identify the publicly available datasets or databases to be used (include names and sources if mentioned).
-Sentence 2: Describe how distinct datasets will be integrated or synthesized to address the research question.
-Sentence 3: Acknowledge known data limitations and explain how they will be mitigated.
+Sentence 1: Identify the datasets or databases to be used, including names and sources where available. (Draw from fact 9.)
+Sentence 2: Describe how distinct datasets will be integrated to address the research question. (Draw from fact 10.)
+Sentence 3: Acknowledge known data limitations and explain how they will be mitigated. (Draw from fact 11.)
 
 FEASIBILITY AND TIMELINE
 (Write exactly 2 sentences.)
-Sentence 1: Summarize the proposed milestones and overall timeline for the project.
-Sentence 2: Explain why the project scope requires multi-lab or cross-disciplinary collaboration beyond the capacity of a single research group.
+Sentence 1: Summarize the proposed milestones and overall timeline. (Draw from fact 12.)
+Sentence 2: Explain why the project scope requires multi-lab or cross-disciplinary collaboration. (Draw from fact 13.)
 
 OPEN SCIENCE AND TEAM COMPOSITION
 (Write exactly 2 sentences.)
-Sentence 1: Describe plans for making findings, analytical code, and processed data publicly available in accordance with open and reproducible science principles.
-Sentence 2: Characterize the composition of the proposed team, including scientific disciplines, career stages, and any training opportunities for students or postdocs.
+Sentence 1: Describe plans for making findings, code, and data publicly available. (Draw from fact 14.)
+Sentence 2: Characterize the team composition, including disciplines, career stages, and training opportunities. (Draw from fact 15.)
 
-RULES:
-- Use ONLY information present in the original proposal text. Do not invent or infer facts.
-- Write in third-person neutral academic register ("This project...", "The proposed study...").
-- Do not use first person ("I", "we").
-- Avoid evaluative language ("cutting-edge", "groundbreaking", "novel approach", "revolutionary").
-- Use declarative academic style with minimal hedging. Write outcomes and methods as direct statements ("This project will...", "The study examines...", "Results will be validated..."). Reserve hedging words ("may", "suggests", "is expected to") only when the original proposal itself expresses explicit uncertainty — do not add hedging that is not in the source.
-- Maintain average sentence length of 18–22 words. Prefer simple clause structure: one main clause with at most one subordinate clause per sentence. Avoid stacking multiple conditions or qualifications.
-- VOCABULARY CONSISTENCY: Use the same term for the same concept throughout — do not introduce synonyms or paraphrases for technical terms. Prefer common academic vocabulary over rare or specialized alternatives.
-- FUNCTION WORDS: Write using full prepositional phrases rather than noun stacks. For example, use "the analysis of protein dynamics" not "protein dynamics analysis"; use "a model for predicting X" not "an X prediction model". Include articles ("the", "a", "an") and prepositions naturally — do not compress phrases.
-- READING LEVEL: Keep sentence structure simple and avoid long chains of embedded clauses.
-- SENTENCE COUNT: Adhere strictly to the sentence count specified for each section. Do not add extra sentences, do not split any specified sentence into two, and do not merge two specified sentences into one.
-- COMMA USE: Minimize commas. Do not use serial/Oxford commas in lists — instead restructure as prose using "and" without a preceding comma, or write separate sentences. Use a comma only when grammatically required to separate a subordinate clause from a main clause.
-- PARENTHESES: Use parentheses for brief inline clarifications, acronym definitions on first use, and examples — for example "(e.g., satellite imagery)" or "machine learning (ML)". This matches standard academic prose and should appear naturally where appropriate.
-- NO LISTS OR COLONS: Do not use bullet points, numbered lists, or colons to introduce enumerated items. Write all content as flowing prose sentences. Do not add extra line breaks within a section.
-- If the proposal does not address a sentence's topic, write one sentence stating that the proposal does not specify this information.
+STYLE RULES — follow these exactly:
+- Third-person neutral register: "This project...", "The proposed study...", "The team...". No first person ("I", "we").
+- Declarative statements only. Do not add hedging ("may", "suggests", "is expected to") unless a fact explicitly states uncertainty.
+- Average sentence length of 18–22 words. One main clause with at most one subordinate clause. No stacked qualifications.
+- Use the same term for the same concept throughout. Do not introduce synonyms for technical terms.
+- Full prepositional phrases, not noun stacks: "analysis of protein dynamics" not "protein dynamics analysis". Include articles and prepositions naturally.
+- Minimize commas. No serial/Oxford commas — restructure as prose with "and" or write separate sentences. Use a comma only to separate a subordinate clause from a main clause.
+- Use parentheses for acronym definitions on first use and brief examples where natural (e.g., "machine learning (ML)").
+- No bullet points, numbered lists, colons introducing items, or extra line breaks within a section. Flowing prose only.
+- Adhere strictly to the sentence count for each section. Do not add, split, or merge sentences.
+- If a fact is "Not specified", write one sentence stating that the proposal does not address this information.
 - Output ONLY the filled template with the five section headings and their sentences. No preamble, no commentary."""
 
 
@@ -106,17 +135,12 @@ TITLE_SYSTEM = """You are a scientific editor. Rephrase this research proposal t
 6. Return ONLY the rephrased title with no preamble."""
 
 
-def extract_proposal(client: genai.Client, full_text: str,
-                     max_retries: int = 3) -> Optional[str]:
-    """Call Gemini to extract a proposal into the fixed template. Returns None on failure."""
-    if not full_text or not full_text.strip():
-        return None
-
-    prompt = f"{EXTRACTION_SYSTEM}\n\n---\nPROPOSAL TEXT:\n{full_text.strip()}\n---\nEXTRACTED TEMPLATE:"
-
+def _call_gemini(client: genai.Client, prompt: str,
+                 label: str, max_retries: int = 3) -> Optional[str]:
+    """Shared Gemini call with retry logic. Returns stripped text or None on failure."""
     for attempt, delay in enumerate([0] + RETRY_DELAYS[:max_retries - 1]):
         if delay:
-            logger.info(f"Retrying in {delay}s (attempt {attempt + 1}/{max_retries})")
+            logger.info(f"Retrying {label} in {delay}s (attempt {attempt + 1}/{max_retries})")
             time.sleep(delay)
         try:
             response = client.models.generate_content(
@@ -129,12 +153,41 @@ def extract_proposal(client: genai.Client, full_text: str,
                 result = result[1:-1].strip()
             return result
         except Exception as e:
-            logger.warning(f"Gemini error (attempt {attempt + 1}): {e}")
+            logger.warning(f"{label} error (attempt {attempt + 1}): {e}")
             if attempt == max_retries - 1:
-                logger.error("All retries failed; keeping None")
+                logger.error(f"{label}: all retries failed")
                 return None
-
     return None
+
+
+def summarize_proposal(client: genai.Client, full_text: str,
+                       max_retries: int = 3) -> Optional[str]:
+    """Step 1: Extract semantic facts from the original text, stripping all style."""
+    if not full_text or not full_text.strip():
+        return None
+    prompt = (f"{SUMMARIZE_SYSTEM}\n\n"
+              f"---\nPROPOSAL TEXT:\n{full_text.strip()}\n---\nEXTRACTED FACTS:")
+    return _call_gemini(client, prompt, label="summarize", max_retries=max_retries)
+
+
+def fill_template(client: genai.Client, summary: str,
+                  max_retries: int = 3) -> Optional[str]:
+    """Step 2: Generate the standardized template from the style-free summary."""
+    if not summary or not summary.strip():
+        return None
+    prompt = (f"{FILL_SYSTEM}\n\n"
+              f"---\nEXTRACTED FACTS:\n{summary.strip()}\n---\nFILLED TEMPLATE:")
+    return _call_gemini(client, prompt, label="fill_template", max_retries=max_retries)
+
+
+def extract_proposal(client: genai.Client, full_text: str,
+                     max_retries: int = 3) -> Optional[str]:
+    """Two-step pipeline: summarize to strip style, then fill the fixed template."""
+    summary = summarize_proposal(client, full_text, max_retries=max_retries)
+    if not summary:
+        logger.warning("Summarization step returned None; skipping template fill.")
+        return None
+    return fill_template(client, summary, max_retries=max_retries)
 
 
 def rephrase_title(client: genai.Client, title: str,
@@ -142,26 +195,9 @@ def rephrase_title(client: genai.Client, title: str,
     """Rephrase a proposal title. Returns original on failure."""
     if not title or not title.strip():
         return title
-
     prompt = f"{TITLE_SYSTEM}\n\n---\nORIGINAL TITLE:\n{title.strip()}\n---\nREPHRASED TITLE:"
-
-    for attempt, delay in enumerate([0] + RETRY_DELAYS[:max_retries - 1]):
-        if delay:
-            time.sleep(delay)
-        try:
-            response = client.models.generate_content(
-                model=GEMINI_MODEL,
-                contents=[prompt],
-                config={'temperature': 0}
-            )
-            result = response.text.strip()
-            if result.startswith('"') and result.endswith('"'):
-                result = result[1:-1].strip()
-            return result
-        except Exception as e:
-            logger.warning(f"Title rephrase error (attempt {attempt + 1}): {e}")
-
-    return title  # fallback
+    result = _call_gemini(client, prompt, label="rephrase_title", max_retries=max_retries)
+    return result if result else title
 
 
 def build_ai_full_text(row: pd.Series) -> str:

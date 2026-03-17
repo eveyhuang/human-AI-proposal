@@ -528,174 +528,83 @@ Be explicit that adjustment is linear and depends on the chosen style covariates
 
 
 
+## PART V 3: Review Score Prediction and Outlier Validation
 
+#### 3.0 Overview
 
+This analysis links the embedding and style metrics computed in the style-controlled comparison notebook to the AI-generated review scores (`data/reviews/ai_reviews/ai_reviews_rephrased_*.json`). It has two primary goals:
 
-## CRITIQUE AND REVIEW
+1. **Metric validation**: Test whether the computed metrics (semantic diversity, style features) can predict review scores on specific criteria — if novelty-related embedding metrics predict "Novelty & Significance" scores, this validates that the metrics are capturing meaningful signal.
+2. **Outlier validation**: Test whether the proposals identified as most semantically unique (top-10% nearest-neighbor distance) actually received higher scores on the "Novelty & Significance" criterion.
 
-*This section provides a structured critique of the analysis plan above, identifying issues that should be addressed before submission to a top venue. Issues are organized by severity and type. Inline `<!-- REVIEW: ... -->` comments are placed throughout the plan above at specific locations where issues arise.*
-
-### Summary Assessment
-
-**Strengths:** The plan is ambitious and well-structured, covering multiple meaningful dimensions (diversity, novelty, quality, topics). The statistical methods are generally appropriate (non-parametric tests, effect sizes, permutation tests, FDR correction). The multi-model approach (GPT, Gemini, Claude) and multi-condition design add robustness.
-
-**Main concerns:** Several fundamental design issues threaten internal validity and publishability at a top venue. The most critical are: (1) a severe population mismatch confound between human and AI proposals, (2) small and unbalanced sample sizes with no power analysis, (3) construct validity gaps for embedding-based metrics, (4) circularity in AI-as-evaluator design, and (5) missing pre-registration and ethics/IRB discussion.
-
----
-
-### 1. CRITICAL ISSUES (Must Address Before Submission)
-
-#### 1a. Population Mismatch Confound
-
-The human proposals were written by motivated teams responding to a real funding call with real stakes (career, funding). AI proposals are generated in zero-stakes, zero-context conditions. This is not an apples-to-apples comparison. Human proposals reflect domain expertise, lab capabilities, existing collaborations, and institutional context that AI cannot possess. **This confound undermines every downstream comparison.**
-
-**Suggested fixes:**
-- Reframe the study as "AI ideation capability" rather than "AI vs. human scientists"
-- At minimum, acknowledge this prominently in the introduction and discussion, and discuss how it limits interpretation of all results
-
-#### 1b. Sample Size and Statistical Power
-
-- 23 human proposals (12 Y1 + 11 Y2) is very small
-- No power analysis is presented 
-- Permutation tests help with p-value robustness but cannot create statistical power from thin air
-
-**Suggested fixes:**
-- Add a formal power analysis (e.g., using G*Power or simulation) for the primary comparisons
-- Report minimum detectable effect sizes given current sample sizes
-- Test for cohort effects between Y1 and Y2 before pooling (e.g., compare embedding distributions, use Kolmogorov-Smirnov test)
-- Be transparent about power limitations in the manuscript
-
-#### 1c. Multiple Comparisons Across the Full Study
-
-The plan mentions FDR correction within Analysis 2.4.2 but not across the entire study. With 3 AI conditions × 4 evaluation dimensions × multiple sub-analyses, the total number of tests is large. Without a global correction strategy, false positive risk is high.
-
-**Suggested fixes:**
-- Define a clear hierarchy: primary outcome(s) vs. secondary/exploratory analyses
-- Apply family-wise correction (e.g., Bonferroni or Holm) across primary outcomes
-- Apply FDR correction within each analysis family
-- Label everything beyond primary outcomes as exploratory
-
-#### 1d. Construct Validity: Embedding Distance ≠ Conceptual Diversity/Novelty
-
-The plan equates cosine distance in embedding space with "diversity" and "novelty." This is a strong assumption. Embedding models capture textual similarity, which may reflect:
-- Writing style differences (AI text is stylistically distinct from human academic writing)
-- Vocabulary differences (AI may use different jargon)
-- Surface-level paraphrasing rather than conceptual distance
-
-A proposal could be semantically distant in embedding space while being conceptually derivative, or vice versa.
-
-**Suggested fixes:**
-- **Validate the embedding metric:** Take a subset of proposal pairs, have domain experts rate their conceptual similarity, and correlate with cosine distance. This calibration step is essential for any top venue.
-- **Use multiple embedding models** (not just nomic-embed-text-v1) and report consistency. Consider biomedical-specific models like BioSentVec, PubMedBERT, or SciNCL.
-- **Add a "style control" analysis:** Embed proposals after stripping them to keywords/concepts only (e.g., extract MeSH terms or key noun phrases) to separate conceptual content from writing style.
-
-#### 1e. Novelty Score Conflates Novelty with Incoherence
-
-A proposal that is far from all existing literature could be genuinely novel OR nonsensical. Distance from corpus captures both.
-
-**Suggested fixes:**
-- Add a "feasibility filter" — only compute novelty for proposals that pass a minimum quality threshold
-- Or compute novelty conditional on quality scores (e.g., report novelty for the subset above median quality)
-- Discuss this limitation explicitly
-
-#### 1f. AI-as-Evaluator Circularity (Section 2.3)
-
-Using AI models to evaluate AI-generated proposals creates a circularity problem. AI models may:
-- Favor their own stylistic patterns (self-preference bias, documented in literature)
-- Systematically rate AI proposals higher due to format/style alignment
-- Miss domain-specific issues that human experts would catch
-
-The plan mentions human expert review but doesn't specify the protocol.
-
-**Suggested fixes:**
-- Make human expert evaluation the **primary** quality measure, not AI evaluation
-- Specify: minimum 3 independent reviewers per proposal, recruited from relevant biomedical domain, blinded to source (human vs. AI), with inter-rater reliability metrics (Krippendorff's alpha or ICC)
-- Use AI evaluation as a secondary/supplementary analysis only
-- Add an explicit "AI self-preference" test: do models rate their own outputs higher than other models' outputs?
-- Reference the growing literature on LLM evaluation biases (e.g., Zheng et al. 2023, "Judging LLM-as-a-Judge"; Panickssery et al. 2024)
+**Review data structure** (as of `ai_reviews_rephrased_20260314_144505.json`):
+- 92 proposals × 3 AI evaluators (GPT, Gemini, Claude) = 276 reviews
+- 7 scored criteria: Relevance to Emergent Phenomena, Novelty & Significance, Rigor of Approach, Scope & Timeline, Synthesis Focus, Data Identification, Open Science Commitment
 
 ---
 
-### 2. METHODOLOGICAL IMPROVEMENTS
+#### 3.1 Analysis: Metric–Score Correlation
 
-#### 2a. Part 1 Design: Persona Condition (Section "AI with Background + human scientists' persona")
+**Goal**: For each of the 7 review criteria, assess whether the computed embedding/style metrics are correlated with the scores received.
 
-The persona condition has several gaps:
-- How does "taking on the persona" work in the prompt? Including 5 papers per author doesn't make the AI "become" that researcher
-- This condition conflates persona simulation with knowledge injection — is the AI performing better because it "thinks like" the researcher or because it has more relevant literature?
+**Steps**:
+1. Flatten reviews to one row per proposal, averaging scores across the 3 evaluators for each criterion (N=92 × 7 score columns).
+2. Compute Spearman correlations between each metric and each criterion. Present as a heatmap (metrics × criteria).
+3. Apply Holm correction for multiple comparisons across the full matrix.
 
-**Suggested fixes:**
-- Split into two sub-conditions: (a) literature-only (same papers, no persona instruction) and (b) literature + persona instruction. This disentangles the two effects.
-- Alternatively, simplify and drop the persona framing — just call it "AI with author-specific literature priming"
+**Theoretically motivated pairs to highlight**:
 
-#### 2b. Part 1 Design: Literature Condition
-
-- Literature count ("n=10? 30? or?") is still unresolved
-- Search strategy for PubMed is not specified (queries, date range, filters)
-- The number of articles matters enormously for results
-
-**Suggested fixes:**
-- Pre-specify: use NCEMS call keywords to construct PubMed queries
-- Retrieve top N articles by relevance (specify N)
-- Use explicit date cutoff
-- Filter to review articles + original research
-- Report the actual search queries used as supplementary material
-
-
-
-#### 2d. Analysis 2.2 (Novelty): Corpus Construction
-
-PubMed corpus construction is critical but underspecified:
-- What MeSH terms? How many abstracts? What date range?
-- What if the corpus is biased toward certain subfields? The "novelty" measure would then be biased.
-
-**Suggested fixes:**
-- Report corpus statistics (N abstracts, date range, subfield distribution)
-- Test sensitivity to corpus composition (e.g., leave-one-subfield-out)
-- Provide the corpus construction code and parameters as supplementary material
-
-#### 2e. Analysis 2.4 (Topic Modeling): Stability Concerns
-
-- BERTopic with min_topic_size=3 on ~100-150 documents will produce unstable topics. Consider increasing to 5.
-- The total proposal count of "144" (line 149) is unexplained — clarify derivation (23 human + 3* 23 for human = 92)
-- Shannon entropy comparison between groups of different sizes needs normalization or rarefaction
-- Chi-square test may have cells with expected count <5 — Fisher's exact should be the default at this sample size
+| Metric | Criterion |
+|---|---|
+| NN distance (semantic uniqueness) | Novelty & Significance |
+| Centroid distance | Novelty & Significance |
+| Pairwise diversity | Novelty & Significance |
 
 ---
 
-### 3. MISSING ELEMENTS
+#### 3.2 Analysis: Predictive Modeling of Review Scores
 
-#### 3a. Pre-registration
+**Goal**: Test whether metrics jointly predict each criterion score beyond chance, and decompose how much of the predictable variance comes from style vs. semantic content.
 
-For a study making claims about AI capabilities, pre-registration (e.g., OSF, AsPredicted) would dramatically increase credibility. Top venues will ask about this. Pre-register:
-- Primary hypotheses and outcomes
-- Analysis pipeline (which tests, which corrections)
-- Sample size justification
+**Steps**:
+1. For each of the 7 criteria, fit a Ridge regression (cross-validated, 5-fold StratifiedKFold on score quartiles) predicting criterion score from all metrics. Report cross-validated R² per criterion.
+2. Run two separate models per criterion: (a) style features only; (b) embedding features only (NN distance, centroid distance, pairwise diversity). Compare R² to assess relative contribution of surface style vs. semantic content.
+3. Use permutation test (1,000 shuffles) to confirm that any significant R² exceeds the null.
 
-
-#### 3b. Reproducibility Plan
-
-Specify and report:
-- Exact model versions and API dates (e.g., GPT-4o-2024-05-13, Claude 3.5 Sonnet v2, Gemini 1.5 Pro)
-- Temperature and sampling parameters for each generation
-- Number of generation runs per condition (stochasticity matters)
-- Seed/determinism settings where available
-- Full prompts used (as supplementary material)
-- Code and data availability statement
-
-#### 3c. Visualization Plan
-
-No mention of how results will be visualized. For publication, consider:
-- **UMAP/t-SNE projections** of embeddings colored by source (human vs. AI) and condition
-- **Violin plots** for distribution comparisons (diversity scores, novelty scores, quality scores)
-- **Heatmaps** for topic × source matrices
-- **Radar/spider charts** for multi-criteria quality scores
-- **Sankey diagrams** showing topic flow between conditions
-- **Forest plots** for effect sizes across analyses
+**Interpretation**: If embedding features predict novelty scores but style features do not, this strengthens the argument that the rephrasing successfully removed style as a confound and that the embedding space is capturing genuine semantic differences.
 
 ---
 
-### 4. PUBLICATION STRATEGY
+#### 3.3 Analysis: Outlier Validation
+
+**Goal**: Test whether proposals identified as semantic outliers (most isolated in embedding space) received higher scores on "Novelty & Significance."
+
+**Steps**:
+1. Use the outlier labels from the notebook (top-10% NN distance across all 92 proposals).
+2. Compare "Novelty & Significance" scores (averaged across evaluators) between outlier and non-outlier proposals using Mann-Whitney U + Cliff's Delta.
+3. Run the same test for all 7 criteria to check whether outlier status is novelty-specific or reflects overall proposal quality.
+4. **Within-group outlier analysis**: Repeat using within-group outlier labels (top-10% NN distance computed separately within Human / Claude / Gemini / GPT). Compare global vs. within-group outlier status as predictors of novelty score.
+
+---
+
+#### 3.4 Analysis: Human vs. AI Outlier Comparison
+
+**Goal**: Test whether "novel" AI proposals (AI outliers) are rewarded the same way as "novel" human proposals (human outliers) by the AI reviewers.
+
+**Steps**:
+1. Among outlier proposals only, compare "Novelty & Significance" scores between human outliers and AI outliers using Mann-Whitney U.
+2. Repeat for each AI model's outliers separately (GPT had 26% outliers; Claude had 0%).
+3. Compute the correlation between NN distance and novelty score separately within each group (Human, Claude, Gemini, GPT). Test whether the slope differs across groups (interaction term in a mixed-effects model with group × NN distance).
+
+**Interpretation**: If NN distance predicts novelty scores for human proposals but not for AI proposals (or vice versa), this suggests the AI reviewers and the embedding space are capturing different notions of novelty for the two sources.
+
+
+---
+
+
+
+
+## 4. PUBLICATION STRATEGY
 
 #### Nature Machine Intelligence (primary target)
 
@@ -718,19 +627,3 @@ Feasible but will require:
 | **PLOS ONE** | If study is solid but sample size limits novelty claims | Less prestige but solid |
 
 ---
-
-### 5. RECOMMENDED PRIORITY ORDER
-
-1. **Resolve the framing** — reframe as AI ideation capability, not head-to-head competition (§1a)
-2. **Add power analysis** — justify sample sizes or be transparent about limitations (§1b)
-3. **Design human expert evaluation protocol** — make this primary for quality (§1f)
-4. **Validate embedding metrics** — expert calibration study (§1d)
-5. **Pre-register** on OSF before running analyses (§3a)
-6. **Specify all generation parameters** — model versions, temperatures, seeds (§3c)
-7. **Resolve literature condition details** — PubMed query strategy, article counts (§2b)
-8. **Add multiple comparisons strategy** across full study (§1c)
-9. **Add visualization plan** (§3d)
-10. **Address ethics/IRB** (§3b)
-
-
-

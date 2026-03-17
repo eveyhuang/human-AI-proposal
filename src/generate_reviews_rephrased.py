@@ -75,40 +75,27 @@ def _infer_human_author(source_file: str) -> str:
     return 'human'
 
 
-def create_full_text_ai(row: Dict[str, Any]) -> str:
-    sections = [
-        ('Background and Significance', row.get('background_and_significance', '')),
-        ('Research Questions and Hypotheses', row.get('research_questions_and_hypotheses', '')),
-        ('Methods and Approach', row.get('methods_and_approach', '')),
-        ('Expected Outcomes and Impact', row.get('expected_outcomes_and_impact', '')),
-        ('Budget and Resources', row.get('budget_and_resources', '')),
-    ]
-    parts = []
-    for header, content in sections:
-        content = str(content or '').strip()
-        if content:
-            parts.append(f"## {header}\n{content}")
-    return '\n\n'.join(parts)
-
-
-def create_full_text_human(proposal: Dict[str, Any]) -> str:
-    return str(proposal.get('full_draft', '') or '').strip()
+def create_full_text(proposal: Dict[str, Any]) -> str:
+    """Return the standardized_text produced by the two-step summarize→fill pipeline."""
+    return str(proposal.get('standardized_text', '') or '').strip()
 
 
 def make_prompt(proposal: Dict[str, Any], research_call: str,
                 prompt_manager: PromptManager) -> str:
     title = str(proposal.get('title', proposal.get('proposal_title', ''))).strip()
-    abstract = str(proposal.get('abstract', '')).strip()
     full_text = str(proposal.get('_full_text', '')).strip()
 
     if len(full_text) > MAX_FULL_TEXT_CHARS:
         full_text = full_text[:MAX_FULL_TEXT_CHARS] + '\n[... truncated for length ...]'
 
+    # All content is now in standardized_text (5 template sections).
+    # proposal_abstract is left empty — the template parameter is still required
+    # by the prompt template but there is no separate abstract after rephrasing.
     return prompt_manager.format_prompt('eval_ncems_criteria', {
         'research_call': research_call,
         'proposal_id': proposal.get('proposal_id', 'N/A'),
         'proposal_title': title,
-        'proposal_abstract': abstract,
+        'proposal_abstract': '',
         'proposal_full': full_text,
     })
 
@@ -128,7 +115,7 @@ def load_proposals(ai_rephrased_dir: Path,
     for _, row in ai_df.iterrows():
         p = row.to_dict()
         p['author'] = row.get('model', 'ai')
-        p['_full_text'] = create_full_text_ai(p)
+        p['_full_text'] = create_full_text(p)
         proposals.append(p)
 
     # Human proposals
@@ -144,7 +131,7 @@ def load_proposals(ai_rephrased_dir: Path,
             p = dict(proposal)
             p['title'] = proposal.get('proposal_title', '')
             p['author'] = _infer_human_author(source_file)
-            p['_full_text'] = create_full_text_human(proposal)
+            p['_full_text'] = create_full_text(p)
             proposals.append(p)
 
     logger.info(f"Total proposals to review: {len(proposals)}")
