@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="642">
+<rect width="100%" height="100%" fill="white"/>
+<text x="20" y="34" font-size="24" font-family="Helvetica, Arial, sans-serif" font-weight="700">Novelty And Significance Logistic Coefficients</text>
+<text x="20" y="58" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#444">Signed standardized coefficients from the full-data model. Positive means more likely to receive a score >= 4.</text>
+<line x1="645.0" y1="72" x2="645.0" y2="618" stroke="#444" stroke-dasharray="4 4"/>
+<text x="20" y="106" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">nn dist</text>
+<rect x="340.0" y="88" width="305.0" height="24" rx="4" fill="#d62728"/>
+<text x="332.0" y="105" text-anchor="end" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">-1.277</text>
+<text x="20" y="150" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">centroid dist</text>
+<rect x="645.0" y="132" width="290.6" height="24" rx="4" fill="#2ca02c"/>
+<text x="943.6" y="149" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">1.217</text>
+<text x="20" y="194" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">avg sent len words</text>
+<rect x="645.0" y="176" width="262.7" height="24" rx="4" fill="#2ca02c"/>
+<text x="915.7" y="193" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">1.100</text>
+<text x="20" y="238" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">n words</text>
+<rect x="645.0" y="220" width="249.9" height="24" rx="4" fill="#2ca02c"/>
+<text x="902.9" y="237" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">1.047</text>
+<text x="20" y="282" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">newline per 1k chars</text>
+<rect x="446.5" y="264" width="198.5" height="24" rx="4" fill="#d62728"/>
+<text x="438.5" y="281" text-anchor="end" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">-0.831</text>
+<text x="20" y="326" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">type token ratio</text>
+<rect x="645.0" y="308" width="170.0" height="24" rx="4" fill="#2ca02c"/>
+<text x="823.0" y="325" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.712</text>
+<text x="20" y="370" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">is literature outlier</text>
+<rect x="645.0" y="352" width="149.3" height="24" rx="4" fill="#2ca02c"/>
+<text x="802.3" y="369" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.625</text>
+<text x="20" y="414" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">paren per 1k chars</text>
+<rect x="496.4" y="396" width="148.6" height="24" rx="4" fill="#d62728"/>
+<text x="488.4" y="413" text-anchor="end" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">-0.623</text>
+<text x="20" y="458" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">n chars</text>
+<rect x="645.0" y="440" width="116.5" height="24" rx="4" fill="#2ca02c"/>
+<text x="769.5" y="457" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.488</text>
+<text x="20" y="502" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">stopword rate</text>
+<rect x="531.7" y="484" width="113.3" height="24" rx="4" fill="#d62728"/>
+<text x="523.7" y="501" text-anchor="end" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">-0.475</text>
+<text x="20" y="546" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">is nn outlier</text>
+<rect x="538.8" y="528" width="106.2" height="24" rx="4" fill="#d62728"/>
+<text x="530.8" y="545" text-anchor="end" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">-0.445</text>
+<text x="20" y="590" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">novelty z</text>
+<rect x="540.5" y="572" width="104.5" height="24" rx="4" fill="#d62728"/>
+<text x="532.5" y="589" text-anchor="end" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">-0.438</text>
+</svg>

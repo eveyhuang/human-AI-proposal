@@ -10,12 +10,12 @@ Uses a two-step pipeline to maximize style removal:
           so template prose is driven by formatting rules rather than source style.
 
 The template mirrors the NCEMS call for proposals and evaluation criteria:
-  Section 1 – Scientific Background & Research Question  → criteria 1a (emergent phenomena), 1b (novelty)
-  Section 2 – Methodology & Analytical Approach          → criterion  1c (rigor)
-  Section 3 – Data Sources & Synthesis Plan              → criteria 3a (synthesis focus), 3b (data ID)
-  Section 4 – Feasibility & Timeline                     → criterion  2a (scope/timeline)
-  Section 5 – Open Science & Team Composition            → criterion  4a (open science) + call requirement
-
+  Section 1 – Scientific Background & Research Question  
+  Section 2 – Methodology & Analytical Approach          
+  Section 3 – Data Sources & Synthesis Plan              
+  Section 4 – Feasibility & Timeline                     
+  Section 5 – Open Science & Team Composition            
+  
 Usage (run from project root):
     python src/rephrase_proposals.py
 
@@ -294,14 +294,14 @@ def main():
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
     # ── Extract AI proposals ──────────────────────────────────────────────────
-    ai_baseline_dir = Path('data/ai-proposals/baseline')
-    ai_csv_files = sorted(ai_baseline_dir.glob('ai_proposals_baseline_complete_*.csv'))
+    ai_baseline_dir = Path('data/ai-proposals/minimal')
+    ai_csv_files = sorted(ai_baseline_dir.glob('ai_proposals_minimal_complete_*.csv'))
     if not ai_csv_files:
         logger.error("No AI proposal CSV found in data/ai-proposals/baseline/")
         sys.exit(1)
 
     ai_csv_path = ai_csv_files[-1]  # most recent
-    ai_out_path = Path('data/ai-proposals/rephrased') / f'ai_proposals_rephrased_{timestamp}.csv'
+    ai_out_path = Path('data/ai-proposals/rephrased/v3-minimal') / f'ai_proposals_minimal_rephrased_{timestamp}.csv'
     checkpoint_path = ai_out_path.with_suffix('.csv.tmp')
     rephrased_ai_df = rephrase_ai_proposals(client, ai_csv_path,
                                             checkpoint_path=checkpoint_path)
@@ -313,21 +313,21 @@ def main():
         checkpoint_path.unlink()
 
     # ── Extract human proposals ───────────────────────────────────────────────
-    for cohort in ['y1', 'y2']:
-        human_path = Path(f'data/human-proposals/human-proposals-{cohort}.json')
-        if not human_path.exists():
-            logger.warning(f"Not found: {human_path}, skipping.")
-            continue
+    # for cohort in ['y1', 'y2']:
+    #     human_path = Path(f'data/human-proposals/human-proposals-{cohort}.json')
+    #     if not human_path.exists():
+    #         logger.warning(f"Not found: {human_path}, skipping.")
+    #         continue
 
-        rephrased_data = rephrase_human_proposals(client, human_path)
-        out_path = (Path('data/human-proposals/rephrased') /
-                    f'human_proposals_rephrased_{cohort}_{timestamp}.json')
-        out_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(out_path, 'w') as f:
-            json.dump(rephrased_data, f, indent=2, ensure_ascii=False)
-        logger.info(f"Saved extracted human proposals -> {out_path}")
+    #     rephrased_data = rephrase_human_proposals(client, human_path)
+    #     out_path = (Path('data/human-proposals/rephrased') /
+    #                 f'human_proposals_rephrased_{cohort}_{timestamp}.json')
+    #     out_path.parent.mkdir(parents=True, exist_ok=True)
+    #     with open(out_path, 'w') as f:
+    #         json.dump(rephrased_data, f, indent=2, ensure_ascii=False)
+    #     logger.info(f"Saved extracted human proposals -> {out_path}")
 
-    logger.info("Done. All proposals extracted into standardized template.")
+    # logger.info("Done. All proposals extracted into standardized template.")
 
 
 if __name__ == '__main__':

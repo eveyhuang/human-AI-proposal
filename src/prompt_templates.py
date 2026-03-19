@@ -92,6 +92,46 @@ class PromptManager:
             parameters=['research_call', 'information_about_ncems', 'num']
         )
 
+        # Generate Research Ideas (baseline)
+        templates['generate_ideas_minimal'] = PromptTemplate(
+            name="Generate Research Ideas (minimal)",
+            description="Generate innovative research ideas without any special prompting",
+            
+            template="""
+            You are generating research ideas that will most likely be accepted by the competitive funding call from NCEMS (National Synthesis Center for Emergence in Molecular and Cellular Sciences).
+
+            RESEARCH CALL:
+            {research_call}
+
+            INFORMATION ABOUT NCEMS:
+            {information_about_ncems}
+
+            TASK:
+            Generate {num} research ideas that are aglined with the research call and are all different from each other. 
+
+            For each idea, provide:
+            - **Title**: Clear, specific, and scientifically precise
+            - **Abstract** (400-600 words) 
+
+            IMPORTANT: Format your response as a valid JSON object:
+            {{
+              "research_ideas": [
+                {{
+                  "title": "Specific Research Title Here",
+                  "abstract": "Detailed 400-600 word abstract addressing all requirements above..."
+                }},
+                {{
+                  "title": "Another Specific Research Title",
+                  "abstract": "Detailed 400-600 word abstract addressing all requirements above..."
+                }}
+              ]
+            }}
+
+            Ensure the JSON is properly formatted and valid.
+            """,
+            parameters=['research_call', 'information_about_ncems', 'num']
+        )
+
 
         # generate full proposals from ideas
         templates['generate_proposals'] = PromptTemplate(
@@ -183,6 +223,58 @@ class PromptManager:
             - Emphasize SYNTHESIS throughout - no new data generation
             - Be specific about data sources (don't say "publicly available data", name them)
             - Maintain focus on mesoscale emergent phenomena
+            - Ensure the JSON is properly formatted and valid
+            """,
+            parameters=['title', 'abstract', 'research_call', 'information_about_ncems']
+        )
+
+         # generate full proposals from ideas
+        templates['generate_proposals_minimal'] = PromptTemplate(
+            name="Generate Research Proposals Minimal",
+            description="Generate comprehensive research proposals based on title and abstract",
+            template="""
+            Write a comprehensive research proposal based on the provided title and abstract, ensuring it aligns with NCEMS funding requirements.
+
+            RESEARCH CALL:
+            {research_call}
+
+            INFORMATION ABOUT NCEMS:
+            {information_about_ncems}
+
+            RESEARCH IDEA TO EXPAND:
+            Title: {title}
+            Abstract: {abstract}
+
+            Create a proposal meeting the highest standards for scientific rigor, clarity, and feasibility. Include these sections with specified word counts:
+
+            1. BACKGROUND AND SIGNIFICANCE (500 words)
+
+            2. RESEARCH QUESTIONS AND HYPOTHESES (500 words)
+
+            3. METHODS AND APPROACH (500 words)
+
+            4. EXPECTED OUTCOMES AND IMPACT (300 words)
+
+            5. OPEN SCIENCE AND REPRODUCIBILITY (300 words)
+
+            6. BUDGET AND RESOURCES (300 words)
+
+            RESPONSE FORMAT: Return ONLY valid JSON:
+            {{
+              "proposal": {{
+                "title": "{title}",
+                "abstract": "{abstract}",
+                "background_and_significance": "...",
+                "research_questions_and_hypotheses": "...",
+                "methods_and_approach": "...",
+                "expected_outcomes_and_impact": "...",
+                "open_science_and_reproducibility": "...",
+                "budget_and_resources": "..."
+              }}
+            }}
+
+            IMPORTANT:
+            - Each section must be substantive, detailed, and meet word counts
             - Ensure the JSON is properly formatted and valid
             """,
             parameters=['title', 'abstract', 'research_call', 'information_about_ncems']

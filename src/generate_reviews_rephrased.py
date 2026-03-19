@@ -106,7 +106,7 @@ def load_proposals(ai_rephrased_dir: Path,
     proposals = []
 
     # AI proposals
-    ai_files = sorted(ai_rephrased_dir.glob('ai_proposals_rephrased_*.csv'))
+    ai_files = sorted(ai_rephrased_dir.glob('ai_proposals_minimal_rephrased_*.csv'))
     if not ai_files:
         raise FileNotFoundError(f"No rephrased AI CSV in {ai_rephrased_dir}")
     ai_df = pd.read_csv(ai_files[-1])
@@ -119,20 +119,20 @@ def load_proposals(ai_rephrased_dir: Path,
         proposals.append(p)
 
     # Human proposals
-    for cohort_glob in ['*y1*.json', '*y2*.json']:
-        h_files = sorted(human_rephrased_dir.glob(cohort_glob))
-        if not h_files:
-            logger.warning(f"No file matching {cohort_glob} in {human_rephrased_dir}")
-            continue
-        with open(h_files[-1]) as f:
-            data = json.load(f)
-        source_file = h_files[-1].name
-        for proposal in data.get('proposals', []):
-            p = dict(proposal)
-            p['title'] = proposal.get('proposal_title', '')
-            p['author'] = _infer_human_author(source_file)
-            p['_full_text'] = create_full_text(p)
-            proposals.append(p)
+    # for cohort_glob in ['*y1*.json', '*y2*.json']:
+    #     h_files = sorted(human_rephrased_dir.glob(cohort_glob))
+    #     if not h_files:
+    #         logger.warning(f"No file matching {cohort_glob} in {human_rephrased_dir}")
+    #         continue
+    #     with open(h_files[-1]) as f:
+    #         data = json.load(f)
+    #     source_file = h_files[-1].name
+    #     for proposal in data.get('proposals', []):
+    #         p = dict(proposal)
+    #         p['title'] = proposal.get('proposal_title', '')
+    #         p['author'] = _infer_human_author(source_file)
+    #         p['_full_text'] = create_full_text(p)
+    #         proposals.append(p)
 
     logger.info(f"Total proposals to review: {len(proposals)}")
     return proposals
@@ -140,7 +140,7 @@ def load_proposals(ai_rephrased_dir: Path,
 
 def main():
     # ── Paths ─────────────────────────────────────────────────────────────────
-    ai_rephrased_dir = Path('data/ai-proposals/rephrased')
+    ai_rephrased_dir = Path('data/ai-proposals/rephrased/v3-minimal')
     human_rephrased_dir = Path('data/human-proposals/rephrased')
     output_dir = Path('data/reviews/ai_reviews')
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -169,7 +169,7 @@ def main():
 
     # ── Output file ────────────────────────────────────────────────────────────
     run_ts = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_path = output_dir / f'ai_reviews_rephrased_{run_ts}.json'
+    output_path = output_dir / f'ai_reviews_minimal_rephrased_{run_ts}.json'
 
     output_data = {
         'created_at': datetime.now().isoformat(),
@@ -178,7 +178,7 @@ def main():
             'data/human-proposals/rephrased/human_proposals_rephrased_y1_*.json',
             'data/human-proposals/rephrased/human_proposals_rephrased_y2_*.json',
         ],
-        'ai_input': 'data/ai-proposals/rephrased/ai_proposals_rephrased_*.csv',
+        'ai_input': 'data/ai-proposals/rephrased/v3-minimal/ai_proposals_minimal_rephrased_*.csv',
         'evaluators': evaluator_models,
         'rephrased': True,
         'reviews': [],

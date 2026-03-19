@@ -1,0 +1,1867 @@
+[
+  {
+    "title_norm": "impact of heat wave stress on cytokinetic bottlenecks in cellular division",
+    "group": "Human",
+    "is_nn_outlier": true,
+    "is_lit_most_novel": true,
+    "nn_dist": 0.19456351,
+    "raw_novelty": 0.155976802110672,
+    "novelty_z": 0.7237176299095154,
+    "novelty_ratio": 1.408138871192932,
+    "title": "impact of heat wave stress on cytokinetic bottlenecks in cellular division",
+    "author": "Human",
+    "authors": [],
+    "authors_departments": "",
+    "proposal_status": "",
+    "ranking": null,
+    "abstract_original": "",
+    "full_draft_original": "",
+    "standardized_text": "SCIENTIFIC BACKGROUND AND RESEARCH QUESTION\nPlant biology investigates the mechanisms of cytokinesis and its robustness under heat stress. Current knowledge identifies cytokinesis as essential for biomass production while noting that its heat sensitivity varies between temperate and resilient species. This project identifies genetic bottlenecks of cytokinetic robustness to inform evolutionary strategies and the development of heat-resilient crops.\n\nMETHODOLOGY AND ANALYTICAL APPROACH\nThe study employs a systematic comparative bioinformatics analysis of single-cell and whole-organ omics datasets under control and heat-stress conditions. Researchers will apply orthology inference methods and co-expression network analysis to construct multi-layered genetic networks. Results will be validated by selecting transcripts co-expressed with known mitotic genes and filtering for cross-species consistency.\n\nDATA SOURCES AND SYNTHESIS PLAN\nThe project utilizes publicly available omics datasets for Arabidopsis thaliana, Zea mays, Oryza sativa, Sorghum bicolor, and Nicotiana tabacum. These distinct datasets will be integrated by reprocessing all raw data through a standardized pipeline to normalize variations in growth conditions. Variability in experimental conditions will be mitigated by standardized reprocessing and by aggregating a large volume of datasets to reduce noise.\n\nFEASIBILITY AND TIMELINE\nThe two-year timeline includes the submission of a network analysis manuscript by the end of the second year followed by a theoretical review article. This project requires a multi-disciplinary working group to combine expertise in plant cell biology and membrane trafficking with professional bioinformatics capabilities.\n\nOPEN SCIENCE AND TEAM COMPOSITION\nThe team will publish findings as a research manuscript and a review article while sharing all code and data publicly. The team consists of experts in plant cytokinesis and heat stress physiology supported by specialized bioinformatics staff.",
+    "ai_reviews": [
+      {
+        "evaluator": "gpt-5.2",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 3,
+            "justification": "The project targets cytokinesis robustness under heat stress, which can be framed as an emergent, system-level property of interacting molecular networks, but emergence is not explicitly articulated as a central mesoscale concept."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 3,
+            "justification": "Cross-species integration of heat-stress omics to identify conserved cytokinetic bottlenecks is a meaningful advance, but the proposal reads as an incremental extension of established comparative network approaches rather than a clearly transformative new framework."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The overall logic (orthology + co-expression networks + cross-species consistency) is sound, but key methodological details are missing (batch correction strategy, network inference choices, statistical thresholds, and how 'validation' will be performed without new experiments)."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "A two-year reprocessing and integration effort across multiple species and modalities is plausible, but heterogeneity in tissues, developmental stages, and heat-stress regimes may substantially slow harmonization and reduce interpretability without clearer milestones and contingencies."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The work is explicitly based on reanalysis and integration of publicly available omics datasets across species, with no new data generation proposed."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 2,
+            "justification": "Species are listed, but specific repositories/accessions, dataset inclusion criteria, and modality breakdowns are not provided, and limitations are under-addressed (e.g., confounding by tissue/stage, stress intensity/duration, platform effects, and uneven annotation quality across species)."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "The proposal commits to sharing code and data and publishing outputs, but lacks concrete reproducibility plans (versioned workflows/containers, preregistered analysis plan, governance for team science, and specific repositories/metadata standards)."
+          }
+        ]
+      },
+      {
+        "evaluator": "gemini-3-pro-preview",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 3,
+            "justification": "The proposal addresses mesoscale cellular processes (cytokinesis and genetic networks), but it does not explicitly frame its research questions around 'emergent phenomena' as requested by the call."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Comparing single-cell and whole-organ omics across multiple plant species to identify conserved cytokinetic bottlenecks is an innovative approach with significant potential to inform the development of heat-resilient crops."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 4,
+            "justification": "The methodology is highly logical and grounded in established bioinformatics practices, utilizing standardized reprocessing, orthology inference, and cross-species filtering to ensure robust results."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "While achievable with specialized staff, reprocessing and integrating both single-cell and whole-organ omics data for five distinct species within a two-year timeframe is highly ambitious and presents potential bottleneck challenges."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is an exemplary synthesis effort that relies exclusively on existing publicly available datasets without generating any new experimental data."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "The proposal explicitly identifies the five plant species to be used and thoughtfully addresses the limitations of experimental variability by proposing standardized reprocessing and large-volume aggregation."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 4,
+            "justification": "The team demonstrates a strong commitment by explicitly stating that all code and data will be shared publicly, though it lacks specific details on repositories or FAIR principles."
+          }
+        ]
+      },
+      {
+        "evaluator": "claude-opus-4-5",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 2,
+            "justification": "The proposal focuses on cytokinesis under heat stress but does not explicitly frame this as an emergent phenomenon at the mesoscale. While cellular division involves complex multi-component interactions, the connection to emergence is tangential and not articulated."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 3,
+            "justification": "The comparative cross-species approach to identifying genetic bottlenecks in cytokinetic heat tolerance is reasonably novel and could advance understanding of crop resilience. However, the approach builds incrementally on existing comparative genomics methods."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 2,
+            "justification": "The methodology lacks specificity regarding which orthology inference methods will be used, how co-expression networks will be constructed, and what statistical thresholds will define significance. The validation approach of selecting transcripts co-expressed with known mitotic genes is circular and insufficiently rigorous."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "A two-year timeline for comparative bioinformatics analysis across five species is reasonable, though the proposal lacks detailed milestones. The goal of producing one manuscript and one review article is achievable but modest for a working group effort."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 4,
+            "justification": "The proposal clearly focuses on synthesizing existing publicly available omics datasets without generating new experimental data. The integration of datasets across multiple species through standardized reprocessing represents a genuine synthesis effort."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 2,
+            "justification": "While five plant species are named, specific datasets, repositories, or accession numbers are not provided. The proposal acknowledges variability in experimental conditions but does not thoroughly discuss limitations such as data quality, coverage gaps, or potential biases."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "The proposal commits to publishing findings and sharing code and data publicly, which demonstrates moderate commitment to open science. However, it lacks specific details about repositories, data management plans, or reproducibility frameworks."
+          }
+        ]
+      }
+    ],
+    "avg_review_scores": {
+      "data_identification": 2.6666666666666665,
+      "novelty_and_significance": 3.3333333333333335,
+      "open_science_commitment": 3.3333333333333335,
+      "relevance_to_emergent_phenomena": 2.6666666666666665,
+      "rigor_of_approach": 3.0,
+      "scope_and_timeline": 3.0,
+      "synthesis_focus": 4.666666666666667
+    }
+  },
+  {
+    "title_norm": "integrative multi-omics synthesis for the identification of shared molecular mechanisms in mammalian hibernation",
+    "group": "Human",
+    "is_nn_outlier": true,
+    "is_lit_most_novel": true,
+    "nn_dist": 0.17072654,
+    "raw_novelty": 0.133709117770195,
+    "novelty_z": 0.3672487139701843,
+    "novelty_ratio": 1.2071090936660769,
+    "title": "integrative multi-omics synthesis for the identification of shared molecular mechanisms in mammalian hibernation",
+    "author": "Human",
+    "authors": [],
+    "authors_departments": "",
+    "proposal_status": "",
+    "ranking": null,
+    "abstract_original": "",
+    "full_draft_original": "",
+    "standardized_text": "SCIENTIFIC BACKGROUND AND RESEARCH QUESTION\nThis project investigates mammalian hibernation physiology to identify the molecular mechanisms that facilitate metabolic suppression and tissue preservation. Current research relies on single-species studies that fail to account for phylogenetic relationships when analyzing transcriptional variation across diverse hibernating mammals. The study identifies conserved molecular processes to reveal fundamental mechanisms of metabolic modulation that inform human health applications like ischemia tolerance.\n\nMETHODOLOGY AND ANALYTICAL APPROACH\nThe study design utilizes a comparative and phylogenetically informed analysis of existing RNA-seq datasets through longitudinal state comparisons. Key methods include RNA-seq read mapping with STAR and the application of Ornstein-Uhlenbeck processes to model gene expression evolution. Results are validated through simulation tests and Gene Ontology (GO) and KEGG pathway overrepresentation analyses.\n\nDATA SOURCES AND SYNTHESIS PLAN\nThe project utilizes publicly available RNA-seq data from the NCBI Short Read Archive alongside reference genomes and whole-genome alignments. Datasets are integrated by mapping raw reads to reference genomes and establishing orthology across species to harmonize metadata. Known limitations regarding sparse sampling and variable data quality are mitigated through rigorous quality control and phylogenetic models designed for missing data.\n\nFEASIBILITY AND TIMELINE\nThe project follows a 24-month timeline that begins with data processing and concludes with the dissemination of findings. This scope requires cross-disciplinary collaboration to integrate diverse omics data types and manage high-dimensional computational challenges.\n\nOPEN SCIENCE AND TEAM COMPOSITION\nThe project commits to open science by publishing a curated dataset and developing new analytical tools for public use. The team consists of a multidisciplinary group of specialists in cell physiology and genomics supported by staff scientists focused on technical execution.",
+    "ai_reviews": [
+      {
+        "evaluator": "gpt-5.2",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 3,
+            "justification": "The proposal targets organismal/physiological state transitions (torpor-arousal) that arise from coordinated molecular programs, but it does not explicitly frame the work around mesoscale emergent phenomena (e.g., cell/tissue-level collective behaviors) as a central objective."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "A phylogenetically informed, cross-species synthesis of hibernation transcriptomes to identify conserved mechanisms is a meaningful advance over single-species analyses and could yield broadly relevant insights into metabolic suppression and tissue protection."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The analytical plan (uniform remapping, orthology, OU models, enrichment analyses) is generally sound, but key details are missing (batch/confounder handling, tissue/state harmonization, effect-size modeling, and validation strategy beyond simulations)."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "A 24-month timeline is plausible for a transcriptome-focused synthesis, but feasibility is uncertain given heterogeneous metadata, variable genome quality across species, and the stated intent to integrate “diverse omics” without specifying concrete non-RNA data types and milestones."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is explicitly based on reanalysis and integration of publicly available datasets (SRA, reference genomes, alignments) and does not propose new experimental data generation."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Core repositories are named (SRA, reference genomes/alignments) and general limitations are acknowledged, but the proposal lacks specificity on which species/studies, tissues, hibernation states, sample sizes, and inclusion/exclusion criteria that determine whether synthesis is viable."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "The proposal commits to publishing a curated dataset and tools, but it does not describe concrete implementation (versioned workflows, containers, preregistered analysis plan, governance/authorship, licensing, and reproducibility checks)."
+          }
+        ]
+      },
+      {
+        "evaluator": "gemini-3-pro-preview",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 3,
+            "justification": "While the project investigates complex physiological traits (hibernation) arising from molecular changes, it does not explicitly frame these as mesoscale emergent phenomena."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Applying phylogenetically informed models to multi-species hibernation data is an innovative approach that offers significant potential to advance our understanding of metabolic suppression."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 4,
+            "justification": "The methodology is well-grounded, combining standard RNA-seq pipelines with advanced Ornstein-Uhlenbeck evolutionary models to rigorously analyze the data."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 4,
+            "justification": "The 24-month timeline is realistic for the proposed computational work, and the cross-disciplinary team is well-suited to handle the high-dimensional data challenges."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project perfectly aligns with the synthesis mandate by exclusively utilizing existing RNA-seq datasets and reference genomes without generating new experimental data."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "Data sources like NCBI SRA are clearly identified, and the proposal thoughtfully addresses limitations such as sparse sampling and variable data quality with specific mitigation strategies."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 4,
+            "justification": "The proposal demonstrates a strong commitment to open science by promising to publish curated datasets and analytical tools for public use, supported by a multidisciplinary team."
+          }
+        ]
+      },
+      {
+        "evaluator": "claude-opus-4-5",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 2,
+            "justification": "The proposal addresses metabolic suppression and tissue preservation in hibernation, which involves complex physiological states, but does not explicitly frame this as emergent phenomena at the mesoscale. The connection to emergence is tangential rather than central to the research design."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 3,
+            "justification": "The phylogenetically informed comparative approach across multiple hibernating species represents a clear advancement over single-species studies. The potential applications to human health (ischemia tolerance) add significance, though the overall approach builds on established comparative genomics methods."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 4,
+            "justification": "The methodology is well-grounded, utilizing established tools (STAR, Ornstein-Uhlenbeck models) with appropriate validation through simulation tests and pathway analyses. The phylogenetic framework for handling cross-species comparisons demonstrates methodological sophistication."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "The 24-month timeline is reasonable for the proposed work, though the proposal lacks specific milestones and details about intermediate deliverables. The acknowledgment of computational challenges suggests awareness of potential obstacles, but contingency plans are not detailed."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The proposal exclusively uses existing publicly available data from NCBI SRA and reference genomes, with a clear plan for integrating datasets across species through orthology mapping and metadata harmonization. This is an exemplary synthesis project."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Data sources are identified at a general level (NCBI SRA, reference genomes), and limitations regarding sparse sampling and variable quality are acknowledged. However, specific datasets, species coverage, and sample sizes are not detailed."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "The proposal commits to publishing a curated dataset and developing public analytical tools, demonstrating moderate commitment to open science. However, specific plans for reproducibility, code sharing platforms, and data management are not detailed."
+          }
+        ]
+      }
+    ],
+    "avg_review_scores": {
+      "data_identification": 3.3333333333333335,
+      "novelty_and_significance": 3.6666666666666665,
+      "open_science_commitment": 3.3333333333333335,
+      "relevance_to_emergent_phenomena": 2.6666666666666665,
+      "rigor_of_approach": 3.6666666666666665,
+      "scope_and_timeline": 3.3333333333333335,
+      "synthesis_focus": 5.0
+    }
+  },
+  {
+    "title_norm": "evolutionary origins of complex protein topologies from knotted structures to pierced lassos",
+    "group": "Human",
+    "is_nn_outlier": false,
+    "is_lit_most_novel": true,
+    "nn_dist": 0.030076146,
+    "raw_novelty": 0.1336606293916702,
+    "novelty_z": 0.3664724826812744,
+    "novelty_ratio": 1.2066713571548462,
+    "title": "evolutionary origins of complex protein topologies from knotted structures to pierced lassos",
+    "author": "Human",
+    "authors": [],
+    "authors_departments": "",
+    "proposal_status": "",
+    "ranking": null,
+    "abstract_original": "",
+    "full_draft_original": "",
+    "standardized_text": "SCIENTIFIC BACKGROUND AND RESEARCH QUESTION\nProtein structural biology investigates the evolutionary origins and functional consequences of complex protein topologies like knots and pierced lassos. Current research lacks a method to identify the specific phylogenetic branch points where these nontrivial topological changes occur within protein families. This study identifies evolutionary turning points of topological changes to determine how entanglements correlate with functional and adaptive characteristics.\n\nMETHODOLOGY AND ANALYTICAL APPROACH\nThe study design employs a comparative evolutionary analysis that integrates sequence and structural data to map the emergence of entangled topologies. The approach utilizes phylogenetic reconstruction and structural bioinformatics tools including KnotProt and AlphaKnot to annotate and model protein structures. Results are validated through statistical analysis of structural features and comparisons with known functional hotspots and thermal stability data.\n\nDATA SOURCES AND SYNTHESIS PLAN\nThe project utilizes diverse databases including UniProt and the Protein Data Bank (PDB) alongside AlphaFold DB and the Meltome Atlas. Researchers integrate these datasets by overlaying functional and topological annotations onto reconstructed phylogenetic trees to identify statistically significant evolutionary patterns. Limited structural information at specific branch points is mitigated by generating new structural models with GPU-intensive prediction tools.\n\nFEASIBILITY AND TIMELINE\nThe project follows a 24-month timeline that progresses from initial data gathering to phylogenetic tree generation and final publication of findings. This scope requires cross-disciplinary collaboration between experts in evolutionary analysis and database management to synthesize these complex and diverse datasets.\n\nOPEN SCIENCE AND TEAM COMPOSITION\nThe project provides an open data-driven platform and publishes all findings in peer-reviewed literature to ensure public access. The team includes experts in evolutionary analysis and structural biology who support a Staff Scientist and an Assistant for computational tasks.",
+    "ai_reviews": [
+      {
+        "evaluator": "gpt-5.2",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 3,
+            "justification": "The proposal targets emergence of complex protein topologies (knots/lassos) across evolution, which is an emergent structural property, but the link to mesoscale molecular/cellular emergent phenomena and downstream cellular consequences is not made explicit."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Mapping phylogenetic branch points of topological transitions by integrating topology annotations with phylogenies is a novel synthesis angle with potential to clarify long-standing questions about how entanglements arise and relate to function."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The overall workflow is logical (phylogenies + topology annotation + functional overlays), but key methodological details are missing (orthology definition, tree uncertainty handling, topology-calling error rates, and statistical controls for phylogenetic non-independence)."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "A 24-month plan is plausible, but the scope is broad and feasibility depends on substantial compute and careful curation; the proposal lacks concrete milestones, contingencies, and criteria for narrowing to tractable protein families."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 3,
+            "justification": "The project is largely integrative across UniProt/PDB/AlphaFold/Meltome/KnotProt, but the plan to generate new structural models with GPU-intensive prediction tools risks drifting toward new data generation rather than strict synthesis of existing public resources."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "Major data sources are clearly named and the proposal acknowledges sparse structural coverage at key branch points, though it under-discusses limitations such as AlphaFold confidence for knotted regions, PDB sampling bias, and topology-annotation false positives/negatives."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 2,
+            "justification": "Open science intent is stated (open platform, publish findings), but there are no concrete plans for preregistered analyses, versioned workflows/containers, public repositories, data licensing, or team-based reproducibility practices."
+          }
+        ]
+      },
+      {
+        "evaluator": "gemini-3-pro-preview",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 4,
+            "justification": "The proposal highly relevantly addresses emergent phenomena by focusing on the evolutionary emergence and functional consequences of complex protein topologies like knots and lassos."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Identifying specific phylogenetic branch points for nontrivial topological changes and correlating them with functional characteristics offers a highly novel approach with significant potential to advance structural biology."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 4,
+            "justification": "The methodology is very good, logically integrating sequence and structural data using established bioinformatics tools and validating findings through statistical analysis of thermal stability and functional hotspots."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 4,
+            "justification": "The 24-month timeline is realistic and well-planned for a computational synthesis project of this scale, supported by a cross-disciplinary team."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 4,
+            "justification": "The project demonstrates strong synthesis by primarily integrating existing databases, though it supplements this by generating new computational structural models to fill data gaps."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "Data sources (UniProt, PDB, AlphaFold DB, Meltome Atlas) are explicitly identified, and the limitation of missing structural information at specific branch points is thoughtfully addressed."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "While the proposal commits to an open data-driven platform and peer-reviewed publication, it lacks detailed plans for reproducible workflows and fails to explicitly include training for graduate students or postdocs."
+          }
+        ]
+      },
+      {
+        "evaluator": "claude-opus-4-5",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 3,
+            "justification": "The proposal addresses complex protein topologies which can be considered emergent structural features, but the connection to mesoscale emergent phenomena is not explicitly articulated. The focus is more on evolutionary origins than on emergence per se."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Identifying phylogenetic branch points where topological changes occur is a novel approach that could significantly advance understanding of protein evolution and function. The integration of multiple databases for this purpose represents meaningful innovation."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The methodology combining phylogenetic reconstruction with structural bioinformatics tools is sound, but the proposal lacks specific details on statistical methods, sample sizes, and how conflicting data will be resolved. The validation approach is mentioned but not elaborated."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "The 24-month timeline is reasonable for the described work, but the proposal provides only a high-level overview without detailed milestones. The mention of GPU-intensive prediction tools suggests computational demands that may affect timeline feasibility."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 3,
+            "justification": "The proposal primarily uses existing databases (UniProt, PDB, AlphaFold DB, Meltome Atlas), but explicitly mentions generating new structural models with GPU-intensive tools, which introduces a data generation component that dilutes the synthesis focus."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Key databases are identified (UniProt, PDB, AlphaFold DB, Meltome Atlas, KnotProt, AlphaKnot), but the proposal only briefly acknowledges limitations regarding structural information at branch points without thoroughly discussing data quality, coverage gaps, or integration challenges."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 2,
+            "justification": "The proposal mentions an 'open data-driven platform' and peer-reviewed publication but lacks concrete details on data sharing plans, code repositories, reproducibility protocols, or specific open science practices beyond general statements."
+          }
+        ]
+      }
+    ],
+    "avg_review_scores": {
+      "data_identification": 3.6666666666666665,
+      "novelty_and_significance": 4.0,
+      "open_science_commitment": 2.3333333333333335,
+      "relevance_to_emergent_phenomena": 3.3333333333333335,
+      "rigor_of_approach": 3.3333333333333335,
+      "scope_and_timeline": 3.3333333333333335,
+      "synthesis_focus": 3.3333333333333335
+    }
+  },
+  {
+    "title_norm": "intelligent metadata compilation for enhanced reusability and discoverability of mass spectrometry-based proteomics data",
+    "group": "Human",
+    "is_nn_outlier": true,
+    "is_lit_most_novel": true,
+    "nn_dist": 0.1639033,
+    "raw_novelty": 0.1309394538402557,
+    "novelty_z": 0.3229109644889831,
+    "novelty_ratio": 1.1821049451828003,
+    "title": "intelligent metadata compilation for enhanced reusability and discoverability of mass spectrometry-based proteomics data",
+    "author": "Human",
+    "authors": [],
+    "authors_departments": "",
+    "proposal_status": "",
+    "ranking": null,
+    "abstract_original": "",
+    "full_draft_original": "",
+    "standardized_text": "SCIENTIFIC BACKGROUND AND RESEARCH QUESTION\nMass spectrometry-based proteomics relies on experimental metadata to ensure the findability and reusability of data within public repositories. Current metadata remains inconsistent or buried in unstructured text which prevents systematic querying and automated secondary analysis of these datasets. This project develops automated workflows to harmonize metadata for the PRIDE repository to enable large-scale reanalysis and artificial intelligence (AI) model training.\n\nMETHODOLOGY AND ANALYTICAL APPROACH\nThe study employs a two-year design involving automated extraction from raw files and literature alongside community-driven algorithm development. The team utilizes Nextflow workflows and natural language processing (NLP) with large language models to implement SDRF-Proteomics standards. Results are validated against a gold-standard set of public datasets and a manually curated private test set.\n\nDATA SOURCES AND SYNTHESIS PLAN\nThe project utilizes the PRIDE repository and SDRF-Proteomics standards to manage diverse public proteomics datasets. Extracted metadata from raw files and scientific publications are harmonized using controlled vocabularies before integration into the PRIDE system. Incomplete metadata is addressed through NLP-based extraction and ensemble cross-checking supplemented by manual curation from the PRIDE team.\n\nFEASIBILITY AND TIMELINE\nThe two-year timeline prioritizes workflow development and community challenges in the first year followed by system integration and deployment. This project requires cross-disciplinary collaboration between bioinformatics and machine learning experts to build scalable and biologically accurate infrastructure.\n\nOPEN SCIENCE AND TEAM COMPOSITION\nAll code will be released on GitHub and findings will appear in open-access journals with educational resources provided via ProteomicsML. The team includes bioinformaticians and machine learning specialists alongside proteomics researchers and repository curators supported by NCEMS staff.",
+    "ai_reviews": [
+      {
+        "evaluator": "gpt-5.2",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 2,
+            "justification": "The work primarily targets infrastructure for metadata harmonization rather than explicitly addressing mesoscale emergent molecular/cellular phenomena. It could enable downstream emergent-phenomena studies, but that connection is not articulated as a central scientific aim."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Automated, standards-aligned metadata extraction at PRIDE scale using NLP/LLMs and workflow automation is a meaningful advance with high potential impact on proteomics reuse and AI-ready datasets. The significance is strong as it addresses a major bottleneck for large-scale synthesis and reanalysis."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The proposal outlines sensible components (Nextflow, SDRF-Proteomics, controlled vocabularies, gold-standard validation), but key details are underspecified (evaluation metrics, error analysis, bias/uncertainty handling, and how LLM outputs will be constrained and audited). Inclusion of a private test set also raises reproducibility questions unless a public surrogate benchmark is provided."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 4,
+            "justification": "A two-year plan with year-1 workflow/community challenge development and year-2 integration/deployment is plausible, especially with repository-curator involvement. Main risks are scaling across heterogeneous PRIDE submissions and sustaining manual curation needs, but the phased approach is reasonable."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is explicitly centered on synthesizing and harmonizing existing publicly available PRIDE datasets and associated publications, with no new experimental data generation. Integration into a standardized metadata framework is a clear synthesis deliverable."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "PRIDE and associated literature are clearly identified, and the need to address incomplete/unstructured metadata is acknowledged. However, limitations are not thoroughly analyzed (e.g., licensing/access constraints for full text, variability in raw-file annotations, domain drift across instruments, multilingual/format heterogeneity, and expected failure modes)."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 4,
+            "justification": "The proposal commits to open code (GitHub), open-access publication, and educational resources, aligning with reproducible workflow practices (Nextflow). It would be stronger with explicit plans for versioned releases, public benchmarks (including the 'gold standard'), provenance tracking, and governance for community contributions and model outputs."
+          }
+        ]
+      },
+      {
+        "evaluator": "gemini-3-pro-preview",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 1,
+            "justification": "The proposal focuses entirely on metadata harmonization and infrastructure development, failing to address any specific emergent phenomena at the mesoscale in molecular or cellular biosciences."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Applying NLP and large language models to automate metadata extraction for the PRIDE repository is a highly novel methodological approach that will significantly advance data reusability."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 4,
+            "justification": "The methodology is clear and well-grounded, utilizing established standards (SDRF-Proteomics) and modern computational techniques (Nextflow, NLP) with a solid validation strategy."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 4,
+            "justification": "The two-year timeline is realistic and well-structured, appropriately dividing workflow development and system integration phases."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 4,
+            "justification": "The project strongly aligns with synthesis goals by exclusively leveraging existing public proteomics datasets and literature, though it focuses more on metadata synthesis than biological data synthesis."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "Data sources (PRIDE repository, literature) are clearly identified, and the primary limitation of incomplete or unstructured metadata is thoughtfully addressed through NLP and ensemble cross-checking."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 5,
+            "justification": "The proposal demonstrates an exemplary commitment to open science by pledging to release all code on GitHub, publish in open-access journals, and provide educational resources via ProteomicsML."
+          }
+        ]
+      },
+      {
+        "evaluator": "claude-opus-4-5",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 1,
+            "justification": "The proposal focuses on metadata harmonization and infrastructure development for proteomics data repositories. It does not address emergent phenomena at the mesoscale in molecular/cellular biosciences; rather, it is a data management and standardization project."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 3,
+            "justification": "The application of NLP and large language models to automate metadata extraction represents a moderately novel approach. While significant for data reusability, the scientific advancement is primarily infrastructural rather than generating new biological insights."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The methodology involving Nextflow workflows, NLP, and validation against gold-standard datasets is reasonable and grounded in established practices. However, details on specific algorithms, validation metrics, and handling of edge cases are limited."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "The two-year timeline with phased workflow development and deployment is reasonable. However, the scope of harmonizing metadata across the entire PRIDE repository is ambitious, and specific milestones and contingency plans are not detailed."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 4,
+            "justification": "The project clearly focuses on synthesizing and harmonizing existing public proteomics data from PRIDE repository without generating new experimental data. It demonstrates strong synthesis characteristics through metadata integration across diverse datasets."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "The PRIDE repository and SDRF-Proteomics standards are explicitly identified as primary data sources. However, the proposal lacks detailed discussion of data quality limitations, coverage gaps, or challenges with inconsistent metadata across different dataset types."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 4,
+            "justification": "The proposal demonstrates strong commitment to open science with plans for GitHub code release, open-access publications, and educational resources via ProteomicsML. However, specific details on data sharing protocols and reproducibility frameworks could be more comprehensive."
+          }
+        ]
+      }
+    ],
+    "avg_review_scores": {
+      "data_identification": 3.3333333333333335,
+      "novelty_and_significance": 3.6666666666666665,
+      "open_science_commitment": 4.333333333333333,
+      "relevance_to_emergent_phenomena": 1.3333333333333333,
+      "rigor_of_approach": 3.3333333333333335,
+      "scope_and_timeline": 3.6666666666666665,
+      "synthesis_focus": 4.333333333333333
+    }
+  },
+  {
+    "title_norm": "the role of transposable elements in the emergence of genomic innovation",
+    "group": "Human",
+    "is_nn_outlier": false,
+    "is_lit_most_novel": true,
+    "nn_dist": 0.032679796,
+    "raw_novelty": 0.1208066195249557,
+    "novelty_z": 0.1607009619474411,
+    "novelty_ratio": 1.0906269550323486,
+    "title": "the role of transposable elements in the emergence of genomic innovation",
+    "author": "Human",
+    "authors": [],
+    "authors_departments": "",
+    "proposal_status": "",
+    "ranking": null,
+    "abstract_original": "",
+    "full_draft_original": "",
+    "standardized_text": "SCIENTIFIC BACKGROUND AND RESEARCH QUESTION\nVertebrate genomics investigates how transposable elements (TEs) drive genomic innovation and species diversification despite the limitations of standard short-read sequencing pipelines. Although TEs contribute to regulatory innovation, their repetitive nature causes ambiguous read mapping and their exclusion from most existing genomic datasets. This research determines how TEs generate novel functional elements to explain how molecular insertions drive emergent regulatory networks and phenotypic evolution.\n\nMETHODOLOGY AND ANALYTICAL APPROACH\nThe study design employs a two-phase approach involving large-scale reprocessing of public genomic data and integrative synthesis to identify patterns of functional innovation. Methods include the use of telomere-to-telomere assemblies and probabilistic read allocation tools alongside hidden Markov models and tensor decomposition for data integration. Results are validated through consistent peak calling across reprocessed datasets and the assessment of conservation across species using multi-species alignments.\n\nDATA SOURCES AND SYNTHESIS PLAN\nThe project utilizes public genomic and transcriptomic data from the ENCODE and Roadmap Epigenomics and FAANG and GTEx databases. Data integration involves intersecting reprocessed regulatory maps with TE annotations to link transcription factors and TE families with tissue-specific gene expression. Ambiguity in short-read mapping represents a known limitation that the team mitigates by using repeat-aware alignment configurations and probabilistic read allocation algorithms.\n\nFEASIBILITY AND TIMELINE\nThe project follows a two-year schedule with data reprocessing in the first year and integrative interpretation in the second year. Multi-lab collaboration is necessary because the project requires diverse expertise in transposon biology and computational modeling to process over 75,000 datasets.\n\nOPEN SCIENCE AND TEAM COMPOSITION\nThe project produces a public data resource of reprocessed genomic analyses and shares reproducible repeat-aware analysis pipelines. The team includes researchers with expertise in TE functionalization and multi-omic data modeling although the proposal does not address specific career stages or training opportunities.",
+    "ai_reviews": [
+      {
+        "evaluator": "gpt-5.2",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 4,
+            "justification": "The proposal links TE insertions to the emergence of regulatory networks and phenotypic evolution, which is a plausible mesoscale emergent phenomenon. However, the emergent-phenomena framing is more implied than operationalized with explicit mesoscale hypotheses and measurable emergence metrics."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Large-scale repeat-aware reprocessing and cross-consortium integration to recover TE-derived regulatory activity is timely and could substantially change how existing functional genomics data are interpreted. The significance is high, though the core idea (TEs as regulatory innovators) is established and the novelty rests mainly in scale and synthesis."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The methods listed (repeat-aware alignment, probabilistic allocation, HMMs, tensor decomposition, cross-species conservation) are appropriate, but the proposal lacks key implementation details (QC criteria, benchmarking plan, model selection, confounder control, and statistical testing strategy). Validation is described largely as internal consistency rather than independent ground truth or sensitivity analyses."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "Reprocessing ~75,000 datasets in year 1 is ambitious and may be constrained by compute, storage, and harmonization across assays/consortia. The two-phase plan is sensible, but milestones, contingencies, and resource estimates are not sufficiently specified to fully de-risk delivery within two years."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is explicitly based on reanalysis and integration of existing public datasets and proposes no new experimental data generation. The central deliverable is a synthesized, reprocessed resource integrating regulatory maps, TE annotations, and expression across tissues and species."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "Major sources (ENCODE, Roadmap, FAANG, GTEx, T2T assemblies, multi-species alignments) are clearly identified and the key limitation (short-read ambiguity) is acknowledged with mitigation strategies. More thorough discussion is needed on batch effects, assay heterogeneity, reference/annotation versioning, and biases introduced by probabilistic allocation."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 4,
+            "justification": "The proposal commits to releasing a public resource and reproducible repeat-aware pipelines, aligning well with open and reproducible science expectations. It would be stronger with concrete implementation details (repositories, licensing, workflow/container standards, governance, and timelines for releases)."
+          }
+        ]
+      },
+      {
+        "evaluator": "gemini-3-pro-preview",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 4,
+            "justification": "The proposal explicitly focuses on how molecular insertions of transposable elements drive emergent regulatory networks and phenotypic evolution, making emergent phenomena a key focus."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Reprocessing existing datasets to include previously ignored repetitive elements is a highly innovative approach that has significant potential to uncover novel functional elements and advance genomic science."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 4,
+            "justification": "The methodology is clear and logical, utilizing advanced computational techniques like probabilistic read allocation and tensor decomposition, backed by solid validation strategies."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "While the two-phase approach is logical, reprocessing over 75,000 datasets within a single year presents significant computational and logistical challenges that may strain the two-year timeline."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is an exemplary synthesis effort that relies entirely on integrating existing public genomic and transcriptomic data without generating any new experimental data."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "Data sources (ENCODE, Roadmap Epigenomics, FAANG, GTEx) are explicitly identified, and the known limitation of short-read mapping ambiguity is thoughtfully addressed with a clear mitigation strategy."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "The proposal commits to sharing public data resources and reproducible pipelines, but it completely omits plans for trainee development and career stage diversity, which are key requirements of the RFP."
+          }
+        ]
+      },
+      {
+        "evaluator": "claude-opus-4-5",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 3,
+            "justification": "The proposal addresses how TEs contribute to emergent regulatory networks and phenotypic evolution, which relates to emergence at the genomic level. However, the connection to mesoscale emergent phenomena in molecular/cellular biosciences is not explicitly developed or central to the research design."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "The systematic reprocessing of over 75,000 datasets using repeat-aware methods to understand TE-driven genomic innovation represents a highly novel approach. This could significantly advance understanding of how TEs contribute to regulatory evolution and species diversification."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The methodology includes appropriate tools (telomere-to-telomere assemblies, HMMs, tensor decomposition) and validation strategies. However, the proposal lacks specific details on how these methods will be integrated and how results will be statistically validated across the massive dataset."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 2,
+            "justification": "Processing over 75,000 datasets in the first year is extremely ambitious, and the proposal lacks detailed milestones or contingency plans. The two-year timeline may be insufficient given the computational and analytical complexity involved."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The proposal is exclusively focused on synthesizing existing public data from multiple major databases (ENCODE, Roadmap Epigenomics, FAANG, GTEx) with a comprehensive integration plan linking regulatory maps with TE annotations."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "Data sources are clearly identified from well-established repositories, and the key limitation of short-read mapping ambiguity is acknowledged with proposed mitigation strategies. However, more detail on data quality assessment and handling of heterogeneous datasets would strengthen the proposal."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "The proposal commits to producing public data resources and sharing reproducible pipelines, which demonstrates moderate commitment to open science. However, it lacks specific details on data sharing timelines, repository selection, and notably fails to address training opportunities for the next generation as required by the RFP."
+          }
+        ]
+      }
+    ],
+    "avg_review_scores": {
+      "data_identification": 4.0,
+      "novelty_and_significance": 4.0,
+      "open_science_commitment": 3.3333333333333335,
+      "relevance_to_emergent_phenomena": 3.6666666666666665,
+      "rigor_of_approach": 3.3333333333333335,
+      "scope_and_timeline": 2.6666666666666665,
+      "synthesis_focus": 5.0
+    }
+  },
+  {
+    "title_norm": "discovery and functional characterization of bacterial organelles via integrated omics data mining and refinement",
+    "group": "Human",
+    "is_nn_outlier": true,
+    "is_lit_most_novel": false,
+    "nn_dist": 0.123304546,
+    "raw_novelty": 0.1162541657686233,
+    "novelty_z": 0.087823674082756,
+    "novelty_ratio": 1.0495280027389526,
+    "title": "discovery and functional characterization of bacterial organelles via integrated omics data mining and refinement",
+    "author": "Human",
+    "authors": [],
+    "authors_departments": "",
+    "proposal_status": "",
+    "ranking": null,
+    "abstract_original": "",
+    "full_draft_original": "",
+    "standardized_text": "SCIENTIFIC BACKGROUND AND RESEARCH QUESTION\nBacterial cell biology investigates the distribution and regulation of subcellular organelles within diverse microbial communities to address current knowledge gaps. While molecular mechanisms for specific organelles exist in model systems, their regulatory dynamics in natural microbiomes remain largely uncharacterized. This project maps the landscape and diversity of bacterial organelles within the human gut microbiome to shift research from isolated organisms toward complex ecological contexts.\n\nMETHODOLOGY AND ANALYTICAL APPROACH\nThe study employs a community synthesis approach to identify and categorize organelle expression patterns across large-scale multi-omics datasets. Researchers will utilize Hidden Markov Models (HMMs) and the Phaseek machine learning (ML) model alongside gene neighborhood analysis and co-expression networks. Results will be validated through the cross-referencing of metatranscriptomic and metaproteomic data and benchmarked against curated metagenomic datasets.\n\nDATA SOURCES AND SYNTHESIS PLAN\nThe project utilizes the GMrepo database and the IBD Multi-omics Database (MGYS00006120) to access human gut metagenomic information. These distinct datasets will be integrated to correlate the presence of organelles with functional expression and specific environmental conditions. Potential false positives in identifying virus-like encapsulins will be mitigated by refining HMM thresholds and applying multi-omics validation.\n\nFEASIBILITY AND TIMELINE\nThe project spans two years from February 2026 to January 2028 and includes phases for team assembly and data processing. This scope requires cross-disciplinary collaboration to integrate expertise across distinct organelle classes and to leverage infrastructure for large-scale data harmonization.\n\nOPEN SCIENCE AND TEAM COMPOSITION\nThe team will create a publicly accessible database of bacterial organelles and publish all findings and predictive frameworks in peer-reviewed journals. The multi-disciplinary team includes experts in bacterial genetics and computational biology alongside early-career researchers and staff scientists.",
+    "ai_reviews": [
+      {
+        "evaluator": "gpt-5.2",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 3,
+            "justification": "The proposal targets organelle distribution and expression patterns across complex gut microbial communities, which can reflect mesoscale organization. However, emergent phenomena are not explicitly framed as the central conceptual objective (e.g., community-level emergence, collective regulation, or higher-order organization)."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Integrating metagenomics with metatranscriptomics/metaproteomics to map and functionally contextualize bacterial organelles in the gut is timely and potentially impactful. The planned organelle-focused resource and improved detection/false-positive control could meaningfully advance microbial cell biology beyond model organisms."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The overall pipeline (HMMs, neighborhood analysis, co-expression, multi-omics cross-validation) is sensible, but key details are underspecified (e.g., benchmarking strategy, ground truth labels, batch/confounder handling, model evaluation metrics, and how Phaseek will be trained/validated on heterogeneous microbiome data)."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "A two-year timeline is plausible for a discovery and integration effort, but the scope (multiple organelle classes, large-scale harmonization, ML, and a public database) is ambitious without clear milestones, staffing plan, or contingencies for data heterogeneity and compute demands."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The work is explicitly based on integrating existing public multi-omics resources and does not propose new experimental data generation, aligning strongly with a synthesis-only working group model."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Two primary sources (GMrepo and IBD Multi-omics Database MGYS00006120) are named, and false positives are acknowledged for encapsulin-like signals. However, broader limitations (sampling bias, inconsistent metadata, compositionality, strain-resolved ambiguity, batch effects across studies, and incomplete proteome coverage) are not discussed in a concrete mitigation plan."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "The proposal commits to a public database and publishing predictive frameworks, indicating positive intent. It lacks specifics on reproducible workflows (versioned code, containers, provenance, preregistered analysis plans), governance for team science, and data/metadata licensing and deposition details."
+          }
+        ]
+      },
+      {
+        "evaluator": "gemini-3-pro-preview",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 4,
+            "justification": "The proposal effectively addresses emergent phenomena by investigating the distribution and regulatory dynamics of bacterial organelles within complex microbial communities, shifting focus from isolated organisms to ecological contexts."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Applying multi-omics data mining to characterize bacterial organelles in natural microbiomes rather than model systems is a highly novel approach with significant potential to advance the field."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 4,
+            "justification": "The methodology is well-grounded, utilizing a logical combination of Hidden Markov Models, machine learning, and co-expression networks, validated through cross-referencing multiple omics layers."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 4,
+            "justification": "The two-year timeline is realistic for a synthesis project of this scale, with clearly defined phases for team assembly, data processing, and large-scale harmonization."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is an exemplary synthesis effort that relies entirely on integrating existing multi-omics datasets without generating any new experimental data."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 5,
+            "justification": "Data sources are explicitly identified (GMrepo, IBD Multi-omics Database MGYS00006120), and limitations such as false positives in virus-like encapsulins are thoughtfully addressed with mitigation strategies."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 4,
+            "justification": "The proposal demonstrates a strong commitment to open science by planning a publicly accessible database and including early-career researchers, though it lacks explicit mention of sharing analytical workflows or code."
+          }
+        ]
+      },
+      {
+        "evaluator": "claude-opus-4-5",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 3,
+            "justification": "The proposal addresses bacterial organelles in complex microbiome contexts, which relates to emergent phenomena at the cellular level. However, the connection to mesoscale emergence is not explicitly articulated or central to the research questions."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 3,
+            "justification": "Mapping bacterial organelle diversity across gut microbiomes represents a meaningful advancement, and the integration of multi-omics approaches is valuable. However, the approach builds on existing methods (HMMs, Phaseek) rather than introducing transformative new concepts."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The methodology combining HMMs, ML models, and multi-omics validation is logical and grounded in established practices. However, the proposal lacks specific details on analytical parameters, statistical frameworks, and how different organelle classes will be systematically categorized."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "The two-year timeline with phases for team assembly and data processing is reasonable. However, the proposal provides insufficient detail on specific milestones, deliverables, and how the ambitious scope of characterizing diverse organelle classes will be managed within this timeframe."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 4,
+            "justification": "The proposal clearly focuses on synthesizing existing publicly available data from GMrepo and IBD Multi-omics databases without generating new experimental data. The integration plan across metatranscriptomic and metaproteomic datasets demonstrates strong synthesis orientation."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Specific databases (GMrepo, MGYS00006120) are identified, and the proposal acknowledges the limitation of false positives in encapsulin identification. However, discussion of data quality issues, coverage gaps, and other potential limitations is limited."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "The proposal commits to creating a publicly accessible database and publishing findings in peer-reviewed journals. However, it lacks specific details on data sharing protocols, code repositories, reproducibility frameworks, and community engagement strategies."
+          }
+        ]
+      }
+    ],
+    "avg_review_scores": {
+      "data_identification": 3.6666666666666665,
+      "novelty_and_significance": 3.6666666666666665,
+      "open_science_commitment": 3.3333333333333335,
+      "relevance_to_emergent_phenomena": 3.3333333333333335,
+      "rigor_of_approach": 3.3333333333333335,
+      "scope_and_timeline": 3.3333333333333335,
+      "synthesis_focus": 4.666666666666667
+    }
+  },
+  {
+    "title_norm": "synthesis of gene expression data for the construction of a bacterial cell state atlas",
+    "group": "Human",
+    "is_nn_outlier": true,
+    "is_lit_most_novel": false,
+    "nn_dist": 0.13283515,
+    "raw_novelty": 0.0962190851569175,
+    "novelty_z": -0.2329049557447433,
+    "novelty_ratio": 0.8686537742614746,
+    "title": "synthesis of gene expression data for the construction of a bacterial cell state atlas",
+    "author": "Human",
+    "authors": [],
+    "authors_departments": "",
+    "proposal_status": "",
+    "ranking": null,
+    "abstract_original": "",
+    "full_draft_original": "",
+    "standardized_text": "SCIENTIFIC BACKGROUND AND RESEARCH QUESTION\nThe research domain of bacterial physiology and systems biology investigates the organization and evolution of bacterial gene expression states. Current knowledge remains fragmented because existing data are limited to isolated experiments and lack a standardized method for harmonizing heterogeneous omics datasets. This project develops a comprehensive atlas of bacterial cell states to identify fundamental organizing principles and enable non-genetic reprogramming of bacteria.\n\nMETHODOLOGY AND ANALYTICAL APPROACH\nThe study design employs a hierarchical approach that maps gene expression space across model strains and diverse bacterial species. Key methods include the InGEST pipeline for data harmonization and unsupervised machine learning (ML) for dimensional reduction and state prediction. Results will be validated through the use of synthetic mixtures of pure-state datasets and existing single-cell transcriptomic data.\n\nDATA SOURCES AND SYNTHESIS PLAN\nDatasets will be sourced from public repositories including OKgeneExpDB and Ecomics and PRECISE and COLUMBOS and iModulonDB. These datasets will be integrated by applying standardized filtering and normalization through the InGEST pipeline to create a consistent feature space. Systematic variation from different technologies will be mitigated by developing algorithms to detect and adjust for technical anomalies and batch effects.\n\nFEASIBILITY AND TIMELINE\nThe project follows a two-year timeline that focuses on pipeline development in the first year and cross-species expansion in the second year. Multi-lab collaboration is required to manage large-scale data synthesis and leverage specialized computational expertise for machine learning (ML).\n\nOPEN SCIENCE AND TEAM COMPOSITION\nThe project will release the InGEST pipeline and the bacterial cell state atlas as open-source and containerized resources. The proposal does not address the composition of the research team.",
+    "ai_reviews": [
+      {
+        "evaluator": "gpt-5.2",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 4,
+            "justification": "Constructing a bacterial “cell state atlas” from transcriptomic states targets mesoscale organization (cell states emerging from gene regulatory interactions), though the proposal could more explicitly frame the emergent phenomena hypotheses to be tested."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "A cross-species, harmonized atlas of bacterial expression states with state prediction is a significant synthesis contribution and could enable new principles of physiological organization, but similar efforts exist in parts (e.g., iModulons) and the transformative leap is not fully articulated."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The overall workflow (harmonization + unsupervised ML + validation via mixtures/single-cell) is logical, but key details are missing (model selection, evaluation metrics, confounder control, and how cross-platform normalization will be benchmarked)."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "A two-year plan for both pipeline development and broad cross-species expansion is plausible but ambitious given the complexity of batch correction and ontology/state definition across technologies and species, and milestones/contingencies are not specified."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is explicitly based on integrating multiple publicly available expression resources and does not propose new experimental data generation."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Several repositories are named, but the proposal does not specify inclusion/exclusion criteria, expected sample sizes/coverage, metadata requirements, or major limitations (e.g., annotation inconsistencies, condition imbalance, platform biases, missing metadata)."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 4,
+            "justification": "Releasing the pipeline and atlas as open-source, containerized resources is strong, but the proposal lacks details on governance, versioned workflows, data provenance, licensing, and reproducibility practices (e.g., notebooks, CI, registered releases)."
+          }
+        ]
+      },
+      {
+        "evaluator": "gemini-3-pro-preview",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 4,
+            "justification": "The project focuses on the organization of bacterial gene expression into distinct cell states, which effectively addresses emergent systems-level phenomena in biology."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Developing a comprehensive cell state atlas to enable non-genetic reprogramming is a highly innovative approach with significant potential to advance bacterial systems biology."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 4,
+            "justification": "The methodology is logical and well-grounded, utilizing a clear harmonization pipeline (InGEST), unsupervised machine learning, and robust validation strategies."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 4,
+            "justification": "The two-year timeline is realistic, appropriately dividing the work into pipeline development in year one and cross-species expansion in year two."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is an exemplary synthesis effort that relies entirely on integrating existing public datasets without generating new experimental data."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "Multiple specific public databases are explicitly identified, and the proposal thoughtfully addresses the limitations of batch effects and technical anomalies."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "While the proposal commits to releasing open-source and containerized resources, it completely fails to address team composition, diversity, and training requirements."
+          }
+        ]
+      },
+      {
+        "evaluator": "claude-opus-4-5",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 3,
+            "justification": "The proposal addresses bacterial cell states and organizing principles, which relate to emergent phenomena at the cellular level. However, the connection to mesoscale emergence is implicit rather than explicitly articulated as a central focus."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Creating a comprehensive bacterial cell state atlas through integration of diverse datasets represents a highly novel approach with significant potential to advance understanding of bacterial physiology and enable new applications like non-genetic reprogramming."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The methodology includes established approaches like the InGEST pipeline and unsupervised ML, with validation through synthetic mixtures. However, details on specific algorithms and handling of cross-species comparisons are limited."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "The two-year timeline with phased approach (pipeline development then cross-species expansion) is reasonable, but the proposal lacks specific milestones and the absence of team composition details raises concerns about execution capacity."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The proposal is exclusively focused on synthesizing existing publicly available data from multiple repositories without generating new experimental data, representing an exemplary synthesis approach."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Multiple specific databases are identified (OKgeneExpDB, Ecomics, PRECISE, COLUMBOS, iModulonDB), but the proposal does not adequately discuss data limitations, coverage gaps, or potential quality issues across these heterogeneous sources."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "The proposal commits to releasing the InGEST pipeline and atlas as open-source containerized resources, but lacks details on data sharing protocols, reproducibility workflows, and community engagement strategies."
+          }
+        ]
+      }
+    ],
+    "avg_review_scores": {
+      "data_identification": 3.3333333333333335,
+      "novelty_and_significance": 4.0,
+      "open_science_commitment": 3.3333333333333335,
+      "relevance_to_emergent_phenomena": 3.6666666666666665,
+      "rigor_of_approach": 3.3333333333333335,
+      "scope_and_timeline": 3.3333333333333335,
+      "synthesis_focus": 5.0
+    }
+  },
+  {
+    "title_norm": "mapping transient metabolons through integrated interactomics to elucidate the emergence of metabolic channeling",
+    "group": "gemini-3-pro-preview",
+    "is_nn_outlier": true,
+    "is_lit_most_novel": false,
+    "nn_dist": 0.14149499,
+    "raw_novelty": null,
+    "novelty_z": null,
+    "novelty_ratio": null,
+    "title": "mapping transient metabolons through integrated interactomics to elucidate the emergence of metabolic channeling",
+    "author": "gemini-3-pro-preview",
+    "authors": [
+      "gemini-3-pro-preview"
+    ],
+    "ai_reviews": [
+      {
+        "evaluator": "gpt-5.2",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 4,
+            "justification": "The proposal centers on how transient enzyme clustering (a mesoscale organization) gives rise to metabolic channeling, an explicitly emergent functional property not predictable from isolated enzymes."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 3,
+            "justification": "Integrating interactomics with spatially constrained flux modeling to infer metabolon-like behavior is novel and potentially impactful, but the proposal does not clearly articulate specific testable hypotheses or decisive biological use cases that would make the advance more significant."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 2,
+            "justification": "Key methodological details are underspecified (how clustering probabilities are derived, how spatial constraints are parameterized, and what constitutes validation), and the proposed comparison to diffusion-limited theoretical limits is not a clear empirical benchmark for model correctness."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 1,
+            "justification": "No milestones, deliverables, or timeline are provided, making it impossible to assess whether the ambitious integration/modeling goals are achievable within a working-group timeframe."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 4,
+            "justification": "The project is framed as exclusively leveraging and integrating existing public resources (STRING, BioGRID, BRENDA, Human Protein Atlas) to build models, consistent with a synthesis-only effort."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Major data sources are named and one limitation (static interaction maps) is acknowledged, but important constraints are not addressed (context specificity of PPIs, enzyme isoforms/compartments, kinetic parameter heterogeneity, missingness/bias, and mapping uncertainty across databases)."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 1,
+            "justification": "The proposal does not describe any concrete plans for open workflows, code sharing, preregistration, reproducible pipelines, or public release of integrated datasets and outputs."
+          }
+        ]
+      },
+      {
+        "evaluator": "gemini-3-pro-preview",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 5,
+            "justification": "The proposal directly and explicitly addresses the emergence of metabolic channeling through transient enzyme clustering, a clear mesoscale emergent phenomenon."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Integrating static interaction maps with probability distributions to model dynamic, transient metabolons is highly novel and challenges existing assumptions about metabolic efficiency."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 4,
+            "justification": "The methodology is clear and logical, utilizing spatially-constrained metabolic flux models and validating simulated rates against theoretical diffusion limits."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 1,
+            "justification": "The proposal completely fails to address milestones or an overall timeline, making it impossible to evaluate the feasibility of the project."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is an exemplary synthesis effort that relies entirely on integrating existing publicly available datasets without generating new experimental data."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "Data sources are clearly identified (STRING, BioGRID, BRENDA, HPA), and the limitation of static interaction maps is thoughtfully addressed with a mitigation strategy."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 1,
+            "justification": "The proposal demonstrates no commitment to open science, explicitly failing to address plans for sharing findings, code, or data."
+          }
+        ]
+      },
+      {
+        "evaluator": "claude-opus-4-5",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 4,
+            "justification": "The proposal directly addresses how transient enzyme clustering leads to emergent metabolic channeling behavior, which is a mesoscale phenomenon arising from molecular interactions. The focus on metabolons as dynamic assemblies creating 'metabolic super-highways' is clearly relevant to emergence."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "The approach of integrating multiple interactomics datasets to model transient metabolon formation represents a novel synthesis strategy. Challenging the assumption of well-mixed kinetics through spatially-constrained modeling could significantly advance understanding of metabolic organization."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 2,
+            "justification": "While the general approach of integrating protein-protein interaction data with kinetic parameters is logical, the methodology lacks specific details on how probability distributions will be derived, how spatial constraints will be implemented, and how validation against diffusion-limited kinetics will be performed."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 1,
+            "justification": "The proposal explicitly states it does not address milestones or overall timeline. Without any timeline or milestone information, it is impossible to assess whether the goals are achievable within any proposed timeframe."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 4,
+            "justification": "The proposal clearly focuses on synthesizing existing publicly available data from multiple established databases (STRING, BioGRID, BRENDA, Human Protein Atlas) without generating new experimental data. The integration plan across these diverse data types is appropriate for a synthesis project."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Four major databases are explicitly identified, and the limitation of static interaction maps is acknowledged with a proposed mitigation strategy using probability distributions. However, more detail on specific data types to be extracted and additional limitations would strengthen this section."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 1,
+            "justification": "The proposal explicitly states it does not address plans for making findings, code, or data publicly available. This is a critical omission given the funding call's explicit requirement to adhere to open science principles."
+          }
+        ]
+      }
+    ],
+    "avg_review_scores": {
+      "data_identification": 3.3333333333333335,
+      "novelty_and_significance": 3.6666666666666665,
+      "open_science_commitment": 1.0,
+      "relevance_to_emergent_phenomena": 4.333333333333333,
+      "rigor_of_approach": 2.6666666666666665,
+      "scope_and_timeline": 1.0,
+      "synthesis_focus": 4.333333333333333
+    }
+  },
+  {
+    "title_norm": "emergent immune evasion mechanisms mediated by bulky glycan shields in the glycocalyx",
+    "group": "gemini-3-pro-preview",
+    "is_nn_outlier": true,
+    "is_lit_most_novel": false,
+    "nn_dist": 0.16844225,
+    "raw_novelty": null,
+    "novelty_z": null,
+    "novelty_ratio": null,
+    "title": "emergent immune evasion mechanisms mediated by bulky glycan shields in the glycocalyx",
+    "author": "gemini-3-pro-preview",
+    "authors": [
+      "gemini-3-pro-preview"
+    ],
+    "ai_reviews": [
+      {
+        "evaluator": "gpt-5.2",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 5,
+            "justification": "The proposal explicitly targets mesoscale emergent physical properties of the glycocalyx (steric/brush-like barrier behavior) and links them to immune access and exclusion, a clear emergence-focused framing."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Mapping transcriptomic/glycomic information to a biophysical “barrier score” and testing associations with T-cell exclusion and outcomes is a novel synthesis direction with high potential impact, though similar immune-exclusion correlates exist and the transformative leap depends on validation strength."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The multi-model pipeline (ML inference + coarse-grained MD + SCFT) is conceptually strong, but key methodological details are underspecified (ground-truth for glycan structure inference, uncertainty propagation, confounder control, and clear validation metrics), creating risk of overfitting and interpretability gaps."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "A three-year plan is plausible, but integrating heterogeneous omics with computationally intensive simulations and clinical/histology validation is ambitious; feasibility would improve with clearer milestones, downscoped initial deliverables, and contingency plans if key datasets lack required annotations."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is entirely based on integrating existing public resources (TCGA, GEO, GlyGen, PDB) and focuses on synthesis/analysis rather than generating new experimental data."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Major repositories are named, but specific cohorts/assays (e.g., which TCGA cancer types, which spatial/histology datasets, which glycoproteomics/glycomics studies) and limitations (batch effects, missing glycosylation context, tumor purity, spatial assay heterogeneity) are not thoroughly articulated."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 4,
+            "justification": "Commitments to an open-source Python package and a public atlas are strong, but the plan would be exemplary with more detail on reproducible workflows (containers, CI, provenance), governance for team science, and explicit data/metadata licensing and release timelines."
+          }
+        ]
+      },
+      {
+        "evaluator": "gemini-3-pro-preview",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 5,
+            "justification": "The proposal directly and explicitly addresses mesoscale emergent phenomena by modeling the emergent physical properties of the glycocalyx as a biophysical barrier."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Shifting the focus from chemical recognition to the physical, mesoscale barrier properties of the glycocalyx using a computational synthesis approach is highly novel and has significant potential to advance immunology."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 4,
+            "justification": "The methodology is clear and well-grounded, effectively combining machine learning, coarse-grained molecular dynamics, and polymer physics, with a strong plan for validation against clinical and histological data."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 4,
+            "justification": "The three-year timeline is realistic and well-structured, with logical phases progressing from data curation and simulation to validation and tool dissemination."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is an exemplary synthesis effort that relies entirely on integrating existing transcriptomic, glycomic, and structural datasets without generating new experimental data."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "Key data sources (TCGA, GEO, GlyGen, PDB) are explicitly identified, and the challenges of integrating disparate data types are acknowledged and addressed via specific protocols."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 5,
+            "justification": "The proposal demonstrates an exemplary commitment to open science by planning to release an open-source Python package and a public web-based atlas, alongside clear plans for trainee involvement."
+          }
+        ]
+      },
+      {
+        "evaluator": "claude-opus-4-5",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 5,
+            "justification": "The proposal directly and explicitly addresses mesoscale emergent phenomena by modeling the glycocalyx as a biophysical barrier whose collective physical properties emerge from molecular-level glycan organization to influence immune cell access at the cellular scale."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "The approach of integrating transcriptomic data with polymer physics models to predict immune evasion through physical barrier properties represents a highly novel perspective that shifts focus from chemical recognition to emergent biophysical properties, with significant potential to advance cancer immunology."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The methodology combining machine learning, coarse-grained molecular dynamics, and polymer self-consistent field theory is logical and grounded in established practices, but the proposal lacks specific details on validation approaches and how discrepancies between predicted and observed outcomes will be addressed."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "The three-year timeline with phases for data curation, simulation, validation, and dissemination is reasonable, but the ambitious scope of integrating disparate data types and building a comprehensive Virtual Glycocalyx pipeline presents significant challenges that may require more detailed milestone planning."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The proposal exemplifies a synthesis project by exclusively utilizing existing public datasets (TCGA, GEO, GlyGen, PDB) and integrating them through a unified computational pipeline without generating any new experimental data."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Major data sources are explicitly identified, and the proposal acknowledges challenges from disparate data types, but it lacks detailed discussion of specific limitations such as data completeness, quality variations across sources, or potential biases in the training datasets."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 4,
+            "justification": "The proposal demonstrates strong commitment to open science through plans for an open-source Python package and public web-based atlas, though it could benefit from more specific details on data sharing protocols, version control, and reproducibility documentation."
+          }
+        ]
+      }
+    ],
+    "avg_review_scores": {
+      "data_identification": 3.3333333333333335,
+      "novelty_and_significance": 4.0,
+      "open_science_commitment": 4.333333333333333,
+      "relevance_to_emergent_phenomena": 5.0,
+      "rigor_of_approach": 3.3333333333333335,
+      "scope_and_timeline": 3.3333333333333335,
+      "synthesis_focus": 5.0
+    }
+  },
+  {
+    "title_norm": "decoding signaling fidelity through integrated phosphoproteomics and structural analysis of kinase-substrate networks",
+    "group": "claude-opus-4-5",
+    "is_nn_outlier": true,
+    "is_lit_most_novel": false,
+    "nn_dist": 0.123304546,
+    "raw_novelty": null,
+    "novelty_z": null,
+    "novelty_ratio": null,
+    "title": "decoding signaling fidelity through integrated phosphoproteomics and structural analysis of kinase-substrate networks",
+    "author": "claude-opus-4-5",
+    "authors": [
+      "claude-opus-4-5"
+    ],
+    "ai_reviews": [
+      {
+        "evaluator": "gpt-5.2",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 4,
+            "justification": "The proposal explicitly targets mesoscale organizational features as determinants of signaling fidelity, aligning well with emergence concepts in cellular networks. However, the emergent phenomenon is described somewhat generally without a crisp operational definition or measurable emergent readouts."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Integrating phosphoproteomics with structural context (e.g., AlphaFold-derived features) to model kinase–substrate specificity beyond motifs is a timely and potentially high-impact synthesis direction. The significance would be stronger with clearer, testable hypotheses and concrete deliverables (e.g., specific predictive benchmarks or new principles to be derived)."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The overall approach (knowledge graph integration, ML plus ODE modeling, cross-dataset validation) is reasonable, but key methodological details are missing (model classes, feature definitions, handling missingness/bias, evaluation metrics, and identifiability/parameterization strategy for ODEs). Validation is mentioned but not specified in a way that ensures robust causal or mechanistic inference."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "A 36-month plan is plausible, but the scope (multi-source harmonization, knowledge graph construction, ML, ODE dynamics, and disease-focused analyses) is broad and could be difficult without explicit milestones, staffing plans, and contingency strategies. Feasibility would improve with a phased set of concrete deliverables and go/no-go criteria."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is clearly framed as a synthesis effort using publicly available resources (e.g., PhosphoSitePlus, AlphaFold DB) and emphasizes integration rather than new data generation. The knowledge-graph approach is well-suited to community-scale data synthesis."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Some key sources are named, but the proposal does not comprehensively enumerate datasets (e.g., specific phosphoproteomics repositories/studies, interaction databases, kinase–substrate resources) or address major limitations such as study-specific batch effects, site localization uncertainty, context dependence (cell type/stimulus), and AlphaFold confidence/complex-structure gaps. Evidence-level filtering is noted, but the criteria and bias implications are not articulated."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 4,
+            "justification": "The proposal commits to releasing models and pipelines in public repositories under permissive licenses, supporting reproducibility. It would be stronger with specifics on versioned workflows (e.g., containers), data/metadata schemas, governance for team science, and a plan for releasing the integrated knowledge graph with provenance."
+          }
+        ]
+      },
+      {
+        "evaluator": "gemini-3-pro-preview",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 5,
+            "justification": "The proposal explicitly focuses on how mesoscale organizational features generate signaling specificity, directly addressing emergent phenomena."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Shifting from sequence-motif models to mesoscale organizational context using integrated multi-omics and structural data represents a highly novel approach with significant potential."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 4,
+            "justification": "The integration of machine learning and ODE modeling, backed by cross-dataset validation and positive controls, provides a rigorous and logical methodological framework."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 4,
+            "justification": "The 36-month timeline is realistic for the proposed scope, and the necessity of cross-disciplinary collaboration is well-justified."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is an exemplary synthesis effort that relies entirely on integrating existing datasets to build a unified knowledge graph, with no new experimental data generation."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "Key databases like PhosphoSitePlus and AlphaFold are explicitly named, and data heterogeneity limitations are addressed through evidence-level filtering."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 4,
+            "justification": "The team demonstrates a strong commitment to open science by pledging to release models and pipelines in public repositories under permissive licenses, alongside clear training goals."
+          }
+        ]
+      },
+      {
+        "evaluator": "claude-opus-4-5",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 4,
+            "justification": "The proposal explicitly addresses mesoscale organizational features that generate signaling specificity, which is directly relevant to emergent phenomena. The focus on how organizational context determines signaling fidelity beyond simple sequence motifs represents a clear engagement with emergence at the mesoscale."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 3,
+            "justification": "The integration of phosphoproteomics with structural analysis to understand kinase-substrate networks represents a novel approach. However, the proposal lacks specific details about what new insights or principles might emerge, limiting assessment of its transformative potential."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 2,
+            "justification": "While the proposal mentions ML algorithms and ODE modeling, it lacks specificity about which methods will be used and how they will be applied. The validation approach through cross-dataset testing is mentioned but not elaborated, leaving significant methodological gaps."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 2,
+            "justification": "The 36-month timeline is mentioned but lacks detailed milestones or phase descriptions. The scope appears ambitious given the vague methodology, and there is no discussion of potential challenges or contingency plans."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 4,
+            "justification": "The proposal clearly focuses on synthesizing existing publicly available data from multiple databases without generating new experimental data. The knowledge graph approach demonstrates a clear integration strategy for existing datasets."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "PhosphoSitePlus and AlphaFold are explicitly identified as data sources, and UniProt accessions are mentioned for harmonization. However, the proposal lacks discussion of data limitations, completeness issues, or potential biases in these databases."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "The proposal commits to releasing predictive models and analysis pipelines through public repositories under permissive licenses. However, it lacks specific details about which repositories, data sharing timelines, or reproducibility standards will be followed."
+          }
+        ]
+      }
+    ],
+    "avg_review_scores": {
+      "data_identification": 3.3333333333333335,
+      "novelty_and_significance": 3.6666666666666665,
+      "open_science_commitment": 3.6666666666666665,
+      "relevance_to_emergent_phenomena": 4.333333333333333,
+      "rigor_of_approach": 3.0,
+      "scope_and_timeline": 3.0,
+      "synthesis_focus": 4.666666666666667
+    }
+  },
+  {
+    "title_norm": "integration of structural and proteomic data for decoding cargo recognition networks in autophagy receptors",
+    "group": "claude-opus-4-5",
+    "is_nn_outlier": true,
+    "is_lit_most_novel": false,
+    "nn_dist": 0.20447898,
+    "raw_novelty": null,
+    "novelty_z": null,
+    "novelty_ratio": null,
+    "title": "integration of structural and proteomic data for decoding cargo recognition networks in autophagy receptors",
+    "author": "claude-opus-4-5",
+    "authors": [
+      "claude-opus-4-5"
+    ],
+    "ai_reviews": [
+      {
+        "evaluator": "gpt-5.2",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 4,
+            "justification": "The proposal explicitly targets mesoscale emergent selectivity in selective autophagy via cooperative binding, oligomerization, and phase separation. However, the emergent-phenomena framing would be stronger with clearer, testable emergent predictions and measurable mesoscale outcomes."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "Integrating structural models, coarse-grained simulations, and proteomic interaction networks to infer cargo-recognition rules is innovative and potentially impactful for understanding selective autophagy. The significance is high, though the proposal is somewhat broad and does not yet articulate a single decisive “puzzle” or benchmark result that would be field-changing."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 3,
+            "justification": "The overall workflow is plausible, but key methodological details are underspecified (e.g., model selection, feature engineering, uncertainty quantification, negative controls, and how phase separation/cooperativity will be operationalized from public data). Validation is described generally (literature and known pairs) without a clear evaluation framework to prevent circularity or overfitting."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 3,
+            "justification": "A three-year plan for harmonization through model refinement is reasonable, but the scope (multi-database integration plus simulations plus ML plus network inference) is ambitious without concrete milestones, staffing allocations, or contingency plans for missing/biased data. Feasibility would improve with a phased set of deliverables and clearly bounded biological targets (e.g., a defined receptor subset)."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is explicitly designed around integrating existing public structural, interaction, and expression/proteomic resources and does not propose new experimental data generation. The synthesis goal—merging heterogeneous data types to infer receptor–cargo recognition networks—is central."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Major sources are named (PDB, AlphaFold DB, BioGRID, Human Protein Atlas, UniProt mapping), but important complementary datasets and constraints are not discussed (e.g., autophagy-specific resources, PTM/ubiquitinome datasets, condition-specific interactomes). Limitations are acknowledged at a high level (heterogeneity) but lack specifics on bias, missingness, context dependence, and confidence calibration across databases."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 4,
+            "justification": "The proposal commits to releasing curated datasets and tools via GitHub/Zenodo, aligning with open and reproducible science expectations. It would be stronger with explicit plans for versioned workflows (e.g., containers), preregistered analysis plans, governance for team contributions, and licensing/FAIR metadata standards."
+          }
+        ]
+      },
+      {
+        "evaluator": "gemini-3-pro-preview",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 5,
+            "justification": "The proposal directly and explicitly addresses mesoscale emergent phenomena by investigating how cooperative binding generates emergent selectivity in autophagy receptors."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 4,
+            "justification": "The integration of structural modeling, coarse-grained simulations, and machine learning to decode cargo recognition networks is highly novel and offers significant potential to advance the field."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 4,
+            "justification": "The methodology is clear, logical, and well-grounded, utilizing a robust combination of computational techniques alongside clear validation strategies using independent literature and positive controls."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 4,
+            "justification": "The three-year timeline is realistic and well-planned, outlining a logical progression from data harmonization to model refinement and public dissemination."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 5,
+            "justification": "The project is an exemplary synthesis effort that relies entirely on integrating existing structural and proteomic databases without generating any new experimental data."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 4,
+            "justification": "Data sources are explicitly identified (PDB, AlphaFold, BioGRID, Human Protein Atlas), and the proposal thoughtfully addresses the limitation of data heterogeneity through systematic normalization."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 5,
+            "justification": "The proposal demonstrates an exemplary commitment to open science by explicitly planning to release all curated datasets and computational tools through established public repositories like GitHub and Zenodo."
+          }
+        ]
+      },
+      {
+        "evaluator": "claude-opus-4-5",
+        "criteria": [
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Relevance to Emergent Phenomena",
+            "score": 4,
+            "justification": "The proposal explicitly addresses emergent selectivity in autophagy receptors through cooperative binding at the mesoscale, directly connecting oligomerization and phase separation to cellular-level efficiency. This represents a clear focus on how molecular interactions generate emergent properties."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Novelty & Significance",
+            "score": 3,
+            "justification": "The integration of structural, proteomic, and interaction data to decode cargo recognition networks represents a novel synthesis approach. However, the specific scientific questions and expected outcomes could be more clearly articulated to demonstrate transformative potential."
+          },
+          {
+            "category": "Scientific Merit and Innovation",
+            "criterion": "Rigor of Approach",
+            "score": 2,
+            "justification": "While the proposal mentions structural modeling, coarse-grained simulations, network analysis, and ML algorithms, the methodology lacks specific details about how these approaches will be implemented and integrated. The validation strategy through literature data and positive controls is mentioned but not elaborated."
+          },
+          {
+            "category": "Feasibility",
+            "criterion": "Scope & Timeline",
+            "score": 2,
+            "justification": "The three-year timeline is mentioned with general phases but lacks specific milestones, deliverables, or contingency plans. The scope of integrating multiple large-scale databases with computational modeling is ambitious, and the proposal does not adequately address potential challenges or risk mitigation strategies."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Synthesis Focus",
+            "score": 4,
+            "justification": "The proposal clearly demonstrates a synthesis approach using exclusively existing public databases (PDB, AlphaFold, BioGRID, Human Protein Atlas) with no new experimental data generation. The integration plan through UniProt mapping and confidence-weighted network merging shows thoughtful synthesis design."
+          },
+          {
+            "category": "Data Sources and Limitations",
+            "criterion": "Data Identification",
+            "score": 3,
+            "justification": "Major data sources are explicitly identified, and the proposal acknowledges heterogeneity challenges with plans for normalization and provenance tracking. However, specific limitations of each database and how they might affect the analysis are not thoroughly discussed."
+          },
+          {
+            "category": "Open Science Compliance",
+            "criterion": "Open Science Commitment",
+            "score": 3,
+            "justification": "The proposal commits to releasing curated datasets and computational tools through GitHub and Zenodo, demonstrating awareness of open science principles. However, details about data management plans, documentation standards, and reproducibility protocols are lacking."
+          }
+        ]
+      }
+    ],
+    "avg_review_scores": {
+      "data_identification": 3.3333333333333335,
+      "novelty_and_significance": 3.6666666666666665,
+      "open_science_commitment": 4.0,
+      "relevance_to_emergent_phenomena": 4.333333333333333,
+      "rigor_of_approach": 3.0,
+      "scope_and_timeline": 3.0,
+      "synthesis_focus": 4.666666666666667
+    }
+  }
+]

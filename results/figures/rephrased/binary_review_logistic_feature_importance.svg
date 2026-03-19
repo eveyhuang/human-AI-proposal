@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="642">
+<rect width="100%" height="100%" fill="white"/>
+<text x="20" y="34" font-size="24" font-family="Helvetica, Arial, sans-serif" font-weight="700">Most Predictive Features Across Criteria</text>
+<text x="20" y="58" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#444">Bars show mean absolute standardized coefficients from the full-data logistic models.</text>
+<text x="20" y="106" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">is nn outlier</text>
+<rect x="340.0" y="88" width="610.0" height="24" rx="4" fill="#1f77b4"/>
+<text x="958.0" y="105" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.819</text>
+<text x="20" y="150" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">centroid dist</text>
+<rect x="340.0" y="132" width="497.2" height="24" rx="4" fill="#1f77b4"/>
+<text x="845.2" y="149" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.667</text>
+<text x="20" y="194" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">type token ratio</text>
+<rect x="340.0" y="176" width="451.1" height="24" rx="4" fill="#1f77b4"/>
+<text x="799.1" y="193" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.605</text>
+<text x="20" y="238" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">avg word len</text>
+<rect x="340.0" y="220" width="364.7" height="24" rx="4" fill="#1f77b4"/>
+<text x="712.7" y="237" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.489</text>
+<text x="20" y="282" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">nn dist</text>
+<rect x="340.0" y="264" width="356.8" height="24" rx="4" fill="#1f77b4"/>
+<text x="704.8" y="281" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.479</text>
+<text x="20" y="326" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">n words</text>
+<rect x="340.0" y="308" width="318.9" height="24" rx="4" fill="#1f77b4"/>
+<text x="666.9" y="325" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.428</text>
+<text x="20" y="370" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">flesch reading ease</text>
+<rect x="340.0" y="352" width="302.5" height="24" rx="4" fill="#1f77b4"/>
+<text x="650.5" y="369" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.406</text>
+<text x="20" y="414" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">avg sent len words</text>
+<rect x="340.0" y="396" width="288.7" height="24" rx="4" fill="#1f77b4"/>
+<text x="636.7" y="413" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.387</text>
+<text x="20" y="458" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">dash per 1k chars</text>
+<rect x="340.0" y="440" width="280.3" height="24" rx="4" fill="#1f77b4"/>
+<text x="628.3" y="457" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.376</text>
+<text x="20" y="502" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">stopword rate</text>
+<rect x="340.0" y="484" width="277.9" height="24" rx="4" fill="#1f77b4"/>
+<text x="625.9" y="501" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.373</text>
+<text x="20" y="546" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">n chars</text>
+<rect x="340.0" y="528" width="272.6" height="24" rx="4" fill="#1f77b4"/>
+<text x="620.6" y="545" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.366</text>
+<text x="20" y="590" font-size="14" font-family="Helvetica, Arial, sans-serif" fill="#111">is literature outlier</text>
+<rect x="340.0" y="572" width="226.1" height="24" rx="4" fill="#1f77b4"/>
+<text x="574.1" y="589" text-anchor="start" font-size="13" font-family="Helvetica, Arial, sans-serif" fill="#111">0.303</text>
+</svg>
