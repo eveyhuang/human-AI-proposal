@@ -3,7 +3,7 @@
   "proposals": [
     {
       "proposal_id": "1",
-      "proposal_title": "An Artificial Intelligence Framework for Predicting and Engineering Protein Regulation via Emergent Allosteric Order Parameters",
+      "proposal_title": "Emergent Order Parameters of Allostery: An AI Framework for Predicting and Engineering Protein Regulation",
       "authors": [
         "Banu Ozkan",
         "Denise Okafor",
@@ -18,7 +18,7 @@
     },
     {
       "proposal_id": "2",
-      "proposal_title": "Evolutionary Origins of Complex Protein Topologies from Knotted Structures to Pierced Lassos",
+      "proposal_title": "From Protein Knots to Pierced Lassos: Unraveling the Evolutionary Origin of Complex Topologies",
       "authors": [
         "Sophie Jackson",
         "Jason Parsley",
@@ -35,7 +35,7 @@
     },
     {
       "proposal_id": "3",
-      "proposal_title": "Systemic Biological Network Decipherment Through Artificial Intelligence-Driven Multi-Omic Integration",
+      "proposal_title": "Deciphering systemic biological networks through AI-driven multi-omic integration",
       "authors": [
         "Gustavo Nader",
         "Mahmut Kandemir",
@@ -50,7 +50,7 @@
     },
     {
       "proposal_id": "4",
-      "proposal_title": "Sequence Conservation Learning from Functional Constraints in Intrinsically Disordered Protein Regions",
+      "proposal_title": "Conserved Disorder: Learning Sequence Conservation from Functional Constraints in Intrinsically Disordered Regions",
       "authors": [
         "Jeetain Mittal",
         "Andrea Soranno",
@@ -65,7 +65,7 @@
     },
     {
       "proposal_id": "5",
-      "proposal_title": "Integrative Multi-Omics Synthesis for the Identification of Shared Molecular Mechanisms in Mammalian Hibernation",
+      "proposal_title": "Integrative Multi-Omics Synthesis to Identify Shared Molecular Mechanisms of Mammalian Hibernation",
       "authors": [
         "Joanna Kelley",
         "Blair Perry"
@@ -79,7 +79,7 @@
     },
     {
       "proposal_id": "6",
-      "proposal_title": "Ontological Framework for Allostery through Community-Scale Synthesis of Protein Dynamics",
+      "proposal_title": "Revealing the Ontology of Allostery through Community-Scale Synthesis",
       "authors": [
         "Kimberly Reynolds",
         "Rigoberto Hernandez",
@@ -95,7 +95,7 @@
     },
     {
       "proposal_id": "7",
-      "proposal_title": "SynEvo: Evolutionary Principles of Molecular Organization via Cross-Species Data Synthesis",
+      "proposal_title": "SynEvo: Discovering Evolutionary Principles of Molecular Organization through Cross-Species Data Synthesis",
       "authors": [
         "Rajib Saha",
         "Sara Mathieson",
@@ -110,7 +110,7 @@
     },
     {
       "proposal_id": "8",
-      "proposal_title": "A Unified Analytical Framework for the Dynamics of Proteome Turnover",
+      "proposal_title": "A Unified Framework for Analyses of Proteome Turnover Dynamics",
       "authors": [
         "Sina Ghaemmaghami",
         "Edward Lau",
@@ -125,7 +125,7 @@
     },
     {
       "proposal_id": "9",
-      "proposal_title": "Predictive Synthesis Framework for Elucidating Biophysical Cell States from Spatial Transcriptomics and Proteomics",
+      "proposal_title": "Predictive Synthesis Framework for Elucidating Biophysical Cell State from Spatial Transcriptomics and Proteomics",
       "authors": [
         "Jean Fan",
         "Tai-yen Chen",
@@ -140,7 +140,7 @@
     },
     {
       "proposal_id": "10",
-      "proposal_title": "Integration of Artificial Intelligence and Molecular Dynamics Simulations for Quantitative Enzyme Function Prediction",
+      "proposal_title": "Integrating AI and Molecular Dynamics Simulations for Quantitative Prediction of Enzyme Functions",
       "authors": [
         "Xingcheng Lin",
         "Tianlong Chen",
@@ -156,7 +156,7 @@
     },
     {
       "proposal_id": "11",
-      "proposal_title": "Discovery and Functional Characterization of Bacterial Organelles via Integrated Omics Data Mining and Refinement",
+      "proposal_title": "Discovery and functional analysis of bacterial organelles through mining and refinement of omics data",
       "authors": [
         "Y Hoang",
         "Arash Komeili",

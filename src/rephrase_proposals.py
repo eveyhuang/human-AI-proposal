@@ -135,6 +135,25 @@ TITLE_SYSTEM = """You are a scientific editor. Rephrase this research proposal t
 6. Return ONLY the rephrased title with no preamble."""
 
 
+SECTION_HEADERS = [
+    "SCIENTIFIC BACKGROUND AND RESEARCH QUESTION",
+    "METHODOLOGY AND ANALYTICAL APPROACH",
+    "DATA SOURCES AND SYNTHESIS PLAN",
+    "FEASIBILITY AND TIMELINE",
+    "OPEN SCIENCE AND TEAM COMPOSITION",
+]
+
+def strip_section_headers(text: str) -> str:
+    """Remove the five fixed section headings from standardized_text,
+    keeping only the prose content with sections separated by newlines."""
+    import re
+    for header in SECTION_HEADERS:
+        text = re.sub(rf'^\s*{re.escape(header)}\s*$', '', text, flags=re.MULTILINE | re.IGNORECASE)
+    # Collapse multiple blank lines into a single newline
+    text = re.sub(r'\n{3,}', '\n\n', text).strip()
+    return text
+
+
 def _call_gemini(client: genai.Client, prompt: str,
                  label: str, max_retries: int = 3) -> Optional[str]:
     """Shared Gemini call with retry logic. Returns stripped text or None on failure."""
@@ -182,12 +201,16 @@ def fill_template(client: genai.Client, summary: str,
 
 def extract_proposal(client: genai.Client, full_text: str,
                      max_retries: int = 3) -> Optional[str]:
-    """Two-step pipeline: summarize to strip style, then fill the fixed template."""
+    """Two-step pipeline: summarize to strip style, then fill the fixed template.
+    Section headings are removed from the final output."""
     summary = summarize_proposal(client, full_text, max_retries=max_retries)
     if not summary:
         logger.warning("Summarization step returned None; skipping template fill.")
         return None
-    return fill_template(client, summary, max_retries=max_retries)
+    result = fill_template(client, summary, max_retries=max_retries)
+    if result:
+        result = strip_section_headers(result)
+    return result
 
 
 def rephrase_title(client: genai.Client, title: str,
@@ -243,7 +266,7 @@ def rephrase_ai_proposals(client: genai.Client, ai_csv_path: Path,
         model_label = row.get('model', 'unknown')
         title_orig = str(row.get('title', ''))
 
-        rephrased_df.at[idx, 'title'] = rephrase_title(client, title_orig)
+        rephrased_df.at[idx, 'title'] = title_orig
 
         full_text = build_ai_full_text(row)
         standardized = extract_proposal(client, full_text)
@@ -270,8 +293,7 @@ def rephrase_human_proposals(client: genai.Client,
     for i, proposal in enumerate(tqdm(proposals, desc=f"Extracting {json_path.name}")):
         p = dict(proposal)
 
-        p['proposal_title'] = rephrase_title(
-            client, proposal.get('proposal_title', ''))
+        p['proposal_title'] = proposal.get('proposal_title', '')
 
         full_text = build_human_full_text(proposal)
         standardized = extract_proposal(client, full_text)
@@ -313,21 +335,21 @@ def main():
         checkpoint_path.unlink()
 
     # ── Extract human proposals ───────────────────────────────────────────────
-    # for cohort in ['y1', 'y2']:
-    #     human_path = Path(f'data/human-proposals/human-proposals-{cohort}.json')
-    #     if not human_path.exists():
-    #         logger.warning(f"Not found: {human_path}, skipping.")
-    #         continue
+    for cohort in ['y1', 'y2']:
+        human_path = Path(f'data/human-proposals/human-proposals-{cohort}.json')
+        if not human_path.exists():
+            logger.warning(f"Not found: {human_path}, skipping.")
+            continue
 
-    #     rephrased_data = rephrase_human_proposals(client, human_path)
-    #     out_path = (Path('data/human-proposals/rephrased') /
-    #                 f'human_proposals_rephrased_{cohort}_{timestamp}.json')
-    #     out_path.parent.mkdir(parents=True, exist_ok=True)
-    #     with open(out_path, 'w') as f:
-    #         json.dump(rephrased_data, f, indent=2, ensure_ascii=False)
-    #     logger.info(f"Saved extracted human proposals -> {out_path}")
+        rephrased_data = rephrase_human_proposals(client, human_path)
+        out_path = (Path('data/human-proposals/rephrased') /
+                    f'human_proposals_rephrased_{cohort}_{timestamp}.json')
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(out_path, 'w') as f:
+            json.dump(rephrased_data, f, indent=2, ensure_ascii=False)
+        logger.info(f"Saved extracted human proposals -> {out_path}")
 
-    # logger.info("Done. All proposals extracted into standardized template.")
+    logger.info("Done. All proposals extracted into standardized template.")
 
 
 if __name__ == '__main__':
