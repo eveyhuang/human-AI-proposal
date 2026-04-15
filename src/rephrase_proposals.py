@@ -2,20 +2,23 @@
 Summarize all AI and human proposals into a fixed evaluation-aligned template,
 neutralizing stylistic and structural differences while preserving scientific content.
 
-Uses a two-step pipeline to maximize style removal:
+Uses a three-step pipeline:
   Step 1 (SUMMARIZE): Extract core semantic facts from the original text,
           stripping all stylistic patterns (sentence rhythms, punctuation habits,
           vocabulary choices, rhetorical framing) into a compact neutral summary.
   Step 2 (FILL): Generate the standardized template from the summary only,
           so template prose is driven by formatting rules rather than source style.
+  Step 3 (MAIN_IDEA): Generate a 3-sentence distillation of the core scientific
+          concepts and proposed ideas, suitable for measuring semantic distances
+          and counting unique ideas without stylistic noise from the full template.
 
 The template mirrors the NCEMS call for proposals and evaluation criteria:
-  Section 1 – Scientific Background & Research Question  
-  Section 2 – Methodology & Analytical Approach          
-  Section 3 – Data Sources & Synthesis Plan              
-  Section 4 – Feasibility & Timeline                     
-  Section 5 – Open Science & Team Composition            
-  
+  Section 1 – Scientific Background & Research Question
+  Section 2 – Methodology & Analytical Approach
+  Section 3 – Data Sources & Synthesis Plan
+  Section 4 – Feasibility & Timeline
+  Section 5 – Open Science & Team Composition
+
 Usage (run from project root):
     python src/rephrase_proposals.py
 
@@ -23,6 +26,10 @@ Outputs:
     data/ai-proposals/rephrased/ai_proposals_rephrased_<timestamp>.csv
     data/human-proposals/rephrased/human_proposals_rephrased_y1_<timestamp>.json
     data/human-proposals/rephrased/human_proposals_rephrased_y2_<timestamp>.json
+
+Each output record contains:
+    standardized_text – full 13-sentence template (5 sections)
+    main_idea         – 3-sentence core-concept summary for semantic analysis
 """
 
 import os
@@ -115,8 +122,9 @@ Sentence 2: Characterize the team composition, including disciplines, career sta
 STYLE RULES — follow these exactly:
 - Third-person neutral register: "This project...", "The proposed study...", "The team...". No first person ("I", "we").
 - Declarative statements only. Do not add hedging ("may", "suggests", "is expected to") unless a fact explicitly states uncertainty.
-- Average sentence length of 18–22 words. One main clause with at most one subordinate clause. No stacked qualifications.
-- Use the same term for the same concept throughout. Do not introduce synonyms for technical terms.
+- Sentence length: target 18–20 words per sentence. Hard maximum is 22 words. Count words before writing; if a draft sentence exceeds 22 words, split it or drop a qualifier.
+- Do not use hyphens to join compound modifiers. Write them as two separate words: "single cell" not "single-cell", "cross disciplinary" not "cross-disciplinary", "large scale" not "large-scale", "open source" not "open-source". Retain hyphens only inside established acronyms (e.g., "RNA-seq", "cryo-ET") or proper names.
+- Use the same term for the same concept throughout. Do not introduce synonyms for technical terms. Choose the most common word for each concept and use it every time.
 - Full prepositional phrases, not noun stacks: "analysis of protein dynamics" not "protein dynamics analysis". Include articles and prepositions naturally.
 - Minimize commas. No serial/Oxford commas — restructure as prose with "and" or write separate sentences. Use a comma only to separate a subordinate clause from a main clause.
 - Use parentheses for acronym definitions on first use and brief examples where natural (e.g., "machine learning (ML)").
@@ -124,6 +132,22 @@ STYLE RULES — follow these exactly:
 - Adhere strictly to the sentence count for each section. Do not add, split, or merge sentences.
 - If a fact is "Not specified", write one sentence stating that the proposal does not address this information.
 - Output ONLY the filled template with the five section headings and their sentences. No preamble, no commentary."""
+
+
+MAIN_IDEA_SYSTEM = """You are a scientific analyst. You will be given a numbered list of semantic facts extracted from a research proposal. Write exactly 3 sentences that capture the proposal's core scientific concepts and ideas.
+
+RULES:
+- Sentence 1: State the specific scientific phenomenon or question being studied and the key gap it addresses. Focus on the biological or computational problem itself.
+- Sentence 2: State the core methodological idea — the central analytical strategy or conceptual approach that makes this proposal distinct.
+- Sentence 3: State what the proposal would uniquely contribute: the novel insight, resource, or framework that does not yet exist.
+
+STYLE:
+- Third-person neutral register. No first person ("I", "we").
+- Declarative, concrete, jargon-minimized. Name specific methods, datasets, or phenomena only when they define the idea.
+- Do not summarize logistics (timeline, team, open science). Focus exclusively on scientific content.
+- Do not use hyphens to join compound modifiers (write "single cell" not "single-cell").
+- Each sentence 18–22 words. No hedging.
+- Output ONLY the 3 sentences as a single paragraph. No labels, no preamble."""
 
 
 TITLE_SYSTEM = """You are a scientific editor. Rephrase this research proposal title into standard academic title format. Rules:
@@ -199,17 +223,42 @@ def fill_template(client: genai.Client, summary: str,
     return _call_gemini(client, prompt, label="fill_template", max_retries=max_retries)
 
 
+def generate_main_idea(client: genai.Client, summary: str,
+                       max_retries: int = 3) -> Optional[str]:
+    """Step 3: Generate a 3-sentence core-concept summary from the extracted facts.
+    Uses the same style-stripped facts as Step 2, so main_idea is independent of
+    source style and suitable for semantic distance analysis."""
+    if not summary or not summary.strip():
+        return None
+    prompt = (f"{MAIN_IDEA_SYSTEM}\n\n"
+              f"---\nEXTRACTED FACTS:\n{summary.strip()}\n---\nCORE IDEA:")
+    return _call_gemini(client, prompt, label="main_idea", max_retries=max_retries)
+
+
 def extract_proposal(client: genai.Client, full_text: str,
-                     max_retries: int = 3) -> Optional[str]:
-    """Two-step pipeline: summarize to strip style, then fill the fixed template.
-    Section headings are removed from the final output."""
+                     max_retries: int = 3) -> dict:
+    """Three-step pipeline: summarize → fill template → generate main idea.
+
+    Returns a dict with:
+        standardized_text: full 13-sentence template (headers stripped)
+        main_idea:         3-sentence core-concept summary
+    Both fields are empty strings on failure.
+    """
+    result = {'standardized_text': '', 'main_idea': ''}
+
     summary = summarize_proposal(client, full_text, max_retries=max_retries)
     if not summary:
-        logger.warning("Summarization step returned None; skipping template fill.")
-        return None
-    result = fill_template(client, summary, max_retries=max_retries)
-    if result:
-        result = strip_section_headers(result)
+        logger.warning("Summarization step returned None; skipping fill and main_idea.")
+        return result
+
+    filled = fill_template(client, summary, max_retries=max_retries)
+    if filled:
+        result['standardized_text'] = strip_section_headers(filled)
+
+    idea = generate_main_idea(client, summary, max_retries=max_retries)
+    if idea:
+        result['main_idea'] = idea
+
     return result
 
 
@@ -269,8 +318,9 @@ def rephrase_ai_proposals(client: genai.Client, ai_csv_path: Path,
         rephrased_df.at[idx, 'title'] = title_orig
 
         full_text = build_ai_full_text(row)
-        standardized = extract_proposal(client, full_text)
-        rephrased_df.at[idx, 'standardized_text'] = standardized if standardized else ''
+        extracted = extract_proposal(client, full_text)
+        rephrased_df.at[idx, 'standardized_text'] = extracted['standardized_text']
+        rephrased_df.at[idx, 'main_idea'] = extracted['main_idea']
 
         logger.info(f"  [{row_num}/{len(df)}] {model_label}: {title_orig[:60]}...")
 
@@ -296,8 +346,9 @@ def rephrase_human_proposals(client: genai.Client,
         p['proposal_title'] = proposal.get('proposal_title', '')
 
         full_text = build_human_full_text(proposal)
-        standardized = extract_proposal(client, full_text)
-        p['standardized_text'] = standardized if standardized else ''
+        extracted = extract_proposal(client, full_text)
+        p['standardized_text'] = extracted['standardized_text']
+        p['main_idea'] = extracted['main_idea']
 
         logger.info(f"  [{i+1}/{len(proposals)}] {proposal.get('proposal_title', '')[:60]}...")
         rephrased_proposals.append(p)

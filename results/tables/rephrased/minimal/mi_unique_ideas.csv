@@ -1,0 +1,6 @@
+Group,N proposals,N distinct concepts,% unique concepts,N isolated,% isolated,N overlap pairs,N total pairs,% overlap pairs
+Human,23,2,8.7,1,4.3,231,253,91.3
+claude-opus-4-5,23,2,8.7,1,4.3,231,253,91.3
+gemini-3-pro-preview,23,1,4.3,0,0.0,253,253,100.0
+gpt-5.2,23,3,13.0,2,8.7,210,253,83.0
+All AI (combined),69,2,2.9,0,0.0,2147,2346,91.5
