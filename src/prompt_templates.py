@@ -25,72 +25,6 @@ class PromptManager:
         """Create default prompt templates"""
         templates = {}
 
-        # Generate Research Ideas (baseline)
-        templates['generate_ideas_baseline'] = PromptTemplate(
-            name="Generate Research Ideas (baseline)",
-            description="Generate innovative research ideas without any special prompting",
-            
-            template="""
-            You are generating research ideas for a competitive funding call from NCEMS (National Synthesis Center for Emergence in Molecular and Cellular Sciences).
-
-            RESEARCH CALL:
-            {research_call}
-
-            INFORMATION ABOUT NCEMS:
-            {information_about_ncems}
-
-            CRITICAL REQUIREMENTS (your ideas MUST satisfy these):
-            1. **SYNTHESIS RESEARCH ONLY**: Ideas must use ONLY existing publicly available data. DO NOT propose generating new experimental data, conducting new experiments, or collecting new samples. Your research must synthesize and integrate existing datasets.
-
-            2. **EMERGENT PHENOMENA FOCUS**: Research must explicitly address emergent phenomena at the MESOSCALE (the scale between individual biomolecules and organelles, ~10-1000 nm). Focus on how unexpected properties arise from molecular/cellular organization.
-
-            3. **COLLABORATIVE & TRANSDISCIPLINARY**: Research requires expertise from multiple disciplines and goes beyond what a single lab can accomplish.
-
-            4. **OPEN SCIENCE**: Commit to making all analyses, code, and results publicly available.
-
-            TASK:
-            Generate {num} innovative and DIVERSE research ideas that address the goals above. 
-
-            DIVERSITY REQUIREMENTS:
-            - Cover different biological systems, scales, or phenomena
-            - Use varied analytical/computational approaches
-            - Address different aspects of emergent phenomena
-            - Ensure minimal overlap between ideas
-
-            For each idea, provide:
-            - **Title**: Clear, specific, and scientifically precise
-            - **Abstract** (400-600 words) that includes:
-              * The specific emergent phenomenon being studied
-              * What existing data sources will be synthesized (be specific: e.g., "PDB structural data", "Cancer Genome Atlas", "single-cell RNA-seq from Human Cell Atlas")
-              * The novel scientific question or hypothesis
-              * The computational/analytical approach
-              * Expected insights about mesoscale emergent phenomena
-              * Why this requires team science and synthesis
-
-            QUALITY BAR - Each idea should aim for:
-            - High novelty: Not incremental; transformative questions
-            - High rigor: Clear, logical methodology
-            - High feasibility: Realistic with existing data and methods
-            - High impact: Potential to advance fundamental understanding
-
-            IMPORTANT: Format your response as a valid JSON object:
-            {{
-              "research_ideas": [
-                {{
-                  "title": "Specific Research Title Here",
-                  "abstract": "Detailed 400-600 word abstract addressing all requirements above..."
-                }},
-                {{
-                  "title": "Another Specific Research Title",
-                  "abstract": "Detailed 400-600 word abstract addressing all requirements above..."
-                }}
-              ]
-            }}
-
-            Ensure the JSON is properly formatted and valid.
-            """,
-            parameters=['research_call', 'information_about_ncems', 'num']
-        )
 
         # Generate Research Ideas (baseline)
         templates['generate_ideas_minimal'] = PromptTemplate(
@@ -443,8 +377,113 @@ class PromptManager:
                        'proposal_full']
         )
 
+        # Novelty-only Evaluation (with literature context and web search)
+        templates['eval_novelty'] = PromptTemplate(
+            name="Novelty Evaluation",
+            description="Evaluate proposal novelty across six dimensions grounded in prior research, using relevant literature abstracts as context and web search when needed",
+            template="""You are an expert research evaluator. Evaluate the NOVELTY of the following research proposal using six dimensions grounded in prior research on originality and proposal review.
+
+You have access to a web search tool. Use it when you need to verify specific factual claims about the state of the art, check whether a method or dataset already exists, or assess how established a particular approach is—but only when the proposal text alone is insufficient to make an informed judgment.
+
+**RELEVANT LITERATURE CONTEXT:**
+The following three papers are the closest literature neighbors to this proposal (retrieved by semantic similarity). Use them as evidence of what is already known in this area when judging novelty.
+
+{lit_neighbors}
+
+**Important evaluation rules:**
+1. Evaluate only based on the information in the proposal text provided below. Do not use outside knowledge about the field unless explicitly included in the proposal or retrieved via web search.
+2. Judge how strongly the proposal MAKES A CASE for novelty, not whether the proposal is definitely novel in the real world.
+3. For each dimension, assign a score from 1–5 and provide concise reasoning grounded in specific evidence from the proposal.
+4. When possible, cite short phrases or paraphrase concrete evidence from the proposal.
+5. If the proposal does not provide enough information for a dimension, say so explicitly and assign a conservative middle score unless the absence of evidence clearly weakens the case.
+6. Be analytically strict. Do not reward vague claims such as "this is novel" unless the proposal explains why.
+
+**Scoring scale for each dimension:**
+1 = Very weak evidence
+2 = Weak evidence
+3 = Moderate / mixed evidence
+4 = Strong evidence
+5 = Very strong evidence
+
+**Evaluate these six dimensions:**
+
+**1. New question, topic, or problem framing**
+Definition: Does the proposal introduce a new question, topic, or way of framing the problem? This dimension is grounded in definitions of originality that include studying a new topic or an understudied area (Guetzkow et al., 2004).
+
+**2. New theory, concept, method, dataset, or design**
+Definition: Does the proposal use or develop a new theory, concept, method, dataset, or research design? This dimension is grounded in definitions of originality as involving a new approach, theory, method, or data, and in proposal-review criteria emphasizing novel concepts and methods (Guetzkow et al., 2004; European Research Council, 2021).
+
+**3. Unusual combination of existing ideas**
+Definition: Does the proposal combine existing ideas, methods, datasets, or perspectives in an unusual or atypical way? This dimension is grounded in the recombination view of novelty (Uzzi et al., 2013).
+
+**4. Beyond the state of the art rather than incremental**
+Definition: Is the proposal ambitious and beyond the current state of the art, rather than merely extending prior work incrementally? This dimension is grounded in major proposal-review criteria (European Research Council, 2021).
+
+**5. Credible high-risk / high-gain potential**
+Definition: Does the proposal contain a credible high-risk, high-gain element, where the potential payoff is substantial if the work succeeds? This dimension is grounded in ERC review criteria (European Research Council, 2021).
+
+**6. Potential to generate unique knowledge not obtainable from prior work alone**
+Definition: Could the proposal generate knowledge that would be difficult to obtain from prior work alone? This dimension is grounded in the definition of originality as generating unique knowledge not available from previous studies (Shibayama & Wang, 2020).
+
+For each dimension output: score, reasoning, evidence_from_proposal, uncertainties_or_limitations.
+Then provide: overall_novelty_score, overall_summary, strongest_dimensions, weakest_dimensions, major_uncertainties.
+
+Use the following JSON format exactly:
+
+{{
+  "proposal_id": "{proposal_id}",
+  "new_question_topic_or_framing": {{
+    "score": ,
+    "reasoning": "",
+    "evidence_from_proposal": "",
+    "uncertainties_or_limitations": ""
+  }},
+  "new_theory_concept_method_dataset_or_design": {{
+    "score": ,
+    "reasoning": "",
+    "evidence_from_proposal": "",
+    "uncertainties_or_limitations": ""
+  }},
+  "unusual_combination_of_existing_ideas": {{
+    "score": ,
+    "reasoning": "",
+    "evidence_from_proposal": "",
+    "uncertainties_or_limitations": ""
+  }},
+  "beyond_state_of_the_art": {{
+    "score": ,
+    "reasoning": "",
+    "evidence_from_proposal": "",
+    "uncertainties_or_limitations": ""
+  }},
+  "credible_high_risk_high_gain": {{
+    "score": ,
+    "reasoning": "",
+    "evidence_from_proposal": "",
+    "uncertainties_or_limitations": ""
+  }},
+  "unique_knowledge_generation": {{
+    "score": ,
+    "reasoning": "",
+    "evidence_from_proposal": "",
+    "uncertainties_or_limitations": ""
+  }},
+  "overall_novelty_score": ,
+  "overall_summary": "",
+  "strongest_dimensions": [],
+  "weakest_dimensions": [],
+  "major_uncertainties": []
+}}
+
+**Research proposal:**
+ID: {proposal_id}
+Title: {proposal_title}
+{proposal_full}""",
+            parameters=['proposal_id', 'proposal_title', 'proposal_full', 'lit_neighbors']
+        )
+
         return templates
-    
+
     def get_template(self, template_name: str) -> PromptTemplate:
         """Get a specific template by name"""
         if template_name not in self.templates:

@@ -144,32 +144,62 @@ class AIModelsInterface:
         #     logger.info("NCEMS DeepSeek-R1 initialized")
     
     def _call_openai(self, prompt: str, **kwargs) -> str:
-        """Call OpenAI GPT-4"""
+        """Call OpenAI GPT.
+
+        When use_web_search=True, uses the Responses API which supports the
+        web_search tool. The Chat Completions API does not support web search
+        for this model.
+        """
         try:
             client = openai.OpenAI(api_key=self.openai_key)
-            
-            # GPT-5.2 requires max_completion_tokens instead of max_tokens
-            response = client.chat.completions.create(
-                model="gpt-5.2",
-                messages=[{"role": "user", "content": prompt}],
-                temperature=kwargs.get('temperature', 0),
-                max_completion_tokens=kwargs.get('max_completion_tokens', kwargs.get('max_tokens', 16000))
-            )
-            return response.choices[0].message.content
+
+            if kwargs.get('use_web_search', False):
+                # Responses API — required for web search with gpt-5.2
+                response = client.responses.create(
+                    model="gpt-5.2",
+                    tools=[{"type": "web_search"}],
+                    input=prompt,
+                )
+                return response.output_text
+            else:
+                # Standard Chat Completions path (no web search)
+                # GPT-5.2 requires max_completion_tokens instead of max_tokens
+                response = client.chat.completions.create(
+                    model="gpt-5.2",
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=kwargs.get('temperature', 0),
+                    max_completion_tokens=kwargs.get('max_completion_tokens', kwargs.get('max_tokens', 16000))
+                )
+                return response.choices[0].message.content
         except Exception as e:
             logger.error(f"OpenAI error: {e}")
             return f"Error: {str(e)}"
     
     def _call_gemini(self, prompt: str, **kwargs) -> str:
-        """Call Google Gemini"""
+        """Call Google Gemini.
+
+        When use_web_search=True, Google Search grounding is enabled via
+        types.Tool(google_search=types.GoogleSearch()).
+        NOTE: response_mime_type='application/json' is incompatible with
+        Google Search grounding and is omitted in that mode.
+        """
+        from google.genai import types as genai_types
         try:
+            if kwargs.get('use_web_search', False):
+                config = genai_types.GenerateContentConfig(
+                    tools=[genai_types.Tool(google_search=genai_types.GoogleSearch())],
+                    temperature=kwargs.get('temperature', 0),
+                )
+            else:
+                config = genai_types.GenerateContentConfig(
+                    response_mime_type='application/json',
+                    temperature=kwargs.get('temperature', 0),
+                )
+
             response = self.gemini_client.models.generate_content(
                 model='gemini-3-pro-preview',
                 contents=[prompt],
-                config={
-                    'response_mime_type': 'application/json',
-                    'temperature': kwargs.get('temperature', 0)
-                }
+                config=config,
             )
             return response.text
         except Exception as e:
@@ -177,15 +207,40 @@ class AIModelsInterface:
             return f"Error: {str(e)}"
     
     def _call_claude(self, prompt: str, **kwargs) -> str:
-        """Call Anthropic Claude Sonnet 4.5"""
+        """Call Anthropic Claude.
+
+        When use_web_search=True, the built-in server-side web_search tool is
+        enabled (type 'web_search_20250305'). Anthropic executes searches on
+        its own servers, so no client-side tool loop is needed. The response
+        may contain interleaved tool_use and text blocks; we collect all text
+        blocks and join them to form the final answer.
+        """
         try:
-            response = self.anthropic_client.messages.create(
-                model="claude-opus-4-5",  # Official model ID for Claude Sonnet 4.5
-                max_tokens=kwargs.get('max_tokens', 16000),  # Required parameter; max is 8192
+            create_kwargs = dict(
+                model="claude-opus-4-5",
+                max_tokens=kwargs.get('max_tokens', 16000),
                 temperature=kwargs.get('temperature', 0),
-                messages=[{"role": "user", "content": prompt}]
+                messages=[{"role": "user", "content": prompt}],
             )
-            return response.content[0].text
+
+            if kwargs.get('use_web_search', False):
+                create_kwargs['tools'] = [
+                    {
+                        "type": "web_search_20250305",
+                        "name": "web_search",
+                        "max_uses": 5,
+                    }
+                ]
+
+            response = self.anthropic_client.messages.create(**create_kwargs)
+
+            # Collect text from all text blocks (web search adds tool_use blocks
+            # alongside the text blocks in the response)
+            text_parts = [
+                block.text for block in response.content
+                if hasattr(block, 'text')
+            ]
+            return '\n'.join(text_parts)
         except Exception as e:
             logger.error(f"Claude error: {e}")
             return f"Error: {str(e)}"
