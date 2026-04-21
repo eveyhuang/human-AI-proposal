@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #F5F7FA; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #F5F7FA;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  background: #1C3557;
+  padding: 12pt 28pt 10pt 28pt;
+}
+.section-label { color: #2E7BB8; font-size: 9pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1pt; margin: 0 0 3pt 0; }
+.header h1 { color: #FFFFFF; font-size: 19pt; font-weight: bold; margin: 0; }
+.header .subtitle { color: #A8C8E8; font-size: 10pt; margin: 2pt 0 0 0; }
+.body {
+  flex: 1;
+  display: flex;
+  padding: 10pt 28pt 10pt 28pt;
+  gap: 16pt;
+}
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8pt;
+}
+.side {
+  width: 220pt;
+  display: flex;
+  flex-direction: column;
+  gap: 8pt;
+}
+.heatmap-card {
+  background: #FFFFFF;
+  border-radius: 5pt;
+  padding: 10pt 13pt;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.07);
+  flex: 1;
+}
+.heatmap-card h3 { color: #1C3557; font-size: 9.5pt; font-weight: bold; margin: 0 0 7pt 0; }
+.heatmap-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 7.5pt;
+}
+.heatmap-table th {
+  padding: 3pt 5pt;
+  text-align: center;
+  color: #666666;
+  font-weight: bold;
+  border-bottom: 1.5pt solid #E0E8F0;
+  font-size: 7pt;
+}
+.heatmap-table td {
+  padding: 3pt 5pt;
+  text-align: center;
+  border-bottom: 1pt solid #F5F7FA;
+}
+.criterion-label {
+  text-align: left !important;
+  color: #333333;
+  font-size: 7pt;
+}
+.cell-val { font-weight: bold; font-size: 8pt; border-radius: 2pt; padding: 1pt 4pt; display: inline-block; }
+.pos-large { background: #FDF2E9; color: #D35400; }
+.pos-small { background: #FEF9E7; color: #D4AC0D; }
+.neg-large { background: #EBF5FB; color: #2980B9; }
+.neg-small { background: #F3F4F5; color: #7F8C8D; }
+.legend-row { display: flex; gap: 8pt; margin-top: 5pt; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 3pt; }
+.legend-dot { width: 9pt; height: 9pt; border-radius: 2pt; flex-shrink: 0; }
+.legend-item p { color: #555555; font-size: 7pt; margin: 0; }
+.side-card {
+  background: #FFFFFF;
+  border-radius: 5pt;
+  padding: 10pt 12pt;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.07);
+}
+.side-card h4 { color: #1C3557; font-size: 9.5pt; font-weight: bold; margin: 0 0 5pt 0; }
+.side-card p { color: #444444; font-size: 8pt; margin: 0; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div class="header">
+  <p class="section-label">R3 · Criterion-Level Self-Preference</p>
+  <h1>Where Does Self-Preference Concentrate? A Criterion Breakdown</h1>
+  <p class="subtitle">Self-preference delta (self score − others score) by evaluator and novelty criterion; positive = favors own proposals</p>
+</div>
+<div class="body">
+  <div class="main-area">
+    <div class="heatmap-card">
+      <h3>Self-Preference Delta by Criterion</h3>
+      <table class="heatmap-table">
+        <thead>
+          <tr>
+            <th style="text-align:left; width:160pt;">Criterion</th>
+            <th style="color:#7F8C8D;">Claude</th>
+            <th style="color:#2980B9;">Gemini</th>
+            <th style="color:#D35400;">GPT-5.2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="criterion-label">New question / topic / framing</td>
+            <td><span class="cell-val neg-large">−0.55</span></td>
+            <td><span class="cell-val pos-small">+0.23</span></td>
+            <td><span class="cell-val pos-large">+0.61</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-label">New theory / concept / method / dataset</td>
+            <td><span class="cell-val neg-large">−0.51</span></td>
+            <td><span class="cell-val pos-small">+0.28</span></td>
+            <td><span class="cell-val pos-large">+0.58</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-label">Unusual combination of ideas</td>
+            <td><span class="cell-val neg-small">−0.38</span></td>
+            <td><span class="cell-val pos-small">+0.20</span></td>
+            <td><span class="cell-val pos-small">+0.45</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-label">Beyond state of the art</td>
+            <td><span class="cell-val neg-large">−0.54</span></td>
+            <td><span class="cell-val pos-small">+0.31</span></td>
+            <td><span class="cell-val pos-large">+0.67</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-label">Credible high-risk / high-gain</td>
+            <td><span class="cell-val neg-small">−0.42</span></td>
+            <td><span class="cell-val pos-small">+0.25</span></td>
+            <td><span class="cell-val pos-small">+0.48</span></td>
+          </tr>
+          <tr>
+            <td class="criterion-label">Unique knowledge generation</td>
+            <td><span class="cell-val neg-large">−0.60</span></td>
+            <td><span class="cell-val pos-small">+0.27</span></td>
+            <td><span class="cell-val pos-large">+0.72</span></td>
+          </tr>
+          <tr style="background:#F8F9FA;">
+            <td class="criterion-label"><strong>Overall novelty score</strong></td>
+            <td><span class="cell-val neg-large">−0.40</span></td>
+            <td><span class="cell-val pos-small">+0.25</span></td>
+            <td><span class="cell-val pos-large">+0.32</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:#FDF2E9;"></div><p style="color:#D35400;">GPT inflates (large)</p></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#EBF5FB;"></div><p style="color:#2980B9;">Claude deflates (large)</p></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#FEF9E7;"></div><p style="color:#D4AC0D;">small positive</p></div>
+        <div class="legend-item"><div class="legend-dot" style="background:#F3F4F5;"></div><p style="color:#888;">small negative</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="side">
+    <div class="side-card">
+      <h4>Bias Is Consistent Across All Criteria</h4>
+      <p>GPT-5.2's self-inflation appears on all six criteria, strongest on "Unique Knowledge Generation" (+0.72) and "Beyond State of the Art" (+0.67). This is a systematic evaluative stance, not a criterion-specific quirk.</p>
+    </div>
+    <div class="side-card">
+      <h4>Claude's Self-Deprecation Is Equally Systematic</h4>
+      <p>Claude is consistently harder on its own proposals across all dimensions. Its strictest criterion is "Unique Knowledge Generation" (−0.60) — the very one where GPT most strongly inflates. Opposite biases amplify the apparent GPT–Claude gap.</p>
+    </div>
+    <div class="side-card" style="background:#EAFAF1; border-left:2pt solid #27AE60;">
+      <h4 style="color:#1E8449;">Key Implication</h4>
+      <p>These cross-evaluator asymmetries inflate the GPT–Claude gap in any pooled analysis. Removing self-evaluations is essential before comparing author groups.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

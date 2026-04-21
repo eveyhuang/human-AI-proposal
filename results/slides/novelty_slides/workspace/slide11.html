@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #1C3557; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #1C3557;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+.top-accent { height: 5pt; background: #2E7BB8; }
+.header-area {
+  padding: 16pt 28pt 10pt 28pt;
+}
+.section-label { color: #2E7BB8; font-size: 9pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1pt; margin: 0 0 4pt 0; }
+.header-area h1 { color: #FFFFFF; font-size: 21pt; font-weight: bold; margin: 0 0 4pt 0; }
+.header-area p { color: #A8C8E8; font-size: 10.5pt; margin: 0; }
+.body {
+  flex: 1;
+  display: flex;
+  padding: 10pt 28pt 14pt 28pt;
+  gap: 14pt;
+}
+.finding-card {
+  flex: 1;
+  border-radius: 6pt;
+  padding: 12pt 13pt;
+  display: flex;
+  flex-direction: column;
+  gap: 6pt;
+}
+.finding-num {
+  font-size: 22pt;
+  font-weight: bold;
+  line-height: 1;
+  margin: 0;
+}
+.finding-card h4 {
+  font-size: 10.5pt;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
+}
+.finding-card p {
+  font-size: 8.5pt;
+  margin: 0;
+  line-height: 1.45;
+}
+.divider-line { height: 1.5pt; border-radius: 1pt; margin: 2pt 0; }
+.takeaway {
+  background: #2E7BB8;
+  border-radius: 5pt;
+  padding: 9pt 14pt;
+  margin: 6pt 28pt 10pt 28pt;
+}
+.takeaway p { color: #FFFFFF; font-size: 9.5pt; margin: 0; line-height: 1.5; text-align: center; }
+</style>
+</head>
+<body>
+<div class="top-accent"></div>
+<div class="header-area">
+  <p class="section-label">Conclusions</p>
+  <h1>Putting It Together: A Coherent Story on AI Novelty Review</h1>
+  <p>Four findings that complement each other — the full picture requires holding all four at once</p>
+</div>
+<div class="body">
+  <!-- Finding 1 -->
+  <div class="finding-card" style="background:#FFFFFF;">
+    <p class="finding-num" style="color:#2E7BB8;">01</p>
+    <div class="divider-line" style="background:#2E7BB8;"></div>
+    <h4 style="color:#1C3557;">Raw Scores Favor GPT-5.2 Proposals</h4>
+    <p style="color:#444;">GPT-5.2 proposals receive the highest overall novelty scores (M=3.99), above human proposals (M=3.76) and Claude proposals (M=3.40). On raw numbers, AI proposals — especially GPT's — appear more novel to AI reviewers.</p>
+  </div>
+  <!-- Finding 2 -->
+  <div class="finding-card" style="background:#FFFFFF;">
+    <p class="finding-num" style="color:#D35400;">02</p>
+    <div class="divider-line" style="background:#D35400;"></div>
+    <h4 style="color:#1C3557;">But Evaluators Differ Dramatically</h4>
+    <p style="color:#444;">A 1-point spread exists between the most lenient (Gemini, M=4.18) and strictest (Claude, M=3.18) evaluators — larger than the entire human-GPT score gap. Raw comparisons are confounded by who is doing the rating.</p>
+  </div>
+  <!-- Finding 3 -->
+  <div class="finding-card" style="background:#FFFFFF;">
+    <p class="finding-num" style="color:#E67E22;">03</p>
+    <div class="divider-line" style="background:#E67E22;"></div>
+    <h4 style="color:#1C3557;">Self-Preference Amplifies the Pattern</h4>
+    <p style="color:#444;">GPT inflates its own proposals (+0.32 pts, large effect); Claude deflates its own (−0.40 pts, large effect). These opposing biases artificially widen the apparent GPT–Claude quality gap across all six novelty criteria.</p>
+  </div>
+  <!-- Finding 4 -->
+  <div class="finding-card" style="background:#EAFAF1; border:1.5pt solid #27AE60;">
+    <p class="finding-num" style="color:#1E8449;">04</p>
+    <div class="divider-line" style="background:#27AE60;"></div>
+    <h4 style="color:#1C3557;">GPT Advantage Is Real, But Smaller</h4>
+    <p style="color:#333;">After removing self-evaluations, GPT-5.2 proposals still score significantly higher than human proposals (δ=−0.87, p&lt;0.001). The bias amplified but did not fabricate this effect. Claude proposals become indistinguishable from humans.</p>
+  </div>
+</div>
+<div class="takeaway">
+  <p><strong>Big Picture:</strong> AI evaluators reveal genuine differences in how AI-authored vs. human-authored proposals articulate novelty — but those evaluators are themselves biased. Trustworthy AI review requires cross-evaluator designs that neutralize self-preference, plus awareness that evaluator leniency can swamp any author-group signal.</p>
+</div>
+</body>
+</html>

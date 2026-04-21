@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+html { background: #F5F7FA; }
+body {
+  width: 720pt; height: 405pt; margin: 0; padding: 0;
+  background: #F5F7FA;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  background: #1C3557;
+  padding: 12pt 28pt 10pt 28pt;
+}
+.section-label { color: #2E7BB8; font-size: 9pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1pt; margin: 0 0 3pt 0; }
+.header h1 { color: #FFFFFF; font-size: 19pt; font-weight: bold; margin: 0; }
+.header .subtitle { color: #A8C8E8; font-size: 10pt; margin: 2pt 0 0 0; }
+.body {
+  flex: 1;
+  display: flex;
+  padding: 10pt 28pt 10pt 28pt;
+  gap: 16pt;
+}
+.left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8pt;
+}
+.right {
+  width: 240pt;
+  display: flex;
+  flex-direction: column;
+  gap: 8pt;
+}
+.card {
+  background: #FFFFFF;
+  border-radius: 5pt;
+  padding: 10pt 13pt;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.07);
+}
+.card h3 { color: #1C3557; font-size: 9.5pt; font-weight: bold; margin: 0 0 7pt 0; }
+.design-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3.5pt 0;
+  border-bottom: 1pt solid #F0F4F8;
+}
+.design-row:last-child { border-bottom: none; }
+.design-row p { margin: 0; font-size: 8.5pt; }
+.design-label { color: #555555; }
+.design-value { color: #1C3557; font-weight: bold; }
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4.5pt 0;
+  border-bottom: 1pt solid #F0F4F8;
+}
+.result-row:last-child { border-bottom: none; }
+.result-row p { margin: 0; }
+.result-group { display: flex; align-items: center; gap: 6pt; }
+.dot { width: 8pt; height: 8pt; border-radius: 50%; flex-shrink: 0; }
+.result-label { color: #333333; font-size: 8.5pt; }
+.result-stats { text-align: right; }
+.result-effect { color: #1C3557; font-size: 8.5pt; font-weight: bold; }
+.sig-yes { color: #27AE60; font-size: 7.5pt; }
+.sig-no { color: #BDC3C7; font-size: 7.5pt; }
+.sig-marg { color: #D4AC0D; font-size: 7.5pt; }
+.before-after {
+  display: flex;
+  gap: 8pt;
+  align-items: center;
+}
+.ba-col { flex: 1; text-align: center; }
+.ba-col h4 { font-size: 7.5pt; font-weight: bold; color: #888888; margin: 0 0 4pt 0; text-transform: uppercase; }
+.ba-result {
+  background: #F8F9FA;
+  border-radius: 4pt;
+  padding: 6pt 8pt;
+}
+.ba-result p { margin: 0; font-size: 7.5pt; color: #555; }
+.ba-result .ba-effect { font-size: 9.5pt; font-weight: bold; }
+.arrow-col { color: #2E7BB8; font-size: 16pt; flex-shrink: 0; }
+.callout-green {
+  background: #EAFAF1;
+  border-radius: 5pt;
+  padding: 9pt 12pt;
+  border-left: 3pt solid #27AE60;
+  flex: 1;
+}
+.callout-green h4 { color: #1E8449; font-size: 9.5pt; font-weight: bold; margin: 0 0 4pt 0; }
+.callout-green p { color: #333333; font-size: 8pt; margin: 0; line-height: 1.4; }
+</style>
+</head>
+<body>
+<div class="header">
+  <p class="section-label">Sensitivity · Cross-Evaluator Analysis</p>
+  <h1>Bias-Corrected Scores: Removing Self-Evaluations</h1>
+  <p class="subtitle">For AI-authored proposals, self-evaluations are excluded — each AI proposal rated by 2 cross-evaluators only</p>
+</div>
+<div class="body">
+  <div class="left">
+    <div class="card">
+      <h3>Cross-Evaluator Design</h3>
+      <div class="design-row">
+        <p class="design-label">Self-evaluations removed</p>
+        <p class="design-value">69 rows</p>
+      </div>
+      <div class="design-row">
+        <p class="design-label">Remaining reviews</p>
+        <p class="design-value">207 reviews</p>
+      </div>
+      <div class="design-row">
+        <p class="design-label">AI proposals: cross-evaluators per proposal</p>
+        <p class="design-value">2 (cross only)</p>
+      </div>
+      <div class="design-row">
+        <p class="design-label">Human proposals: evaluators per proposal</p>
+        <p class="design-value">3 (unchanged)</p>
+      </div>
+    </div>
+    <div class="card" style="flex:1;">
+      <h3>Cross-Evaluator Results: Human vs. AI Author Groups</h3>
+      <div class="result-row">
+        <div class="result-group">
+          <div class="dot" style="background:#C0392B;"></div>
+          <p class="result-label">Human (all) — reference group</p>
+        </div>
+        <p class="result-effect">M = 3.76</p>
+      </div>
+      <div class="result-row">
+        <div class="result-group">
+          <div class="dot" style="background:#7F8C8D;"></div>
+          <p class="result-label">Claude Opus 4.5</p>
+        </div>
+        <div class="result-stats">
+          <p class="result-effect">Not significantly different</p>
+          <p class="sig-no">δ ≈ 0, q &gt; 0.05</p>
+        </div>
+      </div>
+      <div class="result-row">
+        <div class="result-group">
+          <div class="dot" style="background:#2980B9;"></div>
+          <p class="result-label">Gemini 3 Pro Preview</p>
+        </div>
+        <div class="result-stats">
+          <p class="result-effect">Marginally higher</p>
+          <p class="sig-marg">q = 0.032</p>
+        </div>
+      </div>
+      <div class="result-row">
+        <div class="result-group">
+          <div class="dot" style="background:#D35400;"></div>
+          <p class="result-label">GPT-5.2</p>
+        </div>
+        <div class="result-stats">
+          <p class="result-effect">Significantly higher</p>
+          <p class="sig-yes">δ = −0.87, q &lt; 0.001 ✓</p>
+        </div>
+      </div>
+      <div class="result-row">
+        <div class="result-group">
+          <div class="dot" style="background:#E74C3C; opacity:0.5;"></div>
+          <p class="result-label">Human Y1 vs. Y2</p>
+        </div>
+        <div class="result-stats">
+          <p class="result-effect">Y1=3.31, Y2=3.48</p>
+          <p class="sig-no">No significant difference</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="right">
+    <div class="card">
+      <h3>GPT Advantage: Before vs. After Self-Removal</h3>
+      <div class="before-after">
+        <div class="ba-col">
+          <h4>Pooled (All Evals)</h4>
+          <div class="ba-result">
+            <p>GPT vs. Human</p>
+            <p class="ba-effect" style="color:#D35400;">δ = −0.72</p>
+            <p style="color:#27AE60; font-size:7pt;">q &lt; 0.001 ✓</p>
+          </div>
+        </div>
+        <div class="arrow-col"><p>→</p></div>
+        <div class="ba-col">
+          <h4>Cross-Eval Only</h4>
+          <div class="ba-result">
+            <p>GPT vs. Human</p>
+            <p class="ba-effect" style="color:#D35400;">δ = −0.87</p>
+            <p style="color:#27AE60; font-size:7pt;">q &lt; 0.001 ✓</p>
+          </div>
+        </div>
+      </div>
+      <p style="color:#555; font-size:7.5pt; margin:6pt 0 0 0; line-height:1.4;">The GPT advantage grows slightly after self-removal — cross-evaluators rate GPT proposals highly, not just GPT itself.</p>
+    </div>
+    <div class="callout-green">
+      <h4>The Bottom Line</h4>
+      <p>After correcting for self-preference bias, <strong>GPT-5.2 proposals still score significantly higher</strong> than human proposals (δ = −0.87). Self-inflation exaggerated but did not create this effect. Claude proposals become indistinguishable from humans; Gemini shows only a marginal advantage.</p>
+    </div>
+  </div>
+</div>
+</body>
+</html>
