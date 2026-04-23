@@ -1,0 +1,2 @@
+method,seed,trustworthiness_k5,trustworthiness_k10,spearman_mean5nn_hd_vs_2d,spearman_p,jaccard_hd_vs_2d_outliers,outlier_overlap_n,outlier_union_n,explained_variance_ratio_pc1,explained_variance_ratio_pc2
+pca_reference,42,0.8568275425071286,0.857239307833391,0.4747622643835827,1.7405532098664153e-06,0.42857142857142855,6,14,0.5698877573013306,0.06125030294060707
