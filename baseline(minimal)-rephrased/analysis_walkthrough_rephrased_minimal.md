@@ -375,14 +375,116 @@ This section summarizes the core metric definitions used across the notebooks.
 
 ![Novelty analysis](../results/figures/rephrased/minimal/novelty_analysis.png)
 
-## Step 7 + nearest-literature neighbor analysis
-**Main finding:** Projection and nearest-neighbor diagnostics contextualized novelty by showing where proposals lie relative to literature and which papers anchor each proposal’s neighborhood. This section is descriptive and supports interpretation of the raw/normalized novelty tests.
-- Literature-space visualizations generated with t-SNE and UMAP.
-- Top-10% novelty thresholds exported (`raw=0.1593`, `z=2.7213`, `ratio=1.3154`) with proposal-level table.
+## Step 7: Proposals projected in literature space (descriptive)
+**Main finding:** t-SNE and UMAP overlays place proposal points relative to the full literature manifold (`n=1030`) and show that proposals occupy a concentrated region rather than uniformly covering the corpus. These plots are for qualitative context only and are not the basis for significance tests.
+
+### What was computed
+- Joint 2D projections of literature + proposals using:
+  - t-SNE
+  - UMAP
+- Proposal points were colored by author group and overlaid on gray literature points.
+- Novelty thresholds exported from Step 4/5 tables:
+  - raw novelty top-10% threshold: `0.159264`
+  - z-novelty top-10% threshold: `2.7213`
+  - ratio-novelty top-10% threshold: `1.3154`
 
 ![Literature-space t-SNE](../results/figures/rephrased/minimal/proposals_in_literature_space_tsne.png)
 ![Literature-space UMAP](../results/figures/rephrased/minimal/proposals_in_literature_space_umap.png)
 ![Literature-space by year](../results/figures/rephrased/minimal/proposals_in_literature_space_by_year.png)
+
+## Step 7B: Recomputed literature-space outliers (proposal -> literature mean-10NN)
+**Main finding:** Using the same `k=10` literature-neighbor definition as novelty scoring, Human proposals were farther from literature on average and had much higher outlier prevalence (`26.1%`) than All AI (`5.8%`). Mean-distance contrasts were strongest for Claude vs Human (Holm-adjusted MW `p=0.0197`), while outlier-prevalence Fisher tests were suggestive but did not remain below `0.05` after Holm correction.
+
+### What test/metric this is
+- For each proposal `p`, compute mean distance to its 10 nearest literature neighbors:
+  - `m_p = (1/10) * Σ d(p, l)` over `l in kNN_literature(p, k=10)`
+- Define literature-space outlier if `m_p` is in the global top 10% across all proposals:
+  - threshold `τ = 0.159264`
+  - `is_literature_outlier = 1[m_p >= τ]`
+- Group comparisons used:
+  - **Mann-Whitney U** and **Cliff’s delta** on `m_p` (vs Human)
+  - **Permutation test** on mean difference
+  - **Bootstrap 95% CI** on mean difference
+  - **Fisher’s exact test** for outlier prevalence (vs Human)
+  - **Holm correction** across pairwise comparisons
+
+### Group descriptive results (k=10)
+- Mean literature 10-NN distance (`m_p`):
+  - Human: `0.1303`
+  - Claude: `0.0898`
+  - Gemini: `0.1000`
+  - GPT-5.2: `0.1098`
+  - All AI: `0.0999`
+- Literature-space outlier prevalence:
+  - Human: `6/23` (`26.1%`)
+  - Claude: `0/23` (`0.0%`)
+  - Gemini: `2/23` (`8.7%`)
+  - GPT-5.2: `2/23` (`8.7%`)
+  - All AI: `4/69` (`5.8%`)
+- Contribution to the outlier set (`n=10`):
+  - Human `60.0%`, Claude `0.0%`, Gemini `20.0%`, GPT-5.2 `20.0%`, All AI total `40.0%`
+
+### Inferential results on mean literature 10-NN distance (vs Human)
+- All AI: `U=560`, MW `p=0.0356`, Holm MW `p=0.1069`, `δ=-0.2943` (small), permutation `p=0.0004`, mean diff `-0.0304`, 95% CI `[-0.0514, -0.0104]`
+- Claude: `U=136`, MW `p=0.0049`, Holm MW `p=0.0197`, `δ=-0.4858` (large), permutation `p=0.0003`, mean diff `-0.0404`, 95% CI `[-0.0603, -0.0211]`
+- Gemini: `U=180`, MW `p=0.0650`, Holm MW `p=0.1300`, `δ=-0.3195` (small), permutation `p=0.0158`, mean diff `-0.0302`, 95% CI `[-0.0523, -0.0073]`
+- GPT-5.2: `U=244`, MW `p=0.6604`, Holm MW `p=0.6604`, `δ=-0.0775` (negligible), permutation `p=0.0894`, mean diff `-0.0204`, 95% CI `[-0.0433, 0.0020]`
+
+### Inferential results on outlier prevalence (Fisher exact, vs Human)
+- All AI: rate diff `-0.2029`, OR `0.1744`, Fisher `p=0.0141`, Holm `p=0.0562`
+- Claude: rate diff `-0.2609`, OR `0.0000`, Fisher `p=0.0216`, Holm `p=0.0647`
+- Gemini: rate diff `-0.1739`, OR `0.2698`, Fisher `p=0.2427`, Holm `p=0.4855`
+- GPT-5.2: rate diff `-0.1739`, OR `0.2698`, Fisher `p=0.2427`, Holm `p=0.4855`
+
+![Literature-space outliers by group (k=10)](../results/figures/rephrased/minimal/literature_space_outliers_by_model_k10.png)
+![Literature-space t-SNE outlier overlays (k=10)](../results/figures/rephrased/minimal/proposals_in_literature_space_tsne_outliers_comparison_k10.png)
+![Literature-space UMAP outlier overlays (k=10)](../results/figures/rephrased/minimal/proposals_in_literature_space_umap_outliers_comparison_k10.png)
+
+## Step 7C: Projection reliability diagnostics
+**Main finding:** Neighborhood preservation (trustworthiness) was high for t-SNE/UMAP, but agreement between high-dimensional outliers and 2D outliers was poor (Jaccard `0.0` in seed sweeps). This supports treating 2D maps as qualitative visual aids, while keeping outlier labeling in the original embedding space.
+
+### What was computed
+- Repeated projection runs over seeds for:
+  - `tsne_joint`
+  - `umap_lit_fit_transform`
+- Metrics:
+  - trustworthiness (`k=5` and `k=10`)
+  - Spearman correlation between high-D and 2D mean-kNN distances (saved column name: `spearman_mean5nn_hd_vs_2d`)
+  - Jaccard overlap of high-D vs 2D top-10% outlier sets
+- PCA reference projection was also computed for a linear baseline.
+
+### Seed-sweep summary
+- t-SNE:
+  - trustworthiness@10 mean `0.9596` (std `0.0007`)
+  - Spearman mean `-0.3120`
+  - Outlier-set Jaccard mean `0.0000`
+- UMAP:
+  - trustworthiness@10 mean `0.9407` (std `0.0012`)
+  - Spearman mean `-0.1602`
+  - Outlier-set Jaccard mean `0.0000`
+
+### PCA reference
+- trustworthiness@10: `0.8572`
+- Spearman(high-D vs 2D mean-kNN): `0.4748` (`p=1.74e-06`)
+- Outlier-set Jaccard: `0.4286` (`6/14` overlap)
+- Explained variance: PC1 `0.5699`, PC2 `0.0613`
+
+![Projection reliability seed sweep](../results/figures/rephrased/minimal/projection_reliability_seed_sweep.png)
+![PCA outlier comparison](../results/figures/rephrased/minimal/proposals_in_literature_space_pca_outliers_comparison_k5.png)
+
+## Step 8: Export combined proposal JSON + flag sanity check
+**Main finding:** The combined export includes the new `is_literature_outlier` binary flag for each proposal, and it is fully consistent with raw top-10% novelty labeling in this run (`10/92` flagged by both definitions, `0` mismatches).
+
+### What was saved
+- File: `results/tables/rephrased/minimal/all_proposals.json`
+- Per-proposal fields include:
+  - `metrics.is_literature_outlier` (0/1)
+  - novelty indicators (`metrics.is_most_novel_raw`, `metrics.is_most_novel_z`, `metrics.is_most_novel_ratio`)
+
+### Sanity-check result
+- `is_literature_outlier == 1` count: `10/92`
+- `is_most_novel_raw == true` count: `10/92`
+- Proposal-set overlap between the two flags: exact match (`10/10`, `0` mismatches)
 
 ---
 
