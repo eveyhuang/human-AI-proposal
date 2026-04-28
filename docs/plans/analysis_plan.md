@@ -21,7 +21,7 @@ Primary question: how Human vs AI proposals differ on diversity, novelty, themat
 
 | Analysis | Main effect | Significance (primary) | Effect size / key statistic | Status |
 |---|---|---|---|---|
-| Diversity 1.1 Pairwise (full text) | Human > All AI diversity | MW Holm `p=1.20e-07` (All AI vs Human) | `δ=-0.7681` (large) | Done |
+| Diversity 1.1 Pairwise (full text, rephrased) | Human > All AI diversity | MW Holm `p=1.20e-07` (All AI vs Human) | `δ=-0.7681` (large) | Done |
 | Diversity 1.2 Centroid dispersion | Human > All AI dispersion | MW Holm `p=1.20e-07` | `δ=-0.7681` (large) | Done |
 | Diversity 1.3 1-NN isolation | Human more isolated than All AI | MW Holm `p=5.13e-06` | `δ=-0.6774`; outliers `30.4%` vs `4.3%` | Done |
 | Novelty Step 5 Raw (k=10) | Human higher raw novelty than most AI groups | Claude vs Human MW Holm `p=0.0197`; All AI Holm `p=0.1069` | Claude `δ=-0.4858`; All AI `δ=-0.2943` | Done |
@@ -201,10 +201,6 @@ Interpretation:
 - Criterion-wise predictive modeling with cross-validated Ridge regressions and permutation-based R² significance (style-only vs semantic-only vs combined feature sets).
 - Full planned “human vs AI outlier reward” interaction modeling (group × NN distance slope tests) as originally specified.
 
-### E) Additional reporting elements still pending
-
-- Formal pre-registration.
-- Finalized publication-target package based on the updated evidence profile.
 
 ## Next Priority Execution Order
 

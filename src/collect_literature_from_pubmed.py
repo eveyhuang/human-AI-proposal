@@ -50,11 +50,11 @@ DELAY = 0.4  # NCBI rate limit: ~3 requests/sec without API key
 SEARCH_QUERIES = [
     # 1. Emergent properties at molecular/cellular scales
     # Covers: NCEMS call core theme
-    {
-        "label": "emergent properties molecular cellular biology",
-        "query": '("emergent properties" OR "emergence") AND ("molecular biology" OR "cellular biology" OR "cell biology")',
-        "max": 30,
-    },
+    # {
+    #     "label": "emergent properties molecular cellular biology",
+    #     "query": '("emergent properties" OR "emergence") AND ("molecular biology" OR "cellular biology" OR "cell biology")',
+    #     "max": 30,
+    # },
     # 2. Mesoscale biology + macromolecular crowding
     # Covers: NCEMS call; AI #50
     {
@@ -85,11 +85,11 @@ SEARCH_QUERIES = [
     },
     # 6. Systems biology and network analysis
     # Covers: NCEMS call
-    {
-        "label": "systems biology network analysis cellular",
-        "query": '("systems biology" OR "biological networks") AND ("data synthesis" OR "data integration") AND ("molecular" OR "cellular")',
-        "max": 30,
-    },
+    # {
+    #     "label": "systems biology network analysis cellular",
+    #     "query": '("systems biology" OR "biological networks") AND ("data synthesis" OR "data integration") AND ("molecular" OR "cellular")',
+    #     "max": 30,
+    # },
     # 7. Protein complex assembly + self-assembly + stoichiometry
     # Covers: NCEMS call; AI #5
     {
