@@ -1,0 +1,257 @@
+{
+  "research_ideas": [
+    {
+      "title": "The Entropy of the Nucleus: Quantifying Information Density in Chromatin-Condensate Interfaces",
+      "abstract": "The nucleus is the ultimate mesoscale environment, where the physical organization of chromatin and the emergence of membraneless organelles (condensates) dictate gene expression. Current research often treats these as separate phenomena: polymer physics for DNA and liquid-liquid phase separation for condensates. This project will synthesize publicly available Hi-C (genome architecture), super-resolution microscopy (spatial localization), and mass-spectrometry-based proteomics (composition) to test the hypothesis that the nucleus operates as a constrained information-processing system where local entropy is actively managed. We will develop a novel 'Information Density Metric' to map how condensate formation alters the local degrees of freedom for chromatin fibers. By integrating these disparate data types using Physics-Informed Neural Networks (PINNs), we aim to identify the 'emergence threshold' where molecular crowding transitions into functional regulatory hubs. This work requires the synthesis of community-scale datasets to move beyond single-locus observations to a whole-nucleus physical law. The project will involve collaboration between computational biophysicists, genomicists, and data scientists, providing a unique training ground for the next generation of mesoscale researchers.",
+      "axes_position": {
+        "emergent_dimension": "Information Flow",
+        "biological_scale": "Organelle Network",
+        "computational_strategy": "Physics-Informed ML",
+        "data_integration": "Cross-Modality",
+        "primary_outcome": "Universal Law"
+      }
+    },
+    {
+      "title": "Urban Traffic Dynamics of the Vesicle Transport System: A Network Flow Synthesis",
+      "abstract": "Intracellular transport relies on molecular motors navigating a dense, heterogeneous cytoskeletal grid. While we understand single-motor kinetics, the emergent behavior of vesicle 'traffic'—including bottlenecks, bypasses, and multi-modal congestion—remains a mystery. This project will synthesize single-particle tracking (SPT) datasets from multiple cell types with high-resolution Cryo-ET reconstructions of the cytoskeleton. By applying analogical models from urban traffic engineering and graph theory, we will treat the cytoplasm as a logistical network. We aim to identify 'high-traffic hubs' and 'dead-zones' within the cell, determining how the density of actin filaments and microtubules emerges as a self-organizing traffic-control system. This synthesis is beyond the scope of a single lab as it requires merging biophysical movement data with large-scale structural topographies. The output will be a 'Cellular Traffic Map' and a predictive toolkit for how mutations in motor proteins lead to systemic transport failure, a key feature in neurodegenerative diseases. Trainees will gain expertise in applying civil engineering algorithms to biological systems, fostering transdisciplinary innovation.",
+      "axes_position": {
+        "emergent_dimension": "Spatial Patterning",
+        "biological_scale": "Organelle Network",
+        "computational_strategy": "Graph/Network Theory",
+        "data_integration": "Cross-Modality",
+        "primary_outcome": "Analytical Toolkit"
+      }
+    },
+    {
+      "title": "Swarm Intelligence in Mitochondrial Networks: Deciphering the Voting Rules of Organelle Fusion",
+      "abstract": "Mitochondria exist as dynamic networks that undergo frequent fusion and fission to maintain metabolic health. However, the collective 'decision-making' process—how the network 'knows' which mitochondria to fuse or degrade—is unknown. This project proposes that mitochondrial networks exhibit 'swarm intelligence,' similar to social insect colonies, where local interactions lead to global optimization of energy production. We will synthesize thousands of publicly available mitochondrial morphology images with parallel metabolic flux datasets and calcium signaling records. Using Reinforcement Learning (RL) agents, we will reverse-engineer the 'voting rules' that govern organelle behavior. We hypothesize that mitochondria integrate local energy stress signals into a consensus-based fusion response. This project leverages diverse data from various physiological states (stress vs. homeostasis) to identify universal emergent behaviors in mitochondrial networks. The collaboration between AI experts and mitochondrial biologists will result in a novel framework for understanding organelle sociality, providing postdocs with advanced skills in biological agent-based modeling.",
+      "axes_position": {
+        "emergent_dimension": "Information Flow",
+        "biological_scale": "Organelle Network",
+        "computational_strategy": "Manifold Learning",
+        "data_integration": "Cross-Condition",
+        "primary_outcome": "Universal Law"
+      }
+    },
+    {
+      "title": "The Logic of Cellular Noise: Emergent Robustness in Stochastic Signaling Environments",
+      "abstract": "Biological systems are inherently noisy at the molecular level, yet they produce remarkably robust cellular outcomes. This project challenges the view of noise as a nuisance, proposing instead that 'stochastic resonance' is an emergent property necessary for mesoscale stability. We will synthesize single-cell transcriptomics, proteomics fluctuation data, and time-lapse live-cell imaging of signaling cascades (e.g., NF-κB or p53). By applying Information Theory and stochastic modeling, we will determine if specific 'noise signatures' are conserved across different cell types and species. We aim to find the 'Criticality Point' where molecular randomness facilitates rapid state-switching in cells. This synthesis requires integrating disparate time-series data into a unified statistical manifold. The project will bridge the gap between statistical physics and cell biology, training students in the emerging field of stochastic biological engineering. The result will be a fundamental law of how biological complexity emerges from, and is stabilized by, underlying molecular chaos.",
+      "axes_position": {
+        "emergent_dimension": "Information Flow",
+        "biological_scale": "Cell-to-Environment",
+        "computational_strategy": "Physics-Informed ML",
+        "data_integration": "Multi-Temporal",
+        "primary_outcome": "Universal Law"
+      }
+    },
+    {
+      "title": "The Evolutionary Persistence of Disorder: Emergent Mesoscale Functions of Intrinsically Disordered Regions",
+      "abstract": "Intrinsically Disordered Regions (IDRs) in proteins often show low sequence conservation but high functional conservation in forming phase-separated condensates. This project will synthesize phyloproteomic data across 500 species with biophysical databases of known phase-separating proteins. Using Large Language Models (LLMs) and Graph Neural Networks, we will identify 'Hidden Conserved Motifs' within IDRs that dictate the physical properties (viscosity, surface tension) of emergent mesoscale phases. We hypothesize that the 'grammar' of disorder is a primary driver of organelle evolution. This community-scale synthesis will integrate evolutionary biology with soft-matter physics to solve the puzzle of how disordered sequences produce highly ordered mesoscale structures. The collaboration will include evolutionary biologists and computational biophysicists, fostering a transdisciplinary perspective on the origin of cellular complexity. The project will produce an open-access map of the 'IDR-Phase Space,' allowing researchers to predict the mesoscale impact of any disordered protein mutation.",
+      "axes_position": {
+        "emergent_dimension": "Spatial Patterning",
+        "biological_scale": "Membrane-to-Phase",
+        "computational_strategy": "LLM/Knowledge Graphs",
+        "data_integration": "Cross-Phylogeny",
+        "primary_outcome": "Evolutionary Path"
+      }
+    },
+    {
+      "title": "Complexity from Simplification: Identifying the 'Minimum Viable Mesoscale' in Minimal Cells",
+      "abstract": "What is the simplest possible architecture required for a cell to function? By synthesizing the comprehensive datasets available for the minimal cell (JCVI-syn3.0) and comparing them to wild-type Mycoplasma and higher eukaryotes, this project aims to identify the essential emergent properties of life. We will integrate metabolic models, proteomics, and 3D structural maps of minimal cells to determine which mesoscale structures (e.g., protein clusters, membrane domains) are non-negotiable for survival. We hypothesize that even in a 'minimal' genome, complexity emerges through the physical crowding and spatial coordination of limited parts. This project addresses the fundamental question of biological scaling. It requires a massive synthesis of multiple -omics layers and biophysical simulations. The resulting 'Minimal Mesoscale Blueprint' will serve as a guide for synthetic biology and our understanding of the origins of life. Trainees will work at the cutting edge of synthetic and systems biology, learning to extract high-order principles from simplified biological models.",
+      "axes_position": {
+        "emergent_dimension": "Energetic/Metabolic",
+        "biological_scale": "Cell-to-Environment",
+        "computational_strategy": "Graph/Network Theory",
+        "data_integration": "Cross-Phylogeny",
+        "primary_outcome": "SynBio Blueprint"
+      }
+    },
+    {
+      "title": "The High-Pressure Mesoscale: Emergent Mechanical Stability in Deep-Sea Piezophiles",
+      "abstract": "Deep-sea organisms thrive under pressures that would denature the proteins and collapse the organelles of surface-dwelling life. This project will synthesize the proteomics, lipidomics, and structural data of deep-sea microbes (piezophiles) versus their shallow-water relatives. We aim to identify the 'Piezophilic Emergence Rules'—the specific mesoscale adaptations, such as altered membrane packing and specialized protein scaffolds, that utilize high pressure as a stabilizing force rather than a stressor. Using multi-scale molecular dynamics (MD) simulations and AI-driven manifold learning, we will model how these organisms maintain cellular fluidity and organelle integrity. This synthesis is only possible by leveraging global oceanographic and genomic databases. The work will clarify how extreme environmental constraints drive the emergence of novel biological architectures. This project will bring together marine biologists and biophysicists, providing trainees with a unique perspective on the physical limits of life and the adaptability of mesoscale systems.",
+      "axes_position": {
+        "emergent_dimension": "Mechanical/Structural",
+        "biological_scale": "Membrane-to-Phase",
+        "computational_strategy": "Manifold Learning",
+        "data_integration": "High-Pressure/Extreme",
+        "primary_outcome": "Universal Law"
+      }
+    },
+    {
+      "title": "The Protein-to-Phase Transition Map: Synthesis of Pathological Mesoscale Shifts",
+      "abstract": "Many diseases, particularly neurodegenerative and certain cancers, are increasingly seen as 'mesoscale disorders' involving the transition of liquid-like condensates into solid-like aggregates. This project will synthesize the ClinVar database (human genetic variants) with phase-separation databases and disease-specific proteomic profiles. Using Graph Neural Networks, we will build a predictive 'Phase Transition Map' to identify which genetic mutations are most likely to disrupt mesoscale organization. We hypothesize that disease states are characterized by a 'viscosity tipping point' in the cytoplasm. This synthesis integrates clinical data with fundamental cell biology to provide a novel diagnostic toolkit for identifying early-stage mesoscale pathologies. The project requires the collaboration of clinical geneticists and computational biologists. Trainees will lead the development of an open-access diagnostic pipeline, promoting the principles of team science and reproducible research in the context of human health.",
+      "axes_position": {
+        "emergent_dimension": "Mechanical/Structural",
+        "biological_scale": "Protein-to-Complex",
+        "computational_strategy": "Graph/Network Theory",
+        "data_integration": "Cross-Condition",
+        "primary_outcome": "Disease Mechanism"
+      }
+    },
+    {
+      "title": "The Geometry of the Metabolome: Mapping Small-Molecule Microenvironments",
+      "abstract": "Metabolism is often studied as a bulk 'well-mixed' process, yet enzymes are spatially organized into mesoscale metabolons. This project will synthesize MALDI-imaging (spatial metabolomics), Cryo-ET (structural topology), and metabolic flux data to create the first 3D 'Metabolic Landscape' of the cell. We will test the hypothesis that the local geometry of organelle membranes and protein scaffolds creates 'chemical micro-pockets' where metabolic reactions are accelerated beyond bulk rates. By applying Computer Vision to spatial metabolomic data, we will map the concentration gradients of key metabolites relative to mesoscale structures. This project solves the long-standing puzzle of metabolic efficiency in the crowded cytoplasm. It requires a synthesis center approach to integrate imaging and -omics data from diverse laboratories. Trainees will gain experience in spatial statistics and high-resolution imaging analysis, preparing them for the future of 'spatial biology.'",
+      "axes_position": {
+        "emergent_dimension": "Spatial Patterning",
+        "biological_scale": "Cell-to-Environment",
+        "computational_strategy": "Topology Analysis",
+        "data_integration": "Cross-Modality",
+        "primary_outcome": "Analytical Toolkit"
+      }
+    },
+    {
+      "title": "Coordination of Mitochondrial and ER Shapes: The Mechanical 'Gear Ratio' of Organelle Interfaces",
+      "abstract": "The endoplasmic reticulum (ER) and mitochondria form extensive contact sites (MAMs) that are essential for lipid exchange and calcium signaling. However, how these two distinct organelle networks coordinate their large-scale morphologies remains unknown. This project will synthesize 3D Electron Microscopy (EM) volumes and live-cell dual-channel imaging data across multiple cell types and stress conditions. We aim to define the 'Mechanical Coupling Rules'—the physical constraints that ensure the ER 'follows' mitochondrial remodeling. Using Topology Data Analysis (TDA), we will quantify the 'gear ratio' between ER tubule density and mitochondrial branching. This synthesis addresses the emergent mechanical coordination between organelles, a problem too large for a single lab's imaging capacity. The project will bridge structural biology and mechanics, training students in the quantitative analysis of organelle dynamics and network topology.",
+      "axes_position": {
+        "emergent_dimension": "Mechanical/Structural",
+        "biological_scale": "Organelle Network",
+        "computational_strategy": "Topology Analysis",
+        "data_integration": "Cross-Modality",
+        "primary_outcome": "Universal Law"
+      }
+    },
+    {
+      "title": "Giant Viruses as Mesoscale Organelles: Synthesis of Viral Factory Emergence",
+      "abstract": "Giant viruses (e.g., Mimivirus) create massive 'viral factories' within host cells—structures that are as large and complex as traditional organelles but assembled within hours. This project will synthesize host-pathogen proteomic data and time-course imaging of viral factory assembly. We will treat the viral factory as a temporary cellular organelle to identify the 'Assembly Accelerators' that allow such rapid mesoscale emergence. We hypothesize that viruses exploit existing host phase-separation mechanisms to 'hijack' mesoscale organization. This synthesis will provide insights into the minimum requirements for organelle formation and the logic of host-pathogen competition at the mesoscale. The project requires a transdisciplinary team of virologists, biophysicists, and computational biologists. Trainees will explore the frontiers of viral biology and synthetic cell architecture, contributing to a deeper understanding of cellular self-assembly under extreme conditions.",
+      "axes_position": {
+        "emergent_dimension": "Spatial Patterning",
+        "biological_scale": "Host-Pathogen",
+        "computational_strategy": "Graph/Network Theory",
+        "data_integration": "Multi-Temporal",
+        "primary_outcome": "Evolutionary Path"
+      }
+    },
+    {
+      "title": "Cilia as Information Antennas: The Mesoscale Logic of Signal Transduction",
+      "abstract": "Primary cilia are isolated mesoscale structures that act as the cell's 'antennas.' While their components are known, how they integrate multiple disparate signals (light, flow, ligands) into a single cellular decision is a mystery. This project will synthesize ciliary proteomics, electrophysiology data, and single-cell signaling records. Using Information Theory, we will model the cilium as a signal-processing unit, identifying the 'logic gates' formed by the spatial arrangement of receptors and kinases within the ciliary membrane. We hypothesize that the cilium's geometry facilitates a specific 'signal-to-noise' ratio that is essential for development. This project integrates biophysics, engineering, and cell biology to solve a long-standing puzzle in cellular communication. Trainees will gain expertise in signal processing and quantitative biophysics, applying engineering principles to the study of a specialized mesoscale organelle.",
+      "axes_position": {
+        "emergent_dimension": "Information Flow",
+        "biological_scale": "Cell-to-Environment",
+        "computational_strategy": "Physics-Informed ML",
+        "data_integration": "Cross-Modality",
+        "primary_outcome": "Universal Law"
+      }
+    },
+    {
+      "title": "Mesoscale Dynamics in Desiccated States: Information Preservation in Anhydrobiosis",
+      "abstract": "Tardigrades and certain seeds can survive near-total water loss, entering a 'glassy' state where biological time essentially stops. How the mesoscale architecture of the cell is preserved without water—and how it 'reboots' upon rehydration—is a profound mystery of emergence. This project will synthesize proteomics and structural data from anhydrobiotic organisms (tardigrades, rotifers, brine shrimp) in both hydrated and desiccated states. We will use AI to identify 'Desiccation-Tolerance Motifs' in proteins that form protective mesoscale lattices. We hypothesize that the emergence of a 'biological glass' preserves cellular information by preventing the collapse of protein-complex topographies. This synthesis spans across phylogenies to find universal rules for structural preservation. The project will bridge biophysics and extremophile biology, training students in the analysis of non-equilibrium biological states and the future of bio-preservation technology.",
+      "axes_position": {
+        "emergent_dimension": "Temporal Rhythms",
+        "biological_scale": "Cell-to-Environment",
+        "computational_strategy": "Manifold Learning",
+        "data_integration": "Cross-Condition",
+        "primary_outcome": "Universal Law"
+      }
+    },
+    {
+      "title": "LLMs for Protein Social Networks: Predicting Context-Dependent Emergent Interactions",
+      "abstract": "Traditional Protein-Protein Interaction (PPI) maps are static and ignore cellular context (e.g., pH, location, cell type). This project will use Large Language Model (LLM) architectures to analyze the 'grammar' of protein interactions by synthesizing millions of data points from PPI databases, literature, and spatial proteomics. We will treat proteins as 'words' and complexes as 'sentences' to predict how the social network of proteins changes in different mesoscale environments. We hypothesize that 'Context-Aware Transformers' can predict the emergence of new complexes that have never been observed in vitro. This project requires a massive synthesis of existing data to move beyond binary interactions to a 'Contextual Proteome.' The collaboration between NLP experts and systems biologists will create a new analytical toolkit for the community. Trainees will be at the forefront of AI-driven biological discovery, learning to build and fine-tune biological LLMs.",
+      "axes_position": {
+        "emergent_dimension": "Information Flow",
+        "biological_scale": "Protein-to-Complex",
+        "computational_strategy": "LLM/Knowledge Graphs",
+        "data_integration": "Cross-Modality",
+        "primary_outcome": "Analytical Toolkit"
+      }
+    },
+    {
+      "title": "Graph Neural Networks for Metabolic Flow: Identifying Emergent Hubs in Cellular Flux",
+      "abstract": "Cellular metabolism is more than the sum of its enzymes; it is a dynamic, emergent flow through a complex network. This project will synthesize global metabolomics, proteomics, and flux-balance analysis (FBA) data to model the cell as a dynamic graph. Using Graph Neural Networks (GNNs), we will identify 'Emergent Metabolic Hubs'—points where the network behavior cannot be predicted from individual enzyme kinetics. We hypothesize that these hubs are stabilized by mesoscale enzymatic clusters (metabolons) that change their connectivity in response to energy stress. This synthesis will solve the long-standing puzzle of how cells maintain metabolic homeostasis across vast physiological shifts. The project requires the integration of diverse datasets from hundreds of conditions. Trainees will learn to apply advanced GNNs to biological flux, bridging the gap between metabolic engineering and AI.",
+      "axes_position": {
+        "emergent_dimension": "Energetic/Metabolic",
+        "biological_scale": "Organelle Network",
+        "computational_strategy": "Graph/Network Theory",
+        "data_integration": "Cross-Condition",
+        "primary_outcome": "Universal Law"
+      }
+    },
+    {
+      "title": "Topological Data Analysis (TDA) of the Cytoskeleton: Quantifying Mesoscale Strength and Resilience",
+      "abstract": "The cytoskeleton provides the cell with its mechanical integrity, yet we lack a quantitative 'metric of resilience' for these networks. This project will synthesize thousands of actin and microtubule images from diverse cell types (muscle, neurons, fibroblasts) and apply Topological Data Analysis (TDA) to quantify their connectivity, 'holes,' and 'loops.' We aim to find the 'Topological Signature of Strength'—the specific arrangement of filaments that maximizes mechanical stability while minimizing protein cost. We hypothesize that cells optimize their cytoskeletal topology to reach a 'percolation threshold' that defines their mechanical identity. This community-scale synthesis will integrate math, physics, and cell biology. Trainees will gain expertise in TDA, a cutting-edge mathematical tool, and its application to biological architecture. The output will be a 'Cytoskeletal Resilience Index' for diagnosing structural failures in aging and disease.",
+      "axes_position": {
+        "emergent_dimension": "Mechanical/Structural",
+        "biological_scale": "Organelle Network",
+        "computational_strategy": "Topology Analysis",
+        "data_integration": "Cross-Modality",
+        "primary_outcome": "Analytical Toolkit"
+      }
+    },
+    {
+      "title": "Computer Vision for Cryo-ET Discovery: Uncovering 'Unidentified Cellular Objects' (UCOs)",
+      "abstract": "Cryo-Electron Tomography (Cryo-ET) provides high-resolution views of the cellular interior, but much of the 'noise' in these images may actually be unidentified mesoscale structures. This project will use unsupervised Computer Vision and Deep Learning to scan raw Cryo-ET repositories (like EMPIAR) to identify 'Unidentified Cellular Objects' (UCOs)—recurring protein or lipid structures that have not yet been annotated. We hypothesize that the 'dark matter' of the cell contains thousands of organized mesoscale assemblies that standard analysis overlooks. This synthesis project will create an automated discovery pipeline for the entire community. It requires the integration of vast amounts of raw imaging data with existing structural databases. The collaboration between computer vision experts and structural biologists will redefine how we explore the cellular interior. Trainees will lead the effort in 'digital discovery,' training AI to see what human experts might miss.",
+      "axes_position": {
+        "emergent_dimension": "Spatial Patterning",
+        "biological_scale": "Cell-to-Environment",
+        "computational_strategy": "Physics-Informed ML",
+        "data_integration": "Cross-Modality",
+        "primary_outcome": "Analytical Toolkit"
+      }
+    },
+    {
+      "title": "Universal Rhythms of Condensates: The Temporal Emergence of Nucleolar Oscillations",
+      "abstract": "Biological condensates like the nucleolus are not static; they exhibit rhythmic fluctuations in size, density, and activity. This project will synthesize time-lapse imaging of nucleoli across diverse eukaryotes (from yeast to humans) to find 'Universal Temporal Laws' of condensate behavior. We hypothesize that nucleolar oscillations are coupled to the cell cycle and metabolic state through a conserved physical mechanism. Using signal processing and manifold learning, we will determine if these rhythms are an emergent property of the phase-separated state itself. This synthesis moves beyond descriptive 'snapshots' to a dynamic understanding of mesoscale time. It requires a collaborative effort to integrate disparate temporal datasets. Trainees will gain skills in time-series analysis and biological physics, uncovering the 'metronome' that governs mesoscale organization.",
+      "axes_position": {
+        "emergent_dimension": "Temporal Rhythms",
+        "biological_scale": "Membrane-to-Phase",
+        "computational_strategy": "Manifold Learning",
+        "data_integration": "Cross-Phylogeny",
+        "primary_outcome": "Universal Law"
+      }
+    },
+    {
+      "title": "The Energetic Efficiency of Membrane Folding: Surface-Area Laws Across Organelles",
+      "abstract": "Organelles like mitochondria and chloroplasts maximize their functional surface area through complex membrane folding (cristae and thylakoids). This project will synthesize structural data from across the tree of life to identify the 'Universal Law of Membrane Efficiency.' We will use physics-based modeling to determine the energetic 'cost' of different folding geometries and the metabolic 'benefit' they provide. We hypothesize that there is a universal 'Optimal Folding Ratio' that organelles converge upon to maximize ATP production. This community-scale synthesis integrates bioenergetics with geometry. The project will bridge plant and animal biology, training students in the comparative analysis of energy-harvesting systems. The result will be a fundamental understanding of how the mesoscale geometry of membranes emerges to optimize cellular energy flux.",
+      "axes_position": {
+        "emergent_dimension": "Energetic/Metabolic",
+        "biological_scale": "Organelle Network",
+        "computational_strategy": "Physics-Informed ML",
+        "data_integration": "Cross-Phylogeny",
+        "primary_outcome": "Universal Law"
+      }
+    },
+    {
+      "title": "Quantum Effects in the Mesoscale: Synthesis of Biological Coherence in Signaling Complexes",
+      "abstract": "While quantum biology is often associated with photosynthesis, there is emerging evidence that quantum coherence might play a role in other mesoscale signaling complexes, such as bird navigation proteins or photon-harvesting units in the retina. This project will synthesize biophysical data and spectroscopic records of these specialized complexes to test for 'Emergent Quantum Properties.' Using physics-informed neural networks, we will model how the spatial arrangement of proteins at the mesoscale supports or suppresses quantum coherence. We hypothesize that specific mesoscale architectures act as 'quantum shields' against cellular noise. This high-risk synthesis will integrate quantum physics with molecular biology. Trainees will work at the absolute frontier of science, learning to use AI to find quantum signatures in biological datasets. This could lead to a transformative understanding of the limits of biological information processing.",
+      "axes_position": {
+        "emergent_dimension": "Information Flow",
+        "biological_scale": "Protein-to-Complex",
+        "computational_strategy": "Physics-Informed ML",
+        "data_integration": "Cross-Modality",
+        "primary_outcome": "Universal Law"
+      }
+    },
+    {
+      "title": "The 'Softness' of Cancer Mesoscales: Defining Malignancy Through Viscosity Metrics",
+      "abstract": "Cancer cells often exhibit altered mechanical properties, but we lack a comprehensive 'Viscosity Map' of the malignant mesoscale. This project will synthesize microrheology data (cell stiffness) with proteomics and imaging of the cytoskeleton and condensates across hundreds of cancer cell lines. We aim to identify the 'Malignancy Viscosity Signature'—a specific state of mesoscale 'softness' that enables metastasis. We hypothesize that cancer emergence is driven by a physical phase-shift that allows for rapid structural remodeling. This synthesis project will provide a new physical lens for understanding cancer progression. It requires the integration of biophysical measurements with large-scale cancer-omics. Trainees will bridge oncology and biophysics, developing a 'Mechanical Biopsy' toolkit for the research community.",
+      "axes_position": {
+        "emergent_dimension": "Mechanical/Structural",
+        "biological_scale": "Cell-to-Environment",
+        "computational_strategy": "Manifold Learning",
+        "data_integration": "Cross-Condition",
+        "primary_outcome": "Disease Mechanism"
+      }
+    },
+    {
+      "title": "Evolution of the Centrosome as a Computational Hub: Logic Gates in Centrosomal Proteomes",
+      "abstract": "The centrosome is the microtubule-organizing center, but it also serves as a signaling scaffold. This project will synthesize centrosomal proteomes across the eukaryotic tree to identify how its 'computational capacity' has evolved. Using Graph Theory, we will model the centrosome as a 'network router' that integrates cell-cycle signals. We hypothesize that the evolution of complex life was enabled by the emergence of specific 'Logic Gates' within the centrosome that allow for more sophisticated spatial decisions. This synthesis addresses the evolutionary origin of cellular intelligence. It requires a massive integration of phylogenetic and proteomic data. Trainees will gain expertise in evolutionary cell biology and network modeling, uncovering the 'hardware' of cellular logic.",
+      "axes_position": {
+        "emergent_dimension": "Information Flow",
+        "biological_scale": "Organelle Network",
+        "computational_strategy": "Graph/Network Theory",
+        "data_integration": "Cross-Phylogeny",
+        "primary_outcome": "Evolutionary Path"
+      }
+    },
+    {
+      "title": "The Thermoelectric Cell: Temperature Gradients as Drivers of Mesoscale Organization",
+      "abstract": "Active metabolism generates heat, and intracellular temperature gradients may exist at the mesoscale. This project will synthesize data from fluorescent thermometry and metabolic flux records to investigate if cells utilize 'Thermal Emergence.' We hypothesize that temperature gradients across membranes and large complexes drive the spatial organization of the cell through thermophoresis (movement in response to temperature). Using manifold learning, we will correlate local heat production with the positioning of organelles. This project explores a completely new dimension of cellular organization: the 'Thermodynamic Map' of the cell. It requires a synthesis of biophysics and high-resolution sensing data. Trainees will explore the intersections of thermodynamics and cell biology, developing models for how thermal energy is harnessed for mesoscale assembly.",
+      "axes_position": {
+        "emergent_dimension": "Energetic/Metabolic",
+        "biological_scale": "Cell-to-Environment",
+        "computational_strategy": "Manifold Learning",
+        "data_integration": "Cross-Modality",
+        "primary_outcome": "Universal Law"
+      }
+    }
+  ]
+}

@@ -15,15 +15,38 @@ Primary question: how Human vs AI proposals differ on diversity, novelty, themat
 - Literature corpus for novelty: `n=1030` abstracts.
 - Review datasets parsed for metric-score integration: `276` NCEMS reviews + `276` novelty-framework reviews.
 
+## Experiment Conditions
+
+This study now has three generation conditions:
+
+1. `baseline(minimal)-rephrased` (**completed**)
+- LLMs generate ideas/proposals under the minimal prompt pipeline with rephrasing.
+- This condition is the current reference condition and all completed results in this plan come from it.
+
+2. `how_to_think` (**planned next**)
+- LLMs first use an LLM-suggested “how to think” process, then generate ideas/proposals using that process.
+
+3. `persona` (**planned next**)
+- LLMs generate ideas/proposals while adopting human-scientist author personas.
+- Inputs include titles/abstracts of recent papers by the target author(s) during idea generation.
+
+### Cross-condition comparison plan
+
+- For both **ideas** and **full proposals**, run the same analysis families already used in baseline:
+- Diversity analyses.
+- Novelty analyses.
+- Score-comparison analyses.
+- Primary comparison: each new condition (`how_to_think`, `persona`) vs `baseline(minimal)-rephrased`, then Human vs each condition.
+
 ## Completed Analyses and Results
 
 ### Compact Results Table
 
 | Analysis | Main effect | Significance (primary) | Effect size / key statistic | Status |
 |---|---|---|---|---|
-| Diversity 1.1 Pairwise (full text, rephrased) | Human > All AI diversity | MW Holm `p=1.20e-07` (All AI vs Human) | `δ=-0.7681` (large) | Done |
-| Diversity 1.2 Centroid dispersion | Human > All AI dispersion | MW Holm `p=1.20e-07` | `δ=-0.7681` (large) | Done |
-| Diversity 1.3 1-NN isolation | Human more isolated than All AI | MW Holm `p=5.13e-06` | `δ=-0.6774`; outliers `30.4%` vs `4.3%` | Done |
+| Diversity 1.1 Pairwise (**Remote-Clique**) | Human > All AI diversity | MW Holm `p=1.20e-07` (All AI vs Human) | `δ=-0.7681` (large) | Done |
+| Diversity 1.2 Centroid dispersion (**Span-related, mean radius**) | Human > All AI dispersion | MW Holm `p=1.20e-07` | `δ=-0.7681` (large) | Done |
+| Diversity 1.3 1-NN isolation (**Chamfer / NN**) | Human more isolated than All AI | MW Holm `p=5.13e-06` | `δ=-0.6774`; outliers `30.4%` vs `4.3%` | Done |
 | Novelty Step 5 Raw (k=10) | Human higher raw novelty than most AI groups | Claude vs Human MW Holm `p=0.0197`; All AI Holm `p=0.1069` | Claude `δ=-0.4858`; All AI `δ=-0.2943` | Done |
 | Novelty Step 4b Local-density normalized | Broad AI-vs-Human difference disappears after normalization | All AI vs Human MW `p=0.9138` | `δ=0.0158` (negligible) | Done |
 | Novelty Step 7B Literature-space outliers (mean-10NN) | Human outlier prevalence higher than All AI | Fisher Holm `p=0.0562` (All AI vs Human) | Rate diff `-20.3` pp; OR `0.1744` | Done |
@@ -36,9 +59,9 @@ Primary question: how Human vs AI proposals differ on diversity, novelty, themat
 ### 1) Diversity in embedding space (Part 2-I)
 
 Analyses completed:
-- Within-group pairwise diversity.
-- Centroid dispersion.
-- Global nearest-neighbor (1-NN) isolation and outlier detection (top 10% rule).
+- Within-group pairwise diversity (**Remote-Clique** family).
+- Centroid dispersion (mean distance to centroid; **related to Span** but not percentile-based Span yet).
+- Global nearest-neighbor (1-NN) isolation and outlier detection (top 10% rule; **Chamfer/NN family**).
 - Embedding visualizations (UMAP/t-SNE, descriptive).
 - Main-idea sub-analyses (pairwise/centroid/NN + overlap diagnostics).
 
@@ -51,6 +74,46 @@ Key findings:
 
 Interpretation:
 - In the baseline minimal condition, Human proposals occupy a broader and more isolated semantic space than AI proposals in raw embedding analyses.
+
+#### Diversity metric definitions aligned to Table-3 naming (for all conditions)
+
+Use cosine distance `d(x_i, x_j)` on embeddings. Compute each metric within each group (Human, Claude, Gemini, GPT-5.2, All AI), then compare groups with the same inferential framework already used (MW, Cliff's delta, permutation, multiple-testing correction).
+
+1. **Remote-Clique** (`implemented`)
+- Definition (match screenshot): `RC = (1 / N^2) * sum_{i=1..N} sum_{j=1..N} d(x_i, x_j)`.
+- Note: current pairwise analysis already overlaps this family; we will additionally export exact `N^2` Remote-Clique values for direct comparability.
+
+2. **Chamfer Distance** (`implemented`)
+- Definition (match screenshot): `CD = (1 / N) * sum_{i=1..N} min_{j != i} d(x_i, x_j)`.
+- This is the group mean of nearest-neighbor distances (k=1), already used in Analysis 1.3.
+
+3. **MST Dispersion** (`to add`)
+- Definition (match screenshot): build the minimum spanning tree (MST) on the complete weighted graph of group embeddings with edge weights `d(x_i, x_j)`.
+- Metric: `MST_dispersion = (1 / |E_MST|) * sum_{(i,j) in E_MST} d(x_i, x_j)`, where `|E_MST| = N-1`.
+
+4. **Span** (`partial -> to add full`)
+- Screenshot definition is percentile-to-centroid radius.
+- Centroid: `c = (1 / N) * sum_i x_i`.
+- Metric to add: `Span_p = percentile_p( { d(x_i, c) } )`.
+- Primary reported value: **Span_90** (p=90), matching the screenshot's robustness choice.
+- Current centroid-dispersion analysis uses **mean** distance to centroid; keep it and add Span_90 as the Table-3 aligned metric.
+
+5. **Sparseness** (`to add`)
+- Medoid definition: `m = argmin_{x_j} sum_{i=1..N} d(x_i, x_j)`.
+- Metric (match screenshot intent): `Sparseness = (1 / N) * sum_{i=1..N} d(x_i, m)`.
+
+6. **Entropy (grid-based embedding occupancy)** (`to add`)
+- Follow screenshot approach on a 2D projection:
+- Project points to 2D embedding space, partition into a `5 x 5` grid, and compute bin frequencies `f_b = n_b / N`.
+- Metric: Shannon-Wiener entropy `H = - sum_b f_b * log(f_b)` over non-zero bins.
+- Report normalized entropy `H / log(B_nonzero)` as a secondary scale-free version.
+- Important: this is **embedding-space occupancy entropy**, distinct from the existing **topic entropy** analysis.
+
+#### Rollout for new conditions (`how_to_think`, `persona`)
+
+- Compute all six metrics above for both **ideas** and **full proposals** in each condition.
+- Compare each new condition vs `baseline(minimal)-rephrased`, then Human vs each condition.
+- Preserve current significance pipeline (MW + permutation + effect size + correction), and add robust CI summaries for newly added metrics.
 
 ### 2) Novelty against literature (Part 2-II)
 
