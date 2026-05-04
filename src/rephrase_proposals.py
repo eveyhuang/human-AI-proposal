@@ -20,18 +20,19 @@ The template mirrors the NCEMS call for proposals and evaluation criteria:
   Section 5 – Open Science & Team Composition
 
 Usage (run from project root):
-    python src/rephrase_proposals.py
+    python src/rephrase_proposals.py --condition minimal
 
 Outputs:
-    data/ai-proposals/rephrased/ai_proposals_rephrased_<timestamp>.csv
-    data/human-proposals/rephrased/human_proposals_rephrased_y1_<timestamp>.json
-    data/human-proposals/rephrased/human_proposals_rephrased_y2_<timestamp>.json
+    data/ai-proposals/rephrased/<condition>/ai_proposals_<condition>_rephrased_<timestamp>.csv
+    data/human-proposals/rephrased/<condition>/human_proposals_rephrased_y1_<timestamp>.json
+    data/human-proposals/rephrased/<condition>/human_proposals_rephrased_y2_<timestamp>.json
 
 Each output record contains:
     standardized_text – full 13-sentence template (5 sections)
     main_idea         – 3-sentence core-concept summary for semantic analysis
 """
 
+import argparse
 import os
 import sys
 import json
@@ -166,6 +167,76 @@ SECTION_HEADERS = [
     "FEASIBILITY AND TIMELINE",
     "OPEN SCIENCE AND TEAM COMPOSITION",
 ]
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description='Rephrase AI and human proposals into a standardized template.'
+    )
+    parser.add_argument(
+        '--condition',
+        default='minimal',
+        help='Condition name under data/ai-proposals and data/*/rephrased (default: minimal)',
+    )
+    return parser.parse_args()
+
+
+def condition_label(condition: str) -> str:
+    """Return the file-name-safe label for a condition path."""
+    return Path(condition).name
+
+
+def latest_matching_file(directory: Path, pattern: str) -> Optional[Path]:
+    """Return the most recent matching file in a directory, if any."""
+    matches = sorted(directory.glob(pattern))
+    return matches[-1] if matches else None
+
+
+def human_proposal_key(proposal: Dict[str, Any]) -> Optional[str]:
+    """Build a stable cache key for a human proposal."""
+    proposal_id = str(proposal.get('proposal_id', '') or '').strip()
+    if proposal_id:
+        return f"id:{proposal_id}"
+
+    title = str(proposal.get('proposal_title', '') or '').strip()
+    if title:
+        return f"title:{title}"
+
+    return None
+
+
+def load_existing_human_rephrases(existing_path: Optional[Path]) -> Dict[str, Dict[str, Any]]:
+    """Load already rephrased human proposals keyed by proposal id/title."""
+    if existing_path is None or not existing_path.exists():
+        return {}
+
+    with open(existing_path, 'r') as f:
+        data = json.load(f)
+
+    cached: Dict[str, Dict[str, Any]] = {}
+    for proposal in data.get('proposals', []):
+        key = human_proposal_key(proposal)
+        if not key:
+            continue
+        if proposal.get('standardized_text') and proposal.get('main_idea'):
+            cached[key] = proposal
+    return cached
+
+
+def human_rephrase_is_complete(source_path: Path, existing_path: Optional[Path]) -> bool:
+    """Return True when every source human proposal already has a cached rephrase."""
+    cached = load_existing_human_rephrases(existing_path)
+    if not cached:
+        return False
+
+    with open(source_path, 'r') as f:
+        data = json.load(f)
+
+    for proposal in data.get('proposals', []):
+        key = human_proposal_key(proposal)
+        if not key or key not in cached:
+            return False
+    return True
 
 def strip_section_headers(text: str) -> str:
     """Remove the five fixed section headings from standardized_text,
@@ -331,32 +402,50 @@ def rephrase_ai_proposals(client: genai.Client, ai_csv_path: Path,
 
 
 def rephrase_human_proposals(client: genai.Client,
-                              json_path: Path) -> Dict[str, Any]:
+                             json_path: Path,
+                             existing_rephrased_path: Optional[Path] = None) -> Dict[str, Any]:
     """Extract all human proposals into the fixed template. Returns modified data dict."""
     with open(json_path, 'r') as f:
         data = json.load(f)
 
     proposals = data.get('proposals', [])
     logger.info(f"Loaded {len(proposals)} human proposals from {json_path.name}")
+    cached_proposals = load_existing_human_rephrases(existing_rephrased_path)
+    if existing_rephrased_path and cached_proposals:
+        logger.info(
+            f"Reusing {len(cached_proposals)} existing rephrased proposals from "
+            f"{existing_rephrased_path.name}"
+        )
 
     rephrased_proposals = []
     for i, proposal in enumerate(tqdm(proposals, desc=f"Extracting {json_path.name}")):
-        p = dict(proposal)
+        key = human_proposal_key(proposal)
+        cached = cached_proposals.get(key) if key else None
+        title = str(proposal.get('proposal_title', ''))
 
-        p['proposal_title'] = proposal.get('proposal_title', '')
+        if cached:
+            p = dict(cached)
+            logger.info(f"  [{i+1}/{len(proposals)}] {title[:60]}... skipped (already rephrased)")
+        else:
+            p = dict(proposal)
+            p['proposal_title'] = proposal.get('proposal_title', '')
 
-        full_text = build_human_full_text(proposal)
-        extracted = extract_proposal(client, full_text)
-        p['standardized_text'] = extracted['standardized_text']
-        p['main_idea'] = extracted['main_idea']
+            full_text = build_human_full_text(proposal)
+            extracted = extract_proposal(client, full_text)
+            p['standardized_text'] = extracted['standardized_text']
+            p['main_idea'] = extracted['main_idea']
 
-        logger.info(f"  [{i+1}/{len(proposals)}] {proposal.get('proposal_title', '')[:60]}...")
+            logger.info(f"  [{i+1}/{len(proposals)}] {title[:60]}...")
         rephrased_proposals.append(p)
 
     return {**data, 'proposals': rephrased_proposals}
 
 
 def main():
+    args = parse_args()
+    condition = args.condition
+    condition_name = condition_label(condition)
+
     # ── Validate API key ──────────────────────────────────────────────────────
     api_key = os.getenv('GOOGLE_API_KEY')
     if not api_key:
@@ -367,14 +456,17 @@ def main():
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
     # ── Extract AI proposals ──────────────────────────────────────────────────
-    ai_baseline_dir = Path('data/ai-proposals/minimal')
-    ai_csv_files = sorted(ai_baseline_dir.glob('ai_proposals_minimal_complete_*.csv'))
+    ai_input_dir = Path('data/ai-proposals') / condition
+    ai_csv_files = sorted(ai_input_dir.glob(f'ai_proposals_{condition_name}_complete_*.csv'))
     if not ai_csv_files:
-        logger.error("No AI proposal CSV found in data/ai-proposals/baseline/")
+        ai_csv_files = sorted(ai_input_dir.glob('ai_proposals_*_complete_*.csv'))
+    if not ai_csv_files:
+        logger.error(f"No AI proposal CSV found in {ai_input_dir}")
         sys.exit(1)
 
     ai_csv_path = ai_csv_files[-1]  # most recent
-    ai_out_path = Path('data/ai-proposals/rephrased/v3-minimal') / f'ai_proposals_minimal_rephrased_{timestamp}.csv'
+    ai_out_path = (Path('data/ai-proposals/rephrased') / condition /
+                   f'ai_proposals_{condition_name}_rephrased_{timestamp}.csv')
     checkpoint_path = ai_out_path.with_suffix('.csv.tmp')
     rephrased_ai_df = rephrase_ai_proposals(client, ai_csv_path,
                                             checkpoint_path=checkpoint_path)
@@ -392,8 +484,23 @@ def main():
             logger.warning(f"Not found: {human_path}, skipping.")
             continue
 
-        rephrased_data = rephrase_human_proposals(client, human_path)
-        out_path = (Path('data/human-proposals/rephrased') /
+        human_rephrased_dir = Path('data/human-proposals/rephrased')
+        existing_human_path = latest_matching_file(
+            human_rephrased_dir,
+            f'human_proposals_rephrased_{cohort}_*.json',
+        )
+        if human_rephrase_is_complete(human_path, existing_human_path):
+            logger.info(
+                f"Found complete existing human rephrases for {cohort} at "
+                f"{existing_human_path}; skipping."
+            )
+            continue
+        rephrased_data = rephrase_human_proposals(
+            client,
+            human_path,
+            existing_rephrased_path=existing_human_path,
+        )
+        out_path = (human_rephrased_dir /
                     f'human_proposals_rephrased_{cohort}_{timestamp}.json')
         out_path.parent.mkdir(parents=True, exist_ok=True)
         with open(out_path, 'w') as f:
