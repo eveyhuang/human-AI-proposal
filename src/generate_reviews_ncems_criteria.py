@@ -172,8 +172,8 @@ def main():
     template = args.template
 
     # ── Paths ─────────────────────────────────────────────────────────────────
-    ai_dir = Path(f'data/ai-proposals/{condition}')
-    human_dir = Path('data/human-proposals')
+    ai_dir = Path(f'data/ai-proposals/rephrased/{condition}')
+    human_dir = Path(f'data/human-proposals/rephrased/{condition}')
     output_dir = Path(f'data/reviews/ai_reviews/{condition}/ncems_criteria')
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -209,11 +209,12 @@ def main():
         'template': template,
         'research_call_source': 'data/call_and_info.json',
         'human_inputs': [
-            'data/human-proposals/human-proposals-y1.json',
-            'data/human-proposals/human-proposals-y2.json',
+            f'data/human-proposals/rephrased/{condition}/human_proposals_rephrased_y1_*.json',
+            f'data/human-proposals/rephrased/{condition}/human_proposals_rephrased_y2_*.json',
         ],
-        'ai_input': f'data/ai-proposals/{condition}/ai_proposals_*.csv',
+        'ai_input': f'data/ai-proposals/rephrased/{condition}/ai_proposals_*.csv',
         'evaluators': evaluator_models,
+        'rephrased': True,
         'reviews': [],
     }
 

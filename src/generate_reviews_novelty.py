@@ -6,7 +6,7 @@ novelty dimensions and supplies each proposal with abstracts of its three
 closest literature neighbors (from proposal_lit_neighbors.json) as context.
 
 Usage (run from project root):
-    python src/generate_reviews_novelty.py --condition rephrased/minimal
+    python src/generate_reviews_novelty.py --condition minimal
 
 Output:
     data/reviews/ai_reviews/<condition>/novelty_reviews_<timestamp>.json
@@ -216,8 +216,8 @@ def main():
     condition = args.condition
 
     # ── Paths ─────────────────────────────────────────────────────────────────
-    ai_proposal_dir = Path(f'data/ai-proposals/{condition}')
-    human_proposal_dir = Path(f'data/human-proposals/')
+    ai_proposal_dir = Path(f'data/ai-proposals/rephrased/{condition}')
+    human_proposal_dir = Path(f'data/human-proposals/rephrased/{condition}')
     output_dir = Path(f'data/reviews/ai_reviews/{condition}/novelty') 
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -249,12 +249,12 @@ def main():
         'created_at': datetime.now().isoformat(),
         'condition': condition,
         'template': 'eval_novelty',
-        'lit_neighbors_source': f'results/tables/{condition}/proposal_lit_neighbors.json',
+        'lit_neighbors_source': f'results/tables/rephrased/{condition}/proposal_lit_neighbors.json',
         'human_inputs': [
-            f'data/human-proposals/{condition}/human_proposals_rephrased_y1_*.json',
-            f'data/human-proposals/{condition}/human_proposals_rephrased_y2_*.json',
+            f'data/human-proposals/rephrased/{condition}/human_proposals_rephrased_y1_*.json',
+            f'data/human-proposals/rephrased/{condition}/human_proposals_rephrased_y2_*.json',
         ],
-        'ai_input': f'data/ai-proposals/{condition}/*.csv',
+        'ai_input': f'data/ai-proposals/rephrased/{condition}/*.csv',
         'evaluators': evaluator_models,
         'rephrased': True,
         'reviews': [],

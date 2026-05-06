@@ -1,0 +1,47 @@
+{
+  "conditions": {
+    "minimal": {
+      "executed_notebook_dir": "baseline(minimal)-rephrased",
+      "idea_prompt_template": "generate_ideas_minimal",
+      "proposal_prompt_template": "generate_proposals_minimal"
+    },
+    "how_to_think": {
+      "executed_notebook_dir": "C1-how_to_think",
+      "idea_prompt_template": "generate_ideas_minimal",
+      "proposal_prompt_template": "generate_proposals_minimal"
+    },
+    "persona": {
+      "executed_notebook_dir": "C2-persona",
+      "idea_prompt_template": "generate_ideas_minimal",
+      "proposal_prompt_template": "generate_proposals_minimal"
+    }
+  },
+  "notebooks": {
+    "generation": {
+      "template": "notebooks/templates/gen_proposals.ipynb",
+      "output_name": "gen_proposals.ipynb"
+    },
+    "analysis": [
+      {
+        "key": "compare_proposals_rephrased",
+        "template": "notebooks/templates/rephrased/compare_proposals_rephrased.ipynb",
+        "output_name": "compare_proposals_rephrased.ipynb"
+      },
+      {
+        "key": "compare_reviews_ncems_criteria",
+        "template": "notebooks/templates/rephrased/compare_reviews_ncems_criteria.ipynb",
+        "output_name": "compare_reviews_ncems_criteria.ipynb"
+      },
+      {
+        "key": "compare_reviews_novelty",
+        "template": "notebooks/templates/rephrased/compare_reviews_novelty.ipynb",
+        "output_name": "compare_reviews_novelty.ipynb"
+      },
+      {
+        "key": "metric_score_relationship",
+        "template": "notebooks/templates/rephrased/metric_score_relationship.ipynb",
+        "output_name": "metric_score_relationship.ipynb"
+      }
+    ]
+  }
+}
