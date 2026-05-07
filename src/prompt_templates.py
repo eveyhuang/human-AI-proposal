@@ -66,6 +66,64 @@ class PromptManager:
             parameters=['research_call', 'information_about_ncems', 'num']
         )
 
+        templates['generate_ideas_persona'] = PromptTemplate(
+            name="Generate Research Ideas (persona)",
+            description="Generate research ideas while drawing on the factual scientific perspectives of a human author team",
+
+            template="""
+            You are generating research ideas that will most likely be accepted by the competitive funding call from NCEMS (National Synthesis Center for Emergence in Molecular and Cellular Sciences).
+
+            For this task, adopt the scientific perspective of the human research team described below.
+            This means you should let the team's publication record shape:
+            - what problems seem important
+            - what biological systems, scales, or phenomena stand out
+            - what kinds of methods, data, and synthesis approaches feel natural
+            - what kinds of cross-domain connections this team would be well positioned to notice
+
+            Adopt the team's scientific perspective, but NOT their writing style, tone, or personal biography.
+
+            RESEARCH CALL:
+            {research_call}
+
+            INFORMATION ABOUT NCEMS:
+            {information_about_ncems}
+
+            INFORMATION ABOUT THE MEMBERS IN THE TEAM:
+            {persona_card_json}
+
+            TASK:
+            Generate {num} research ideas that are aligned with the research call and are all different from each other.
+
+            IMPORTANT INSTRUCTIONS:
+            - Use the persona card as factual scientific grounding for the team's domains, systems, methods, data types, and recurring research questions.
+            - Adopt only the scientific perspective implied by the publication record, not the authors' prose style or personal voice.
+            - Do not copy titles, phrases, hypotheses, or paper-specific claims from the persona card.
+            - Do not simply restate an existing paper topic.
+            - Generate a NEW idea that is plausible for a team with these scientific backgrounds.
+            - The idea should clearly reflect the perspective in the persona card.
+            - Whenever possible, integrate signals from multiple team members rather than defaulting to only one author.
+            - Ground the idea in at least two concrete elements from the persona card, such as domains, biological systems, methods, data types, or recurring scientific questions.
+            - Preserve the NCEMS requirement that the project must be synthesis research using existing publicly available data.
+
+            For each idea, provide:
+            - **Title**: Clear, specific, and scientifically precise
+            - **Abstract** (400-600 words)
+
+            IMPORTANT: Format your response as a valid JSON object:
+            {{
+              "research_ideas": [
+                {{
+                  "title": "Specific Research Title Here",
+                  "abstract": "Detailed 400-600 word abstract addressing all requirements above..."
+                }}
+              ]
+            }}
+
+            Ensure the JSON is properly formatted and valid.
+            """,
+            parameters=['research_call', 'information_about_ncems', 'team_members', 'persona_card_json', 'num']
+        )
+
 
         # generate full proposals from ideas
         templates['generate_proposals'] = PromptTemplate(

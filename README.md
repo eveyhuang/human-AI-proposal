@@ -1,168 +1,164 @@
 # Human-AI Proposal Analysis
 
-This repo compares human-written and AI-generated research proposals under multiple generation conditions, then runs a shared downstream analysis pipeline on each condition.
+This repo compares human-written and AI-generated research proposals under several prompting conditions, then runs the same downstream analyses for each condition.
 
-The main entrypoint is [`src/run_condition.py`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/run_condition.py:1).
+The main entrypoint is [src/run_condition.py](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/run_condition.py:1). It does **not** execute the pipeline. It only renders the condition-specific notebooks into the right folder so you can run them yourself in order.
 
 ## Quick Start
 
-Run a full condition:
+Render the full notebook pipeline for one condition:
 
 ```bash
+python src/run_condition.py --condition minimal
 python src/run_condition.py --condition how_to_think
 python src/run_condition.py --condition persona
 ```
 
-Run only part of the pipeline:
+Render only some steps:
 
 ```bash
-python src/run_condition.py --condition how_to_think --from-step 1 --to-step 2
-python src/run_condition.py --condition how_to_think --steps 3,4,5,6,7,8,9
-python src/run_condition.py --condition persona --steps 1,2,7,9
+python src/run_condition.py --condition persona --steps 1,2
+python src/run_condition.py --condition persona --from-step 3 --to-step 6
 ```
 
-Useful flags:
+Control whether step 1 is set to generate fresh ideas or reuse existing ones:
 
 ```bash
-python src/run_condition.py --condition how_to_think --force
-python src/run_condition.py --condition how_to_think --render-only
 python src/run_condition.py --condition persona --generate-new-ideas
 python src/run_condition.py --condition persona --reuse-existing-ideas
 ```
 
+After rendering, open the notebooks in the condition folder and run them manually in order.
+
 ## Conditions
 
-Current configured conditions are defined in [`configs/pipeline_conditions.json`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/configs/pipeline_conditions.json:1):
+Configured conditions live in [configs/pipeline_conditions.json](/Users/eveyhuang/Documents/NICO/human-AI-proposal/configs/pipeline_conditions.json:1):
 
 - `minimal`
 - `how_to_think`
 - `persona`
 
-Each condition has:
+Rendered notebook folders:
 
-- an AI proposal generation directory under `data/ai-proposals/<condition>/`
-- a rephrased output directory under `data/ai-proposals/rephrased/<condition>/`
-- a human rephrased directory under `data/human-proposals/rephrased/<condition>/`
-- an executed notebook directory where rendered notebooks are saved for inspection
+- `minimal` -> [baseline(minimal)-rephrased](/Users/eveyhuang/Documents/NICO/human-AI-proposal/baseline(minimal)-rephrased)
+- `how_to_think` -> [C1-how_to_think](/Users/eveyhuang/Documents/NICO/human-AI-proposal/C1-how_to_think)
+- `persona` -> [C2-persona](/Users/eveyhuang/Documents/NICO/human-AI-proposal/C2-persona)
 
-Executed notebook folders:
+## Notebook Pipeline
 
-- `minimal` -> [`baseline(minimal)-rephrased`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/baseline(minimal)-rephrased)
-- `how_to_think` -> [`C1-how_to_think`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/C1-how_to_think)
-- `persona` -> [`C2-persona`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/C2-persona)
+`run_condition.py` renders these 6 notebooks:
 
-## Pipeline Steps
+1. `gen_proposals.ipynb`
+   This now includes proposal generation and the rephrasing step at the end.
+2. `compare_proposals_rephrased.ipynb`
+   This consumes the rephrased AI and human proposal files and writes proposal-analysis outputs such as `all_proposals.json` and `proposal_lit_neighbors.json`.
+3. `generate_reviews.ipynb`
+   This runs NCEMS review generation, novelty review generation, and builds `review_scores_wide.csv`.
+4. `compare_reviews_ncems_criteria.ipynb`
+5. `compare_reviews_novelty.ipynb`
+6. `metric_score_relationship.ipynb`
 
-`run_condition.py` uses these step numbers:
+Recommended execution order inside a condition folder is the same `1 -> 6`.
 
-1. Generate proposals notebook
-2. Rephrase proposals
-3. Compare proposals rephrased notebook
-4. Generate NCEMS reviews
-5. Generate novelty reviews
-6. Build `review_scores_wide.csv`
-7. Compare NCEMS reviews notebook
-8. Compare novelty reviews notebook
-9. Metric-score relationship notebook
+## Folder Structure
 
-Default dependency order:
+### Templates you should edit
 
-1. Step 1 creates AI proposals.
-2. Step 2 rephrases AI and human proposals.
-3. Step 3 computes proposal-level analyses and writes artifacts such as literature neighbors.
-4. Step 5 depends on step 3 because novelty reviews need proposal literature neighbors.
-5. Step 6 builds `review_scores_wide.csv` from the review outputs.
-6. Steps 7-9 use the review and proposal analysis outputs.
+These are the canonical notebooks. If you want a change to apply to all conditions, edit these:
 
-## Where To Look
+- [notebooks/templates/gen_proposals.ipynb](/Users/eveyhuang/Documents/NICO/human-AI-proposal/notebooks/templates/gen_proposals.ipynb)
+- [notebooks/templates/generate_reviews.ipynb](/Users/eveyhuang/Documents/NICO/human-AI-proposal/notebooks/templates/generate_reviews.ipynb)
+- [notebooks/templates/rephrased/compare_proposals_rephrased.ipynb](/Users/eveyhuang/Documents/NICO/human-AI-proposal/notebooks/templates/rephrased/compare_proposals_rephrased.ipynb)
+- [notebooks/templates/rephrased/compare_reviews_ncems_criteria.ipynb](/Users/eveyhuang/Documents/NICO/human-AI-proposal/notebooks/templates/rephrased/compare_reviews_ncems_criteria.ipynb)
+- [notebooks/templates/rephrased/compare_reviews_novelty.ipynb](/Users/eveyhuang/Documents/NICO/human-AI-proposal/notebooks/templates/rephrased/compare_reviews_novelty.ipynb)
+- [notebooks/templates/rephrased/metric_score_relationship.ipynb](/Users/eveyhuang/Documents/NICO/human-AI-proposal/notebooks/templates/rephrased/metric_score_relationship.ipynb)
+
+Do not hand-edit only the rendered copies in `baseline(minimal)-rephrased/`, `C1-how_to_think/`, or `C2-persona/` if you want the change to persist across rerenders.
 
 ### Main code
 
-- Runner: [`src/run_condition.py`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/run_condition.py:1)
-- Notebook rendering/execution: [`src/notebook_pipeline.py`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/notebook_pipeline.py:1)
-- Pipeline config loader: [`src/pipeline_config.py`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/pipeline_config.py:1)
-- Rephrase script: [`src/rephrase_proposals.py`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/rephrase_proposals.py:1)
-- NCEMS review generation: [`src/generate_reviews_ncems_criteria.py`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/generate_reviews_ncems_criteria.py:1)
-- Novelty review generation: [`src/generate_reviews_novelty.py`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/generate_reviews_novelty.py:1)
-- Review score export: [`src/build_review_scores_wide.py`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/build_review_scores_wide.py:1)
+- Runner: [src/run_condition.py](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/run_condition.py:1)
+- Notebook renderer: [src/notebook_pipeline.py](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/notebook_pipeline.py:1)
+- Pipeline config loader: [src/pipeline_config.py](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/pipeline_config.py:1)
+- Prompt templates: [src/prompt_templates.py](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/prompt_templates.py:1)
+- Rephrasing script: [src/rephrase_proposals.py](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/rephrase_proposals.py:1)
+- NCEMS review script: [src/generate_reviews_ncems_criteria.py](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/generate_reviews_ncems_criteria.py:1)
+- Novelty review script: [src/generate_reviews_novelty.py](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/generate_reviews_novelty.py:1)
+- Review-score export: [src/build_review_scores_wide.py](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/build_review_scores_wide.py:1)
+- Persona cards builder: [src/build_persona_cards.py](/Users/eveyhuang/Documents/NICO/human-AI-proposal/src/build_persona_cards.py:1)
 
-### Canonical notebook templates
+### Data and output locations
 
-These are the source notebooks you should edit if you want changes to apply across all conditions:
+- Human source proposals: [data/human-proposals](/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/human-proposals)
+- AI proposals by condition: [data/ai-proposals](/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/ai-proposals)
+- Rephrased AI proposals: [data/ai-proposals/rephrased](/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/ai-proposals/rephrased)
+- Rephrased human proposals: [data/human-proposals/rephrased](/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/human-proposals/rephrased)
+- AI review outputs: [data/reviews/ai_reviews](/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews)
+- Proposal-analysis tables: [results/tables/rephrased](/Users/eveyhuang/Documents/NICO/human-AI-proposal/results/tables/rephrased)
+- Figures: [results/figures](/Users/eveyhuang/Documents/NICO/human-AI-proposal/results/figures)
+- Analysis plan: [docs/plans/analysis_plan.md](/Users/eveyhuang/Documents/NICO/human-AI-proposal/docs/plans/analysis_plan.md:1)
 
-- Generation template: [`notebooks/templates/gen_proposals.ipynb`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/notebooks/templates/gen_proposals.ipynb)
-- Rephrased proposal analysis: [`notebooks/templates/rephrased/compare_proposals_rephrased.ipynb`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/notebooks/templates/rephrased/compare_proposals_rephrased.ipynb)
-- NCEMS review analysis: [`notebooks/templates/rephrased/compare_reviews_ncems_criteria.ipynb`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/notebooks/templates/rephrased/compare_reviews_ncems_criteria.ipynb)
-- Novelty review analysis: [`notebooks/templates/rephrased/compare_reviews_novelty.ipynb`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/notebooks/templates/rephrased/compare_reviews_novelty.ipynb)
-- Metric/score relationship: [`notebooks/templates/rephrased/metric_score_relationship.ipynb`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/notebooks/templates/rephrased/metric_score_relationship.ipynb)
+### Persona-specific inputs
 
-Do not hand-edit only the executed notebooks in `C1-how_to_think/`, `C2-persona/`, or `baseline(minimal)-rephrased/` if you want the change to stay consistent across reruns. Edit the template, then rerun the condition.
+- Author publication corpus: [data/literature/human-scientists-corpus.json](/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/literature/human-scientists-corpus.json:1)
+- Persona cards: [data/literature/persona_cards.json](/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/literature/persona_cards.json)
 
-### Data and results
+`persona` step 1 expects `persona_cards.json` to already exist.
 
-- Human source proposals: [`data/human-proposals`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/human-proposals)
-- AI proposals by condition: [`data/ai-proposals`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/ai-proposals)
-- Rephrased proposals: [`data/ai-proposals/rephrased`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/ai-proposals/rephrased) and [`data/human-proposals/rephrased`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/human-proposals/rephrased)
-- AI review outputs: [`data/reviews/ai_reviews`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews)
-- Figures: [`results/figures`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/results/figures)
-- Tables: [`results/tables`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/results/tables)
-- Analysis plan: [`docs/plans/analysis_plan.md`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/docs/plans/analysis_plan.md:1)
+## What Each Notebook Expects
 
-## Common Workflows
+1. `gen_proposals.ipynb`
+   Reads or generates ideas under `data/ai-proposals/<condition>/`, writes complete proposal CSVs there, then writes rephrased outputs to:
+   `data/ai-proposals/rephrased/<condition>/` and `data/human-proposals/rephrased/<condition>/`.
 
-### 1. Run a brand-new condition end to end
+2. `compare_proposals_rephrased.ipynb`
+   Reads the rephrased files and writes outputs under:
+   `results/tables/rephrased/<condition>/` and `results/figures/rephrased/<condition>/`.
+   One important output is `proposal_lit_neighbors.json`, which step 3 needs.
+
+3. `generate_reviews.ipynb`
+   Reads rephrased proposals and `proposal_lit_neighbors.json`, then writes:
+   `data/reviews/ai_reviews/<condition>/ncems_criteria/`
+   `data/reviews/ai_reviews/<condition>/novelty/`
+   `results/tables/rephrased/<condition>/review_scores_wide.csv`
+
+4. `compare_reviews_ncems_criteria.ipynb`
+   Reads the latest NCEMS review JSON for the condition.
+
+5. `compare_reviews_novelty.ipynb`
+   Reads the latest novelty review JSON for the condition.
+
+6. `metric_score_relationship.ipynb`
+   Reads `results/tables/rephrased/<condition>/all_proposals.json` plus the latest review JSONs.
+
+## Typical Workflows
+
+Render everything for a condition:
 
 ```bash
-python src/run_condition.py --condition how_to_think
+python src/run_condition.py --condition persona
 ```
 
-### 2. Generate proposals and rephrase first, inspect later
+Render only proposal generation and proposal analysis:
 
 ```bash
-python src/run_condition.py --condition persona --steps 1,2
+python src/run_condition.py --condition how_to_think --steps 1,2
 ```
 
-### 3. Re-run just downstream analysis notebooks after editing a template
+Render only the review-side notebooks after changing review analysis:
 
 ```bash
-python src/run_condition.py --condition how_to_think --steps 3,7,8,9 --force
+python src/run_condition.py --condition minimal --steps 3,4,5,6
 ```
 
-### 4. Render notebooks without executing them
+Rerender a single notebook after editing its template:
 
 ```bash
-python src/run_condition.py --condition persona --steps 3,7,8,9 --render-only
+python src/run_condition.py --condition persona --steps 6
 ```
 
-## How The Notebook System Works
+## Notes
 
-- Templates live in `notebooks/templates/`.
-- `run_condition.py` renders them with the right condition-specific paths.
-- Rendered notebooks are saved into the condition folder like `C1-how_to_think/`.
-- Those rendered notebooks are the ones you inspect after a run.
-
-This gives you:
-
-- one canonical source notebook per analysis
-- one executed notebook per condition
-- consistent reruns across conditions
-
-## Environment Notes
-
-Use the same Python environment you normally use to run the project notebooks. The pipeline renders notebooks itself, but execution still depends on the scientific Python stack used by the notebooks.
-
-If something fails, the first places to check are:
-
-- the rendered notebook in the condition folder
-- the latest files under `data/ai-proposals/<condition>/`
-- the latest files under `data/ai-proposals/rephrased/<condition>/`
-- the latest files under `results/tables/rephrased/<condition>/`
-
-## For New Collaborators
-
-If you are new to the repo, start here:
-
-1. Read [`docs/plans/analysis_plan.md`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/docs/plans/analysis_plan.md:1).
-2. Look at [`configs/pipeline_conditions.json`](/Users/eveyhuang/Documents/NICO/human-AI-proposal/configs/pipeline_conditions.json:1).
-3. Run `python src/run_condition.py --condition minimal --steps 3 --render-only` to see how a notebook is rendered.
-4. Edit notebook templates in `notebooks/templates/`, not the executed copies.
+- The rendered notebooks are path-aware and try to locate the repo root automatically, so they can be run from the condition folder or from a repo-root Jupyter session.
+- `run_condition.py` overwrites the rendered notebook copies for the selected steps.
+- If you change an analysis and want that change reflected across all conditions, update the template notebook and rerender each condition.

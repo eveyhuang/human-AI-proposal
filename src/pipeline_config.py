@@ -14,7 +14,9 @@ class ConditionConfig:
 
 @dataclass(frozen=True)
 class NotebookSpec:
+    step: int
     key: str
+    description: str
     template: Path
     output_name: str
 
@@ -22,8 +24,7 @@ class NotebookSpec:
 @dataclass(frozen=True)
 class PipelineConfig:
     conditions: Dict[str, ConditionConfig]
-    generation_notebook: NotebookSpec
-    analysis_notebooks: List[NotebookSpec]
+    pipeline_notebooks: List[NotebookSpec]
 
 
 def load_pipeline_config(config_path: Path = Path('configs/pipeline_conditions.json')) -> PipelineConfig:
@@ -40,24 +41,19 @@ def load_pipeline_config(config_path: Path = Path('configs/pipeline_conditions.j
         for name, payload in raw['conditions'].items()
     }
 
-    generation = raw['notebooks']['generation']
-    generation_notebook = NotebookSpec(
-        key='gen_proposals',
-        template=Path(generation['template']),
-        output_name=generation['output_name'],
-    )
-
-    analysis_notebooks = [
+    pipeline_notebooks = [
         NotebookSpec(
+            step=int(item['step']),
             key=item['key'],
+            description=item['description'],
             template=Path(item['template']),
             output_name=item['output_name'],
         )
-        for item in raw['notebooks']['analysis']
+        for item in raw['notebooks']
     ]
+    pipeline_notebooks.sort(key=lambda item: item.step)
 
     return PipelineConfig(
         conditions=conditions,
-        generation_notebook=generation_notebook,
-        analysis_notebooks=analysis_notebooks,
+        pipeline_notebooks=pipeline_notebooks,
     )

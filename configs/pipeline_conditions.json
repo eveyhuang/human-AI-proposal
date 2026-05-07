@@ -12,36 +12,52 @@
     },
     "persona": {
       "executed_notebook_dir": "C2-persona",
-      "idea_prompt_template": "generate_ideas_minimal",
+      "idea_prompt_template": "generate_ideas_persona",
       "proposal_prompt_template": "generate_proposals_minimal"
     }
   },
-  "notebooks": {
-    "generation": {
+  "notebooks": [
+    {
+      "step": 1,
+      "key": "gen_proposals",
+      "description": "Generate proposals notebook (includes rephrasing)",
       "template": "notebooks/templates/gen_proposals.ipynb",
       "output_name": "gen_proposals.ipynb"
     },
-    "analysis": [
-      {
-        "key": "compare_proposals_rephrased",
-        "template": "notebooks/templates/rephrased/compare_proposals_rephrased.ipynb",
-        "output_name": "compare_proposals_rephrased.ipynb"
-      },
-      {
-        "key": "compare_reviews_ncems_criteria",
-        "template": "notebooks/templates/rephrased/compare_reviews_ncems_criteria.ipynb",
-        "output_name": "compare_reviews_ncems_criteria.ipynb"
-      },
-      {
-        "key": "compare_reviews_novelty",
-        "template": "notebooks/templates/rephrased/compare_reviews_novelty.ipynb",
-        "output_name": "compare_reviews_novelty.ipynb"
-      },
-      {
-        "key": "metric_score_relationship",
-        "template": "notebooks/templates/rephrased/metric_score_relationship.ipynb",
-        "output_name": "metric_score_relationship.ipynb"
-      }
-    ]
-  }
+    {
+      "step": 2,
+      "key": "compare_proposals_rephrased",
+      "description": "Compare proposals rephrased notebook",
+      "template": "notebooks/templates/rephrased/compare_proposals_rephrased.ipynb",
+      "output_name": "compare_proposals_rephrased.ipynb"
+    },
+    {
+      "step": 3,
+      "key": "generate_reviews",
+      "description": "Generate NCEMS and novelty reviews notebook",
+      "template": "notebooks/templates/generate_reviews.ipynb",
+      "output_name": "generate_reviews.ipynb"
+    },
+    {
+      "step": 4,
+      "key": "compare_reviews_ncems_criteria",
+      "description": "Compare NCEMS reviews notebook",
+      "template": "notebooks/templates/rephrased/compare_reviews_ncems_criteria.ipynb",
+      "output_name": "compare_reviews_ncems_criteria.ipynb"
+    },
+    {
+      "step": 5,
+      "key": "compare_reviews_novelty",
+      "description": "Compare novelty reviews notebook",
+      "template": "notebooks/templates/rephrased/compare_reviews_novelty.ipynb",
+      "output_name": "compare_reviews_novelty.ipynb"
+    },
+    {
+      "step": 6,
+      "key": "metric_score_relationship",
+      "description": "Metric-score relationship notebook",
+      "template": "notebooks/templates/rephrased/metric_score_relationship.ipynb",
+      "output_name": "metric_score_relationship.ipynb"
+    }
+  ]
 }
