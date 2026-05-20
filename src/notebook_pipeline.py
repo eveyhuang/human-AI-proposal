@@ -94,7 +94,10 @@ def _render_gen_proposals(notebook: Dict[str, Any], condition: ConditionConfig,
             """).splitlines(keepends=True),
         },
     ])
-    setup_idx = _find_code_cell_index(rendered, ['subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "src/requirements.txt"])'])
+    setup_idx = _find_code_cell_index(
+        rendered,
+        ['# Option B: Just install requirements from src/requirements.txt', 'REQUIREMENTS_PATH']
+    )
     _set_cell_source(rendered, setup_idx, dedent("""\
         # Option 1: Run setup.py (recommended - also creates .env config file)
         # This uses the setup script from src/setup.py which installs from src/requirements.txt
@@ -902,7 +905,7 @@ def _render_compare_proposals_rephrased(notebook: Dict[str, Any],
     """)
     _set_cell_source(rendered, emb_idx, emb_source)
 
-    mi_idx = _find_code_cell_index(rendered, ['proposal_embeddings_main_idea_minimal.pkl', "'main_idea' column missing"])
+    mi_idx = _find_code_cell_index(rendered, ['MI_EMBEDDINGS_FILE', "'main_idea' column missing"])
     mi_source = dedent("""\
         # ── Load main_idea texts and define embedding cache path ────────────────────
         MI_EMBEDDINGS_FILE = MAIN_IDEA_EMBEDDINGS_FILE
@@ -1271,7 +1274,7 @@ def _render_generate_reviews(notebook: Dict[str, Any], condition: ConditionConfi
             """).splitlines(keepends=True),
         },
     ])
-    idx = _find_code_cell_index(rendered, ['# Auto-managed by src/run_condition.py', "CONDITION = 'minimal'"])
+    idx = _find_code_cell_index(rendered, ["CONDITION = 'minimal'"])
     _set_cell_source(rendered, idx, dedent(f"""\
         # Auto-managed by src/run_condition.py
         CONDITION = '{condition.name}'
