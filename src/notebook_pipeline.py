@@ -716,6 +716,34 @@ def _render_compare_proposals_rephrased(notebook: Dict[str, Any],
     ])
 
     setup_idx = _find_code_cell_index(rendered, ['PROPOSAL_EMBEDDINGS_FILE', "condition = 'rephrased/minimal'"])
+
+    setup_existing = ''.join(rendered['cells'][setup_idx].get('source', []))
+    if 'PREPARED_ALL_PROPOSALS_PATH' in setup_existing:
+        setup_source = setup_existing.replace(
+            "condition = 'rephrased/minimal'",
+            f"condition = 'rephrased/{condition.name}'",
+        )
+        setup_source = setup_source.replace(
+            "AI_PROPOSALS_PATH = PROJECT_ROOT / 'data' / 'ai-proposals' / condition",
+            "AI_PROPOSALS_PATH = PROJECT_ROOT / 'data' / 'ai-proposals' / condition",
+        )
+        _set_cell_source(rendered, setup_idx, setup_source)
+
+        try:
+            export_idx = _find_code_cell_index(rendered, ["_AI_BASE / 'minimal'", 'all_proposals.json'])
+            export_source = ''.join(rendered['cells'][export_idx].get('source', []))
+            export_source = export_source.replace(
+                "_orig_ai = pd.read_csv(sorted((_AI_BASE / 'minimal').glob('ai_proposals_minimal_complete_*.csv'))[-1])",
+                (
+                    f"_orig_ai = pd.read_csv(sorted((_AI_BASE / '{condition.name}').glob("
+                    f"'ai_proposals_{condition.name}_complete_*.csv'))[-1])"
+                ),
+            )
+            _set_cell_source(rendered, export_idx, export_source)
+        except NotebookTemplateError:
+            pass
+        return rendered
+
     setup_source = dedent(f"""\
         import sys
         import os
@@ -1246,6 +1274,48 @@ def _render_compare_proposals_rephrased(notebook: Dict[str, Any],
     return rendered
 
 
+def _render_prepare_data_for_analysis(notebook: Dict[str, Any],
+                                      condition: ConditionConfig) -> Dict[str, Any]:
+    rendered = deepcopy(notebook)
+    _prepend_cells(rendered, [
+        {
+            'cell_type': 'markdown',
+            'metadata': {},
+            'source': [
+                '## Condition Configuration\n',
+                '\n',
+                'This notebook prepares reusable data artifacts for the selected condition.\n',
+                '\n',
+                '- `CONDITION`: condition name under `data/ai-proposals/` and `data/ai-proposals/rephrased/`.\n',
+                '- `BASE_CONDITION`: raw proposal/review condition name before adding the `rephrased/` prefix.\n',
+            ],
+        },
+        {
+            'cell_type': 'code',
+            'execution_count': None,
+            'metadata': {},
+            'outputs': [],
+            'source': dedent(f"""\
+                CONDITION = '{condition.name}'
+                BASE_CONDITION = '{condition.name}'
+            """).splitlines(keepends=True),
+        },
+    ])
+
+    setup_idx = _find_code_cell_index(rendered, ["condition = 'rephrased/minimal'", "base_condition = 'minimal'"])
+    setup_source = ''.join(rendered['cells'][setup_idx].get('source', []))
+    setup_source = setup_source.replace(
+        "condition = 'rephrased/minimal'",
+        "condition = f'rephrased/{CONDITION}'",
+    )
+    setup_source = setup_source.replace(
+        "base_condition = 'minimal'",
+        "base_condition = BASE_CONDITION",
+    )
+    _set_cell_source(rendered, setup_idx, setup_source)
+    return rendered
+
+
 def _render_generate_reviews(notebook: Dict[str, Any], condition: ConditionConfig) -> Dict[str, Any]:
     rendered = deepcopy(notebook)
     _prepend_cells(rendered, [
@@ -1358,6 +1428,12 @@ def _render_compare_reviews(notebook: Dict[str, Any], condition: ConditionConfig
         },
     ])
     idx = _find_code_cell_index(rendered, ["condition='minimal'", 'REVIEW_EMBEDDINGS_FILE'])
+    existing_source = ''.join(rendered['cells'][idx].get('source', []))
+    if 'NCEMS_ALL_REVIEWS_PATH' in existing_source or 'NOVELTY_ALL_REVIEWS_PATH' in existing_source:
+        source = existing_source.replace("condition='minimal'", f"condition='{condition.name}'")
+        _set_cell_source(rendered, idx, source)
+        return rendered
+
     if review_kind == 'ncems_criteria':
         source = dedent(f"""\
             import json
@@ -1516,6 +1592,23 @@ def _render_metric_score_relationship(notebook: Dict[str, Any],
         },
     ])
     idx = _find_code_cell_index(rendered, ['ALL_PROPOSALS_PATH', "condition = 'rephrased/minimal'"])
+    existing_source = ''.join(rendered['cells'][idx].get('source', []))
+    if 'NCEMS_ALL_REVIEWS_PATH' in existing_source and 'NOVELTY_ALL_REVIEWS_PATH' in existing_source:
+        source = existing_source.replace(
+            "condition = 'rephrased/minimal'",
+            f"condition = 'rephrased/{condition.name}'",
+        )
+        source = source.replace(
+            "ALL_PROPOSALS_PATH = PROJECT_ROOT / 'results' / 'tables' / 'rephrased' / 'minimal' / 'all_proposals.json'",
+            f"ALL_PROPOSALS_PATH = PROJECT_ROOT / 'results' / 'tables' / 'rephrased' / '{condition.name}' / 'all_proposals.json'",
+        )
+        source = source.replace(
+            "PREPARED_DIR = PROJECT_ROOT / 'results' / 'tables' / 'rephrased' / 'minimal' / 'prepared'",
+            f"PREPARED_DIR = PROJECT_ROOT / 'results' / 'tables' / 'rephrased' / '{condition.name}' / 'prepared'",
+        )
+        _set_cell_source(rendered, idx, source)
+        return rendered
+
     source = dedent(f"""\
         import sys
         import os
@@ -1601,6 +1694,8 @@ def render_notebook(spec: NotebookSpec, condition: ConditionConfig, output_path:
         notebook = _render_compare_proposals_rephrased(notebook, condition)
     elif spec.key == 'generate_reviews':
         notebook = _render_generate_reviews(notebook, condition)
+    elif spec.key == 'prepare_data_for_analysis':
+        notebook = _render_prepare_data_for_analysis(notebook, condition)
     elif spec.key == 'compare_reviews_ncems_criteria':
         notebook = _render_compare_reviews(notebook, condition, 'ncems_criteria')
     elif spec.key == 'compare_reviews_novelty':

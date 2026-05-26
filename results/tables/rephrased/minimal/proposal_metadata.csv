@@ -1,15 +1,4 @@
 title,group
-Emergent Order Parameters of Allostery: An AI Framework for Predicting and Engineering Protein Regulation,Human
-From Protein Knots to Pierced Lassos: Unraveling the Evolutionary Origin of Complex Topologies,Human
-Deciphering systemic biological networks through AI-driven multi-omic integration,Human
-Conserved Disorder: Learning Sequence Conservation from Functional Constraints in Intrinsically Disordered Regions,Human
-Integrative Multi-Omics Synthesis to Identify Shared Molecular Mechanisms of Mammalian Hibernation,Human
-Revealing the Ontology of Allostery through Community-Scale Synthesis,Human
-SynEvo: Discovering Evolutionary Principles of Molecular Organization through Cross-Species Data Synthesis,Human
-A Unified Framework for Analyses of Proteome Turnover Dynamics,Human
-Predictive Synthesis Framework for Elucidating Biophysical Cell State from Spatial Transcriptomics and Proteomics,Human
-Integrating AI and Molecular Dynamics Simulations for Quantitative Prediction of Enzyme Functions,Human
-Discovery and functional analysis of bacterial organelles through mining and refinement of omics data,Human
 CYTOKINETIC BOTTLENECKS OF HEAT WAVES,Human
 Elucidating genome structure-function relationships in human brain cells,Human
 MaiTool - LLM-powered bioinformatics tools for microbiome analysis,Human
@@ -22,6 +11,17 @@ From image data and biophysical simulations to principles of mesoscale organizat
 Transposable elements and the emergence of genomic innovation,Human
 Searching the crosslinking mass spectrometry universe for new protein-protein interactions,Human
 Intelligent metadata compilation to enhance the reusability and discoverability of mass spectrometry-based proteomics data,Human
+Emergent Order Parameters of Allostery: An AI Framework for Predicting and Engineering Protein Regulation,Human
+From Protein Knots to Pierced Lassos: Unraveling the Evolutionary Origin of Complex Topologies,Human
+Deciphering systemic biological networks through AI-driven multi-omic integration,Human
+Conserved Disorder: Learning Sequence Conservation from Functional Constraints in Intrinsically Disordered Regions,Human
+Integrative Multi-Omics Synthesis to Identify Shared Molecular Mechanisms of Mammalian Hibernation,Human
+Revealing the Ontology of Allostery through Community-Scale Synthesis,Human
+SynEvo: Discovering Evolutionary Principles of Molecular Organization through Cross-Species Data Synthesis,Human
+A Unified Framework for Analyses of Proteome Turnover Dynamics,Human
+Predictive Synthesis Framework for Elucidating Biophysical Cell State from Spatial Transcriptomics and Proteomics,Human
+Integrating AI and Molecular Dynamics Simulations for Quantitative Prediction of Enzyme Functions,Human
+Discovery and functional analysis of bacterial organelles through mining and refinement of omics data,Human
 A Cross-Modal Synthesis of Biomolecular Condensate Material Properties and Cellular Function Across Species and Perturbations,gpt-5.2
 "Emergent Principles of Organelle Contact Sites: A Synthesis of Proteomics, Imaging, and Genetic Interaction Data",gpt-5.2
 "A Pan-Cell Atlas of Cytoskeletal Self-Organization: Integrating Live-Cell Imaging, Proteomics, and Biophysical Models",gpt-5.2

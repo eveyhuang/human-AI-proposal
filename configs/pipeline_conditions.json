@@ -40,20 +40,27 @@
     },
     {
       "step": 4,
+      "key": "prepare_data_for_analysis",
+      "description": "Prepare reusable data and embedding artifacts",
+      "template": "notebooks/templates/rephrased/prepare_data_for_analysis.ipynb",
+      "output_name": "prepare_data_for_analysis.ipynb"
+    },
+    {
+      "step": 5,
       "key": "compare_reviews_ncems_criteria",
       "description": "Compare NCEMS reviews notebook",
       "template": "notebooks/templates/rephrased/compare_reviews_ncems_criteria.ipynb",
       "output_name": "compare_reviews_ncems_criteria.ipynb"
     },
     {
-      "step": 5,
+      "step": 6,
       "key": "compare_reviews_novelty",
       "description": "Compare novelty reviews notebook",
       "template": "notebooks/templates/rephrased/compare_reviews_novelty.ipynb",
       "output_name": "compare_reviews_novelty.ipynb"
     },
     {
-      "step": 6,
+      "step": 7,
       "key": "metric_score_relationship",
       "description": "Metric-score relationship notebook",
       "template": "notebooks/templates/rephrased/metric_score_relationship.ipynb",

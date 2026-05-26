@@ -1,248 +1,248 @@
 pair_type,proposal_key,match_method,human_reviewer,ai_model,cosine_similarity,sentiment_alignment,categorical_agreement,categorical_agreement_num,ai_model_1,ai_model_2,ai_model_pair,human_reviewer_1,human_reviewer_2
-human-ai,Y1_01,exact,human-reviewer-1,gpt-5.2,0.9462597370147705,0.9587222943722944,partial,1,,,,,
-human-ai,Y1_01,exact,human-reviewer-1,gemini-3-pro-preview,0.9694516658782959,0.9233689767129423,partial,1,,,,,
-human-ai,Y1_01,exact,human-reviewer-1,claude-opus-4-5,0.9762606024742126,0.9171006166314306,partial,1,,,,,
-human-ai,Y1_01,exact,human-reviewer-2,gpt-5.2,0.9432122111320496,0.9833742866981503,agree,2,,,,,
-human-ai,Y1_01,exact,human-reviewer-2,gemini-3-pro-preview,0.9785647988319397,0.9812723956424976,agree,2,,,,,
-human-ai,Y1_01,exact,human-reviewer-2,claude-opus-4-5,0.9836515188217163,0.9750040355609859,agree,2,,,,,
-human-ai,Y1_01,exact,human-reviewer-3,gpt-5.2,0.9401102662086487,0.9774525803144224,agree,2,,,,,
-human-ai,Y1_01,exact,human-reviewer-3,gemini-3-pro-preview,0.9419448971748352,0.9871941020262255,agree,2,,,,,
-human-ai,Y1_01,exact,human-reviewer-3,claude-opus-4-5,0.9406745433807373,0.9809257419447137,agree,2,,,,,
-human-ai,Y1_01,exact,human-reviewer-4,gpt-5.2,0.9431610703468323,0.9601776695526696,partial,1,,,,,
-human-ai,Y1_01,exact,human-reviewer-4,gemini-3-pro-preview,0.9590166807174683,0.9248243518933175,partial,1,,,,,
-human-ai,Y1_01,exact,human-reviewer-4,claude-opus-4-5,0.9702118039131165,0.9185559918118058,partial,1,,,,,
-ai-ai,Y1_01,exact,,,0.9606875777244568,0.9646466823406479,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
-ai-ai,Y1_01,exact,,,0.9578821659088135,0.9583783222591362,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
-ai-ai,Y1_01,exact,,,0.9835182428359985,0.9937316399184883,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
-human-human,Y1_01,exact,,,0.9759647250175476,0.9420965810704447,partial,1,,,,human-reviewer-1,human-reviewer-2
-human-human,Y1_01,exact,,,0.9415832757949829,0.9361748746867168,partial,1,,,,human-reviewer-1,human-reviewer-3
-human-human,Y1_01,exact,,,0.9630311131477356,0.9985446248196248,agree,2,,,,human-reviewer-1,human-reviewer-4
-human-human,Y1_01,exact,,,0.9375286102294922,0.9940782936162721,agree,2,,,,human-reviewer-2,human-reviewer-3
-human-human,Y1_01,exact,,,0.9605752229690552,0.9435519562508199,partial,1,,,,human-reviewer-2,human-reviewer-4
-human-human,Y1_01,exact,,,0.9509396553039551,0.937630249867092,partial,1,,,,human-reviewer-3,human-reviewer-4
-human-ai,Y1_02,exact,human-reviewer-1,gpt-5.2,0.9469821453094482,0.9987053748629995,agree,2,,,,,
-human-ai,Y1_02,exact,human-reviewer-1,gemini-3-pro-preview,0.9615284204483032,0.9839917769675834,agree,2,,,,,
-human-ai,Y1_02,exact,human-reviewer-1,claude-opus-4-5,0.9632714986801147,0.9522843463965165,agree,2,,,,,
-human-ai,Y1_02,exact,human-reviewer-2,gpt-5.2,0.9250598549842834,0.9843308711490529,agree,2,,,,,
-human-ai,Y1_02,exact,human-reviewer-2,gemini-3-pro-preview,0.9570190906524658,0.9990444690444691,agree,2,,,,,
-human-ai,Y1_02,exact,human-reviewer-2,claude-opus-4-5,0.966507613658905,0.969248100384464,agree,2,,,,,
-human-ai,Y1_02,exact,human-reviewer-3,gpt-5.2,0.9384341239929199,0.9606663472671377,agree,2,,,,,
-human-ai,Y1_02,exact,human-reviewer-3,gemini-3-pro-preview,0.9677078127861023,0.9753799451625539,agree,2,,,,,
-human-ai,Y1_02,exact,human-reviewer-3,claude-opus-4-5,0.9647817611694336,0.9929126242663792,agree,2,,,,,
-human-ai,Y1_02,exact,human-reviewer-4,gpt-5.2,0.9531344175338745,0.9571652127333945,agree,2,,,,,
-human-ai,Y1_02,exact,human-reviewer-4,gemini-3-pro-preview,0.9667582511901855,0.9718788106288107,agree,2,,,,,
-human-ai,Y1_02,exact,human-reviewer-4,claude-opus-4-5,0.9710439443588257,0.9964137588001224,agree,2,,,,,
-ai-ai,Y1_02,exact,,,0.9663999080657959,0.985286402104584,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
-ai-ai,Y1_02,exact,,,0.9641307592391968,0.953578971533517,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
-ai-ai,Y1_02,exact,,,0.9848885536193848,0.968292569428933,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
-human-human,Y1_02,exact,,,0.9599936604499817,0.9830362460120524,agree,2,,,,human-reviewer-1,human-reviewer-2
-human-human,Y1_02,exact,,,0.9712347388267517,0.9593717221301372,agree,2,,,,human-reviewer-1,human-reviewer-3
-human-human,Y1_02,exact,,,0.9800465106964111,0.955870587596394,agree,2,,,,human-reviewer-1,human-reviewer-4
-human-human,Y1_02,exact,,,0.9742580652236938,0.9763354761180848,agree,2,,,,human-reviewer-2,human-reviewer-3
-human-human,Y1_02,exact,,,0.9692343473434448,0.9728343415843416,agree,2,,,,human-reviewer-2,human-reviewer-4
-human-human,Y1_02,exact,,,0.9722779989242554,0.9964988654662568,agree,2,,,,human-reviewer-3,human-reviewer-4
-human-ai,Y1_03,exact,human-reviewer-1,gpt-5.2,0.9506722688674927,0.9548831168831169,partial,1,,,,,
-human-ai,Y1_03,exact,human-reviewer-1,gemini-3-pro-preview,0.95475172996521,0.9922847866419295,agree,2,,,,,
-human-ai,Y1_03,exact,human-reviewer-1,claude-opus-4-5,0.9652932286262512,0.9906008039579468,agree,2,,,,,
-human-ai,Y1_03,exact,human-reviewer-2,gpt-5.2,0.9419314861297607,0.9680778947942813,partial,1,,,,,
-human-ai,Y1_03,exact,human-reviewer-2,gemini-3-pro-preview,0.9468096494674683,0.994520435446906,agree,2,,,,,
-human-ai,Y1_03,exact,human-reviewer-2,claude-opus-4-5,0.9596099853515625,0.9962044181308887,agree,2,,,,,
-human-ai,Y1_03,exact,human-reviewer-3,gpt-5.2,0.9325648546218872,0.9673777915206486,partial,1,,,,,
-human-ai,Y1_03,exact,human-reviewer-3,gemini-3-pro-preview,0.9626664519309998,0.9952205387205387,agree,2,,,,,
-human-ai,Y1_03,exact,human-reviewer-3,claude-opus-4-5,0.9679180383682251,0.9969045214045213,agree,2,,,,,
-human-ai,Y1_03,exact,human-reviewer-4,gpt-5.2,0.9550944566726685,0.9750295280116709,partial,1,,,,,
-human-ai,Y1_03,exact,human-reviewer-4,gemini-3-pro-preview,0.9698877334594727,0.9875688022295165,agree,2,,,,,
-human-ai,Y1_03,exact,human-reviewer-4,claude-opus-4-5,0.9762752056121826,0.9892527849134992,agree,2,,,,,
-ai-ai,Y1_03,exact,,,0.9542794227600098,0.9625983302411873,partial,1,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
-ai-ai,Y1_03,exact,,,0.9642057418823242,0.9642823129251701,partial,1,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
-ai-ai,Y1_03,exact,,,0.9855258464813232,0.9983160173160173,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
-human-human,Y1_03,exact,,,0.9672380089759827,0.9868052220888356,agree,2,,,,human-reviewer-1,human-reviewer-2
-human-human,Y1_03,exact,,,0.9565145373344421,0.9875053253624683,agree,2,,,,human-reviewer-1,human-reviewer-3
-human-human,Y1_03,exact,,,0.9713463187217712,0.979853588871446,agree,2,,,,human-reviewer-1,human-reviewer-4
-human-human,Y1_03,exact,,,0.9628995656967163,0.9992998967263673,agree,2,,,,human-reviewer-2,human-reviewer-3
-human-human,Y1_03,exact,,,0.9758354425430298,0.9930483667826104,agree,2,,,,human-reviewer-2,human-reviewer-4
-human-human,Y1_03,exact,,,0.9709771871566772,0.9923482635089778,agree,2,,,,human-reviewer-3,human-reviewer-4
-human-ai,Y1_04,fuzzy,human-reviewer-1,gpt-5.2,0.9318356513977051,0.9956537681068931,agree,2,,,,,
-human-ai,Y1_04,fuzzy,human-reviewer-1,gemini-3-pro-preview,0.9219929575920105,0.9913737096237096,agree,2,,,,,
-human-ai,Y1_04,fuzzy,human-reviewer-1,claude-opus-4-5,0.9257639646530151,0.9930828754578754,agree,2,,,,,
-human-ai,Y1_04,fuzzy,human-reviewer-2,gpt-5.2,0.9351645708084106,0.9868804832086082,agree,2,,,,,
-human-ai,Y1_04,fuzzy,human-reviewer-2,gemini-3-pro-preview,0.9512548446655273,0.9826004247254247,agree,2,,,,,
-human-ai,Y1_04,fuzzy,human-reviewer-2,claude-opus-4-5,0.9547624588012695,0.9843095905595906,agree,2,,,,,
-human-ai,Y1_04,fuzzy,human-reviewer-3,gpt-5.2,0.9344363212585449,0.9903025186618937,agree,2,,,,,
-human-ai,Y1_04,fuzzy,human-reviewer-3,gemini-3-pro-preview,0.9609304070472717,0.9860224601787102,agree,2,,,,,
-human-ai,Y1_04,fuzzy,human-reviewer-3,claude-opus-4-5,0.9727895259857178,0.987731626012876,agree,2,,,,,
-human-ai,Y1_04,fuzzy,human-reviewer-4,gpt-5.2,0.9435946345329285,0.9881666684010434,partial,1,,,,,
-human-ai,Y1_04,fuzzy,human-reviewer-4,gemini-3-pro-preview,0.9769102334976196,0.9924467268842269,partial,1,,,,,
-human-ai,Y1_04,fuzzy,human-reviewer-4,claude-opus-4-5,0.9842753410339355,0.990737561050061,partial,1,,,,,
-ai-ai,Y1_04,fuzzy,,,0.9627741575241089,0.9957199415168165,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
-ai-ai,Y1_04,fuzzy,,,0.9633891582489014,0.9974291073509823,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
-ai-ai,Y1_04,fuzzy,,,0.9857001304626465,0.9982908341658342,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
-human-human,Y1_04,fuzzy,,,0.9653944373130798,0.9912267151017151,agree,2,,,,human-reviewer-1,human-reviewer-2
-human-human,Y1_04,fuzzy,,,0.9491572380065918,0.9946487505550006,agree,2,,,,human-reviewer-1,human-reviewer-3
-human-human,Y1_04,fuzzy,,,0.905106782913208,0.9838204365079365,partial,1,,,,human-reviewer-1,human-reviewer-4
-human-human,Y1_04,fuzzy,,,0.9665893316268921,0.9965779645467145,agree,2,,,,human-reviewer-2,human-reviewer-3
-human-human,Y1_04,fuzzy,,,0.9408676624298096,0.9750471516096516,partial,1,,,,human-reviewer-2,human-reviewer-4
-human-human,Y1_04,fuzzy,,,0.9653563499450684,0.9784691870629371,partial,1,,,,human-reviewer-3,human-reviewer-4
-human-ai,Y1_05,exact,human-reviewer-1,gpt-5.2,0.9543936252593994,0.9442469810890863,agree,2,,,,,
-human-ai,Y1_05,exact,human-reviewer-1,gemini-3-pro-preview,0.9638521075248718,0.9516103295708559,agree,2,,,,,
-human-ai,Y1_05,exact,human-reviewer-1,claude-opus-4-5,0.9594385027885437,0.9447922647527911,agree,2,,,,,
-human-ai,Y1_05,exact,human-reviewer-2,gpt-5.2,0.9175983667373657,0.9983800410116199,agree,2,,,,,
-human-ai,Y1_05,exact,human-reviewer-2,gemini-3-pro-preview,0.9534353017807007,0.9942566105066105,agree,2,,,,,
-human-ai,Y1_05,exact,human-reviewer-2,claude-opus-4-5,0.959685206413269,0.9989253246753247,agree,2,,,,,
-human-ai,Y1_05,exact,human-reviewer-3,gpt-5.2,0.9696470499038696,0.9737921982987772,agree,2,,,,,
-human-ai,Y1_05,exact,human-reviewer-3,gemini-3-pro-preview,0.9794821739196777,0.9811555467805467,agree,2,,,,,
-human-ai,Y1_05,exact,human-reviewer-3,claude-opus-4-5,0.9794183373451233,0.9743374819624819,agree,2,,,,,
-ai-ai,Y1_05,exact,,,0.9701786041259766,0.9926366515182304,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
-ai-ai,Y1_05,exact,,,0.9667414426803589,0.9994547163362952,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
-ai-ai,Y1_05,exact,,,0.9891804456710815,0.9931819351819352,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
-human-human,Y1_05,exact,,,0.9441217184066772,0.9458669400774664,agree,2,,,,human-reviewer-1,human-reviewer-2
-human-human,Y1_05,exact,,,0.9661023616790771,0.9704547827903092,agree,2,,,,human-reviewer-1,human-reviewer-3
-human-human,Y1_05,exact,,,0.9491653442382812,0.9754121572871572,agree,2,,,,human-reviewer-2,human-reviewer-3
-human-ai,Y1_06,exact,human-reviewer-1,gpt-5.2,0.9433678388595581,0.9958946502843562,agree,2,,,,,
-human-ai,Y1_06,exact,human-reviewer-1,gemini-3-pro-preview,0.9748678803443909,0.9660620003120003,agree,2,,,,,
-human-ai,Y1_06,exact,human-reviewer-1,claude-opus-4-5,0.9824739694595337,0.9989486381673882,agree,2,,,,,
-human-ai,Y1_06,exact,human-reviewer-2,gpt-5.2,0.9096353054046631,0.9747728864272982,agree,2,,,,,
-human-ai,Y1_06,exact,human-reviewer-2,gemini-3-pro-preview,0.9315457344055176,0.9871837641690583,agree,2,,,,,
-human-ai,Y1_06,exact,human-reviewer-2,claude-opus-4-5,0.9306453466415405,0.9799295979755539,agree,2,,,,,
-human-ai,Y1_06,exact,human-reviewer-3,gpt-5.2,0.9217895865440369,0.9419332505729565,agree,2,,,,,
-human-ai,Y1_06,exact,human-reviewer-3,gemini-3-pro-preview,0.9621269702911377,0.9799765999766,agree,2,,,,,
-human-ai,Y1_06,exact,human-reviewer-3,claude-opus-4-5,0.9660122394561768,0.9470899621212121,agree,2,,,,,
-human-ai,Y1_06,exact,human-reviewer-4,gpt-5.2,0.9318603277206421,0.9958185809288751,agree,2,,,,,
-human-ai,Y1_06,exact,human-reviewer-4,gemini-3-pro-preview,0.9503055810928345,0.9577752315252316,agree,2,,,,,
-human-ai,Y1_06,exact,human-reviewer-4,claude-opus-4-5,0.9400045871734619,0.9906618693806194,agree,2,,,,,
-ai-ai,Y1_06,exact,,,0.9645782709121704,0.9619566505963565,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
-ai-ai,Y1_06,exact,,,0.9470305442810059,0.9948432884517443,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
-ai-ai,Y1_06,exact,,,0.9847105145454407,0.9671133621446122,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
-human-human,Y1_06,exact,,,0.9156006574630737,0.978878236142942,agree,2,,,,human-reviewer-1,human-reviewer-2
-human-human,Y1_06,exact,,,0.9594708681106567,0.9460386002886003,agree,2,,,,human-reviewer-1,human-reviewer-3
-human-human,Y1_06,exact,,,0.9319044947624207,0.9917132312132313,agree,2,,,,human-reviewer-1,human-reviewer-4
-human-human,Y1_06,exact,,,0.9454835653305054,0.9671603641456583,agree,2,,,,human-reviewer-2,human-reviewer-3
-human-human,Y1_06,exact,,,0.9516276121139526,0.9705914673561733,agree,2,,,,human-reviewer-2,human-reviewer-4
-human-human,Y1_06,exact,,,0.950405478477478,0.9377518315018315,agree,2,,,,human-reviewer-3,human-reviewer-4
-human-ai,Y1_07,exact,human-reviewer-1,gpt-5.2,0.960504949092865,0.9645637926887927,agree,2,,,,,
-human-ai,Y1_07,exact,human-reviewer-1,gemini-3-pro-preview,0.9527616500854492,0.9499455461955462,agree,2,,,,,
-human-ai,Y1_07,exact,human-reviewer-1,claude-opus-4-5,0.9756015539169312,0.9366143578643579,agree,2,,,,,
-human-ai,Y1_07,exact,human-reviewer-2,gpt-5.2,0.9376622438430786,0.9822319610837053,agree,2,,,,,
-human-ai,Y1_07,exact,human-reviewer-2,gemini-3-pro-preview,0.9383858442306519,0.9676137145904588,agree,2,,,,,
-human-ai,Y1_07,exact,human-reviewer-2,claude-opus-4-5,0.9587247967720032,0.9542825262592705,agree,2,,,,,
-human-ai,Y1_07,exact,human-reviewer-3,gpt-5.2,0.9441072940826416,0.9901400913900914,agree,2,,,,,
-human-ai,Y1_07,exact,human-reviewer-3,gemini-3-pro-preview,0.9540910720825195,0.9755218448968449,agree,2,,,,,
-human-ai,Y1_07,exact,human-reviewer-3,claude-opus-4-5,0.9742581844329834,0.9621906565656566,agree,2,,,,,
-human-ai,Y1_07,exact,human-reviewer-4,gpt-5.2,0.9456264972686768,0.9616866727955438,agree,2,,,,,
-human-ai,Y1_07,exact,human-reviewer-4,gemini-3-pro-preview,0.9782468676567078,0.9763049192887903,agree,2,,,,,
-human-ai,Y1_07,exact,human-reviewer-4,claude-opus-4-5,0.9826991558074951,0.9896361076199786,agree,2,,,,,
-ai-ai,Y1_07,exact,,,0.9391466379165649,0.9853817535067535,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
-ai-ai,Y1_07,exact,,,0.9671444892883301,0.9720505651755652,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
-ai-ai,Y1_07,exact,,,0.9794294834136963,0.9866688116688117,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
-human-human,Y1_07,exact,,,0.9772210121154785,0.9823318316050874,agree,2,,,,human-reviewer-1,human-reviewer-2
-human-human,Y1_07,exact,,,0.9775311946868896,0.9744237012987013,agree,2,,,,human-reviewer-1,human-reviewer-3
-human-human,Y1_07,exact,,,0.9618125557899475,0.9262504654843364,agree,2,,,,human-reviewer-1,human-reviewer-4
-human-human,Y1_07,exact,,,0.975394606590271,0.9920918696936138,agree,2,,,,human-reviewer-2,human-reviewer-3
-human-human,Y1_07,exact,,,0.950043261051178,0.943918633879249,agree,2,,,,human-reviewer-2,human-reviewer-4
-human-human,Y1_07,exact,,,0.9664644598960876,0.9518267641856352,agree,2,,,,human-reviewer-3,human-reviewer-4
-human-ai,Y1_08,exact,human-reviewer-1,gpt-5.2,0.9303871393203735,0.9935937136340363,agree,2,,,,,
-human-ai,Y1_08,exact,human-reviewer-1,gemini-3-pro-preview,0.933520495891571,0.9958497620997622,agree,2,,,,,
-human-ai,Y1_08,exact,human-reviewer-1,claude-opus-4-5,0.9346133470535278,0.9912418831168831,agree,2,,,,,
-human-ai,Y1_08,exact,human-reviewer-2,gpt-5.2,0.9291969537734985,0.9988476818880044,agree,2,,,,,
-human-ai,Y1_08,exact,human-reviewer-2,gemini-3-pro-preview,0.9270071983337402,0.9905957938457939,agree,2,,,,,
-human-ai,Y1_08,exact,human-reviewer-2,claude-opus-4-5,0.9289522171020508,0.9964958513708514,agree,2,,,,,
-human-ai,Y1_08,exact,human-reviewer-3,gpt-5.2,0.9518177509307861,0.9631309819213045,agree,2,,,,,
-human-ai,Y1_08,exact,human-reviewer-3,gemini-3-pro-preview,0.9562506675720215,0.9736875061875061,agree,2,,,,,
-human-ai,Y1_08,exact,human-reviewer-3,claude-opus-4-5,0.9607927203178406,0.9607791514041514,agree,2,,,,,
-human-ai,Y1_08,exact,human-reviewer-4,gpt-5.2,0.9431737065315247,0.9834162859150258,partial,1,,,,,
-human-ai,Y1_08,exact,human-reviewer-4,gemini-3-pro-preview,0.9516215324401855,0.9728597616488242,partial,1,,,,,
-human-ai,Y1_08,exact,human-reviewer-4,claude-opus-4-5,0.9538394212722778,0.985768116432179,partial,1,,,,,
-ai-ai,Y1_08,exact,,,0.954160213470459,0.9894434757337983,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
-ai-ai,Y1_08,exact,,,0.9595271348953247,0.997648169482847,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
-ai-ai,Y1_08,exact,,,0.9892188310623169,0.9870916452166453,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
-human-human,Y1_08,exact,,,0.9779413938522339,0.9947460317460317,agree,2,,,,human-reviewer-1,human-reviewer-2
-human-human,Y1_08,exact,,,0.9652271270751953,0.9695372682872683,agree,2,,,,human-reviewer-1,human-reviewer-3
-human-human,Y1_08,exact,,,0.9669493436813354,0.9770099995490621,partial,1,,,,human-reviewer-1,human-reviewer-4
-human-human,Y1_08,exact,,,0.9603009223937988,0.9642833000333,agree,2,,,,human-reviewer-2,human-reviewer-3
-human-human,Y1_08,exact,,,0.9608217477798462,0.9822639678030303,partial,1,,,,human-reviewer-2,human-reviewer-4
-human-human,Y1_08,exact,,,0.9773949384689331,0.9465472678363304,partial,1,,,,human-reviewer-3,human-reviewer-4
-human-ai,Y1_09,exact,human-reviewer-1,gpt-5.2,0.9500740170478821,0.9675080266955267,agree,2,,,,,
-human-ai,Y1_09,exact,human-reviewer-1,gemini-3-pro-preview,0.9684559106826782,0.9827379169603007,agree,2,,,,,
-human-ai,Y1_09,exact,human-reviewer-1,claude-opus-4-5,0.9649425745010376,0.9713515331890332,agree,2,,,,,
-human-ai,Y1_09,exact,human-reviewer-2,gpt-5.2,0.9440264701843262,0.9741548520923521,agree,2,,,,,
-human-ai,Y1_09,exact,human-reviewer-2,gemini-3-pro-preview,0.9723582863807678,0.989384742357126,agree,2,,,,,
-human-ai,Y1_09,exact,human-reviewer-2,claude-opus-4-5,0.970575213432312,0.9779983585858586,agree,2,,,,,
-human-ai,Y1_09,exact,human-reviewer-3,gpt-5.2,0.9522678852081299,0.9795594254230617,agree,2,,,,,
-human-ai,Y1_09,exact,human-reviewer-3,gemini-3-pro-preview,0.971565842628479,0.9947893156878358,agree,2,,,,,
-human-ai,Y1_09,exact,human-reviewer-3,claude-opus-4-5,0.9668369293212891,0.9834029319165682,agree,2,,,,,
-human-ai,Y1_09,exact,human-reviewer-4,gpt-5.2,0.9335240125656128,0.9753410636982065,agree,2,,,,,
-human-ai,Y1_09,exact,human-reviewer-4,gemini-3-pro-preview,0.9725785851478577,0.9601111734334326,agree,2,,,,,
-human-ai,Y1_09,exact,human-reviewer-4,claude-opus-4-5,0.9738781452178955,0.9714975572047,agree,2,,,,,
-ai-ai,Y1_09,exact,,,0.9647576808929443,0.9847701097352259,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
-ai-ai,Y1_09,exact,,,0.9612623453140259,0.9961564935064935,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
-ai-ai,Y1_09,exact,,,0.9893381595611572,0.9886136162287325,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
-human-human,Y1_09,exact,,,0.9713802933692932,0.9933531746031746,agree,2,,,,human-reviewer-1,human-reviewer-2
-human-human,Y1_09,exact,,,0.9689407348632812,0.987948601272465,agree,2,,,,human-reviewer-1,human-reviewer-3
-human-human,Y1_09,exact,,,0.9704064130783081,0.9428490903937332,agree,2,,,,human-reviewer-1,human-reviewer-4
-human-human,Y1_09,exact,,,0.9751163721084595,0.9945954266692904,agree,2,,,,human-reviewer-2,human-reviewer-3
-human-human,Y1_09,exact,,,0.9725434184074402,0.9494959157905586,agree,2,,,,human-reviewer-2,human-reviewer-4
-human-human,Y1_09,exact,,,0.9719220399856567,0.9549004891212683,agree,2,,,,human-reviewer-3,human-reviewer-4
-human-ai,Y1_10,fuzzy,human-reviewer-1,gpt-5.2,0.9515368938446045,0.9941015114943463,agree,2,,,,,
-human-ai,Y1_10,fuzzy,human-reviewer-1,gemini-3-pro-preview,0.9567439556121826,0.9701635897347334,partial,1,,,,,
-human-ai,Y1_10,fuzzy,human-reviewer-1,claude-opus-4-5,0.9625756740570068,0.9458185771084707,partial,1,,,,,
-human-ai,Y1_10,fuzzy,human-reviewer-2,gpt-5.2,0.9440295696258545,0.9820929223962312,partial,1,,,,,
-human-ai,Y1_10,fuzzy,human-reviewer-2,gemini-3-pro-preview,0.9401432275772095,0.9939691558441559,agree,2,,,,,
-human-ai,Y1_10,fuzzy,human-reviewer-2,claude-opus-4-5,0.9515260457992554,0.9696241432178933,agree,2,,,,,
-human-ai,Y1_10,fuzzy,human-reviewer-3,gpt-5.2,0.9444966316223145,0.9893416632387221,partial,1,,,,,
-human-ai,Y1_10,fuzzy,human-reviewer-3,gemini-3-pro-preview,0.9474724531173706,0.986720415001665,agree,2,,,,,
-human-ai,Y1_10,fuzzy,human-reviewer-3,claude-opus-4-5,0.9493193626403809,0.9623754023754023,agree,2,,,,,
-human-ai,Y1_10,fuzzy,human-reviewer-4,gpt-5.2,0.9419684410095215,0.9936072054213535,agree,2,,,,,
-human-ai,Y1_10,fuzzy,human-reviewer-4,gemini-3-pro-preview,0.9440913796424866,0.9696692836617405,partial,1,,,,,
-human-ai,Y1_10,fuzzy,human-reviewer-4,claude-opus-4-5,0.9513962268829346,0.9453242710354779,partial,1,,,,,
-ai-ai,Y1_10,fuzzy,,,0.9546710252761841,0.976062078240387,partial,1,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
-ai-ai,Y1_10,fuzzy,,,0.9630750417709351,0.9517170656141244,partial,1,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
-ai-ai,Y1_10,fuzzy,,,0.9855083227157593,0.9756549873737373,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
-human-human,Y1_10,fuzzy,,,0.9705950021743774,0.9761944338905775,partial,1,,,,human-reviewer-1,human-reviewer-2
-human-human,Y1_10,fuzzy,,,0.9706084132194519,0.9834431747330683,partial,1,,,,human-reviewer-1,human-reviewer-3
-human-human,Y1_10,fuzzy,,,0.9679477214813232,0.9995056939270072,agree,2,,,,human-reviewer-1,human-reviewer-4
-human-human,Y1_10,fuzzy,,,0.9709310531616211,0.9927512591575092,agree,2,,,,human-reviewer-2,human-reviewer-3
-human-human,Y1_10,fuzzy,,,0.9641434550285339,0.9757001278175848,partial,1,,,,human-reviewer-2,human-reviewer-4
-human-human,Y1_10,fuzzy,,,0.9763489961624146,0.9829488686600756,partial,1,,,,human-reviewer-3,human-reviewer-4
-human-ai,Y1_11,fuzzy,human-reviewer-1,gpt-5.2,0.9534451961517334,0.9737515496629273,partial,1,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-1,gemini-3-pro-preview,0.9601935744285583,0.9357549555707451,partial,1,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-1,claude-opus-4-5,0.9568357467651367,0.9901835269993164,partial,1,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-2,gpt-5.2,0.9457366466522217,0.9289170305714423,agree,2,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-2,gemini-3-pro-preview,0.9618988037109375,0.9669136246636246,agree,2,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-2,claude-opus-4-5,0.9624162912368774,0.9124850532350532,agree,2,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-3,gpt-5.2,0.9350802302360535,0.9722927276971395,agree,2,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-3,gemini-3-pro-preview,0.9394991397857666,0.9897106782106782,agree,2,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-3,claude-opus-4-5,0.9220777750015259,0.9558607503607504,agree,2,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-4,gpt-5.2,0.9463853240013123,0.9890075803048493,agree,2,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-4,gemini-3-pro-preview,0.961718738079071,0.9729958256029685,agree,2,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-4,claude-opus-4-5,0.961902916431427,0.9725756029684601,agree,2,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-5,gpt-5.2,0.9515966176986694,0.9820077349121467,agree,2,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-5,gemini-3-pro-preview,0.9681376218795776,0.979995670995671,agree,2,,,,,
-human-ai,Y1_11,fuzzy,human-reviewer-5,claude-opus-4-5,0.9701352715492249,0.9655757575757575,agree,2,,,,,
-ai-ai,Y1_11,fuzzy,,,0.9764841198921204,0.9620034059078176,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
-ai-ai,Y1_11,fuzzy,,,0.9730108976364136,0.9835680226636109,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
-ai-ai,Y1_11,fuzzy,,,0.9845804572105408,0.9455714285714285,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
-human-human,Y1_11,fuzzy,,,0.9638215899467468,0.9026685802343697,partial,1,,,,human-reviewer-1,human-reviewer-2
-human-human,Y1_11,fuzzy,,,0.9513373374938965,0.9460442773600668,partial,1,,,,human-reviewer-1,human-reviewer-3
-human-human,Y1_11,fuzzy,,,0.9698987603187561,0.9627591299677766,partial,1,,,,human-reviewer-1,human-reviewer-4
-human-human,Y1_11,fuzzy,,,0.9299803972244263,0.955759284575074,partial,1,,,,human-reviewer-1,human-reviewer-5
-human-human,Y1_11,fuzzy,,,0.9369175434112549,0.9566243028743029,agree,2,,,,human-reviewer-2,human-reviewer-3
-human-human,Y1_11,fuzzy,,,0.9713609218597412,0.9399094502665931,agree,2,,,,human-reviewer-2,human-reviewer-4
-human-human,Y1_11,fuzzy,,,0.9349296689033508,0.9469092956592956,agree,2,,,,human-reviewer-2,human-reviewer-5
-human-human,Y1_11,fuzzy,,,0.9455325603485107,0.9832851473922902,agree,2,,,,human-reviewer-3,human-reviewer-4
-human-human,Y1_11,fuzzy,,,0.883680522441864,0.9902849927849928,agree,2,,,,human-reviewer-3,human-reviewer-5
-human-human,Y1_11,fuzzy,,,0.9310727119445801,0.9930001546072974,agree,2,,,,human-reviewer-4,human-reviewer-5
-human-ai,Y1_12,exact,human-reviewer-1,gpt-5.2,0.9030172228813171,0.9594055082848186,partial,1,,,,,
-human-ai,Y1_12,exact,human-reviewer-1,gemini-3-pro-preview,0.9218543767929077,0.9470399045399045,partial,1,,,,,
-human-ai,Y1_12,exact,human-reviewer-1,claude-opus-4-5,0.9242630004882812,0.9130106005106005,partial,1,,,,,
-human-ai,Y1_12,exact,human-reviewer-2,gpt-5.2,0.9378538131713867,0.9655662225705329,partial,1,,,,,
-human-ai,Y1_12,exact,human-reviewer-2,gemini-3-pro-preview,0.9485286474227905,0.9532006188256188,partial,1,,,,,
-human-ai,Y1_12,exact,human-reviewer-2,claude-opus-4-5,0.9474763870239258,0.9191713147963148,partial,1,,,,,
-human-ai,Y1_12,exact,human-reviewer-3,gpt-5.2,0.9320515394210815,0.9997205219349615,agree,2,,,,,
-human-ai,Y1_12,exact,human-reviewer-3,gemini-3-pro-preview,0.9413193464279175,0.9879138743201243,agree,2,,,,,
-human-ai,Y1_12,exact,human-reviewer-3,claude-opus-4-5,0.943284273147583,0.9538845702908203,agree,2,,,,,
-ai-ai,Y1_12,exact,,,0.9698998928070068,0.9876343962550859,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
-ai-ai,Y1_12,exact,,,0.967741072177887,0.9536050922257818,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
-ai-ai,Y1_12,exact,,,0.9851527214050293,0.965970695970696,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
-human-human,Y1_12,exact,,,0.9280531406402588,0.9938392857142857,agree,2,,,,human-reviewer-1,human-reviewer-2
-human-human,Y1_12,exact,,,0.9374977350234985,0.9591260302197803,partial,1,,,,human-reviewer-1,human-reviewer-3
-human-human,Y1_12,exact,,,0.9616439342498779,0.9652867445054945,partial,1,,,,human-reviewer-2,human-reviewer-3
+human-ai,Y1_01,exact,human-reviewer-1,gpt-5.2,0.9666780233383179,0.9983333333333333,agree,2,,,,,
+human-ai,Y1_01,exact,human-reviewer-1,gemini-3-pro-preview,0.9678813219070435,0.9308333333333333,agree,2,,,,,
+human-ai,Y1_01,exact,human-reviewer-1,claude-opus-4-5,0.9642748832702637,0.9488888888888889,agree,2,,,,,
+human-ai,Y1_01,exact,human-reviewer-2,gpt-5.2,0.9635580778121948,0.9456249999999999,agree,2,,,,,
+human-ai,Y1_01,exact,human-reviewer-2,gemini-3-pro-preview,0.9690636396408081,0.9835416666666666,agree,2,,,,,
+human-ai,Y1_01,exact,human-reviewer-2,claude-opus-4-5,0.9542973041534424,0.9984027777777778,agree,2,,,,,
+human-ai,Y1_01,exact,human-reviewer-3,gpt-5.2,0.9506312012672424,0.9319444444444445,agree,2,,,,,
+human-ai,Y1_01,exact,human-reviewer-3,gemini-3-pro-preview,0.945916473865509,0.9972222222222222,agree,2,,,,,
+human-ai,Y1_01,exact,human-reviewer-3,claude-opus-4-5,0.92192542552948,0.9847222222222223,agree,2,,,,,
+human-ai,Y1_01,exact,human-reviewer-4,gpt-5.2,0.92787766456604,0.85,agree,2,,,,,
+human-ai,Y1_01,exact,human-reviewer-4,gemini-3-pro-preview,0.9340391159057617,0.9208333333333334,agree,2,,,,,
+human-ai,Y1_01,exact,human-reviewer-4,claude-opus-4-5,0.947425127029419,0.9027777777777778,agree,2,,,,,
+ai-ai,Y1_01,exact,,,0.973638117313385,0.9291666666666667,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
+ai-ai,Y1_01,exact,,,0.9675037860870361,0.9472222222222222,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
+ai-ai,Y1_01,exact,,,0.9641610383987427,0.9819444444444444,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
+human-human,Y1_01,exact,,,0.9648361802101135,0.9472916666666666,agree,2,,,,human-reviewer-1,human-reviewer-2
+human-human,Y1_01,exact,,,0.9449418187141418,0.9336111111111112,agree,2,,,,human-reviewer-1,human-reviewer-3
+human-human,Y1_01,exact,,,0.9464417695999146,0.8516666666666667,agree,2,,,,human-reviewer-1,human-reviewer-4
+human-human,Y1_01,exact,,,0.9358876943588257,0.9863194444444444,agree,2,,,,human-reviewer-2,human-reviewer-3
+human-human,Y1_01,exact,,,0.93382728099823,0.904375,agree,2,,,,human-reviewer-2,human-reviewer-4
+human-human,Y1_01,exact,,,0.8904612064361572,0.9180555555555555,agree,2,,,,human-reviewer-3,human-reviewer-4
+human-ai,Y1_02,exact,human-reviewer-1,gpt-5.2,0.9517914056777954,0.9755902777777777,agree,2,,,,,
+human-ai,Y1_02,exact,human-reviewer-1,gemini-3-pro-preview,0.962623119354248,0.9770585317460317,agree,2,,,,,
+human-ai,Y1_02,exact,human-reviewer-1,claude-opus-4-5,0.9684499502182007,0.9569444444444445,agree,2,,,,,
+human-ai,Y1_02,exact,human-reviewer-2,gpt-5.2,0.9606560468673706,0.9769791666666666,agree,2,,,,,
+human-ai,Y1_02,exact,human-reviewer-2,gemini-3-pro-preview,0.9689436554908752,0.9756696428571429,agree,2,,,,,
+human-ai,Y1_02,exact,human-reviewer-2,claude-opus-4-5,0.9665044546127319,0.9583333333333334,agree,2,,,,,
+human-ai,Y1_02,exact,human-reviewer-3,gpt-5.2,0.947262704372406,0.9832291666666666,agree,2,,,,,
+human-ai,Y1_02,exact,human-reviewer-3,gemini-3-pro-preview,0.9734878540039062,0.9694196428571429,agree,2,,,,,
+human-ai,Y1_02,exact,human-reviewer-3,claude-opus-4-5,0.9681791067123413,0.9645833333333333,agree,2,,,,,
+human-ai,Y1_02,exact,human-reviewer-4,gpt-5.2,0.9426023960113525,0.9846180555555556,agree,2,,,,,
+human-ai,Y1_02,exact,human-reviewer-4,gemini-3-pro-preview,0.968025267124176,0.968030753968254,agree,2,,,,,
+human-ai,Y1_02,exact,human-reviewer-4,claude-opus-4-5,0.9658259153366089,0.9659722222222222,agree,2,,,,,
+ai-ai,Y1_02,exact,,,0.9499748349189758,0.9526488095238095,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
+ai-ai,Y1_02,exact,,,0.9608396291732788,0.9813541666666666,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
+ai-ai,Y1_02,exact,,,0.9754272699356079,0.9340029761904762,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
+human-human,Y1_02,exact,,,0.9576514959335327,0.9986111111111111,agree,2,,,,human-reviewer-1,human-reviewer-2
+human-human,Y1_02,exact,,,0.9590394496917725,0.9923611111111111,agree,2,,,,human-reviewer-1,human-reviewer-3
+human-human,Y1_02,exact,,,0.9616799354553223,0.9909722222222223,agree,2,,,,human-reviewer-1,human-reviewer-4
+human-human,Y1_02,exact,,,0.9708454608917236,0.99375,agree,2,,,,human-reviewer-2,human-reviewer-3
+human-human,Y1_02,exact,,,0.9617114663124084,0.9923611111111111,agree,2,,,,human-reviewer-2,human-reviewer-4
+human-human,Y1_02,exact,,,0.9585807919502258,0.9986111111111111,agree,2,,,,human-reviewer-3,human-reviewer-4
+human-ai,Y1_03,exact,human-reviewer-1,gpt-5.2,0.9649646282196045,0.8958333333333334,agree,2,,,,,
+human-ai,Y1_03,exact,human-reviewer-1,gemini-3-pro-preview,0.9159539937973022,0.9442708333333334,agree,2,,,,,
+human-ai,Y1_03,exact,human-reviewer-1,claude-opus-4-5,0.9514669179916382,0.8657738095238094,agree,2,,,,,
+human-ai,Y1_03,exact,human-reviewer-2,gpt-5.2,0.9582844376564026,0.8947916666666667,partial,1,,,,,
+human-ai,Y1_03,exact,human-reviewer-2,gemini-3-pro-preview,0.9511194825172424,0.8463541666666666,partial,1,,,,,
+human-ai,Y1_03,exact,human-reviewer-2,claude-opus-4-5,0.9468463659286499,0.9248511904761905,partial,1,,,,,
+human-ai,Y1_03,exact,human-reviewer-3,gpt-5.2,0.9534188508987427,0.9885416666666667,agree,2,,,,,
+human-ai,Y1_03,exact,human-reviewer-3,gemini-3-pro-preview,0.9486465454101562,0.9401041666666666,agree,2,,,,,
+human-ai,Y1_03,exact,human-reviewer-3,claude-opus-4-5,0.9580115079879761,0.9813988095238095,agree,2,,,,,
+human-ai,Y1_03,exact,human-reviewer-4,gpt-5.2,0.9507529735565186,0.9846230158730159,agree,2,,,,,
+human-ai,Y1_03,exact,human-reviewer-4,gemini-3-pro-preview,0.9663970470428467,0.966939484126984,agree,2,,,,,
+human-ai,Y1_03,exact,human-reviewer-4,claude-opus-4-5,0.9375748634338379,0.9545634920634921,agree,2,,,,,
+ai-ai,Y1_03,exact,,,0.9361642003059387,0.9515625,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
+ai-ai,Y1_03,exact,,,0.9560467004776001,0.9699404761904762,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
+ai-ai,Y1_03,exact,,,0.9309004545211792,0.9215029761904762,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
+human-human,Y1_03,exact,,,0.9519548416137695,0.790625,partial,1,,,,human-reviewer-1,human-reviewer-2
+human-human,Y1_03,exact,,,0.9468147158622742,0.884375,agree,2,,,,human-reviewer-1,human-reviewer-3
+human-human,Y1_03,exact,,,0.9336258769035339,0.9112103174603174,agree,2,,,,human-reviewer-1,human-reviewer-4
+human-human,Y1_03,exact,,,0.958539605140686,0.90625,partial,1,,,,human-reviewer-2,human-reviewer-3
+human-human,Y1_03,exact,,,0.9638747572898865,0.8794146825396826,partial,1,,,,human-reviewer-2,human-reviewer-4
+human-human,Y1_03,exact,,,0.9644911885261536,0.9731646825396826,agree,2,,,,human-reviewer-3,human-reviewer-4
+human-ai,Y1_04,fuzzy,human-reviewer-1,gpt-5.2,0.9633679986000061,0.9823065476190477,agree,2,,,,,
+human-ai,Y1_04,fuzzy,human-reviewer-1,gemini-3-pro-preview,0.9630390405654907,0.985489417989418,agree,2,,,,,
+human-ai,Y1_04,fuzzy,human-reviewer-1,claude-opus-4-5,0.9551563262939453,0.9973809523809524,agree,2,,,,,
+human-ai,Y1_04,fuzzy,human-reviewer-2,gpt-5.2,0.9661487340927124,0.9822172619047619,agree,2,,,,,
+human-ai,Y1_04,fuzzy,human-reviewer-2,gemini-3-pro-preview,0.9664753079414368,0.9790343915343915,agree,2,,,,,
+human-ai,Y1_04,fuzzy,human-reviewer-2,claude-opus-4-5,0.9592303037643433,0.9619047619047619,agree,2,,,,,
+human-ai,Y1_04,fuzzy,human-reviewer-3,gpt-5.2,0.9326063394546509,0.9563541666666666,agree,2,,,,,
+human-ai,Y1_04,fuzzy,human-reviewer-3,gemini-3-pro-preview,0.9484127759933472,0.9595370370370371,agree,2,,,,,
+human-ai,Y1_04,fuzzy,human-reviewer-3,claude-opus-4-5,0.9605048894882202,0.9766666666666667,agree,2,,,,,
+human-ai,Y1_04,fuzzy,human-reviewer-4,gpt-5.2,0.9610828757286072,0.9915922619047619,agree,2,,,,,
+human-ai,Y1_04,fuzzy,human-reviewer-4,gemini-3-pro-preview,0.9576389789581299,0.9947751322751323,agree,2,,,,,
+human-ai,Y1_04,fuzzy,human-reviewer-4,claude-opus-4-5,0.9695014357566833,0.9880952380952381,agree,2,,,,,
+ai-ai,Y1_04,fuzzy,,,0.9704185724258423,0.9968171296296297,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
+ai-ai,Y1_04,fuzzy,,,0.9638721346855164,0.9796875,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
+ai-ai,Y1_04,fuzzy,,,0.9744664430618286,0.9828703703703704,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
+human-human,Y1_04,fuzzy,,,0.9672048091888428,0.9645238095238096,agree,2,,,,human-reviewer-1,human-reviewer-2
+human-human,Y1_04,fuzzy,,,0.936470627784729,0.974047619047619,agree,2,,,,human-reviewer-1,human-reviewer-3
+human-human,Y1_04,fuzzy,,,0.9550605416297913,0.9907142857142858,agree,2,,,,human-reviewer-1,human-reviewer-4
+human-human,Y1_04,fuzzy,,,0.9421142339706421,0.9385714285714286,agree,2,,,,human-reviewer-2,human-reviewer-3
+human-human,Y1_04,fuzzy,,,0.9579712152481079,0.9738095238095238,agree,2,,,,human-reviewer-2,human-reviewer-4
+human-human,Y1_04,fuzzy,,,0.9555610418319702,0.9647619047619047,agree,2,,,,human-reviewer-3,human-reviewer-4
+human-ai,Y1_05,exact,human-reviewer-1,gpt-5.2,0.9539601802825928,0.895,partial,1,,,,,
+human-ai,Y1_05,exact,human-reviewer-1,gemini-3-pro-preview,0.9658164381980896,0.9000892857142857,partial,1,,,,,
+human-ai,Y1_05,exact,human-reviewer-1,claude-opus-4-5,0.9711830615997314,0.9133035714285714,partial,1,,,,,
+human-ai,Y1_05,exact,human-reviewer-2,gpt-5.2,0.9574528932571411,0.9404518398268398,partial,1,,,,,
+human-ai,Y1_05,exact,human-reviewer-2,gemini-3-pro-preview,0.9574949741363525,0.9455411255411256,partial,1,,,,,
+human-ai,Y1_05,exact,human-reviewer-2,claude-opus-4-5,0.9654079675674438,0.9587554112554113,partial,1,,,,,
+human-ai,Y1_05,exact,human-reviewer-3,gpt-5.2,0.9649450182914734,0.944375,agree,2,,,,,
+human-ai,Y1_05,exact,human-reviewer-3,gemini-3-pro-preview,0.9738694429397583,0.9392857142857143,agree,2,,,,,
+human-ai,Y1_05,exact,human-reviewer-3,claude-opus-4-5,0.9752708673477173,0.9260714285714285,agree,2,,,,,
+ai-ai,Y1_05,exact,,,0.9670759439468384,0.9949107142857143,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
+ai-ai,Y1_05,exact,,,0.9696183204650879,0.9816964285714286,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
+ai-ai,Y1_05,exact,,,0.9760714769363403,0.9867857142857143,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
+human-human,Y1_05,exact,,,0.9605327844619751,0.9545481601731601,agree,2,,,,human-reviewer-1,human-reviewer-2
+human-human,Y1_05,exact,,,0.9668379426002502,0.839375,partial,1,,,,human-reviewer-1,human-reviewer-3
+human-human,Y1_05,exact,,,0.9643001556396484,0.8848268398268399,partial,1,,,,human-reviewer-2,human-reviewer-3
+human-ai,Y1_06,exact,human-reviewer-1,gpt-5.2,0.9730153679847717,0.9806547619047619,agree,2,,,,,
+human-ai,Y1_06,exact,human-reviewer-1,gemini-3-pro-preview,0.9618712663650513,0.9939732142857143,agree,2,,,,,
+human-ai,Y1_06,exact,human-reviewer-1,claude-opus-4-5,0.9626465439796448,0.9745535714285715,agree,2,,,,,
+human-ai,Y1_06,exact,human-reviewer-2,gpt-5.2,0.9601710438728333,0.9958333333333333,partial,1,,,,,
+human-ai,Y1_06,exact,human-reviewer-2,gemini-3-pro-preview,0.9513050317764282,0.9704613095238095,partial,1,,,,,
+human-ai,Y1_06,exact,human-reviewer-2,claude-opus-4-5,0.950005829334259,0.9510416666666667,partial,1,,,,,
+human-ai,Y1_06,exact,human-reviewer-3,gpt-5.2,0.9700350761413574,0.9427083333333334,agree,2,,,,,
+human-ai,Y1_06,exact,human-reviewer-3,gemini-3-pro-preview,0.9598022103309631,0.9680803571428571,agree,2,,,,,
+human-ai,Y1_06,exact,human-reviewer-3,claude-opus-4-5,0.9585541486740112,0.9875,agree,2,,,,,
+human-ai,Y1_06,exact,human-reviewer-4,gpt-5.2,0.9662068486213684,0.9927083333333333,agree,2,,,,,
+human-ai,Y1_06,exact,human-reviewer-4,gemini-3-pro-preview,0.9591786861419678,0.9819196428571428,agree,2,,,,,
+human-ai,Y1_06,exact,human-reviewer-4,claude-opus-4-5,0.9674687385559082,0.9625,agree,2,,,,,
+ai-ai,Y1_06,exact,,,0.970257043838501,0.9746279761904761,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
+ai-ai,Y1_06,exact,,,0.9647254347801208,0.9552083333333333,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
+ai-ai,Y1_06,exact,,,0.9639900922775269,0.9805803571428572,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
+human-human,Y1_06,exact,,,0.9600240588188171,0.9764880952380952,partial,1,,,,human-reviewer-1,human-reviewer-2
+human-human,Y1_06,exact,,,0.9727070927619934,0.9620535714285714,agree,2,,,,human-reviewer-1,human-reviewer-3
+human-human,Y1_06,exact,,,0.9682429432868958,0.9879464285714286,agree,2,,,,human-reviewer-1,human-reviewer-4
+human-human,Y1_06,exact,,,0.9658001661300659,0.9385416666666666,partial,1,,,,human-reviewer-2,human-reviewer-3
+human-human,Y1_06,exact,,,0.9625112414360046,0.9885416666666667,partial,1,,,,human-reviewer-2,human-reviewer-4
+human-human,Y1_06,exact,,,0.966507077217102,0.95,agree,2,,,,human-reviewer-3,human-reviewer-4
+human-ai,Y1_07,exact,human-reviewer-1,gpt-5.2,0.9626457691192627,0.9019274376417233,partial,1,,,,,
+human-ai,Y1_07,exact,human-reviewer-1,gemini-3-pro-preview,0.9678889513015747,0.8934204931972789,partial,1,,,,,
+human-ai,Y1_07,exact,human-reviewer-1,claude-opus-4-5,0.9690858125686646,0.8741496598639455,partial,1,,,,,
+human-ai,Y1_07,exact,human-reviewer-2,gpt-5.2,0.9641112685203552,0.9256519274376417,agree,2,,,,,
+human-ai,Y1_07,exact,human-reviewer-2,gemini-3-pro-preview,0.9664037227630615,0.9171449829931972,agree,2,,,,,
+human-ai,Y1_07,exact,human-reviewer-2,claude-opus-4-5,0.965466320514679,0.8978741496598639,agree,2,,,,,
+human-ai,Y1_07,exact,human-reviewer-3,gpt-5.2,0.9524518251419067,0.9694444444444444,agree,2,,,,,
+human-ai,Y1_07,exact,human-reviewer-3,gemini-3-pro-preview,0.9622649550437927,0.9609375,agree,2,,,,,
+human-ai,Y1_07,exact,human-reviewer-3,claude-opus-4-5,0.9647305011749268,0.9416666666666667,agree,2,,,,,
+human-ai,Y1_07,exact,human-reviewer-4,gpt-5.2,0.9584845900535583,0.9221111111111111,agree,2,,,,,
+human-ai,Y1_07,exact,human-reviewer-4,gemini-3-pro-preview,0.9622967839241028,0.9136041666666667,agree,2,,,,,
+human-ai,Y1_07,exact,human-reviewer-4,claude-opus-4-5,0.9736478924751282,0.8943333333333333,agree,2,,,,,
+ai-ai,Y1_07,exact,,,0.9640291929244995,0.9914930555555556,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
+ai-ai,Y1_07,exact,,,0.9611346125602722,0.9722222222222222,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
+ai-ai,Y1_07,exact,,,0.9585280418395996,0.9807291666666667,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
+human-human,Y1_07,exact,,,0.9743819832801819,0.9762755102040817,partial,1,,,,human-reviewer-1,human-reviewer-2
+human-human,Y1_07,exact,,,0.9761816263198853,0.9324829931972789,partial,1,,,,human-reviewer-1,human-reviewer-3
+human-human,Y1_07,exact,,,0.9736815690994263,0.9798163265306122,partial,1,,,,human-reviewer-1,human-reviewer-4
+human-human,Y1_07,exact,,,0.9626796841621399,0.9562074829931972,agree,2,,,,human-reviewer-2,human-reviewer-3
+human-human,Y1_07,exact,,,0.9691457748413086,0.9964591836734694,agree,2,,,,human-reviewer-2,human-reviewer-4
+human-human,Y1_07,exact,,,0.9745087623596191,0.9526666666666667,agree,2,,,,human-reviewer-3,human-reviewer-4
+human-ai,Y1_08,exact,human-reviewer-1,gpt-5.2,0.9506873488426208,0.981875,agree,2,,,,,
+human-ai,Y1_08,exact,human-reviewer-1,gemini-3-pro-preview,0.940153956413269,0.9955729166666667,agree,2,,,,,
+human-ai,Y1_08,exact,human-reviewer-1,claude-opus-4-5,0.9472317695617676,0.968125,agree,2,,,,,
+human-ai,Y1_08,exact,human-reviewer-2,gpt-5.2,0.9483686685562134,0.994375,agree,2,,,,,
+human-ai,Y1_08,exact,human-reviewer-2,gemini-3-pro-preview,0.9379382133483887,0.9919270833333333,agree,2,,,,,
+human-ai,Y1_08,exact,human-reviewer-2,claude-opus-4-5,0.9480046033859253,0.955625,agree,2,,,,,
+human-ai,Y1_08,exact,human-reviewer-3,gpt-5.2,0.9642908573150635,0.999375,agree,2,,,,,
+human-ai,Y1_08,exact,human-reviewer-3,gemini-3-pro-preview,0.9620256423950195,0.9856770833333334,agree,2,,,,,
+human-ai,Y1_08,exact,human-reviewer-3,claude-opus-4-5,0.9684226512908936,0.949375,agree,2,,,,,
+human-ai,Y1_08,exact,human-reviewer-4,gpt-5.2,0.9445765614509583,0.9225,partial,1,,,,,
+human-ai,Y1_08,exact,human-reviewer-4,gemini-3-pro-preview,0.9465354681015015,0.9361979166666666,partial,1,,,,,
+human-ai,Y1_08,exact,human-reviewer-4,claude-opus-4-5,0.9582123160362244,0.9725,partial,1,,,,,
+ai-ai,Y1_08,exact,,,0.9650350213050842,0.9863020833333334,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
+ai-ai,Y1_08,exact,,,0.9737171530723572,0.95,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
+ai-ai,Y1_08,exact,,,0.9694084525108337,0.9636979166666666,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
+human-human,Y1_08,exact,,,0.9715447425842285,0.9875,agree,2,,,,human-reviewer-1,human-reviewer-2
+human-human,Y1_08,exact,,,0.9498712420463562,0.98125,agree,2,,,,human-reviewer-1,human-reviewer-3
+human-human,Y1_08,exact,,,0.9434530735015869,0.940625,partial,1,,,,human-reviewer-1,human-reviewer-4
+human-human,Y1_08,exact,,,0.9443431496620178,0.99375,agree,2,,,,human-reviewer-2,human-reviewer-3
+human-human,Y1_08,exact,,,0.9371697902679443,0.928125,partial,1,,,,human-reviewer-2,human-reviewer-4
+human-human,Y1_08,exact,,,0.9501840472221375,0.921875,partial,1,,,,human-reviewer-3,human-reviewer-4
+human-ai,Y1_09,exact,human-reviewer-1,gpt-5.2,0.9565678834915161,0.9488194444444444,agree,2,,,,,
+human-ai,Y1_09,exact,human-reviewer-1,gemini-3-pro-preview,0.9670203924179077,0.9325396825396826,agree,2,,,,,
+human-ai,Y1_09,exact,human-reviewer-1,claude-opus-4-5,0.9593883752822876,0.9593253968253967,agree,2,,,,,
+human-ai,Y1_09,exact,human-reviewer-2,gpt-5.2,0.951470136642456,0.985625,agree,2,,,,,
+human-ai,Y1_09,exact,human-reviewer-2,gemini-3-pro-preview,0.9733554720878601,0.9693452380952381,agree,2,,,,,
+human-ai,Y1_09,exact,human-reviewer-2,claude-opus-4-5,0.9692134261131287,0.9961309523809524,agree,2,,,,,
+human-ai,Y1_09,exact,human-reviewer-3,gpt-5.2,0.9532341361045837,0.9534374999999999,agree,2,,,,,
+human-ai,Y1_09,exact,human-reviewer-3,gemini-3-pro-preview,0.9660471677780151,0.9697172619047619,agree,2,,,,,
+human-ai,Y1_09,exact,human-reviewer-3,claude-opus-4-5,0.9639033675193787,0.9429315476190476,agree,2,,,,,
+human-ai,Y1_09,exact,human-reviewer-4,gpt-5.2,0.9335660934448242,0.979375,agree,2,,,,,
+human-ai,Y1_09,exact,human-reviewer-4,gemini-3-pro-preview,0.9609508514404297,0.9630952380952381,agree,2,,,,,
+human-ai,Y1_09,exact,human-reviewer-4,claude-opus-4-5,0.9526981115341187,0.9898809523809524,agree,2,,,,,
+ai-ai,Y1_09,exact,,,0.9603506326675415,0.9837202380952381,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
+ai-ai,Y1_09,exact,,,0.9570207595825195,0.9894940476190477,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
+ai-ai,Y1_09,exact,,,0.9759299159049988,0.9732142857142857,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
+human-human,Y1_09,exact,,,0.960210919380188,0.9631944444444445,agree,2,,,,human-reviewer-1,human-reviewer-2
+human-human,Y1_09,exact,,,0.9664418697357178,0.9022569444444444,agree,2,,,,human-reviewer-1,human-reviewer-3
+human-human,Y1_09,exact,,,0.9619802236557007,0.9694444444444444,agree,2,,,,human-reviewer-1,human-reviewer-4
+human-human,Y1_09,exact,,,0.9614172577857971,0.9390625,agree,2,,,,human-reviewer-2,human-reviewer-3
+human-human,Y1_09,exact,,,0.9521193504333496,0.99375,agree,2,,,,human-reviewer-2,human-reviewer-4
+human-human,Y1_09,exact,,,0.9694510698318481,0.9328125,agree,2,,,,human-reviewer-3,human-reviewer-4
+human-ai,Y1_10,fuzzy,human-reviewer-1,gpt-5.2,0.9496616125106812,0.9229166666666667,agree,2,,,,,
+human-ai,Y1_10,fuzzy,human-reviewer-1,gemini-3-pro-preview,0.9591014385223389,0.9055555555555556,agree,2,,,,,
+human-ai,Y1_10,fuzzy,human-reviewer-1,claude-opus-4-5,0.9454227685928345,0.9517857142857142,agree,2,,,,,
+human-ai,Y1_10,fuzzy,human-reviewer-2,gpt-5.2,0.9641369581222534,0.9795833333333334,agree,2,,,,,
+human-ai,Y1_10,fuzzy,human-reviewer-2,gemini-3-pro-preview,0.9675731658935547,0.9622222222222222,agree,2,,,,,
+human-ai,Y1_10,fuzzy,human-reviewer-2,claude-opus-4-5,0.9656326770782471,0.991547619047619,agree,2,,,,,
+human-ai,Y1_10,fuzzy,human-reviewer-3,gpt-5.2,0.9663554430007935,0.9796875,agree,2,,,,,
+human-ai,Y1_10,fuzzy,human-reviewer-3,gemini-3-pro-preview,0.948827862739563,0.9970486111111111,agree,2,,,,,
+human-ai,Y1_10,fuzzy,human-reviewer-3,claude-opus-4-5,0.9513567686080933,0.9508184523809524,agree,2,,,,,
+human-ai,Y1_10,fuzzy,human-reviewer-4,gpt-5.2,0.9670699834823608,0.9895833333333334,agree,2,,,,,
+human-ai,Y1_10,fuzzy,human-reviewer-4,gemini-3-pro-preview,0.9698097705841064,0.9930555555555556,agree,2,,,,,
+human-ai,Y1_10,fuzzy,human-reviewer-4,claude-opus-4-5,0.958928108215332,0.9607142857142857,agree,2,,,,,
+ai-ai,Y1_10,fuzzy,,,0.9672118425369263,0.9826388888888888,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
+ai-ai,Y1_10,fuzzy,,,0.9690293669700623,0.9711309523809524,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
+ai-ai,Y1_10,fuzzy,,,0.9690837860107422,0.9537698412698412,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
+human-human,Y1_10,fuzzy,,,0.9592704176902771,0.9433333333333334,agree,2,,,,human-reviewer-1,human-reviewer-2
+human-human,Y1_10,fuzzy,,,0.9502041339874268,0.9026041666666667,agree,2,,,,human-reviewer-1,human-reviewer-3
+human-human,Y1_10,fuzzy,,,0.9592892527580261,0.9125,agree,2,,,,human-reviewer-1,human-reviewer-4
+human-human,Y1_10,fuzzy,,,0.9684135317802429,0.9592708333333333,agree,2,,,,human-reviewer-2,human-reviewer-3
+human-human,Y1_10,fuzzy,,,0.9607839584350586,0.9691666666666667,agree,2,,,,human-reviewer-2,human-reviewer-4
+human-human,Y1_10,fuzzy,,,0.9520661234855652,0.9901041666666667,agree,2,,,,human-reviewer-3,human-reviewer-4
+human-ai,Y1_11,fuzzy,human-reviewer-1,gpt-5.2,0.9462469816207886,0.9967791005291006,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-1,gemini-3-pro-preview,0.9590547680854797,0.9219642857142857,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-1,claude-opus-4-5,0.9487950205802917,0.9173809523809524,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-2,gpt-5.2,0.9604111313819885,0.9773148148148149,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-2,gemini-3-pro-preview,0.9699159860610962,0.9025,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-2,claude-opus-4-5,0.9658619165420532,0.8979166666666667,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-3,gpt-5.2,0.970445990562439,0.9884259259259259,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-3,gemini-3-pro-preview,0.974056601524353,0.9136111111111112,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-3,claude-opus-4-5,0.9670265913009644,0.9090277777777778,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-4,gpt-5.2,0.9601964950561523,0.9941137566137566,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-4,gemini-3-pro-preview,0.9636558890342712,0.9310714285714285,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-4,claude-opus-4-5,0.9628973007202148,0.9264880952380953,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-5,gpt-5.2,0.9451321959495544,0.9150462962962963,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-5,gemini-3-pro-preview,0.9662367701530457,0.9898611111111111,agree,2,,,,,
+human-ai,Y1_11,fuzzy,human-reviewer-5,claude-opus-4-5,0.948002278804779,0.9944444444444445,agree,2,,,,,
+ai-ai,Y1_11,fuzzy,,,0.9728660583496094,0.9251851851851852,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
+ai-ai,Y1_11,fuzzy,,,0.9737576842308044,0.9206018518518518,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
+ai-ai,Y1_11,fuzzy,,,0.974791407585144,0.9954166666666666,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
+human-human,Y1_11,fuzzy,,,0.961298942565918,0.9805357142857143,agree,2,,,,human-reviewer-1,human-reviewer-2
+human-human,Y1_11,fuzzy,,,0.950364351272583,0.9916468253968254,agree,2,,,,human-reviewer-1,human-reviewer-3
+human-human,Y1_11,fuzzy,,,0.9596579670906067,0.9908928571428571,agree,2,,,,human-reviewer-1,human-reviewer-4
+human-human,Y1_11,fuzzy,,,0.9588414430618286,0.9118253968253969,agree,2,,,,human-reviewer-1,human-reviewer-5
+human-human,Y1_11,fuzzy,,,0.9650561809539795,0.9888888888888889,agree,2,,,,human-reviewer-2,human-reviewer-3
+human-human,Y1_11,fuzzy,,,0.9712139368057251,0.9714285714285714,agree,2,,,,human-reviewer-2,human-reviewer-4
+human-human,Y1_11,fuzzy,,,0.9632118344306946,0.8923611111111112,agree,2,,,,human-reviewer-2,human-reviewer-5
+human-human,Y1_11,fuzzy,,,0.9692292809486389,0.9825396825396825,agree,2,,,,human-reviewer-3,human-reviewer-4
+human-human,Y1_11,fuzzy,,,0.9578734636306763,0.9034722222222222,agree,2,,,,human-reviewer-3,human-reviewer-5
+human-human,Y1_11,fuzzy,,,0.9461342096328735,0.9209325396825396,agree,2,,,,human-reviewer-4,human-reviewer-5
+human-ai,Y1_12,exact,human-reviewer-1,gpt-5.2,0.9585961699485779,0.9472916666666666,agree,2,,,,,
+human-ai,Y1_12,exact,human-reviewer-1,gemini-3-pro-preview,0.9529451131820679,0.9546428571428571,agree,2,,,,,
+human-ai,Y1_12,exact,human-reviewer-1,claude-opus-4-5,0.9604974389076233,0.9777083333333333,agree,2,,,,,
+human-ai,Y1_12,exact,human-reviewer-2,gpt-5.2,0.9689843058586121,0.8791666666666667,agree,2,,,,,
+human-ai,Y1_12,exact,human-reviewer-2,gemini-3-pro-preview,0.9599342346191406,0.9772321428571429,agree,2,,,,,
+human-ai,Y1_12,exact,human-reviewer-2,claude-opus-4-5,0.9579521417617798,0.9541666666666667,agree,2,,,,,
+human-ai,Y1_12,exact,human-reviewer-3,gpt-5.2,0.962364912033081,0.9202083333333333,agree,2,,,,,
+human-ai,Y1_12,exact,human-reviewer-3,gemini-3-pro-preview,0.9566785097122192,0.9817261904761905,agree,2,,,,,
+human-ai,Y1_12,exact,human-reviewer-3,claude-opus-4-5,0.9538127779960632,0.9952083333333334,agree,2,,,,,
+ai-ai,Y1_12,exact,,,0.974063515663147,0.9019345238095238,agree,2,gpt-5.2,gemini-3-pro-preview,gemini-3-pro-preview vs gpt-5.2,,
+ai-ai,Y1_12,exact,,,0.9716036319732666,0.925,agree,2,gpt-5.2,claude-opus-4-5,claude-opus-4-5 vs gpt-5.2,,
+ai-ai,Y1_12,exact,,,0.9653538465499878,0.9769345238095238,agree,2,gemini-3-pro-preview,claude-opus-4-5,claude-opus-4-5 vs gemini-3-pro-preview,,
+human-human,Y1_12,exact,,,0.9694472551345825,0.931875,agree,2,,,,human-reviewer-1,human-reviewer-2
+human-human,Y1_12,exact,,,0.9600178003311157,0.9729166666666667,agree,2,,,,human-reviewer-1,human-reviewer-3
+human-human,Y1_12,exact,,,0.9639540314674377,0.9589583333333334,agree,2,,,,human-reviewer-2,human-reviewer-3

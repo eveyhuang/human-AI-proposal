@@ -1,27 +1,27 @@
 title,group,centroid_dist
-Emergent Order Parameters of Allostery: An AI Framework for Predicting and Engineering Protein Regulation,Human,0.28210467
-From Protein Knots to Pierced Lassos: Unraveling the Evolutionary Origin of Complex Topologies,Human,0.2235558
-Deciphering systemic biological networks through AI-driven multi-omic integration,Human,0.19497818
-Conserved Disorder: Learning Sequence Conservation from Functional Constraints in Intrinsically Disordered Regions,Human,0.20594549
-Integrative Multi-Omics Synthesis to Identify Shared Molecular Mechanisms of Mammalian Hibernation,Human,0.3148862
-Revealing the Ontology of Allostery through Community-Scale Synthesis,Human,0.21586967
-SynEvo: Discovering Evolutionary Principles of Molecular Organization through Cross-Species Data Synthesis,Human,0.1971885
-A Unified Framework for Analyses of Proteome Turnover Dynamics,Human,0.27779335
-Predictive Synthesis Framework for Elucidating Biophysical Cell State from Spatial Transcriptomics and Proteomics,Human,0.19697809
-Integrating AI and Molecular Dynamics Simulations for Quantitative Prediction of Enzyme Functions,Human,0.21141064
-Discovery and functional analysis of bacterial organelles through mining and refinement of omics data,Human,0.29430938
-CYTOKINETIC BOTTLENECKS OF HEAT WAVES,Human,0.28378683
-Elucidating genome structure-function relationships in human brain cells,Human,0.2021305
-MaiTool - LLM-powered bioinformatics tools for microbiome analysis,Human,0.29313004
-Synthesizing gene expression data to create an atlas of bacterial cell states,Human,0.25648862
-Energetic Origins of Connectivity within Protein Interaction Networks,Human,0.19246948
-Elucidating emergent structures in cellular RNA-protein interaction networks,Human,0.26829356
-Oceans of Disorder: Elucidating the Role of Disordered Proteins in Cellular Adaptation,Human,0.20974314
+CYTOKINETIC BOTTLENECKS OF HEAT WAVES,Human,0.2837867
+Elucidating genome structure-function relationships in human brain cells,Human,0.20213056
+MaiTool - LLM-powered bioinformatics tools for microbiome analysis,Human,0.29312998
+Synthesizing gene expression data to create an atlas of bacterial cell states,Human,0.2564888
+Energetic Origins of Connectivity within Protein Interaction Networks,Human,0.1924696
+Elucidating emergent structures in cellular RNA-protein interaction networks,Human,0.26829332
+Oceans of Disorder: Elucidating the Role of Disordered Proteins in Cellular Adaptation,Human,0.20974332
 Multimodel single-cell frameworks for cell lines with extensive multi-omics data,Human,0.19962996
 From image data and biophysical simulations to principles of mesoscale organization through integrated transfer learning,Human,0.200198
-Transposable elements and the emergence of genomic innovation,Human,0.25808972
-Searching the crosslinking mass spectrometry universe for new protein-protein interactions,Human,0.29901224
-Intelligent metadata compilation to enhance the reusability and discoverability of mass spectrometry-based proteomics data,Human,0.2728157
+Transposable elements and the emergence of genomic innovation,Human,0.25808966
+Searching the crosslinking mass spectrometry universe for new protein-protein interactions,Human,0.29901212
+Intelligent metadata compilation to enhance the reusability and discoverability of mass spectrometry-based proteomics data,Human,0.27281564
+Emergent Order Parameters of Allostery: An AI Framework for Predicting and Engineering Protein Regulation,Human,0.28210497
+From Protein Knots to Pierced Lassos: Unraveling the Evolutionary Origin of Complex Topologies,Human,0.22355574
+Deciphering systemic biological networks through AI-driven multi-omic integration,Human,0.19497836
+Conserved Disorder: Learning Sequence Conservation from Functional Constraints in Intrinsically Disordered Regions,Human,0.20594549
+Integrative Multi-Omics Synthesis to Identify Shared Molecular Mechanisms of Mammalian Hibernation,Human,0.31488603
+Revealing the Ontology of Allostery through Community-Scale Synthesis,Human,0.21586967
+SynEvo: Discovering Evolutionary Principles of Molecular Organization through Cross-Species Data Synthesis,Human,0.1971885
+A Unified Framework for Analyses of Proteome Turnover Dynamics,Human,0.2777933
+Predictive Synthesis Framework for Elucidating Biophysical Cell State from Spatial Transcriptomics and Proteomics,Human,0.19697815
+Integrating AI and Molecular Dynamics Simulations for Quantitative Prediction of Enzyme Functions,Human,0.21141076
+Discovery and functional analysis of bacterial organelles through mining and refinement of omics data,Human,0.29430938
 A Cross-Modal Synthesis of Biomolecular Condensate Material Properties and Cellular Function Across Species and Perturbations,gpt-5.2,0.06355685
 "Emergent Principles of Organelle Contact Sites: A Synthesis of Proteomics, Imaging, and Genetic Interaction Data",gpt-5.2,0.4308957
 "A Pan-Cell Atlas of Cytoskeletal Self-Organization: Integrating Live-Cell Imaging, Proteomics, and Biophysical Models",gpt-5.2,0.06635034

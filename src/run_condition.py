@@ -13,7 +13,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--condition', required=True, help='Condition name, e.g. minimal, how_to_think, persona')
     parser.add_argument('--generate-new-ideas', action='store_true', help='Set gen_proposals.ipynb to generate fresh ideas')
     parser.add_argument('--reuse-existing-ideas', action='store_true', help='Set gen_proposals.ipynb to reuse existing idea snapshots')
-    parser.add_argument('--steps', help='Comma-separated step numbers to render, e.g. 1,2,4,6')
+    parser.add_argument('--steps', help='Comma-separated step numbers to render, e.g. 1,2,4,7')
     parser.add_argument('--from-step', type=int, help='First pipeline step to render')
     parser.add_argument('--to-step', type=int, help='Last pipeline step to render')
     return parser.parse_args()
