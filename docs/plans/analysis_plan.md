@@ -1,10 +1,10 @@
 ## Overview
 
 This document is now an **execution-status analysis plan** based on the completed notebooks in:
-- `baseline(minimal)-rephrased/compare_proposals_rephrased.ipynb`
-- `baseline(minimal)-rephrased/compare_reviews_ncems_criteria.ipynb`
-- `baseline(minimal)-rephrased/compare_reviews_novelty.ipynb`
-- `baseline(minimal)-rephrased/metric_score_relationship.ipynb`
+- `notebooks/templates/rephrased/compare_proposals_rephrased.ipynb`
+- `notebooks/templates/rephrased/compare_reviews_ncems_criteria.ipynb`
+- `notebooks/templates/rephrased/compare_reviews_novelty.ipynb`
+- `notebooks/templates/rephrased/metric_score_relationship.ipynb`
 
 Primary question: how Human vs AI proposals differ on diversity, novelty, thematic structure, and review outcomes.
 
@@ -14,6 +14,54 @@ Primary question: how Human vs AI proposals differ on diversity, novelty, themat
 - Group sizes: Human `23`, Claude `23`, Gemini `23`, GPT-5.2 `23`, All AI `69`.
 - Literature corpus for novelty: `n=1030` abstracts.
 - Review datasets parsed for metric-score integration: `276` NCEMS reviews + `276` novelty-framework reviews.
+- Human Y2 quantitative review scores for metric-score linkage:
+  - `data/reviews/human_reviews/rephrased/human_reviews_human-y2_rephrased.csv`
+
+## Review Rephrasing + Notebook Path Updates (2026-05-25)
+
+Completed and now used as the default input pipeline:
+
+1. **Review rephrasing pipeline implemented**
+- Script: `src/rephrase_reviews.py`.
+- Rephrasing is now a **single-step extraction** (one API call per review), not multi-step summarize/fill.
+- Extracted fields per review:
+  - `rephrased_review`
+  - `strengths`
+  - `weakness`
+
+2. **Stable rephrased review outputs (no timestamped run outputs)**
+- Human Y1: `data/reviews/human_reviews/rephrased/human_reviews_human-y1_rephrased.csv`
+- Human Y2: `data/reviews/human_reviews/rephrased/human_reviews_human-y2_rephrased.csv`
+- AI NCEMS: `data/reviews/ai_reviews/minimal/ncems_criteria/rephrased/ncems_reviews_rephrased.json`
+
+3. **`compare_reviews_ncems_criteria.ipynb` updated**
+- Notebook path: `notebooks/templates/rephrased/compare_reviews_ncems_criteria.ipynb`.
+- AI reviews now load from the **rephrased directory** with condition-based glob:
+  - `data/reviews/ai_reviews/<condition>/ncems_criteria/rephrased/ncems_reviews_rephrased*.json`
+- Human reviews now load from the **rephrased directory** with glob:
+  - `data/reviews/human_reviews/rephrased/human_reviews_human-y1_rephrased*.csv`
+  - `data/reviews/human_reviews/rephrased/human_reviews_human-y2_rephrased*.csv`
+- Review text field now uses `rephrased_review` (with compatibility fallback only if legacy naming appears).
+
+4. **Y2 review analyses now incorporated in the notebook**
+- Added notebook sections:
+  - `21) Y1 + Y2 Rephrased Review Similarity (Human-Human vs AI-AI)`
+  - `22) Y2 Quantitative Score Reliability (Human, AI, and Human-vs-AI)`
+  - `23) Export Y2 + Y1Y2 Added Outputs`
+- Added analyses include:
+  - Cohort-parallel embedding similarity for `Y1` and `Y2` (using rephrased review text).
+  - Proposal-level pairwise similarity for `human-human` and `ai-ai` within each cohort.
+  - One direct comparison graph with four groups in a single panel:
+    - `human-y1`, `ai-y1`, `human-y2`, `ai-y2`.
+  - Significance testing for four-group comparison:
+    - Kruskal-Wallis global test.
+    - Pairwise Mann-Whitney + Cliff’s delta + BH-FDR.
+    - Within-cohort paired human-vs-AI Wilcoxon tests for `Y1` and `Y2`.
+  - Y2 quantitative reliability analysis:
+    - Human-human reliability.
+    - AI-AI reliability.
+    - Human-vs-AI reliability at proposal-level means.
+    - ICC(2,1), ICC(2,k), and rank-correlation summaries with heatmap/scatter visualizations.
 
 ## Experiment Conditions
 
@@ -46,6 +94,7 @@ This study now has three generation conditions:
 |---|---|---|---|---|
 | Diversity 1.1 Pairwise (**Remote-Clique**) | Human > All AI diversity | MW Holm `p=1.20e-07` (All AI vs Human) | `δ=-0.7681` (large) | Done |
 | Diversity 1.2 Centroid dispersion (**Span-related, mean radius**) | Human > All AI dispersion | MW Holm `p=1.20e-07` | `δ=-0.7681` (large) | Done |
+| Diversity 1.2b Between-group centroid dispersion (centroid-to-centroid) | Quantifies separation among Human, per-model AI, and All-AI centroids | Descriptive output (pairwise matrix + ranking) | Pairwise centroid cosine distances; mean distance-to-other-centroids | Added to notebook (run pending) |
 | Diversity 1.3 1-NN isolation (**Chamfer / NN**) | Human more isolated than All AI | MW Holm `p=5.13e-06` | `δ=-0.6774`; outliers `30.4%` vs `4.3%` | Done |
 | Novelty Step 5 Raw (k=10) | Human higher raw novelty than most AI groups | Claude vs Human MW Holm `p=0.0197`; All AI Holm `p=0.1069` | Claude `δ=-0.4858`; All AI `δ=-0.2943` | Done |
 | Novelty Step 4b Local-density normalized | Broad AI-vs-Human difference disappears after normalization | All AI vs Human MW `p=0.9138` | `δ=0.0158` (negligible) | Done |
@@ -61,6 +110,7 @@ This study now has three generation conditions:
 Analyses completed:
 - Within-group pairwise diversity (**Remote-Clique** family).
 - Centroid dispersion (mean distance to centroid; **related to Span** but not percentile-based Span yet).
+- Between-group centroid dispersion (new Analysis 1.2b): pairwise centroid distance matrix, separation ranking, and per-group mean distance to other group centroids.
 - Global nearest-neighbor (1-NN) isolation and outlier detection (top 10% rule; **Chamfer/NN family**).
 - Embedding visualizations (UMAP/t-SNE, descriptive).
 - Main-idea sub-analyses (pairwise/centroid/NN + overlap diagnostics).
@@ -224,6 +274,34 @@ Analyses completed:
 - Proposal-level data integration (`92 x 52`).
 - Spearman metric-score correlation analysis.
 - Outlier score-comparison tests.
+- Added Human-Y2 metric-score analysis block in:
+  - `notebooks/templates/rephrased/metric_score_relationship.ipynb`
+
+#### 2026-05-26 update: Human-Y2 metric-score relationship expansion
+
+What was added (mirroring existing metric-vs-AI analyses):
+- Human-Y2 score ingestion via glob from rephrased directory:
+  - `data/reviews/human_reviews/rephrased/human_reviews_human-y2_rephrased*.csv`
+- Proposal-level aggregation of Human-Y2 quantitative rubric scores.
+- Mapping from Human-Y2 rubric fields to NCEMS-equivalent score fields for direct comparability.
+- Spearman correlation analyses and heatmaps for:
+  - Semantic metrics vs Human-Y2 scores.
+  - Style metrics vs Human-Y2 scores.
+- Top-correlation summaries and top-pair scatter visualizations for Human-Y2 scores.
+- Direct Y2 comparison plots:
+  - Correlations with AI-derived NCEMS scores vs correlations with Human-Y2 scores on the same Y2 human proposals.
+  - Difference heatmap (`AI - Human-Y2`) for semantic metric-score correlations.
+
+New exported tables from this added block:
+- `results/tables/rephrased/minimal/metric-score/spearman_corr_semantic_human_y2_scores.csv`
+- `results/tables/rephrased/minimal/metric-score/spearman_pval_semantic_human_y2_scores.csv`
+- `results/tables/rephrased/minimal/metric-score/spearman_corr_style_human_y2_scores.csv`
+- `results/tables/rephrased/minimal/metric-score/spearman_pval_style_human_y2_scores.csv`
+- `results/tables/rephrased/minimal/metric-score/spearman_corr_diff_ai_minus_humany2_on_y2.csv`
+
+Status note:
+- The notebook analysis section has been added and wired for Human-Y2, with outputs defined above.
+- Numeric results from this newly added Human-Y2 block should be treated as pending until full notebook execution is completed in an environment with all plotting dependencies installed.
 
 Key findings:
 - Strong negative associations between semantic-distance metrics and NCEMS-type scores were observed (example: `mi_pairwise_mean_dist` vs `relevance_to_emergent_phenomena`, `r=-0.6496`).
