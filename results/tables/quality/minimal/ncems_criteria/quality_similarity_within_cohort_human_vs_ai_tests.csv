@@ -1,3 +1,0 @@
-cohort,n_paired_proposals,mean_human,mean_ai,wilcoxon_stat,wilcoxon_p_value,mw_u_stat,mw_p_value,cliffs_delta_human_minus_ai,delta_magnitude
-Y1,12,0.9582789311806361,0.9655018448829651,15.0,0.06396484375,31.0,0.019373319331592885,-0.5694444444444444,large
-Y2,11,0.9524147077040239,0.9711669575084337,0.0,0.0009765625,0.0,8.151536127743242e-05,-1.0,large
