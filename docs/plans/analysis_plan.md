@@ -2,8 +2,8 @@
 
 This document is now an **execution-status analysis plan** based on the completed notebooks in:
 
-- `notebooks/templates/rephrased/compare_proposals_rephrased.ipynb`
-- `notebooks/templates/rephrased/compare_reviews_ncems_criteria.ipynb`
+- `baseline(minimal)-rephrased/compare_proposals_rephrased.ipynb`
+- `baseline(minimal)-rephrased/compare_reviews_ncems_criteria.ipynb`
 - `notebooks/templates/rephrased/compare_reviews_novelty.ipynb`
 - `notebooks/templates/rephrased/metric_score_relationship.ipynb`
 
@@ -70,24 +70,34 @@ This study now has three generation conditions:
 
 ## Completed Analyses and Results
 
-> **Update (May 28, 2026):** `compare_proposals_rephrased.ipynb` was patched in place to implement the full `codex_patch_plan_compare_proposals_rephrased.md` metric set and export flow (Remote-Clique, Chamfer, MST Dispersion, Span-90, Sparseness, grid entropy, ElementNovel 0/1/5/10, MeanKNN 5/10/20/50, unified `proposal_metrics_master.csv`, and updated final JSON merge).
->
-> The compact numeric results table below should be treated as a **legacy pre-patch snapshot** until the patched notebook is re-executed end-to-end and refreshed values are written.
+> **Update (June 1, 2026):** compact proposal results below have been refreshed from the rendered `baseline(minimal)-rephrased/compare_proposals_rephrased.ipynb` outputs; NCEMS rows reflect the executed baseline/minimal review notebook audit.
+
 
 ### Compact Results Table
 
 
 | Analysis                                                                 | Main effect                                                                   | Significance (primary)                                                              | Effect size / key statistic                                                           | Status                          |
 | ------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------- |
-| Diversity 1.1 Pairwise (**Remote-Clique**)                               | Human > All AI diversity                                                      | MW Holm `p=1.20e-07` (All AI vs Human)                                              | `δ=-0.7681` (large)                                                                   | Done                            |
-| Diversity 1.2 Centroid dispersion (**Span-related, mean radius**)        | Human > All AI dispersion                                                     | MW Holm `p=1.20e-07`                                                                | `δ=-0.7681` (large)                                                                   | Done                            |
-| Diversity 1.2b Between-group centroid dispersion (global-centroid based) | Compares how far Human and AI-group proposals lie from one global centroid    | Pairwise inferential tests across groups (MW/permutation with Holm correction)      | Mean/median global-centroid distance, Cliff's delta, bootstrap CI                     | Added to notebook (run pending) |
-| Diversity 1.3 1-NN isolation (**Chamfer / NN**)                          | Human more isolated than All AI                                               | MW Holm `p=5.13e-06`                                                                | `δ=-0.6774`; outliers `30.4%` vs `4.3%`                                               | Done                            |
-| Novelty Step 5 Raw (k=10)                                                | Human higher raw novelty than most AI groups                                  | Claude vs Human MW Holm `p=0.0197`; All AI Holm `p=0.1069`                          | Claude `δ=-0.4858`; All AI `δ=-0.2943`                                                | Done                            |
-| Novelty Step 7B Literature-space outliers (mean-10NN)                    | Human outlier prevalence higher than All AI                                   | Fisher Holm `p=0.0562` (All AI vs Human)                                            | Rate diff `-20.3` pp; OR `0.1744`                                                     | Done                            |
-| Topic + cluster structure (2.3.2-2.3.4)                                  | Human/AI semantic regions differ                                              | Soft-topic permutation chi-square `p=0.0001`; NMI `p=0.0026`; ARI `p=0.0013`        | NMI `0.0887`; ARI `0.1254`; B/W ratio `1.2406`                                        | Done                            |
-| Style sensitivity (2.3.5-2.3.6)                                          | Centroid separation robust; NN isolation style-sensitive                      | Centroid permutation `p=0.0002`; style-adjusted NN MW `p=0.1582`                    | AI coef `-0.174962`; NN `δ=0.1979` (ns)                                               | Done                            |
-| NCEMS quality reviews (cross-eval rerun)                                 | GPT-5.2 and Claude > Human-all; Gemini ~ Human-all                            | GPT vs Human `q=1.70e-08`; Claude vs Human `q=2.25e-04`; Gemini `q=0.6816`          | GPT `δ=-0.9924`; Claude `δ=-0.6522`                                                   | Done                            |
+| Proposal Diversity 1.1 Pairwise (**Remote-Clique family**)               | Human > All AI diversity                                                      | MW Holm `p=1.18e-08`; permutation Holm `p=0.000400`                                 | `δ=-0.7681` (large); mean diff `AI-Human=-0.2685`                                    | Done                            |
+| Proposal Diversity 1.2a Centroid dispersion                              | Human > All AI within-group centroid dispersion                               | MW Holm `p=1.18e-08`; permutation Holm `p=0.000400`                                 | `δ=-0.7681` (large); mean diff `-0.1720`                                             | Done                            |
+| Proposal Diversity 1.2b Global-centroid dispersion                       | Human farther from global centroid than All AI                                | MW Holm `p=2.27e-06`; permutation Holm `p=0.0009999`                                | `δ=0.7240` (large); Human mean `0.2926`, All AI `0.0991`                             | Done                            |
+| Proposal Diversity 1.2c MST dispersion                                   | Human > All AI MST dispersion                                                 | Permutation Holm `p=0.000400`                                                       | MST Human `0.1126`, All AI `0.0427`; diff `-0.0699`                                 | Done                            |
+| Proposal Diversity 1.2d Sparseness                                       | Human > All AI medoid-based sparseness                                        | MW Holm `p=1.88e-08`; permutation Holm `p=0.000400`                                 | `δ=-0.7580` (large); mean diff `-0.2640`                                             | Done                            |
+| Proposal Diversity 1.3 1-NN isolation (**Chamfer / NN**)                 | Human more isolated than All AI                                               | MW Holm `p=5.13e-06`; permutation Holm `p=0.000400`                                 | `δ=-0.6774` (large); Human Chamfer `0.0822`, All AI `0.0337`                         | Done                            |
+| Proposal Diversity 1.5 Grid entropy                                      | All AI ~ Human; Claude > Human                                                | All AI vs Human Holm `p=0.4734`; Claude vs Human Holm `p=0.00840`                   | Normalized entropy: Human `0.4145`, All AI `0.3320`, Claude `0.7494`                 | Done                            |
+| Proposal Novelty ElementNovel 0/1/5/10                                   | Human > All AI literature-relative novelty                                    | ElementNovel-0 MW Holm `p=0.00142`; ElementNovel-10 MW Holm `p=0.0347`              | ElementNovel-0 `δ=-0.4997`; ElementNovel-10 `δ=-0.3535`                              | Done                            |
+| Proposal Novelty MeanKNN 5/10/20/50                                      | Human > All AI raw literature-distance novelty                                | MeanKNN-10 MW Holm `p=0.00827`; permutation Holm `p=0.000900`                       | MeanKNN-10 `δ=-0.4190`; mean diff `-0.0279`                                          | Done                            |
+| Proposal Novelty normalized local density                                | Mixed; `novelty_z` supports Human > All AI by permutation, not MW             | `novelty_z` permutation Holm `p=0.0132`; MW Holm `p=0.1096`                         | `novelty_z` `δ=-0.2691` (small)                                                      | Done                            |
+| Proposal Novelty Step 7B literature-space outliers                       | Human outlier prevalence higher descriptively; model tests ns after Holm      | Mean-10NN outlier Fisher Holm: Claude `p=0.1473`, Gemini/GPT `p=0.8280`             | Human `5/23`; Claude `0/23`, Gemini `2/23`, GPT `3/23`                               | Done                            |
+| Topic + cluster structure (2.3.2-2.3.4)                                  | Topics not significantly different; clusters still segregate by source        | Topic permutation `p=0.5990`; NMI `p=0.0021`; ARI `p=0.0016`; B/W ratio `p=0.0017`  | NMI `0.0923`; ARI `0.1411`; B/W ratio `1.2406`; entropy two-sided `p=0.8760`          | Done                            |
+| Style sensitivity (2.3.5-2.3.6)                                          | Style-only source prediction weak; centroid separation robust; NN style-sensitive | Style-only permutation `p=0.2977`; centroid permutation `p=0.0002`; style-adjusted NN MW `p=0.1582` | Style AUROC `0.561 +/- 0.166`; centroid AI coef `-0.174962`; NN `δ=0.1979` (ns)       | Done                            |
+| NCEMS R1 review diversity                                                | Human reviews more diverse than AI reviews                                    | Y2 all 9 metrics Wilcoxon FDR `q=0.000977`; Y1 4/9 metrics `q=0.047241`             | Y2 mean-pairwise diff `0.0188`, `δ=1.0`; Y1 span90 diff `0.0054`                     | Done                            |
+| NCEMS R1 review similarity                                               | Human-AI similarity ~ Human-Human in Y1; AI-AI more internally similar        | Human-AI vs Human-Human Wilcoxon `p=0.9097`; AI-AI vs Human-AI Wilcoxon `p=0.0161`  | AI-AI vs Human-AI cosine `δ=0.7361` (large)                                          | Done                            |
+| NCEMS R1 Y1/Y2 within-cohort similarity                                  | AI reviews more internally similar than Human reviews, especially Y2          | Y2 Human vs AI Wilcoxon `p=0.000977`; MW `q=0.000489`                               | Means: Human-Y2 `0.9524`, AI-Y2 `0.9712`; `δ=-1.0`                                  | Done                            |
+| NCEMS R1 Y2 score reliability                                            | AI-AI reliability > Human-Human; Human mean and AI mean agree meaningfully    | Human-vs-AI overall Spearman `p=0.0189`; Open Science `p=0.000672`                  | Overall ICC2k: Human-Human `0.4949`, AI-AI `0.7447`, Human-vs-AI `0.7805`            | Done                            |
+| NCEMS quality reviews (raw evaluator pool)                               | Claude, Gemini, and GPT-5.2 score above Human-all                             | Claude `q=5.25e-04`; Gemini `q=0.0187`; GPT `q=1.31e-07`                            | Robust mean diffs Human-AI: Claude `-0.4232`, Gemini `-0.2464`, GPT `-0.7319`        | Done                            |
+| NCEMS quality reviews (cross-eval rerun)                                 | GPT-5.2 and Claude > Human-all; Gemini ~ Human-all                            | GPT vs Human `q=1.70e-08`; Claude vs Human `q=2.25e-04`; Gemini `q=0.6816`          | GPT `δ=-0.9924`; Claude `δ=-0.6522`; Gemini `δ=0.0699`                               | Done                            |
+| NCEMS R3 self-preference                                                 | Gemini self-penalizes; GPT self-favors; Claude negligible overall             | Gemini `q=7.75e-07`; GPT `q=3.30e-12`; Claude `q=0.7173`                            | Mean self-other: Gemini `-0.3869`; GPT `+0.1978`; Claude `-0.0087`                  | Done                            |
 | Novelty-framework reviews (cross-eval rerun)                             | Mixed: GPT > Human, Human > Gemini, Claude ~ Human                            | GPT vs Human `q=0.010924`; Human vs Gemini `q=1.79e-05`; Human vs Claude `q=0.8428` | Human-GPT `δ=-0.4631`; Human-Gemini `δ=0.7788`                                        | Done                            |
 | Metric-score + outlier validation                                        | Semantic remoteness penalized on NCEMS but can help novelty-specific criteria | Outlier NCEMS relevance `p<0.001`; novelty criterion (`new_theory...`) `p=0.0273`   | `r=-0.6496` (semantic vs NCEMS relevance); `r=0.5093` (centroid vs novelty criterion) | Done                            |
 
@@ -96,26 +106,6 @@ This study now has three generation conditions:
 
 ## Compare_proposals_rephrased.ipynb
 
-#### Patch Status (May 28, 2026)
-
-- Notebook structure has been updated to include:
-  - `## Shared Distance-Matrix Precomputation`
-  - `## Analysis 1.2c: MST Dispersion`
-  - `## Analysis 1.2d: Sparseness (Medoid-Based Dispersion)`
-  - `## Analysis 1.4: Grid Entropy of Proposal Occupancy`
-  - `## Shared Novelty Precomputation`
-  - `## Step 2.5: Element Novelty Percentiles`
-  - `## Step 3: Raw Novelty Scores (Mean k-NN to Literature)`
-  - `## Unified Proposal-Level Metric Export`
-- `## Analysis 1.3-B: Mean k-NN Outlier Detection (k=5)` section is removed as a standalone section; its `k=5` table output is retained via shared-distance computation.
-- Final JSON merge section now loads `proposal_metrics_master.csv` and merges with `style_features.csv` and `review_scores_wide.csv` using `proposal_uid` and normalized title keys.
-- Additional audit-driven fixes are now applied:
-  - Added explicit visualization + statistical test-summary cells for `1.2b`, `1.2c`, and `1.2d`.
-  - Added dedicated entropy figure + permutation-test summary for `1.5` (grid entropy) and aligned section numbering in prints.
-  - Updated nearest-literature-neighbor subsection text to match implementation (`nearest_literature_neighbors_top3.csv` table output).
-  - Removed no-op placeholder cells in the Part I NN block.
-  - Standardized stale hardcoded figure-path printouts to `FIGURES_DIR`-based paths.
-- Re-run required to refresh all post-patch statistics/figures in this document.
 
 #### Notebook Scope and Global Settings
 
@@ -372,12 +362,6 @@ What data:
 - Literature corpus metadata and abstracts from the prepared literature artifact associated with `data/embeddings/literature/relevant_literature_embeddings.pkl`.
 - Completed run summary reports `n=39538` literature abstracts with dates from `2010-01-01` to `2026-05-25`.
 
-Step-by-step:
-
-1. Load the literature corpus and search-query metadata.
-2. Print article count and number of search queries.
-3. Visualize articles per search query and publication-year distribution.
-4. Print search terms/queries used per category.
 
 Figure:
 
@@ -547,7 +531,7 @@ Primary estimand:
 
 Existing compact result:
 
-- Soft-topic permutation chi-square `p=0.0001`; Topic_2 Human-up and Topic_3 AI-up after FDR in the completed run.
+- Rendered baseline result: soft-topic permutation chi-square `p=0.5990`; no per-topic Fisher test was significant after FDR.
 
 ##### `## Analysis 3.3: Topic Coverage and Entropy`
 
@@ -594,7 +578,7 @@ Step-by-step:
 
 Existing compact result:
 
-- NMI `0.0887` (`p=0.0026`), ARI `0.1254` (`p=0.0013`), between/within ratio `1.2406` (`p=0.0022`).
+- Rendered baseline result: NMI `0.0923` (`p=0.0021`), ARI `0.1411` (`p=0.0016`), between/within ratio `1.2406` (`p=0.0017`).
 
 ##### `### PART III Summary`
 
@@ -665,7 +649,7 @@ Step-by-step:
 
 Existing compact result:
 
-- Style-only classifier AUROC `0.684 ± 0.102`, permutation `p=0.0230`.
+- Rendered baseline result: style-only classifier AUROC `0.561 ± 0.166`, balanced accuracy `0.584 ± 0.117`, permutation `p=0.2977`.
 
 ##### `#### Visualization: Style-only baseline results (CV + permutation test)`
 
@@ -748,7 +732,7 @@ Primary estimand:
 
 Existing compact result:
 
-- Style-adjusted NN differences become non-significant for All AI vs Human; MW `p=0.1582`, permutation `p=0.2716`.
+- Style-adjusted NN differences become non-significant for All AI vs Human; MW `p=0.1582`, permutation `p=0.2777`.
 
 ##### `### Visualization: Style-adjusted NN analysis in 2D (UMAP on residual embeddings)`
 
@@ -793,6 +777,763 @@ Purpose:
 
 - Produce a single proposal-level JSON artifact for downstream metric-score validation and cross-notebook integration.
 
+#### Baseline(minimal)-rephrased Rendered Notebook Cell-by-Cell Audit
+
+This subsection is the source-of-truth plan for the rendered notebook at `baseline(minimal)-rephrased/compare_proposals_rephrased.ipynb`. Numeric results come from the notebook's persisted cell outputs, with exported tables used to confirm table/figure paths.
+
+Actual run settings and data:
+
+- Notebook path: `baseline(minimal)-rephrased/compare_proposals_rephrased.ipynb`.
+- Prepared proposals: `data/prepared/rephrased/minimal/all_proposals.json`.
+- Output proposal JSON: `results/tables/rephrased/minimal/all_proposals.json`.
+- Proposal count in exported metric tables: `92` total, with `23` Human, `23` Claude, `23` Gemini, and `23` GPT-5.2 proposals.
+- Main table directory: `results/tables/rephrased/minimal`.
+- Main figure directory: `results/figures/rephrased/minimal`.
+- Full-proposal embedding cache: `data/embeddings/rephrased/minimal/proposal_embeddings_human_ai_rephrased.pkl`.
+- Abstract/Section-1 embedding cache for literature comparisons: `data/embeddings/rephrased/minimal/proposal_embeddings_section1_only.pkl`.
+- Literature embedding cache: `data/embeddings/literature/relevant_literature_embeddings.pkl`.
+
+##### `# Compare AI vs Human Research Proposals — Style-Controlled (Rephrased)`
+
+Purpose:
+
+1. Compare semantic diversity and isolation of Human vs AI proposals after style-controlled rephrasing.
+2. Compare proposal novelty against an external literature corpus.
+3. Compare Human/AI thematic structure and cluster segregation.
+4. Quantify residual style signal and run style-adjusted robustness checks.
+5. Merge proposal, diversity, novelty, style, and review-score metrics into a single JSON.
+
+##### `# Setup and Imports`
+
+Step-by-step:
+
+1. Import plotting, embedding, statistical, NLP, dimensionality reduction, and utility libraries.
+2. Set seaborn/matplotlib styles.
+3. Locate project root and define condition-specific prepared-data, embedding, table, and figure paths.
+4. Create output directories.
+
+##### `## Helper Functions`
+
+Step-by-step:
+
+1. Define group colors.
+2. Load pickle embeddings.
+3. Compute Cliff's delta and delta magnitude.
+4. Run two-sided permutation tests for mean differences with default `10000` permutations.
+5. Bootstrap mean-difference confidence intervals with default `5000` resamples.
+6. Combine Mann-Whitney U, Cliff's delta, permutation p-value, observed mean/median differences, and bootstrap CI in `run_group_comparison`.
+7. Apply Holm correction to Mann-Whitney and permutation p-values.
+8. Compute proposal-level mean pairwise distances so inferential tests use one value per proposal rather than dependent raw pairwise distances.
+
+##### `## Load Prepared Proposal Data`
+
+Step-by-step:
+
+1. Load prepared proposal records from `data/prepared/rephrased/minimal/all_proposals.json`, with fallback to `results/tables/rephrased/minimal/all_proposals.json`.
+2. Split records into Human and AI dataframes using `is_ai`.
+3. Preserve title, model, cohort, source file, standardized text, abstract text, main idea, and group labels.
+
+Actual result:
+
+- Exported metric artifacts contain `23` Human proposals and `69` AI proposals.
+- AI proposals are balanced: `23` Claude, `23` Gemini, `23` GPT-5.2.
+
+##### `## Load Prepared NCEMS Reviews`
+
+Step-by-step:
+
+1. Load `data/prepared/rephrased/minimal/ncems_criteria_all_reviews.csv`.
+2. Harmonize title/proposal keys for proposal-level merge.
+3. Prepare review ranking, funding, and proposal-level score fields for later metadata joins.
+
+Downstream use:
+
+- The shared precomputation cell merges proposal-level review ranking/funding into `proposal_meta`.
+- The final JSON merge also reads `data/prepared/rephrased/minimal/review_scores_wide.csv`.
+
+##### `## Prepare Proposal Texts`
+
+Step-by-step:
+
+1. Use each record's `standardized_text`.
+2. Remove standardized rephrasing section headers.
+3. Save stripped text as `full_text`.
+4. Attach `group = Human` or `AI`.
+5. Keep AI model labels for per-model analyses.
+
+##### `## Load Prepared Full-Proposal Embeddings`
+
+Step-by-step:
+
+1. Set embedding model to `michiyasunaga/BioLinkBERT-large`.
+2. Load cached full-proposal embeddings when available.
+3. If missing, compute fallback BioLinkBERT `[CLS]` embeddings from `full_text` with truncation to `512` tokens.
+4. Load/retain `ai_embeddings`, `human_embeddings`, `ai_metadata`, and `human_metadata`.
+5. Save proposal metadata.
+
+Table:
+
+- `results/tables/rephrased/minimal/proposal_metadata.csv`
+
+##### `## Shared Distance-Matrix Precomputation`
+
+Step-by-step:
+
+1. Build canonical proposal metadata in embedding order.
+2. Merge review ranking/funding fields.
+3. Normalize and stack all full-proposal embeddings.
+4. Precompute the proposal-proposal cosine distance matrix.
+5. Save cached proposal metadata, distance matrix, and deterministic PCA-2D reference coordinates.
+
+Tables:
+
+- `results/tables/rephrased/minimal/cached/proposal_meta.csv`
+- `results/tables/rephrased/minimal/cached/proposal_distance_matrix.npy`
+- `results/tables/rephrased/minimal/cached/proposal_pca2d.npy`
+
+##### `# PART I: DIVERSITY`
+
+All diversity analyses use full rephrased proposal embeddings and compare Human, each AI model, and All AI.
+
+##### `## Analysis 1.1: Within-Group Pairwise Diversity (Remote-Clique + proposal-level mean pairwise distance)`
+
+Step-by-step:
+
+1. For each group, compute within-group cosine distances.
+2. Compute the Remote-Clique-family group summary from all within-group distances.
+3. Compute each proposal's mean distance to other proposals in the same group.
+4. Use proposal-level mean pairwise distance for inference.
+5. Compare All AI and each AI model against Human with Mann-Whitney U, Cliff's delta, permutation p-values, bootstrap CIs, and Holm correction.
+6. Plot pairwise distributions, effect sizes, ridge/violin/box distributions, and summary panels.
+
+Actual result:
+
+- Human upper-triangle mean pairwise distance: `0.4429`.
+- All AI upper-triangle mean pairwise distance: `0.1826`.
+- Claude: `0.0337`; Gemini: `0.1505`; GPT-5.2: `0.3148`.
+- All AI vs Human proposal-level test: mean difference `-0.2685`, Cliff's delta `-0.7681` large, Holm MW `p=1.18e-08`, Holm permutation `p=0.000400`.
+- Claude, Gemini, and GPT-5.2 were each less diverse than Human; all three model-vs-Human contrasts had large negative Cliff's deltas.
+
+Tables:
+
+- `results/tables/rephrased/minimal/diversity_remote_clique_group_summary.csv`
+- `results/tables/rephrased/minimal/diversity_pairwise_proposal_level.csv`
+- `results/tables/rephrased/minimal/diversity_pairwise_tests.csv`
+
+Figures:
+
+- `results/figures/rephrased/minimal/pairwise_diversity_by_model.png`
+- `results/figures/rephrased/minimal/pairwise_diversity_boxplot.png`
+
+##### `## Analysis 1.2: Centroid Dispersion Metric (mean radius + Span-90)`
+
+##### `### 1.2a Within-group Centroid Dispersion`
+
+Step-by-step:
+
+1. Compute each group's centroid.
+2. Compute each proposal's cosine distance to its own group centroid.
+3. Also compute leave-one-out centroid distances for proposal-level inference.
+4. Compare All AI and each AI model against Human with the shared inference pipeline.
+5. Plot centroid-distance distributions.
+
+Actual result:
+
+- All AI vs Human leave-one-out centroid dispersion: mean difference `-0.1720`, Cliff's delta `-0.7681` large, Holm MW `p=1.18e-08`, Holm permutation `p=0.000400`.
+- Claude vs Human: mean difference `-0.2451`, delta `-1.0`, Holm MW `p=6.91e-11`.
+- Gemini vs Human: mean difference `-0.1862`, delta `-0.8261`, Holm MW `p=5.51e-08`.
+- GPT-5.2 vs Human: mean difference `-0.0848`, delta `-0.4783`, Holm MW `p=0.00131`; permutation Holm `p=0.10049`.
+
+Tables:
+
+- `results/tables/rephrased/minimal/centroid_distances.csv`
+- `results/tables/rephrased/minimal/diversity_centroid_pairwise_tests.csv`
+- `results/tables/rephrased/minimal/diversity_span90_group_summary.csv`
+
+Figure:
+
+- `results/figures/rephrased/minimal/centroid_dispersion_by_model.png`
+
+##### `### 1.2b: Between-Group Centroid Dispersion`
+
+Step-by-step:
+
+1. Compute one global centroid from all Human and AI proposal embeddings.
+2. Compute each proposal's distance to that global centroid.
+3. Summarize distances by Human, each AI model, and All AI.
+4. Run all pairwise group comparisons with Mann-Whitney, Cliff's delta, permutation p-values, bootstrap CIs, and Holm correction.
+5. Plot global-centroid distance distributions and summaries.
+
+Actual result:
+
+- Human mean distance to global centroid: `0.2926`.
+- All AI mean distance: `0.0991`.
+- Claude mean: `0.0400`; Gemini mean: `0.0869`; GPT-5.2 mean: `0.1704`.
+- Human vs All AI: Cliff's delta `0.7240` large, Holm MW `p=2.27e-06`, Holm permutation `p=0.0009999`.
+- Human vs Claude and Human vs Gemini were significant after Holm correction; Human vs GPT-5.2 was significant by MW Holm but not permutation Holm.
+
+Tables:
+
+- `results/tables/rephrased/minimal/between_group_global_centroid_distances.csv`
+- `results/tables/rephrased/minimal/between_group_global_centroid_group_summary.csv`
+- `results/tables/rephrased/minimal/between_group_global_centroid_pairwise_tests.csv`
+
+Figure:
+
+- `results/figures/rephrased/minimal/between_group_global_centroid_dispersion.png`
+
+##### `## Analysis 1.2c: MST Dispersion`
+
+Step-by-step:
+
+1. For each group, build the complete cosine-distance graph over proposal embeddings.
+2. Compute the minimum spanning tree.
+3. Report mean MST edge length as group-level dispersion.
+4. Compare AI groups against Human with permutation tests and Holm correction.
+5. Plot MST dispersion results.
+
+Actual result:
+
+- Human MST dispersion: `0.1126`.
+- All AI MST dispersion: `0.0427`.
+- Claude: `0.0241`; Gemini: `0.0643`; GPT-5.2: `0.0733`.
+- All AI vs Human: difference `-0.0699`, Holm permutation `p=0.000400`.
+- Claude, Gemini, and GPT-5.2 were each lower than Human after Holm correction.
+
+Tables:
+
+- `results/tables/rephrased/minimal/diversity_mst_group_summary.csv`
+- `results/tables/rephrased/minimal/diversity_mst_pairwise_permutation.csv`
+
+Figure:
+
+- `results/figures/rephrased/minimal/diversity_mst_dispersion.png`
+
+##### `## Analysis 1.2d: Sparseness (Medoid-Based Dispersion)`
+
+Step-by-step:
+
+1. For each group, find the medoid minimizing total within-group distance.
+2. Compute mean proposal distance to the medoid as sparseness.
+3. Compare All AI and each AI model against Human with the shared inference pipeline.
+4. Plot medoid/sparseness distributions.
+
+Actual result:
+
+- Human sparseness: `0.3721`.
+- All AI sparseness: `0.1098`.
+- Claude: `0.0267`; Gemini: `0.0870`; GPT-5.2: `0.2052`.
+- All AI vs Human: mean difference `-0.2640`, Cliff's delta `-0.7580` large, Holm MW `p=1.88e-08`, Holm permutation `p=0.000400`.
+- Claude, Gemini, and GPT-5.2 were each lower than Human with large negative deltas.
+
+Tables:
+
+- `results/tables/rephrased/minimal/diversity_medoid_distances.csv`
+- `results/tables/rephrased/minimal/diversity_sparseness_group_summary.csv`
+- `results/tables/rephrased/minimal/diversity_sparseness_pairwise_tests.csv`
+
+Figure:
+
+- `results/figures/rephrased/minimal/diversity_sparseness_medoid.png`
+
+##### `## Analysis 1.3: Nearest-Neighbor Isolation and Outlier Detection (Chamfer / NN)`
+
+Step-by-step:
+
+1. Compute all-by-all proposal cosine distances and set self-distances to infinity.
+2. Compute each proposal's global 1-nearest-neighbor distance.
+3. Compute the Chamfer/NN group summary.
+4. Flag unadjusted NN outliers above the 90th percentile.
+5. Compare All AI and each AI model against Human using the shared inference pipeline.
+6. Summarize nearest-neighbor source composition.
+7. Save both global 1-NN and mean-5NN robustness outputs.
+8. Plot nearest-neighbor distributions, outlier counts, and source-composition panels.
+
+Actual result:
+
+- Human Chamfer/mean NN distance: `0.0822`.
+- All AI Chamfer/mean NN distance: `0.0337`.
+- Claude: `0.0237`; Gemini: `0.0432`; GPT-5.2: `0.0463`.
+- All AI vs Human 1-NN: mean difference `-0.0416`, Cliff's delta `-0.6774` large, Holm MW `p=5.13e-06`, Holm permutation `p=0.000400`.
+- Claude, Gemini, and GPT-5.2 were each more locally clustered than Human after Holm correction.
+
+Tables:
+
+- `results/tables/rephrased/minimal/nn_distances.csv`
+- `results/tables/rephrased/minimal/mean_knn_distances_k5.csv`
+- `results/tables/rephrased/minimal/diversity_chamfer_group_summary.csv`
+- `results/tables/rephrased/minimal/diversity_nn_pairwise_tests.csv`
+- `results/tables/rephrased/minimal/nearest_neighbor_source_composition.csv`
+
+Figure:
+
+- `results/figures/rephrased/minimal/nearest_neighbor_by_model.png`
+
+##### `## 1.4 Visualize proposals in Embedding Space V`
+
+Step-by-step:
+
+1. Project full-proposal embeddings to UMAP using `n_neighbors=15`, `min_dist=0.1`, `n_components=2`, `metric='cosine'`, `random_state=42`.
+2. Plot AI points by model, Human points with funding-aware shading, group centroids, and NN outlier rings.
+3. Run diagnostics explaining why visually clustered points can still be high-dimensional outliers.
+4. Build a complementary t-SNE projection with `perplexity=30`, `init='pca'`, `random_state=42`.
+
+Figures:
+
+- `results/figures/rephrased/minimal/embedding_space_umap_2d.png`
+- `results/figures/rephrased/minimal/embedding_space_tsne.png`
+
+##### `## Analysis 1.5: Grid Entropy of Proposal Occupancy`
+
+Step-by-step:
+
+1. Use the deterministic PCA-2D projection.
+2. Partition space into a `5 x 5` grid.
+3. Compute Shannon entropy and normalized entropy from occupied grid-cell frequencies.
+4. Compare AI groups against Human with permutation tests and Holm correction.
+5. Plot group entropy summaries.
+
+Actual result:
+
+- Human normalized grid entropy: `0.4145`.
+- All AI normalized grid entropy: `0.3320`, not significant vs Human after Holm correction (`p=0.4734`).
+- Claude normalized grid entropy: `0.7494`, higher than Human, Holm permutation `p=0.00840`.
+- Gemini normalized grid entropy: `0.2268`, not significant after Holm correction.
+- GPT-5.2 normalized grid entropy: `0.2861`, not significant after Holm correction.
+
+Tables:
+
+- `results/tables/rephrased/minimal/diversity_entropy_group_summary.csv`
+- `results/tables/rephrased/minimal/diversity_entropy_pairwise_permutation.csv`
+
+Figure:
+
+- `results/figures/rephrased/minimal/diversity_entropy_group_summary.png`
+
+##### `# PART II: NOVELTY`
+
+##### `## Step 1: Load Prepared Literature Corpus`
+
+Step-by-step:
+
+1. Load `data/prepared/rephrased/minimal/literature_corpus_prepared.json`.
+2. Extract literature abstracts and query metadata.
+3. Plot articles per query and publication-year distribution.
+
+Figure:
+
+- `results/figures/rephrased/minimal/literature_corpus_overview.png`
+
+##### `## Step 2: Embed Literature Corpus`
+
+Step-by-step:
+
+1. Use BioLinkBERT-large with `max_length=512`.
+2. Load cached literature embeddings from `data/embeddings/literature/relevant_literature_embeddings.pkl` or compute them.
+3. Load abstract/Section-1 proposal embeddings for proposal-to-literature comparisons.
+
+##### `## Shared Novelty Precomputation (CAREFUL, computationally expensive)`
+
+Step-by-step:
+
+1. Normalize proposal and literature embedding matrices.
+2. Precompute proposal-to-literature cosine distances.
+3. Cache literature self-kNN distances up to `k=50`.
+4. Reuse this distance matrix for ElementNovel, MeanKNN, normalized novelty, outlier flags, and nearest-literature-neighbor exports.
+
+##### `## Step 2.5: Element Novelty Percentiles`
+
+Step-by-step:
+
+1. Compute ElementNovel percentile metrics at `k=0`, `1`, `5`, and `10` using local literature neighborhoods.
+2. Save per-proposal ElementNovel scores.
+3. Compare All AI and each AI model against Human using the shared inference pipeline and Holm correction.
+
+Actual result:
+
+- All AI was lower than Human for every ElementNovel metric.
+- `element_novel_0`: All AI vs Human mean difference `-0.0267`, delta `-0.4997` large, MW Holm `p=0.00142`, permutation Holm `p=0.000900`.
+- `element_novel_1`: All AI vs Human mean difference `-0.0283`, delta `-0.3774` medium, MW Holm `p=0.0181`.
+- `element_novel_5`: All AI vs Human mean difference `-0.0283`, delta `-0.3598` medium, MW Holm `p=0.0305`.
+- `element_novel_10`: All AI vs Human mean difference `-0.0287`, delta `-0.3535` medium, MW Holm `p=0.0347`.
+- Claude and Gemini were consistently lower than Human after correction; GPT-5.2 was lower mainly for `element_novel_0` by MW Holm and was not robust by permutation Holm.
+
+Tables:
+
+- `results/tables/rephrased/minimal/novelty_element_percentiles.csv`
+- `results/tables/rephrased/minimal/novelty_element_percentiles_pairwise_tests.csv`
+
+Figure:
+
+- `results/figures/rephrased/minimal/novelty_analysis_element_percentiles.png`
+
+##### `## Step 3: Raw Novelty Scores (Mean k-NN to Literature)`
+
+Step-by-step:
+
+1. Compute each proposal's mean cosine distance to its nearest literature abstracts for `k=5`, `10`, `20`, and `50`.
+2. Save per-proposal MeanKNN scores.
+3. Compute normalized local-density novelty metrics:
+   - `novelty_ratio`
+   - `novelty_z`
+4. Compare All AI and each AI model against Human for MeanKNN and normalized novelty metrics.
+
+Actual MeanKNN result:
+
+- All AI was lower than Human at all tested k values.
+- `mean_knn_5`: All AI vs Human mean difference `-0.0282`, delta `-0.4631` medium, MW Holm `p=0.00374`, permutation Holm `p=0.000900`.
+- `mean_knn_10`: All AI vs Human mean difference `-0.0279`, delta `-0.4190` medium, MW Holm `p=0.00827`, permutation Holm `p=0.000900`.
+- `mean_knn_20`: All AI vs Human mean difference `-0.0282`, delta `-0.4064` medium, MW Holm `p=0.0111`.
+- `mean_knn_50`: All AI vs Human mean difference `-0.0285`, delta `-0.3825` medium, MW Holm `p=0.0189`.
+- Claude and Gemini were consistently lower than Human; GPT-5.2 was not significant after Holm correction.
+
+Actual normalized-novelty result:
+
+- `novelty_ratio`: All AI vs Human was not significant after Holm correction.
+- `novelty_z`: All AI vs Human had permutation Holm `p=0.0132`, but MW Holm `p=0.1096`; Claude was lower than Human by both MW Holm (`p=0.0406`) and permutation Holm (`p=0.00280`).
+
+Tables:
+
+- `results/tables/rephrased/minimal/novelty_mean_knn_scores.csv`
+- `results/tables/rephrased/minimal/novelty_mean_knn_pairwise_tests.csv`
+- `results/tables/rephrased/minimal/novelty_local_density_normalized.csv`
+- `results/tables/rephrased/minimal/novelty_local_density_pairwise_tests.csv`
+
+Figures:
+
+- `results/figures/rephrased/minimal/novelty_analysis_mean_knn.png`
+- `results/figures/rephrased/minimal/novelty_analysis_local_density.png`
+
+##### `## Step 5: Statistical Tests for Novelty Metrics`
+
+Step-by-step:
+
+1. Combine novelty pairwise test outputs across ElementNovel, MeanKNN, and normalized local-density metrics.
+2. Display and export the unified test table.
+
+Table:
+
+- `results/tables/rephrased/minimal/novelty_all_pairwise_tests.csv`
+
+##### `## Step 6: Visualize Novelty Results`
+
+Step-by-step:
+
+1. Plot ElementNovel percentiles.
+2. Plot MeanKNN k-sensitivity.
+3. Plot normalized local-density novelty.
+
+Figures:
+
+- `results/figures/rephrased/minimal/novelty_analysis_element_percentiles.png`
+- `results/figures/rephrased/minimal/novelty_analysis_mean_knn.png`
+- `results/figures/rephrased/minimal/novelty_analysis_local_density.png`
+
+##### `## Step 7: Visualize Proposals in Literature Embedding Space`
+
+Step-by-step:
+
+1. Build metadata aligned to abstract-embedding order.
+2. Join review/style fields from proposal metadata when available.
+3. Project literature abstracts and proposal abstracts into 2D with t-SNE and UMAP.
+4. Plot literature points and Human/AI proposal points.
+5. Produce a publication-year-colored literature view.
+
+Figures:
+
+- `results/figures/rephrased/minimal/proposals_in_literature_space_tsne.png`
+- `results/figures/rephrased/minimal/proposals_in_literature_space_umap.png`
+- `results/figures/rephrased/minimal/proposals_in_literature_space_by_year.png`
+
+##### `### Step 7B: Literature-Space Outliers and High-Novelty Flags`
+
+Step-by-step:
+
+1. Compute proposal-to-literature mean-10NN distances.
+2. Flag proposals above the 90th percentile as literature-space outliers.
+3. Also flag high ElementNovel-0 and high `novelty_z` proposals.
+4. Test outlier prevalence against Human with Fisher exact tests and Holm correction.
+5. Plot proposal-space vs literature-space outlier overlays.
+
+Actual result:
+
+- Human literature-space outlier rate for mean-10NN: `5/23 = 21.7%`.
+- Claude mean-10NN outlier rate: `0/23 = 0%`, Holm Fisher `p=0.1473`.
+- Gemini mean-10NN outlier rate: `2/23 = 8.7%`, Holm `p=0.8280`.
+- GPT-5.2 mean-10NN outlier rate: `3/23 = 13.0%`, Holm `p=0.8280`.
+- For `novelty_z` outliers, Human had `6/23 = 26.1%`; all AI model comparisons were not significant after Holm correction, though Claude vs Human had unadjusted `p=0.0216` and Holm `p=0.0647`.
+
+Tables:
+
+- `results/tables/rephrased/minimal/literature_space_outliers_mean_knn_k10.csv`
+- `results/tables/rephrased/minimal/literature_space_outliers_element0.csv`
+- `results/tables/rephrased/minimal/literature_space_outliers_z.csv`
+- `results/tables/rephrased/minimal/literature_space_outlier_prevalence_tests.csv`
+
+Figures:
+
+- `results/figures/rephrased/minimal/proposals_in_literature_space_umap_outliers_comparison_k10.png`
+- `results/figures/rephrased/minimal/proposals_in_literature_space_tsne_outliers_comparison_k10.png`
+
+##### `## Additional Analysis: Nearest Neighbors in Literature for Every Proposal`
+
+Step-by-step:
+
+1. Retrieve the three nearest literature abstracts for each proposal.
+2. Store proposal title, group/model, literature metadata, and distances.
+3. Use this as a qualitative audit of what anchors the novelty score.
+
+Table:
+
+- `results/tables/rephrased/minimal/nearest_literature_neighbors_top3.csv`
+
+##### `## Unified Proposal-Level Metric Export`
+
+Step-by-step:
+
+1. Merge proposal-level diversity metrics.
+2. Merge group-level diversity metrics mapped down to each proposal.
+3. Merge novelty continuous metrics and outlier flags.
+4. Save a single proposal-level metrics table.
+
+Actual result:
+
+- `proposal_metrics_master.csv` has `92` rows and `34` columns.
+- Included metric families: pairwise diversity, centroid/NN/medoid/global-centroid metrics, group Remote-Clique/Chamfer/MST/Span90/Sparseness/Grid Entropy, ElementNovel, MeanKNN, normalized novelty, and literature outlier flags.
+
+Table:
+
+- `results/tables/rephrased/minimal/proposal_metrics_master.csv`
+
+##### `# PART III: THEMATIC AND CLUSTER ANALYSIS`
+
+##### `## Analysis 3.1: Topic Modeling (LDA - Exploratory)`
+
+Step-by-step:
+
+1. Build normalized content text from title plus abstract.
+2. Probe common unigrams and construct domain stopwords.
+3. Build a `CountVectorizer` matrix with `max_features=2000`, `min_df=2`, `max_df=0.7`, English stopwords, and unigrams/bigrams.
+4. Drop selected domain unigrams but keep bigrams.
+5. Fit LDA with `n_topics = 3`, `doc_topic_prior=0.5`, `topic_word_prior=0.5`, `max_iter=100`, batch learning, and `random_state=42`.
+6. Print topic words, perplexity, and log-likelihood.
+7. Run 10 aligned stability runs.
+8. Run topic-count sensitivity for `k=4..8`.
+
+Note:
+
+- The code and output identify three topics, but one print statement says `n_topics=5`; the actual variable is `n_topics = 3`.
+- No separate topic table artifact is currently exported.
+
+##### `## Analysis 3.2: Topic Distribution Comparison`
+
+Step-by-step:
+
+1. Use soft topic participation where a proposal counts for a topic if its probability is greater than `0.20`.
+2. Build Human vs AI participation counts by topic.
+3. Run an overall soft-topic chi-square permutation test with `10000` permutations.
+4. Run per-topic Fisher exact tests with FDR correction.
+5. Subsample AI to `n=23` for `1000` validation iterations.
+6. Plot topic-distribution heatmap and subsampled bar plot.
+
+Actual rendered result:
+
+- Soft participation counts: Topic_1 Human `13`, AI `27`; Topic_2 Human `9`, AI `26`; Topic_3 Human `9`, AI `29`.
+- Overall soft-topic chi-square statistic `0.8361`, permutation `p=0.5990`; no significant Human/AI topic-distribution difference.
+- Per-topic Fisher tests found no FDR-significant topic over/under-representation (`q=0.4666`, `1.0000`, `1.0000`).
+- AI subsample validation showed weak topic differences: Topic_1 significant in `27/1000` subsamples, Topic_2 and Topic_3 in `0/1000`.
+
+Figure:
+
+- `results/figures/rephrased/minimal/topic_distribution_comparison.png`
+
+##### `## Analysis 3.3: Topic Coverage and Entropy`
+
+Step-by-step:
+
+1. Use soft topic threshold `0.20`.
+2. Compute topic coverage.
+3. Compute exclusive topics requiring at least `2` proposals in one group and zero in the other.
+4. Run `10000` permutation tests for exclusive-topic counts.
+5. Compute Shannon entropy on mean soft topic distributions.
+6. Subsample AI to Human-sized samples for entropy comparisons.
+
+Actual rendered result:
+
+- Human and AI both covered `3/3` topics.
+- No exclusive topics.
+- Topic entropy: Human `H=1.6135`, normalized `1.0180`; AI `H=1.5987`, normalized `1.0087`.
+- AI subsampled entropy: `H=1.6012 +/- 0.0282`; Human minus AI-subsample mean difference `0.0123`, two-sided `p=0.8760`.
+
+##### `## Analysis 3.4: Cluster Composition/Segregation Analysis`
+
+Step-by-step:
+
+1. Fit Gaussian mixture models for candidate `k = 3..8`.
+2. Use BIC as the primary selection criterion; also compute silhouette and Davies-Bouldin.
+3. Fit final full-covariance GMM with `random_state=42`.
+4. Summarize cluster composition by Human vs AI.
+5. Compute NMI, ARI, and between/within cosine-distance ratio.
+6. Run `10000` permutation tests for segregation metrics.
+7. Plot k-selection and cluster diagnostics in embedding space.
+
+Actual rendered result:
+
+- Best k by BIC and silhouette: `3`.
+- Cluster sizes: `[22, 19, 51]`; two clusters were Mixed and one was AI-dominated.
+- NMI `0.0923`, permutation `p=0.0021`.
+- ARI `0.1411`, permutation `p=0.0016`.
+- Between/within distance ratio `1.2406`, permutation `p=0.0017`.
+
+Figures:
+
+- `results/figures/rephrased/minimal/cluster_k_selection.png`
+- `results/figures/rephrased/minimal/cluster_analysis_visualization.png`
+
+##### `# PART IV Style Baseline`
+
+##### `### Exract stylistic features`
+
+Step-by-step:
+
+1. Extract style features from full rephrased proposal text.
+2. Features include text length, sentence length, word length, type-token ratio, stopword rate, hedge rate, readability, punctuation rates, newline/bullet/header features, and group labels.
+3. Save style features with titles.
+4. Plot Human-vs-model style distributions.
+
+Actual result:
+
+- `style_features.csv` contains `92` proposal rows.
+
+Table:
+
+- `results/tables/rephrased/minimal/style_features.csv`
+
+Figure:
+
+- `results/figures/rephrased/minimal/style_features_by_model_boxplots.png`
+
+##### `### Analysis 2.3.5: Style-only baseline (can style predict source?)`
+
+Step-by-step:
+
+1. Predict Human vs AI using style features only.
+2. Use median imputation, `StandardScaler`, and `LogisticRegression(max_iter=5000, class_weight='balanced', solver='liblinear', random_state=42)`.
+3. Evaluate with 5-fold stratified CV.
+4. Run a 1000-permutation AUROC test.
+5. Fit the model on all rows to inspect standardized coefficients.
+6. Plot fold scores and permutation null.
+
+Actual rendered result:
+
+- Style-only AUROC `0.561 +/- 0.166`.
+- Balanced accuracy `0.584 +/- 0.117`.
+- Permutation test observed AUROC `0.561`, null mean `0.504 +/- 0.098`, `p=0.2977`.
+- The rendered notebook interprets this as weak style-only separation.
+
+Figure:
+
+- `results/figures/rephrased/minimal/style_only_baseline_viz.png`
+
+##### `### Analysis 2.3.6A: Style-controlled sensitivity via residualization`
+
+Step-by-step:
+
+1. Stack Human and AI embeddings.
+2. Build Human/AI source indicator.
+3. Use style covariates to residualize embedding-distance outcomes.
+4. Test whether source remains associated with distance to centroid after linear style control.
+5. Use permutation tests with `n_perm=5000`, `seed=42`.
+
+Actual rendered result:
+
+- Centroid-level source difference remained robust after style controls; AI coefficient `-0.174962`, permutation `p=0.0002`.
+- Own-group centroid outcome was also robust: AI coefficient `-0.151039`, permutation `p=0.0002`.
+
+##### `### Style-adjusted centroid dispersion (All Groups vs Human)`
+
+Step-by-step:
+
+1. Compute raw distance to own group centroid for Human and each AI model.
+2. Residualize the centroid-distance outcome on compact style covariates: `avg_word_len`, `type_token_ratio`, `avg_sent_len_words`, `flesch_reading_ease`, and `dash_per_1k_chars`.
+3. Shift residuals back to the original outcome mean.
+4. Compare style-adjusted centroid distances for All AI and each AI model against Human.
+5. Plot before/after centroid dispersion.
+
+Figure:
+
+- `results/figures/rephrased/minimal/centroid_dispersion_style_adjusted.png`
+
+##### `### Style-adjust nearest-neighbor (NN) distances by residualizing embeddings`
+
+Step-by-step:
+
+1. Residualize the full embedding matrix dimension-wise on the same compact style covariates.
+2. Renormalize residual embeddings.
+3. Recompute all-by-all cosine distances.
+4. Compute style-adjusted global 1-NN distances.
+5. Flag top-10% style-adjusted NN outliers.
+6. Compare All AI and each AI model against Human.
+
+Actual rendered result:
+
+- Style-adjusted NN differences became non-significant for All AI vs Human; MW `p=0.1582`, permutation `p=0.2777`.
+- All AI mean style-adjusted NN distance was `0.2808` vs Human `0.2359`; Cliff's delta `0.1979` (small).
+- Style-adjusted outliers: Human `2/23`, Claude `2/23`, Gemini `4/23`, GPT-5.2 `2/23`, All AI `8/69`.
+
+Figure:
+
+- `results/figures/rephrased/minimal/nearest_neighbor_by_model_style_adjusted.png`
+
+##### `### Visualization: Style-adjusted NN analysis in 2D (UMAP on residual embeddings)`
+
+Step-by-step:
+
+1. Compare mean absolute correlations between compact style covariates and the first 10 PCA scores before and after residualization.
+2. Project residual embeddings to 2D with UMAP using `n_neighbors=15`, `min_dist=0.1`, `metric='cosine'`, and `random_state=42`.
+3. Plot Human, each AI model, centroids, and style-adjusted NN outliers.
+
+Figure:
+
+- `results/figures/rephrased/minimal/embedding_space_2d_style_adjusted.png`
+
+##### `#### Outlier proposals (style-adjusted NN)`
+
+Step-by-step:
+
+1. Find proposals flagged by `outliers_adj`.
+2. Retrieve metadata-aligned title, Human/AI source, model, and style-adjusted NN distance.
+3. Print threshold, total outliers, source/model counts, and sorted outlier table.
+
+##### `# Save All Proposals to a Single JSON`
+
+Step-by-step:
+
+1. Load `proposal_metrics_master.csv`.
+2. Load `style_features.csv`.
+3. Load `data/prepared/rephrased/minimal/review_scores_wide.csv` if available.
+4. Match existing proposal records by `proposal_uid` and normalized title.
+5. Attach metrics, style features, and review scores to each proposal record.
+6. Save merged records to `results/tables/rephrased/minimal/all_proposals.json`.
+7. Print sanity checks for row counts, missing master rows, family-wise missingness, and outlier-flag alignment.
+
+Actual result:
+
+- The final merged proposal JSON exists at `results/tables/rephrased/minimal/all_proposals.json`.
+- The metric master table has no missingness in the main diversity/novelty metric families according to the export design.
+
+##### Actual Results Summary
+
+- Human proposals are more semantically spread than AI proposals across pairwise diversity, centroid dispersion, global-centroid distance, MST dispersion, sparseness, and nearest-neighbor isolation.
+- Claude proposals are especially clustered in full-proposal embedding space; GPT-5.2 is closer to Human than Claude/Gemini on some metrics but still lower than Human on several diversity tests.
+- Grid entropy is the main diversity exception: Claude has higher PCA-grid occupancy entropy than Human, while All AI is not significantly different from Human after Holm correction.
+- Human proposals are more novel relative to literature than All AI on ElementNovel and MeanKNN metrics; Claude and Gemini show the strongest deficits, while GPT-5.2 is often not significant after correction.
+- Literature-space outlier prevalence is higher for Human proposals descriptively, but model-vs-Human Fisher tests are not significant after Holm correction.
+- Topic modeling did not find a significant Human/AI soft-topic distribution difference in the rendered baseline run, and topic entropy was also similar.
+- Cluster analyses still indicate Human/AI semantic-region segregation, with significant NMI, ARI, and between/within distance-ratio permutation tests.
+- Style-only classification was weak/non-significant after leakage-safe CV, so full-proposal style alone does not strongly predict source in this rendered run.
+- Centroid differences persist after style controls, while NN isolation weakens after style-adjusted embedding residualization.
+
 #### Diversity Metric Definitions Aligned to Table-3 Naming
 
 Current implementation status for future notebook edits:
@@ -807,22 +1548,21 @@ Current implementation status for future notebook edits:
 - Current Analysis 1.3 implements the nearest-neighbor version: `CD = (1 / N) * sum_i min_{j != i} d(x_i, x_j)`.
 - Analysis 1.3-B adds a mean-5NN robustness variant, not the canonical k=1 Chamfer value.
 
-1. **MST Dispersion** (`to add`)
+1. **MST Dispersion** (`implemented`)
 
 - Build a minimum spanning tree over each group's complete cosine-distance graph.
 - Report mean MST edge length: `(1 / (N - 1)) * sum_{(i,j) in MST} d(x_i, x_j)`.
 
-1. **Span** (`partial -> to add full`)
+1. **Span** (`implemented as Span-90 group summary`)
 
-- Current Analysis 1.2 reports mean distance to centroid.
-- Add percentile span, especially `Span_90 = percentile_90({d(x_i, centroid)})`, for direct Table-3 alignment.
+- Current Analysis 1.2 reports mean distance to centroid and exports `diversity_span90_group_summary.csv` for percentile span.
 
-1. **Sparseness** (`to add`)
+1. **Sparseness** (`implemented`)
 
 - Compute the group medoid `m = argmin_j sum_i d(x_i, x_j)`.
 - Report `Sparseness = (1 / N) * sum_i d(x_i, m)`.
 
-1. **Entropy (grid-based embedding occupancy)** (`to add`)
+1. **Entropy (grid-based embedding occupancy)** (`implemented`)
 
 - Project embeddings to 2D, partition into a `5 x 5` grid, compute occupancy frequencies, and report Shannon entropy plus a normalized entropy.
 - Keep this distinct from the existing LDA topic entropy in Analysis 3.3.
@@ -1065,15 +1805,15 @@ The notebook explicitly states:
 - Cliff's delta sign means group 1 tends to be higher or lower than group 2.
 - AI-AI similarity can be high without implying human alignment; it may indicate model-reviewer convergence.
 
-##### `#### Primary test — Paired Wilcoxon signed-rank (`wilcoxon_stat`,` wilcoxon_p_value`)`
+##### `#### Primary test — Paired Wilcoxon signed-rank (`wilcoxon_stat`, `wilcoxon_p_value`)`
 
 Use this as the primary p-value for proposal-matched pair-type comparisons. It tests whether the median signed proposal-level difference is zero.
 
-##### `#### Secondary test — Mann-Whitney U (`u_stat`,` p_value`,` q_value`) — sensitivity check only`
+##### `#### Secondary test — Mann-Whitney U (`u_stat`, `p_value`, `q_value`) — sensitivity check only`
 
 Use this as a robustness check because the notebook notes that the independence assumption is violated for matched proposal-level comparisons.
 
-##### `#### Effect size — Cliff's delta (`cliffs_delta`,` delta_magnitude`)`
+##### `#### Effect size — Cliff's delta (`cliffs_delta`, `delta_magnitude`)`
 
 Report sign and magnitude with the relevant primary or sensitivity p-value. Positive delta means group 1 tends to be higher than group 2.
 
@@ -1357,13 +2097,10 @@ Exports:
 - `quality_evaluator_overall_stats_clean.csv`
 - `quality_self_preference_tests_overall.csv`
 - `quality_self_preference_tests_by_metric.csv`
-- `quality_proxy_validity_metrics.csv`
-- `quality_proxy_rank_agreement.csv`
-- `quality_proxy_icc.csv`
 
 Note:
 
-- The notebook exports proxy validity/rank agreement/ICC tables if those objects exist in the runtime; they are included in the export cell even though the visible markdown spine focuses on Sections 8-14.
+- In the executed baseline notebook, proxy validity/rank agreement/ICC exports are commented out and are not actual outputs for this run.
 
 #### `## 20) R2 Re-Run Without Self-Evaluator Scores on AI-Authored Proposals`
 
@@ -1466,13 +2203,13 @@ Step-by-step:
 
 Figure:
 
-- `quality_similarity_four_group_y1_y2.png`.
+- `quality_review_similarity_y1y2_four_groups.png`.
 
 Tables created later:
 
-- `quality_similarity_four_group_y1_y2_values.csv`
-- `quality_similarity_four_group_y1_y2_pairwise_tests.csv`
-- `quality_similarity_within_cohort_human_vs_ai_tests.csv`
+- `quality_review_similarity_y1y2_four_groups_values.csv`
+- `quality_review_similarity_y1y2_four_group_tests.csv`
+- `quality_review_similarity_within_cohort_paired_tests.csv`
 
 #### `## 22) Y2 Quantitative Score Reliability (Human, AI, and Human-vs-AI)`
 
@@ -1501,8 +2238,8 @@ Step-by-step:
 
 Figures:
 
-- `quality_y2_reliability_icc_heatmap.png`
-- `quality_y2_human_vs_ai_overall_scatter.png`
+- `quality_review_reliability_y2_heatmap.png`
+- `quality_review_reliability_y2_human_vs_ai_scatter.png`
 
 #### `## 23) Export Y2 + Y1Y2 Added Outputs`
 
@@ -1512,22 +2249,634 @@ Exports:
 - `quality_matching_map_y2_rephrased_reviews.csv`
 - `quality_similarity_pairs_y1_rephrased_reviews.csv`
 - `quality_similarity_pairs_y2_rephrased_reviews.csv`
-- `quality_similarity_four_group_y1_y2_values.csv`
-- `quality_similarity_four_group_y1_y2_pairwise_tests.csv`
-- `quality_similarity_within_cohort_human_vs_ai_tests.csv`
+- `quality_review_similarity_y1y2_four_groups_values.csv`
+- `quality_review_similarity_y1y2_four_group_tests.csv`
+- `quality_review_similarity_within_cohort_paired_tests.csv`
 - `quality_y2_reliability_human_ai.csv`
 
 Figures printed as saved:
 
-- `quality_similarity_four_group_y1_y2.png`
-- `quality_y2_reliability_icc_heatmap.png`
-- `quality_y2_human_vs_ai_overall_scatter.png`
+- `quality_review_similarity_y1y2_four_groups.png`
+- `quality_review_reliability_y2_heatmap.png`
+- `quality_review_reliability_y2_human_vs_ai_scatter.png`
 
-#### Compact Results Already Reflected Elsewhere
+#### Baseline(minimal)-rephrased Rendered Notebook Cell-by-Cell Audit
 
-- NCEMS quality conclusions are substantial but partially sensitive to evaluator composition and self-preference structure.
-- Raw evaluator pool: GPT-5.2 and Claude score above Human-all; Gemini is closer but still significant in the raw pool.
-- After removing AI self-evaluations, Gemini no longer differs significantly from Human-all, while Claude and GPT-5.2 remain above Human-all.
+This subsection is the source-of-truth plan for the rendered notebook at `baseline(minimal)-rephrased/compare_reviews_ncems_criteria.ipynb`. It supersedes the generic/template notes above where filenames, headings, or export behavior differ.
+
+Actual run settings:
+
+- `CONDITION = 'minimal'`.
+- `REUSE_REVIEW_EMBEDDINGS = True`.
+- Prepared review input: `data/prepared/rephrased/minimal/ncems_criteria_all_reviews.csv`.
+- Review embedding cache: `data/embeddings/reviews/minimal/ncems_criteria/review_embeddings_minimal.pkl`.
+- Strength embedding cache: `data/embeddings/reviews/minimal/ncems_criteria/review_strengths_embeddings_minimal.pkl`.
+- Weakness embedding cache: `data/embeddings/reviews/minimal/ncems_criteria/review_weakness_embeddings_minimal.pkl`.
+- Figure directory: `results/figures/quality/minimal/ncems_criteria`.
+- Table directory: `results/tables/quality/minimal/ncems_criteria`.
+
+##### `## Condition Configuration`
+
+Step-by-step:
+
+1. Set the run condition to `minimal`.
+2. Reuse prepared review embeddings rather than recomputing them.
+3. Route all downstream table, figure, and embedding paths through the condition-specific `minimal/ncems_criteria` directories.
+
+##### `# PART IV QUALITY — Compare Human and AI Reviews (Style-Controlled / Rephrased)`
+
+The executed notebook compares NCEMS-quality review behavior for Human and AI reviews on style-controlled/rephrased proposals. It covers three families of analyses:
+
+1. R1: review diversity, embedding-space structure, Human-AI similarity, and Y2 reliability.
+2. R2: AI-authored proposal quality compared with Human-authored proposal quality under AI evaluation.
+3. R3: evaluator effects and AI self-preference bias, followed by an R2 rerun that removes AI self-evaluations.
+
+##### `## 0) Environment setup (run once if needed)`
+
+The cell is a commented dependency install cell. It does not execute any analysis.
+
+##### `## 1) Imports, paths, and constants`
+
+Step-by-step:
+
+1. Import file/path utilities, numerical/statistical libraries, plotting libraries, embedding/model utilities, `statsmodels`, `networkx`, and `krippendorff`.
+2. Locate the project root by walking upward until `src` and `data` exist.
+3. Define condition-specific input, output, figure, table, and embedding paths.
+4. Create table, figure, and embedding directories if needed.
+5. Define display colors for Human, Claude, Gemini, and GPT-5.2.
+6. Define NCEMS criteria order and display labels.
+7. Define the Human-to-NCEMS rubric mapping.
+8. Define reusable metric lists, including `QUALITY_METRICS = ['overall_score'] + CRITERIA_ORDER`.
+
+##### `## 2) Utility functions`
+
+Step-by-step:
+
+1. Normalize titles and compute hybrid title similarity with exact/fuzzy support.
+2. Compute Cliff's delta, qualitative Cliff's delta magnitude, Mann-Whitney summaries, Benjamini-Hochberg FDR, bootstrap CIs, permutation p-values, and ICC(2,1)/ICC(2,k).
+3. Compute TextBlob polarity, sentiment labels, sentiment alignment, and categorical sentiment agreement.
+4. Build one-to-one Human/AI title mappings using exact normalized-title matches first, then fuzzy matches at threshold `0.70`.
+5. Support embedding reuse or computation with BioLinkBERT mean pooling, attention masks, L2 normalization, batch size `8`, and max length `512`.
+
+##### `## 3) Load prepared AI reviews`
+
+What data:
+
+- `data/prepared/rephrased/minimal/ncems_criteria_all_reviews.csv`, filtered to `review_source == 'ai'`.
+
+Actual result:
+
+- AI review rows: `276`.
+- Authors: `claude-opus-4-5`, `gemini-3-pro-preview`, `gpt-5.2`, `human-y1`, `human-y2`.
+- Evaluators: `claude-opus-4-5`, `gemini-3-pro-preview`, `gpt-5.2`.
+
+##### `## 4) Load prepared human expert reviews (Y1 + Y2)`
+
+What data:
+
+- Same prepared review table, filtered to `review_source == 'human'`.
+
+Actual result:
+
+- Human reviews total: `85`.
+- Human Y1: `47` reviews across `12` proposals.
+- Human Y2: `38` reviews across `11` proposals.
+
+##### `## 5) Proposal matching diagnostics (exact + fuzzy fallback)`
+
+What data:
+
+- Human Y1 reviews and AI reviews of Human-Y1 proposals.
+
+Step-by-step:
+
+1. Build Human and AI title tables.
+2. Normalize titles.
+3. Run exact normalized-title matching first.
+4. Fuzzy-match remaining titles with threshold `0.70`.
+5. Enforce one-to-one matches.
+6. Assign stable matched keys `Y1_01` through `Y1_12`.
+
+Actual result:
+
+- Human proposals: `12`.
+- AI proposals: `12`.
+- Matched: `12`.
+- Exact matches: `9`.
+- Fuzzy matches: `3`.
+- Unmatched Human proposals: `0`.
+- Unmatched AI proposals: `0`.
+
+##### `## 6) Build matched review sets, embeddings, and pair table (single source of truth)`
+
+What data:
+
+- Matched Human-Y1 reviews.
+- Matched AI reviews of Human-Y1 proposals.
+- Review text from the prepared review table.
+- Prepared embeddings from `data/embeddings/reviews/minimal/ncems_criteria/review_embeddings_minimal.pkl`.
+
+Step-by-step:
+
+1. Align Human-Y1 and AI-on-Human-Y1 reviews by the Section 5 mapping.
+2. Ensure every row has a stable `review_uid`.
+3. Load prepared review embeddings by `review_uid`.
+4. Attach embeddings to aligned Human and AI review rows.
+5. Compute TextBlob polarity and sentiment labels.
+6. Within each matched proposal, enumerate Human-AI, Human-Human, and AI-AI review pairs.
+7. For every pair, compute embedding cosine similarity, sentiment alignment, categorical sentiment agreement, and numeric agreement.
+8. Retain proposal key, match method, reviewer IDs, AI model, and AI model-pair metadata.
+
+Actual result:
+
+- Matched proposals: `12`.
+- Human-AI pairs: `141`.
+- Human-Human pairs: `70`.
+- AI-AI pairs: `36`.
+- Human-AI pairs by AI model: `47` for each of Claude, Gemini, and GPT-5.2.
+- AI-AI model-pair counts: `12` for each of Claude/Gemini, Claude/GPT-5.2, and Gemini/GPT-5.2.
+
+##### `## 7) Pair count checks (expected vs observed)`
+
+Step-by-step:
+
+1. Count reviews per matched proposal.
+2. Compute expected Human-AI, Human-Human, and AI-AI pair counts.
+3. Compare expected counts with observed `pair_df` counts.
+
+Actual result:
+
+- Expected and observed totals matched exactly: Human-AI `141`, Human-Human `70`, AI-AI `36`.
+
+##### `# R1: How does the diversity of human reviews compare to those by AI?`
+
+The executed notebook adds a full review-diversity analysis before the similarity proxy analyses. The main estimand is proposal-conditioned within-cohort diversity: Human reviewer variation compared with AI reviewer variation for the same proposal set.
+
+##### `## 8c) Build matched review sets for Y1 and Y2 (single source of truth)`
+
+What data:
+
+- Prepared merged review dataframe.
+- Human-Y1 and Human-Y2 expert reviews.
+- AI reviews of Human-Y1 and Human-Y2 proposals.
+- Prepared review embeddings keyed by `review_uid`.
+
+Actual matched cohort result:
+
+- Human Y1: `47` reviews across `12` proposals.
+- AI Y1: `36` reviews across `12` proposals.
+- Human Y2: `38` reviews across `11` proposals.
+- AI Y2: `33` reviews across `11` proposals.
+- Y1 mapping: `12` matched, `9` exact, `3` fuzzy.
+- Y2 mapping: `11` matched, `11` exact, `0` fuzzy.
+- Y1 pair counts for diversity: Human-Human `70`, AI-AI `36`.
+- Y2 pair counts for diversity: Human-Human `49`, AI-AI `33`.
+
+##### `## R1-Q1) Can humans create more diverse reviews than AI?`
+
+##### `### 8d) Review diversity metrics (proposal-conditioned; Y1 and Y2)`
+
+What data:
+
+- Aligned Human and AI review embeddings for Y1 and Y2.
+- Cosine distance is used as the diversity distance metric.
+
+Step-by-step:
+
+1. For each proposal and source group, collect all review embeddings.
+2. Compute within-group diversity metrics:
+   - `mean_pairwise`: mean pairwise cosine distance.
+   - `nn`: mean nearest-neighbor distance.
+   - `centroid_loo`: leave-one-out centroid distance.
+   - `global_centroid_dist`: distance to group-balanced Human/AI global centroid.
+   - `medoid_dist`: distance to within-group medoid.
+   - `remote_clique`: off-diagonal pairwise mean, equivalent to the Remote-Clique family metric for this review set.
+   - `span90`: 90th percentile distance to centroid.
+   - `mst_dispersion`: mean edge length of a minimum-spanning tree over review embeddings.
+   - `sparseness`: mean distance to centroid.
+3. Build Y1 and Y2 wide proposal-level tables.
+4. Compare Human vs AI within each matched proposal set using paired Wilcoxon signed-rank tests.
+5. Also compute Mann-Whitney U and Cliff's delta as secondary effect-size/sensitivity outputs.
+6. Apply BH-FDR to Wilcoxon and Mann-Whitney p-values.
+7. Attempt per-model Human-vs-AI effects; in this run the per-model table is empty because each model contributes only one review per proposal, so within-model diversity requires at least two reviews.
+
+Actual result:
+
+- Y1 wide diversity table shape: `(12, 49)`.
+- Y2 wide diversity table shape: `(11, 49)`.
+- Human-vs-AI test rows: `18` metric/cohort rows.
+- Y1 significant after Wilcoxon FDR: `span90` (`q=0.047241`), `global_centroid_dist` (`q=0.047241`), `medoid_dist` (`q=0.047241`), and `sparseness` (`q=0.047241`), all Human greater than AI with large Cliff's deltas.
+- Y1 `mean_pairwise`/`remote_clique` trended Human greater than AI but did not pass Wilcoxon FDR (`q=0.095947`).
+- Y2 all nine diversity metrics were significant by Wilcoxon FDR (`q=0.000977`), all Human greater than AI, with large Cliff's deltas.
+
+Tables:
+
+- `results/tables/quality/minimal/ncems_criteria/quality_review_diversity_y1_proposal_level.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_diversity_y2_proposal_level.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_diversity_y1_long.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_diversity_y2_long.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_diversity_within_cohort_human_vs_ai_tests.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_diversity_human_vs_ai_by_model.csv` exists but has no usable per-model rows in this run.
+
+Figures:
+
+- `results/figures/quality/minimal/ncems_criteria/quality_review_diversity_y1_paired_slopes.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_review_diversity_y2_paired_slopes.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_review_diversity_human_vs_ai_all.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_review_diversity_effects_dotplot.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_review_diversity_by_model.png` may be stale/diagnostic because the notebook reported no per-model effect data for this run.
+
+##### `### 8d-ii) Granular diversity: Strengths vs Weaknesses`
+
+What data:
+
+- Strength-specific review embeddings from `review_strengths_embeddings_minimal.pkl`.
+- Weakness-specific review embeddings from `review_weakness_embeddings_minimal.pkl`.
+- Same Y1/Y2 matched proposal cohorts.
+
+Step-by-step:
+
+1. Build field-specific embedding cohorts for `strengths` and `weakness`.
+2. Recompute the same proposal-conditioned diversity metrics for each field.
+3. Compare Human vs AI within Y1 and Y2 using paired Wilcoxon tests and Cliff's delta.
+4. Plot field-level effect sizes and distributions.
+5. Project strengths/weakness embeddings into a shared UMAP space.
+
+Actual result:
+
+- Strengths: Human reviews were more diverse than AI reviews on all tested metrics in both Y1 and Y2; all reported Cliff's deltas were large.
+- Y1 strengths examples: `mean_pairwise` difference `0.0212`, Wilcoxon `p=0.0010`; `span90` difference `0.0127`, `p=0.0005`.
+- Y2 strengths examples: `mean_pairwise` difference `0.0175`, `p=0.0098`; `nn` difference `0.0111`, `p=0.0068`.
+- Weaknesses: Y1 Human reviews were more diverse than AI reviews on all tested metrics, with Wilcoxon p-values between about `0.0015` and `0.0342` and large deltas.
+- Weaknesses in Y2 were weaker and mostly non-significant; for example `mean_pairwise` difference `0.0230`, `p=0.4131`, small Cliff's delta.
+
+Figures:
+
+- `results/figures/quality/minimal/ncems_criteria/review_diversity_strengths_vs_weakness_effect.png`
+- `results/figures/quality/minimal/ncems_criteria/review_diversity_strengths_vs_weakness_boxplot.png`
+- `results/figures/quality/minimal/ncems_criteria/review_embedding_space_strengths_weakness_umap.png`
+
+##### `### 8e) Review Embedding Space`
+
+What data:
+
+- All aligned Y1 and Y2 Human/AI review embeddings used in R1.
+
+Step-by-step:
+
+1. Concatenate aligned review embeddings across Y1 and Y2.
+2. Project embeddings with UMAP using `n_neighbors=15`, `min_dist=0.1`, `n_components=2`, `metric='cosine'`, and `random_state=42`.
+3. Plot points by source/model and cohort.
+
+Actual result:
+
+- Total reviews projected: `154`.
+- Y1 reviews projected: `83`.
+- Y2 reviews projected: `71`.
+
+Figure:
+
+- `results/figures/quality/minimal/ncems_criteria/reviews_embedding_space_umap.png`
+
+##### `## R1-Q2) How similar are AI reviews to human reviews?`
+
+##### `## 8) Similarity proxy stats (proposal-level, model-aware, FDR-corrected)`
+
+What data:
+
+- Y1 `pair_df` from Sections 6-7.
+- Proposal-level means for `cosine_similarity`, `sentiment_alignment`, and `categorical_agreement_num`.
+
+Step-by-step:
+
+1. Aggregate pair-level Human-Human, Human-AI, and AI-AI similarities to proposal-level means.
+2. Run paired Wilcoxon tests for pair-type contrasts matched by proposal.
+3. Run Mann-Whitney U and Cliff's delta as secondary sensitivity/effect-size summaries.
+4. Apply BH-FDR to Mann-Whitney p-values.
+5. Repeat Human-AI comparisons separately for each AI model.
+6. Repeat AI-AI comparisons separately for each AI model pair.
+
+Actual result:
+
+- Human-AI vs Human-Human cosine similarity: Wilcoxon `p=0.909668`, Mann-Whitney `q=0.750832`, Cliff's delta `-0.083333` negligible.
+- AI-AI vs Human-Human cosine similarity: Wilcoxon `p=0.063965`, Mann-Whitney `q=0.029060`, Cliff's delta `0.569444` large.
+- AI-AI vs Human-AI cosine similarity: Wilcoxon `p=0.016113`, Mann-Whitney `q=0.007310`, Cliff's delta `0.736111` large.
+- Human-AI by model: no model differed significantly from Human-Human after FDR on cosine similarity.
+- AI-AI model pairs: Claude/Gemini cosine similarity was significant by Mann-Whitney FDR (`q=0.042414`, large delta); categorical agreement was significant for all three model pairs (`q=0.016011`).
+
+Tables:
+
+- `results/tables/quality/minimal/ncems_criteria/quality_similarity_mw_cliffs_overall.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_similarity_mw_cliffs_human_ai_by_model.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_similarity_mw_cliffs_ai_ai_by_model_pair.csv`
+
+##### `## 8b) Similarity proxy visualization (proposal-level)`
+
+Step-by-step:
+
+1. Plot proposal-level paired slopes for Human-Human, Human-AI, and AI-AI similarity.
+2. Plot Human-AI similarity by AI model.
+3. Plot AI-AI similarity by model pair.
+
+Figures:
+
+- `results/figures/quality/minimal/ncems_criteria/quality_similarity_proxy_paired_slopes.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_similarity_human_ai_by_model_proposal_level.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_similarity_ai_ai_by_model_pair_proposal_level.png`
+
+##### `### 8e) Rephrased review similarity analyses (Y1, Y2, combined)`
+
+What data:
+
+- Y1 and Y2 aligned Human-Human and AI-AI review pairs.
+
+Step-by-step:
+
+1. Aggregate within-cohort pairwise cosine similarity to proposal-level means for `human-y1`, `ai-y1`, `human-y2`, and `ai-y2`.
+2. Plot the four groups in one distribution figure.
+3. Run Kruskal-Wallis across the four groups.
+4. Run all pairwise Mann-Whitney + Cliff's delta comparisons and BH-FDR.
+5. Run within-cohort paired Human-vs-AI Wilcoxon tests by proposal.
+
+Actual result:
+
+- Mean pairwise cosine similarity: Human-Y1 `0.958279`, AI-Y1 `0.965502`, Human-Y2 `0.952415`, AI-Y2 `0.971167`.
+- Human-Y1 vs AI-Y1: Mann-Whitney `p=0.019373`, `q=0.029060`, large negative Human-minus-AI delta; paired Wilcoxon `p=0.063965`.
+- Human-Y2 vs AI-Y2: Mann-Whitney `p=0.000082`, `q=0.000489`, Cliff's delta `-1.0`; paired Wilcoxon `p=0.000977`.
+- AI-Y1 vs AI-Y2: Mann-Whitney `p=0.028898`, `q=0.034678`.
+- Human-Y1 vs Human-Y2 was not significant after FDR (`q=0.148086`).
+
+Tables:
+
+- `results/tables/quality/minimal/ncems_criteria/quality_review_similarity_y1y2_four_groups_values.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_similarity_y1y2_four_group_tests.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_similarity_within_cohort_paired_tests.csv`
+
+Figure:
+
+- `results/figures/quality/minimal/ncems_criteria/quality_review_similarity_y1y2_four_groups.png`
+
+##### `### 8f) Inter-rater reliability (scores) for Y2 and Human-vs-AI agreement`
+
+What data:
+
+- Y2 aligned Human and AI quantitative NCEMS score matrices.
+- Metrics: `overall_score` plus all NCEMS criteria.
+
+Step-by-step:
+
+1. Build Human-Y2 proposal-by-reviewer matrices.
+2. Build AI-Y2 proposal-by-evaluator matrices.
+3. Compute ICC(2,1), ICC(2,k), Krippendorff's alpha with interval distance, and mean pairwise Spearman for Human-Human and AI-AI matrices.
+4. Compute Human-vs-AI agreement by comparing per-proposal mean Human scores with per-proposal mean AI scores.
+5. Plot a reliability heatmap.
+6. Plot Human-vs-AI overall-score agreement with proposal labels.
+
+Actual result:
+
+- Overall score Human-Human-Y2: `ICC2k=0.494949`, alpha `0.162021`, mean Spearman `0.227696`.
+- Overall score AI-AI-Y2: `ICC2k=0.744734`, alpha `0.394553`, mean Spearman `0.890884`.
+- Overall score Human-vs-AI-Y2: `ICC2k=0.780513`, alpha `0.634416`, Spearman `0.689672`, `p=0.018864`.
+- Human-vs-AI agreement was also high for Open Science (`ICC2k=0.856134`, Spearman `0.860614`, `p=0.000672`) and Data Identification (`ICC2k=0.797508`, Spearman `0.723568`, `p=0.011836`).
+
+Tables:
+
+- `results/tables/quality/minimal/ncems_criteria/quality_review_reliability_y2_human.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_reliability_y2_ai.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_reliability_y2_human_vs_ai.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_y2_reliability_human_ai.csv`
+
+Figures:
+
+- `results/figures/quality/minimal/ncems_criteria/quality_review_reliability_y2_heatmap.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_review_reliability_y2_human_vs_ai_scatter.png`
+
+##### `## 8g) R1 exports (diversity + similarity + reliability)`
+
+Actual exported R1 tables:
+
+- `results/tables/quality/minimal/ncems_criteria/quality_matching_map_y1_rephrased_reviews.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_matching_map_y2_rephrased_reviews.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_similarity_pairs_y1_rephrased_reviews.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_similarity_pairs_y2_rephrased_reviews.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_similarity_y1y2_four_groups_values.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_similarity_y1y2_four_group_tests.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_similarity_within_cohort_paired_tests.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_reliability_y2_human.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_reliability_y2_ai.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_reliability_y2_human_vs_ai.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_diversity_y1_proposal_level.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_diversity_y2_proposal_level.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_diversity_y1_long.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_diversity_y2_long.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_diversity_within_cohort_human_vs_ai_tests.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_review_diversity_human_vs_ai_by_model.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_y2_reliability_human_ai.csv`
+
+##### `# R2: How are AI proposals' quality compare to humans (evaluated by AI)`
+
+##### `## 10) Proposal-quality analysis dataset (proposal-level means, no duplicated human-all rows)`
+
+What data:
+
+- AI-generated reviews of Human-authored and AI-authored proposals.
+- Scores are averaged to proposal-level means by proposal author.
+- `human-all` is analytic only; the source proposal table keeps `human-y1` and `human-y2` separate.
+
+Actual result:
+
+- Human-Y1: `n=12`, mean overall `3.441667`.
+- Human-Y2: `n=11`, mean overall `3.742424`.
+- Human-all: `n=23`, mean overall `3.585507`.
+- Claude-authored proposals: `n=23`, mean overall `4.008696`.
+- Gemini-authored proposals: `n=23`, mean overall `3.831884`.
+- GPT-5.2-authored proposals: `n=23`, mean overall `4.317391`.
+
+Figures:
+
+- `results/figures/quality/minimal/ncems_criteria/quality_overall_histograms_proposal_level.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_overall_boxplot_proposal_level.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_radar_criteria_proposal_level.png`
+
+##### `## 11) Pairwise quality tests (MW + Cliff's delta + FDR) on proposal-level means`
+
+Step-by-step:
+
+1. Compare Human-Y1 vs Human-Y2 for each quality metric.
+2. Compare Human-all vs each AI author group for each quality metric.
+3. Run full base-group pairwise comparisons excluding synthetic `human-all`.
+4. Use Mann-Whitney U, Cliff's delta, and BH-FDR within metric families.
+
+Actual overall-score result in the raw evaluator pool:
+
+- Human-all vs Claude: significant, `q=5.25e-04`.
+- Human-all vs Gemini: significant, `q=0.0187`.
+- Human-all vs GPT-5.2: significant, `q=1.31e-07`.
+
+Table:
+
+- `results/tables/quality/minimal/ncems_criteria/quality_pairwise_mw_cliffs_all_metrics_proposal_level.csv`
+
+##### `## 11b) Effect size & significance visualization`
+
+Step-by-step:
+
+1. Combine Human-all-vs-AI tests with Human-Y1-vs-Human-Y2 tests.
+2. Plot a metric-by-comparison Cliff's delta heatmap, graying out non-significant cells.
+3. Plot a Human-vs-AI effect-size dot plot where x is Cliff's delta and point size reflects FDR significance.
+
+Figures:
+
+- `results/figures/quality/minimal/ncems_criteria/quality_effect_size_heatmap.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_effect_size_dotplot.png`
+
+##### `## 12) Non-parametric sensitivity check (OPTIONAL)`
+
+##### `### Robust inference for key comparisons (bootstrap CI + permutation p)`
+
+Step-by-step:
+
+1. For each Human-all-vs-AI quality comparison, compute mean difference as `human-all minus AI`.
+2. Bootstrap `2000` resamples for a 95% CI.
+3. Run `5000` two-sided label permutations.
+4. Apply BH-FDR to permutation p-values.
+
+Actual overall-score result:
+
+- Human-all minus Claude: mean difference `-0.423188`, CI `[-0.627609, -0.231848]`, permutation `q=0.000300`.
+- Human-all minus Gemini: mean difference `-0.246377`, CI `[-0.443478, -0.063768]`, permutation `q=0.015197`.
+- Human-all minus GPT-5.2: mean difference `-0.731884`, CI `[-0.927572, -0.552138]`, permutation `q=0.000300`.
+
+Table:
+
+- `results/tables/quality/minimal/ncems_criteria/quality_robust_bootstrap_permutation_key_comparisons.csv`
+
+##### `# R3: Is there any self-preference bias in AI evaluators?`
+
+##### `## 13) Evaluator differences (non-duplicated data only)`
+
+What data:
+
+- Non-duplicated AI-review rows; no synthetic `human-all`.
+
+Actual result:
+
+- Gemini evaluator: `n=92`, mean overall `4.301087`.
+- Claude evaluator: `n=92`, mean overall `3.783696`.
+- GPT-5.2 evaluator: `n=92`, mean overall `3.722826`.
+- Kruskal-Wallis statistic `98.015853`, `p=5.20149e-22`.
+
+Figure:
+
+- `results/figures/quality/minimal/ncems_criteria/quality_overall_by_evaluator_clean.png`
+
+##### `## 14) AI self-preference tests (overall + criterion-level + proposal controls)`
+
+What data:
+
+- AI-authored proposals evaluated by AI models.
+- `is_self = author == evaluator`.
+
+Step-by-step:
+
+1. Aggregate scores by evaluator, proposal author, and proposal.
+2. Compare each evaluator's scores on its own proposals against scores on other AI models' proposals.
+3. Repeat for overall score and each NCEMS criterion.
+4. Use Mann-Whitney U, Cliff's delta, and BH-FDR.
+5. Fit the fixed-effect regression `score ~ is_self_num * C(metric) + C(evaluator) + C(author) + C(proposal_uid)` with HC3 robust standard errors.
+
+Actual overall self-preference result:
+
+- Claude: mean self `3.878261`, mean other `3.886957`, `q=0.717336`, negligible delta.
+- Gemini: mean self `4.143478`, mean other `4.530435`, `q=7.749241e-07`, large negative delta; Gemini penalized its own proposals relative to others.
+- GPT-5.2: mean self `4.004348`, mean other `3.806522`, `q=3.300906e-12`, large positive delta; GPT favored its own proposals.
+
+Criterion-level highlights:
+
+- Claude: significant positive self effects on Rigor and Scope, significant negative self effect on Open Science.
+- Gemini: significant self-penalty on overall score, Rigor, Scope, and Data Identification.
+- GPT-5.2: significant positive self effects on overall score, Rigor, and Data Identification.
+- Fixed effects showed strong evaluator severity/leniency structure: Gemini evaluator coefficient about `+0.4777`, GPT evaluator coefficient about `-0.0576`, and GPT author coefficient about `+0.355`.
+
+Figures:
+
+- `results/figures/quality/minimal/ncems_criteria/self_pref_strip_overall.png`
+- `results/figures/quality/minimal/ncems_criteria/self_pref_criterion_heatmap.png`
+- `results/figures/quality/minimal/ncems_criteria/self_pref_regression_forest.png`
+
+Tables:
+
+- `results/tables/quality/minimal/ncems_criteria/quality_self_preference_tests_overall.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_self_preference_tests_by_metric.csv`
+
+##### `## 19) Export tables`
+
+Actual exported R2/R3 tables:
+
+- `results/tables/quality/minimal/ncems_criteria/quality_matching_map_exact_fuzzy.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_similarity_pairs.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_similarity_mw_cliffs_overall.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_similarity_mw_cliffs_human_ai_by_model.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_similarity_mw_cliffs_ai_ai_by_model_pair.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_summary_overall_by_author_group.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_pairwise_mw_cliffs_all_metrics_proposal_level.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_robust_bootstrap_permutation_key_comparisons.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_evaluator_overall_stats_clean.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_self_preference_tests_overall.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_self_preference_tests_by_metric.csv`
+
+Actual non-exports:
+
+- `quality_proxy_validity_metrics.csv`, `quality_proxy_rank_agreement.csv`, and `quality_proxy_icc.csv` are commented out in the executed baseline export cell and should not be treated as outputs for this notebook run.
+
+##### `## 20) R2 Re-Run Without Self-Evaluator Scores on AI-Authored Proposals`
+
+Bias-control rule:
+
+- Remove AI-authored proposal reviews where `evaluator == author`.
+- Keep all AI reviews of Human-authored proposals.
+- Average AI-authored proposal scores over the two remaining cross-evaluators.
+
+Actual result:
+
+- Removed self-evaluation rows: `69`.
+- Remaining rows: `207`.
+- Each AI-authored proposal retained two evaluators.
+- Human-all mean overall remained `3.585507`.
+- Claude-authored mean overall became `4.073913`.
+- Gemini-authored mean overall became `3.676087`.
+- GPT-5.2-authored mean overall became `4.473913`.
+- Human-all vs Claude remained significant: `q=2.252824e-04`, Cliff's delta `-0.652174`.
+- Human-all vs Gemini became non-significant: `q=0.681584`, Cliff's delta `0.069943`.
+- Human-all vs GPT-5.2 remained strongly significant: `q=1.702623e-08`, Cliff's delta `-0.992439`.
+- Robust overall Human-all minus Claude: `-0.488406`, CI `[-0.698587, -0.290562]`, permutation `q=0.000300`.
+- Robust overall Human-all minus Gemini: `-0.090580`, CI `[-0.288406, 0.092772]`, permutation `q=0.348930`.
+- Robust overall Human-all minus GPT-5.2: `-0.888406`, CI `[-1.085525, -0.706522]`, permutation `q=0.000300`.
+
+Tables:
+
+- `results/tables/quality/minimal/ncems_criteria/quality_summary_overall_by_author_group_cross_eval_only.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_human_cohort_mw_cliffs_cross_eval_only.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_vs_ai_mw_cliffs_cross_eval_only.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_pairwise_mw_cliffs_all_metrics_cross_eval_only.csv`
+- `results/tables/quality/minimal/ncems_criteria/quality_robust_bootstrap_permutation_cross_eval_only.csv`
+
+Figures:
+
+- `results/figures/quality/minimal/ncems_criteria/quality_overall_histograms_proposal_level_cross_eval_only.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_overall_boxplot_proposal_level_cross_eval_only.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_radar_criteria_proposal_level_cross_eval_only.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_effectsize_heatmap_cross_eval_only.png`
+- `results/figures/quality/minimal/ncems_criteria/quality_effectsize_dotplot_cross_eval_only.png`
+
+##### Actual Results Summary
+
+- Human expert reviews were consistently more embedding-diverse than AI reviews, especially in Y2 where every whole-review diversity metric passed Wilcoxon FDR.
+- Human-AI review cosine similarity was not distinguishable from Human-Human similarity in the Y1 proxy analysis, but AI-AI reviews were more similar to each other than Human-AI pairs.
+- Across Y1/Y2 within-cohort similarity, AI reviews were more internally similar than Human reviews, especially in Y2.
+- Y2 AI-AI quantitative score reliability exceeded Human-Human reliability, while Human mean scores and AI mean scores showed meaningful agreement on overall score and several criteria.
+- In raw R2 quality comparisons, all three AI author groups scored above Human-all; after removing AI self-evaluations, Claude and GPT-5.2 remained above Human-all while Gemini no longer differed significantly.
+- R3 showed strong evaluator effects and model-specific self-preference behavior: Gemini self-penalized, GPT-5.2 self-favored, and Claude was mixed/negligible overall.
 
 ### Compare_reviews_novelty.ipynb
 
@@ -1696,7 +3045,7 @@ Completed and now used as the default input pipeline:
 
 1. `**compare_reviews_ncems_criteria.ipynb` updated**
 
-- Notebook path: `notebooks/templates/rephrased/compare_reviews_ncems_criteria.ipynb`.
+- Notebook path: `baseline(minimal)-rephrased/compare_reviews_ncems_criteria.ipynb`.
 - AI reviews now load from the **rephrased directory** with condition-based glob:
   - `data/reviews/ai_reviews/<condition>/ncems_criteria/rephrased/ncems_reviews_rephrased*.json`
 - Human reviews now load from the **rephrased directory** with glob:
