@@ -101,7 +101,7 @@ Stars indicate corrected/primary significance for the model-vs-Human contrast: `
 | NCEMS quality reviews, cross-eval only | Human-all mean `3.5855` | mean `4.0739`; δ `-0.652` `***` | mean `3.6761`; δ `0.070` | mean `4.4739`; δ `-0.992` `***` | MW FDR |
 | NCEMS R3 self-preference | compares each evaluator's self vs other AI proposals | self `3.8783`, other `3.8870`; δ `-0.053` | self `4.1435`, other `4.5304`; δ `-0.732` `***` | self `4.0043`, other `3.8065`; δ `0.933` `***` | MW FDR |
 | Novelty-framework reviews, cross-eval rerun | Human reference from novelty-review notebook | Claude ~ Human; `q=0.8428` | Human > Gemini; δ `0.7788` `***` | GPT > Human; δ `-0.4631` `*` | MW FDR |
-| Metric-score + outlier validation | semantic remoteness penalized on NCEMS but can help novelty-specific criteria | model-specific score/metric validation not estimated in compact table | model-specific score/metric validation not estimated in compact table | model-specific score/metric validation not estimated in compact table | Outlier NCEMS relevance `***`; novelty criterion `*` |
+| Metric-score relationship (executed baseline-minimal outputs) | semantic-distance metrics are mostly negative with NCEMS and often positive with novelty criteria | model-specific score/metric validation not estimated in compact table | model-specific score/metric validation not estimated in compact table | model-specific score/metric validation not estimated in compact table | Spearman |
 
 
 ## Notebooks and analyses
@@ -1699,27 +1699,212 @@ Interpretation:
 
 #### 6) Metric-score relationship and outlier validation (Part V)
 
-Analyses completed:
+Notebook title: `# Review Score Prediction and Outlier Validation`.
 
-- Proposal-level data integration (legacy run: `92 x 52`), now expanded to support unified metric exports.
-- Spearman metric-score correlation analysis.
-- Outlier score-comparison tests.
-- Added Human-Y2 metric-score analysis block in:
-  - `notebooks/templates/rephrased/metric_score_relationship.ipynb`
-- Expanded semantic metric ingestion to include the new diversity + novelty families from
-`proposal_metrics_master.csv` when present (with backward-compatible fallback to legacy metrics).
-- Expanded AI-score and Human-Y2-score correlation analyses to use the full available semantic metric set
-(new diversity metrics, new novelty metrics, and legacy semantic metrics when available).
+Ground-truth audited notebook: `baseline(minimal)-rephrased/metric_score_relationship.ipynb`.
 
-Key findings:
+Purpose: link proposal-level semantic metrics from the baseline-minimal rephrased proposal analysis to prepared AI review score means and prepared Human-Y2 score means, then test how metric-score relationships differ across NCEMS criteria, novelty criteria, and Human-Y2 quantitative scores.
 
-- Strong negative associations between semantic-distance metrics and NCEMS-type scores were observed (example: `mi_pairwise_mean_dist` vs `relevance_to_emergent_phenomena`, `r=-0.6496`).
-- Positive associations appeared with novelty-oriented criteria (example: `centroid_dist` vs `new_theory_concept_method_dataset_or_design`, `r=0.5093`).
-- Outlier proposals tended to score lower on key NCEMS dimensions, but could score higher on at least one novelty criterion (`new_theory...`, `p=0.0273`).
+#### `## Condition Configuration`
 
-Interpretation:
+Step-by-step:
 
-- Embedding “novelty/remoteness” aligns differently with conservative quality criteria vs novelty-emphasizing criteria, indicating a clear evaluation-tradeoff structure.
+1. Set `CONDITION = 'minimal'`.
+2. Load prepared proposal records as the base table.
+3. Merge prepared AI review score means, prepared Human-Y2 score means, and unified proposal metrics from `proposal_metrics_master.csv`.
+4. Reuse the merged proposal-level dataframe for NCEMS, novelty, and Human-Y2 correlation analyses.
+
+Baseline-minimal result:
+
+- Prepared proposals loaded: `92`.
+- Prepared AI review-score mean rows loaded: `92`.
+- Prepared Human-Y2 score mean rows loaded: `11`.
+
+#### `## 0. Load Prepared Review Score Tables (No Re-Aggregation)`
+
+Step-by-step:
+
+1. Load `data/prepared/rephrased/minimal/review_scores_wide.csv`.
+2. Load `data/prepared/rephrased/minimal/human_y2_scores_wide.csv`.
+3. Validate that prepared score-table columns required for downstream analyses are present.
+
+Baseline-minimal result:
+
+- Loaded proposals from `data/prepared/rephrased/minimal/all_proposals.json`.
+- Loaded AI review score means from `data/prepared/rephrased/minimal/review_scores_wide.csv` (`92` rows).
+- Loaded Human-Y2 score means from `data/prepared/rephrased/minimal/human_y2_scores_wide.csv` (`11` rows).
+- Prepared score tables validated successfully.
+
+#### `## 1. Load Data and Build Unified DataFrame`
+
+Step-by-step:
+
+1. Flatten prepared proposal records into a proposal-level dataframe.
+2. Merge prepared AI score means by normalized title key.
+3. Merge prepared Human-Y2 score means by normalized title key.
+4. Prefer unified proposal metrics from `results/tables/rephrased/minimal/proposal_metrics_master.csv` when present.
+5. Keep proposal metadata, score columns, semantic metrics, and outlier flags in one merged table.
+
+Baseline-minimal result:
+
+- Unified proposal metrics merged from `results/tables/rephrased/minimal/proposal_metrics_master.csv`.
+- Analysis dataframe shape: `(92, 59)`.
+- Groups present: `Human`, `claude-opus-4-5`, `gemini-3-pro-preview`, `gpt-5.2`.
+
+#### `## 1b. Define Metric Families and Score Groups`
+
+Step-by-step:
+
+1. Build semantic metric families from the available diversity and novelty metrics.
+2. Detect whether any legacy semantic metrics remain available.
+3. Detect available style metrics.
+4. Define NCEMS score columns, novelty-framework score columns, and outlier flags.
+5. Choose the literature-distance metric fallback used in downstream summaries.
+
+Baseline-minimal result:
+
+- Semantic metrics total: `24`.
+- New diversity metrics: `14`.
+- New novelty metrics: `10`.
+- Legacy semantic metrics present: `0`.
+- Style metrics present: `0`.
+- NCEMS score columns present: `8`.
+- Novelty score columns present: `7`.
+- Outlier flags present: `3/8`.
+- Literature distance metric used: `mean_knn_10`.
+
+#### `## 1c. Score Distribution by Group`
+
+Step-by-step:
+
+1. Summarize proposal-level NCEMS overall means by group.
+2. Summarize proposal-level novelty-framework overall means by group.
+
+Baseline-minimal result:
+
+- NCEMS `review_score_mean` by group:
+  - Human: mean `3.586`, SD `0.465`
+  - Claude: mean `4.009`, SD `0.135`
+  - Gemini: mean `3.832`, SD `0.069`
+  - GPT-5.2: mean `4.317`, SD `0.055`
+- Novelty-framework `novelty_score_mean` by group:
+  - Human: mean `3.764`, SD `0.266`
+  - Claude: mean `3.403`, SD `0.352`
+  - Gemini: mean `3.657`, SD `0.301`
+  - GPT-5.2: mean `3.993`, SD `0.237`
+
+#### `## 2a. Correlation: Semantic Metrics vs NCEMS Review Scores`
+
+Step-by-step:
+
+1. Compute Spearman correlations between all available semantic metrics and NCEMS score criteria.
+2. Build an annotated heatmap marking `p < 0.05`.
+3. Print the full semantic-vs-NCEMS correlation matrix.
+
+Baseline-minimal result:
+
+- Strong negative associations with `relevance_to_emergent_phenomena` dominated the printed matrix:
+  - `remote_clique_group`, `chamfer_group`, `mst_dispersion_group`, and `sparseness_group`: `r=-0.722`
+  - `mean_5nn_dist_global`: `r=-0.574`
+  - `global_centroid_dist`: `r=-0.552`
+- `novelty_and_significance` was also generally negative for semantic-distance metrics:
+  - `nn_dist_global`: `r=-0.498`
+  - `mean_5nn_dist_global`: `r=-0.485`
+  - `global_centroid_dist`: `r=-0.457`
+- Some metrics were positively associated with feasibility/data-oriented NCEMS criteria:
+  - `span90_group` vs `data_identification`: `r=0.566`
+  - `span90_group` vs `rigor_of_approach`: `r=0.504`
+  - `span90_group` vs `open_science_commitment`: `r=0.472`
+
+Figure:
+
+- `results/figures/rephrased/minimal/metric-score/corr_semantic_ncems.png`
+
+#### `## 2b. Correlation: Semantic Metrics vs Novelty Review Scores`
+
+Step-by-step:
+
+1. Compute Spearman correlations between all available semantic metrics and novelty-framework score criteria.
+2. Build an annotated heatmap marking `p < 0.05`.
+3. Print the full semantic-vs-novelty correlation matrix.
+
+Baseline-minimal result:
+
+- Positive associations were common for novelty-oriented criteria:
+  - `mean_pairwise_dist` vs `new_question_topic_or_framing`: `r=0.481`
+  - `mean_pairwise_dist` vs `new_theory_concept_method_dataset_or_design`: `r=0.536`
+  - `centroid_dist_loo` vs `new_theory_concept_method_dataset_or_design`: `r=0.506`
+- `span90_group` showed the strongest repeated positive pattern in the printed matrix:
+  - `new_question_topic_or_framing`: `r=0.511`
+  - `new_theory_concept_method_dataset_or_design`: `r=0.536`
+  - `unusual_combination_of_existing_ideas`: `r=0.510`
+  - `beyond_state_of_the_art`: `r=0.532`
+- Literature-relative novelty metrics were positively associated with novelty-theory criteria:
+  - `element_novel_1` vs `new_theory_concept_method_dataset_or_design`: `r=0.411`
+  - `element_novel_5` vs `new_theory_concept_method_dataset_or_design`: `r=0.407`
+  - `mean_knn_50` vs `new_theory_concept_method_dataset_or_design`: `r=0.391`
+- Grid-entropy metrics were negative for several novelty criteria in the printed matrix, for example `grid_entropy_group` vs `unusual_combination_of_existing_ideas`: `r=-0.308`.
+
+Figure:
+
+- `results/figures/rephrased/minimal/metric-score/corr_semantic_novelty.png`
+
+#### `## 2c. Human-Y2 Reviews vs Semantic Metrics`
+
+Step-by-step:
+
+1. Restrict to Human Y2 proposals only.
+2. Keep only semantic metrics with within-Y2 proposal variation.
+3. Compute Spearman correlations between per-proposal semantic metrics and Human-Y2 quantitative score means.
+4. Render semantic and style heatmaps.
+5. Print the top semantic-vs-Human-Y2 correlation table that was produced before notebook execution stopped.
+
+Baseline-minimal result:
+
+- Human-Y2 prepared score table used: `data/prepared/rephrased/minimal/human_y2_scores_wide.csv`.
+- Y2 human proposals used for Human-Y2 metric-score analysis: `11`.
+- Human-Y2 analysis dataframe shape: `(11, 59)`.
+- Metrics with per-proposal variation: `17 / 24`.
+- Dropped group-level constant metrics:
+  - `remote_clique_group`
+  - `chamfer_group`
+  - `mst_dispersion_group`
+  - `span90_group`
+  - `sparseness_group`
+  - `grid_entropy_group`
+  - `grid_entropy_group_norm`
+- Top printed semantic-vs-Human-Y2 correlations:
+  - `nn_dist_global` vs `data_identification_human_y2`: `r=-0.8074`, `p=0.0027`
+  - `nn_dist_global` vs `synthesis_focus_human_y2`: `r=-0.8074`, `p=0.0027`
+  - `mean_knn_5` vs `data_identification_human_y2`: `r=-0.7707`, `p=0.0055`
+  - `mean_knn_5` vs `synthesis_focus_human_y2`: `r=-0.7707`, `p=0.0055`
+  - `mean_5nn_dist_global` vs `data_identification_human_y2`: `r=-0.7615`, `p=0.0065`
+  - `element_novel_0` vs `data_identification_human_y2`: `r=-0.7615`, `p=0.0065`
+  - `element_novel_0` vs `synthesis_focus_human_y2`: `r=-0.7615`, `p=0.0065`
+  - `mean_pairwise_dist` vs `scope_and_timeline_human_y2`: `r=0.6713`, `p=0.0237`
+  - `centroid_dist_raw` vs `scope_and_timeline_human_y2`: `r=0.6713`, `p=0.0237`
+  - `centroid_dist_loo` vs `scope_and_timeline_human_y2`: `r=0.6713`, `p=0.0237`
+
+Figures:
+
+- `results/figures/rephrased/minimal/metric-score/corr_semantic_human_y2.png`
+- `results/figures/rephrased/minimal/metric-score/corr_style_human_y2.png`
+
+#### `## 3-7. Remaining Part V Sections`
+
+Baseline-minimal output status from the audited executed notebook:
+
+- `## 3. Strongest Correlations Summary`: no saved baseline-minimal output captured for the NCEMS/novelty summary cells in this notebook run.
+- `## 4. Outlier Validation`: no saved baseline-minimal output captured in this notebook run.
+- `## 5. Scatter Plots`: no saved baseline-minimal output captured in this notebook run.
+- `## 6. Group-Level Analysis: Human vs AI`: no saved baseline-minimal output captured in this notebook run.
+- `## 7. Summary Statistics Table` and export cells: no saved baseline-minimal output captured in this notebook run.
+
+Interpretation from the executed baseline-minimal outputs only:
+
+- In the captured correlation outputs, semantic-distance/remoteness metrics were generally negative against NCEMS relevance-type criteria and positive against several novelty-oriented criteria.
+- In the captured Human-Y2 block, the strongest associations were concentrated on `data_identification_human_y2`, `synthesis_focus_human_y2`, and `scope_and_timeline_human_y2`.
+- Style-based Part V interpretation is not available in this run because no style metrics were present in the merged baseline-minimal dataframe.
 
 ## Updated Overall Story
 
