@@ -76,6 +76,7 @@ def _render_gen_proposals(notebook: Dict[str, Any], condition: ConditionConfig,
                 '- `GENERATE_NEW_IDEAS`: `True` to call the models for fresh ideas, `False` to load existing idea files.\n',
                 '- `SKIP_PROPOSAL_GENERATION_IF_COMPLETE_EXISTS`: `True` to reuse the latest complete proposal CSV if one already exists.\n',
                 '- `RUN_REPHRASE_AT_END`: `True` to run `src/rephrase_proposals.py` after proposal generation finishes.\n',
+                '- `GENERATION_TEMPERATURE`: sampling temperature used for AI idea and proposal generation.\n',
                 '- `IDEAS_FILE_OVERRIDE` / `IDEAS_GLOB`: optional controls for selecting an existing ideas file when not generating new ideas.\n',
             ],
         },
@@ -89,6 +90,7 @@ def _render_gen_proposals(notebook: Dict[str, Any], condition: ConditionConfig,
                 GENERATE_NEW_IDEAS = {str(generate_new_ideas)}
                 SKIP_PROPOSAL_GENERATION_IF_COMPLETE_EXISTS = True
                 RUN_REPHRASE_AT_END = True
+                GENERATION_TEMPERATURE = {condition.generation_temperature}
                 IDEAS_FILE_OVERRIDE = None
                 IDEAS_GLOB = None
             """).splitlines(keepends=True),
@@ -180,6 +182,7 @@ def _render_gen_proposals(notebook: Dict[str, Any], condition: ConditionConfig,
 
         IDEA_PROMPT_TEMPLATE = '{condition.idea_prompt_template}'
         PROPOSAL_PROMPT_TEMPLATE = '{condition.proposal_prompt_template}'
+        GENERATION_TEMPERATURE = {condition.generation_temperature}
 
         NUM_IDEAS_PER_MODEL = 23
         IDEAS_FILE_OVERRIDE = globals().get('IDEAS_FILE_OVERRIDE', None)
@@ -456,7 +459,7 @@ def _render_gen_proposals(notebook: Dict[str, Any], condition: ConditionConfig,
                             response = ai_interface.generate_content(
                                 prompt=prompt,
                                 model_name=model_name,
-                                temperature=0.7,
+                                temperature=GENERATION_TEMPERATURE,
                                 max_completion_tokens=16000,
                             )
                             research_ideas = parse_generated_ideas_response(response)
@@ -471,6 +474,7 @@ def _render_gen_proposals(notebook: Dict[str, Any], condition: ConditionConfig,
                                 idea['model'] = model_name
                                 idea['author'] = persona_author_label(card)
                                 idea['generated_at'] = datetime.now().isoformat()
+                                idea['generation_temperature'] = GENERATION_TEMPERATURE
                                 idea['persona_team_id'] = card.get('team_id')
                                 idea['persona_team_authors'] = '; '.join(team_members)
                                 idea['source_human_proposal_id'] = card.get('human_proposal_id')
@@ -492,7 +496,7 @@ def _render_gen_proposals(notebook: Dict[str, Any], condition: ConditionConfig,
                         response = ai_interface.generate_content(
                             prompt=ideas_prompt,
                             model_name=model_name,
-                            temperature=0.7,
+                            temperature=GENERATION_TEMPERATURE,
                             max_completion_tokens=16000,
                         )
                         research_ideas = parse_generated_ideas_response(response)
@@ -505,6 +509,7 @@ def _render_gen_proposals(notebook: Dict[str, Any], condition: ConditionConfig,
                             idea['model'] = model_name
                             idea['author'] = model_name
                             idea['generated_at'] = datetime.now().isoformat()
+                            idea['generation_temperature'] = GENERATION_TEMPERATURE
                             all_ideas.append(idea)
                     except Exception as e:
                         logger.error(f"Error generating ideas with {model_name}: {e}")
@@ -602,7 +607,7 @@ def _render_gen_proposals(notebook: Dict[str, Any], condition: ConditionConfig,
                     response = ai_interface.generate_content(
                         prompt=proposal_prompt,
                         model_name=model_name,
-                        temperature=0.7,
+                        temperature=GENERATION_TEMPERATURE,
                         max_completion_tokens=16000,
                     )
 
@@ -623,6 +628,7 @@ def _render_gen_proposals(notebook: Dict[str, Any], condition: ConditionConfig,
                             ideas_df.at[idx, 'open_science_and_reproducibility'] = proposal.get('open_science_and_reproducibility', '')
                             ideas_df.at[idx, 'budget_and_resources'] = proposal.get('budget_and_resources', '')
                             ideas_df.at[idx, 'proposal_generated_at'] = datetime.now().isoformat()
+                            ideas_df.at[idx, 'generation_temperature'] = GENERATION_TEMPERATURE
 
                             progress_file = output_dir / f'ai_proposals_{condition_slug}_progress_{timestamp}.csv'
                             ideas_df.to_csv(progress_file, index=False)

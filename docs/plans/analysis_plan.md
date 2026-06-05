@@ -44,12 +44,18 @@ and where it is consumed downstream.
 
 ## Experiment Conditions
 
-This study now has three generation conditions:
+This study now has four generation conditions:
 
 1. `baseline(minimal)-rephrased` (**completed**)
 
 - LLMs generate ideas/proposals under the minimal prompt pipeline with rephrasing.
 - This condition is the current reference condition and all completed results in this plan come from it.
+
+1. `high_temperature` (**planned next**)
+
+- LLMs use the same minimal idea/proposal prompt pipeline as the baseline condition.
+- The only intended generation change is higher sampling temperature: `GENERATION_TEMPERATURE = 0.8` in the rendered proposal-generation notebook.
+- Use this condition to test whether increasing model sampling temperature increases diversity and literature-relative novelty of AI-generated ideas/proposals.
 
 1. `how_to_think` (**planned next**)
 
@@ -66,7 +72,7 @@ This study now has three generation conditions:
 - Diversity analyses.
 - Novelty analyses.
 - Score-comparison analyses.
-- Primary comparison: each new condition (`how_to_think`, `persona`) vs `baseline(minimal)-rephrased`, then Human vs each condition.
+- Primary comparison: each new condition (`high_temperature`, `how_to_think`, `persona`) vs `baseline(minimal)-rephrased`, then Human vs each condition.
 
 ## Completed Analyses and Results
 

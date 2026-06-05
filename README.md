@@ -10,6 +10,7 @@ Render the full notebook pipeline for one condition:
 
 ```bash
 python src/run_condition.py --condition minimal
+python src/run_condition.py --condition high_temperature
 python src/run_condition.py --condition how_to_think
 python src/run_condition.py --condition persona
 ```
@@ -35,14 +36,18 @@ After rendering, open the notebooks in the condition folder and run them manuall
 Configured conditions live in [configs/pipeline_conditions.json](/Users/eveyhuang/Documents/NICO/human-AI-proposal-comparison/configs/pipeline_conditions.json:1):
 
 - `minimal`
+- `high_temperature`
 - `how_to_think`
 - `persona`
 
 Rendered notebook folders:
 
 - `minimal` -> [baseline(minimal)-rephrased](/Users/eveyhuang/Documents/NICO/human-AI-proposal-comparison/baseline(minimal)-rephrased)
+- `high_temperature` -> [C3-high_temperature](/Users/eveyhuang/Documents/NICO/human-AI-proposal-comparison/C3-high_temperature)
 - `how_to_think` -> [C1-how_to_think](/Users/eveyhuang/Documents/NICO/human-AI-proposal-comparison/C1-how_to_think)
 - `persona` -> [C2-persona](/Users/eveyhuang/Documents/NICO/human-AI-proposal-comparison/C2-persona)
+
+`high_temperature` uses the same minimal idea and proposal prompts as `minimal`, but renders step 1 with `GENERATION_TEMPERATURE = 0.8` for AI idea and proposal generation. The generated CSV rows include `generation_temperature` so the sampling setting can be audited later.
 
 ## Notebook Pipeline
 

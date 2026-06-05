@@ -10,6 +10,7 @@ class ConditionConfig:
     executed_notebook_dir: Path
     idea_prompt_template: str
     proposal_prompt_template: str
+    generation_temperature: float = 0.7
 
 
 @dataclass(frozen=True)
@@ -37,6 +38,7 @@ def load_pipeline_config(config_path: Path = Path('configs/pipeline_conditions.j
             executed_notebook_dir=Path(payload['executed_notebook_dir']),
             idea_prompt_template=payload['idea_prompt_template'],
             proposal_prompt_template=payload['proposal_prompt_template'],
+            generation_temperature=float(payload.get('generation_temperature', 0.7)),
         )
         for name, payload in raw['conditions'].items()
     }
