@@ -112,7 +112,7 @@ Stars indicate corrected/primary significance for the model-vs-Human contrast: `
 
 ## Notebooks and analyses
 
-## Compare_proposals_rephrased.ipynb
+### Compare_proposals_rephrased.ipynb
 
 #### Notebook Scope and Global Settings
 
@@ -165,7 +165,7 @@ Baseline-minimal-rephrased result:
 - Project root: `/Users/eveyhuang/Documents/NICO/human-AI-proposal`.
 - PyTorch `2.9.1`; CUDA unavailable.
 
-#### `## Helper Functions`
+##### `## Helper Functions`
 
 Step-by-step:
 
@@ -177,7 +177,7 @@ Step-by-step:
 6. Apply Holm multiple-testing correction.
 7. Compute proposal-level mean pairwise distance-to-others so inference uses one value per proposal rather than dependent raw pairwise distances.
 
-#### `## Load Prepared Proposal Data`
+##### `## Load Prepared Proposal Data`
 
 Step-by-step:
 
@@ -191,7 +191,7 @@ Baseline-minimal-rephrased result:
 - Human proposals: `23`.
 - AI model counts: GPT-5.2 `23`, Gemini `23`, Claude `23`.
 
-#### `## Load Prepared NCEMS Reviews`
+##### `## Load Prepared NCEMS Reviews`
 
 Step-by-step:
 
@@ -207,7 +207,7 @@ Baseline-minimal-rephrased result:
 - Review ranking coverage in shared proposal metadata: `96.7%`.
 - Human funding coverage: `87.0%`.
 
-#### `## Prepare Proposal Texts`
+##### `## Prepare Proposal Texts`
 
 Step-by-step:
 
@@ -226,7 +226,7 @@ Baseline-minimal-rephrased result:
 - AI average cleaned proposal length: `1807` characters.
 - Human average cleaned proposal length: `1803` characters.
 
-#### `## Load Prepared Full-Proposal Embeddings`
+##### `## Load Prepared Full-Proposal Embeddings`
 
 Step-by-step:
 
@@ -243,7 +243,7 @@ Baseline-minimal-rephrased result:
 - Human embeddings shape: `(23, 1024)`.
 - Table: `results/tables/rephrased/minimal/proposal_metadata.csv` (`92` rows).
 
-#### `## Shared Distance-Matrix Precomputation`
+##### `## Shared Distance-Matrix Precomputation`
 
 Step-by-step:
 
@@ -263,7 +263,7 @@ Baseline-minimal-rephrased result:
   - `results/tables/rephrased/minimal/cached/proposal_pca2d.npy`
 
 
-##### `# PART I: THEMATIC AND CLUSTER ANALYSIS`
+#### `# PART I: THEMATIC AND CLUSTER ANALYSIS`
 
 ##### `## Analysis 1.1: Topic Modeling (LDA - Exploratory)`
 
@@ -1074,7 +1074,7 @@ Current implementation status for future notebook edits:
 - Project embeddings to 2D, partition into a `5 x 5` grid, compute occupancy frequencies, and report Shannon entropy plus a normalized entropy.
 - Keep this distinct from the existing LDA topic entropy in Analysis 1.3.
 
-## Compare_reviews_ncems_criteria.ipynb
+### Compare_reviews_ncems_criteria.ipynb
 
 #### Notebook Scope and Global Settings
 
