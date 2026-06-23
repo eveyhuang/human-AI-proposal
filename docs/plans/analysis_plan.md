@@ -1,6 +1,6 @@
 ## Overview
 
-This document is now an **execution-status analysis plan** based on the completed notebooks in:
+This document is an **execution-status analysis plan** based on the completed notebooks in:
 
 - `baseline(minimal)-rephrased/compare_proposals_rephrased.ipynb`
 - `baseline(minimal)-rephrased/compare_reviews_ncems_criteria.ipynb`
@@ -85,13 +85,13 @@ Stars indicate corrected/primary significance for the model-vs-Human contrast: `
 
 | Analysis | Human reference | Claude vs Human | Gemini vs Human | GPT-5.2 vs Human | Primary test |
 | --- | --- | --- | --- | --- | --- |
-| Proposal diversity 1.1 pairwise / Remote-Clique family | mean pairwise `0.4429` | `0.0337`; Δ `-0.3670` `***`; δ `-1.000` | `0.1505`; Δ `-0.2838` `***`; δ `-0.826` | `0.3148`; Δ `-0.1546` `**`; δ `-0.478` | MW Holm |
-| Proposal diversity 1.2a centroid LOO | centroid LOO `0.2665` | `0.0178`; Δ `-0.2451` `***`; δ `-1.000` | `0.0802`; Δ `-0.1862` `***`; δ `-0.826` | `0.1787`; Δ `-0.0848` `**`; δ `-0.478` | MW Holm |
-| Proposal diversity 1.2b global centroid | global-centroid dist `0.2926` | `0.0400`; H-AI `0.2526` `***`; δ `0.887` | `0.0869`; H-AI `0.2057` `***`; δ `0.705` | `0.1704`; H-AI `0.1222` `**`; δ `0.580` | MW Holm |
-| Proposal diversity 1.2c MST dispersion | MST `0.1126` | `0.0241`; Δ `-0.0885` `***` | `0.0643`; Δ `-0.0482` `**` | `0.0733`; Δ `-0.0393` `*` | Permutation Holm |
-| Proposal diversity 1.2d sparseness | sparseness `0.3721` | `0.0267`; Δ `-0.3454` `***`; δ `-0.915` | `0.0870`; Δ `-0.2810` `***`; δ `-0.765` | `0.2052`; Δ `-0.1656` `***`; δ `-0.595` | MW Holm |
-| Proposal diversity 1.3 1-NN / Chamfer | Chamfer `0.0822` | `0.0237`; Δ `-0.0505` `***`; δ `-0.813` | `0.0432`; Δ `-0.0413` `***`; δ `-0.713` | `0.0463`; Δ `-0.0331` `**`; δ `-0.507` | MW Holm |
-| Proposal diversity 1.5 grid entropy | normalized entropy `0.4145` | `0.7494`; Δ `+0.3349` `**` | `0.2268`; Δ `-0.1876` | `0.2861`; Δ `-0.1284` | Permutation Holm |
+| Proposal diversity 2.1 pairwise / Remote-Clique family | mean pairwise `0.4429` | `0.0337`; Δ `-0.3670` `***`; δ `-1.000` | `0.1505`; Δ `-0.2838` `***`; δ `-0.826` | `0.3148`; Δ `-0.1546` `**`; δ `-0.478` | MW Holm |
+| Proposal diversity 2.2a centroid LOO | centroid LOO `0.2665` | `0.0178`; Δ `-0.2451` `***`; δ `-1.000` | `0.0802`; Δ `-0.1862` `***`; δ `-0.826` | `0.1787`; Δ `-0.0848` `**`; δ `-0.478` | MW Holm |
+| Proposal diversity 2.2b global centroid | global-centroid dist `0.2926` | `0.0400`; H-AI `0.2526` `***`; δ `0.887` | `0.0869`; H-AI `0.2057` `***`; δ `0.705` | `0.1704`; H-AI `0.1222` `**`; δ `0.580` | MW Holm |
+| Proposal diversity 2.2c MST dispersion | MST `0.1126` | `0.0241`; Δ `-0.0885` `***` | `0.0643`; Δ `-0.0482` `**` | `0.0733`; Δ `-0.0393` `*` | Permutation Holm |
+| Proposal diversity 2.2d sparseness | sparseness `0.3721` | `0.0267`; Δ `-0.3454` `***`; δ `-0.915` | `0.0870`; Δ `-0.2810` `***`; δ `-0.765` | `0.2052`; Δ `-0.1656` `***`; δ `-0.595` | MW Holm |
+| Proposal diversity 2.3 1-NN / Chamfer | Chamfer `0.0822` | `0.0237`; Δ `-0.0505` `***`; δ `-0.813` | `0.0432`; Δ `-0.0413` `***`; δ `-0.713` | `0.0463`; Δ `-0.0331` `**`; δ `-0.507` | MW Holm |
+| Proposal diversity 2.5 grid entropy | normalized entropy `0.4145` | `0.7494`; Δ `+0.3349` `**` | `0.2268`; Δ `-0.1876` | `0.2861`; Δ `-0.1284` | Permutation Holm |
 | Proposal novelty ElementNovel-0 | mean `0.0989` | `0.0658`; Δ `-0.0332` `**`; δ `-0.580` | `0.0717`; Δ `-0.0272` `**`; δ `-0.565` | `0.0792`; Δ `-0.0198` `*`; δ `-0.353` | MW Holm |
 | Proposal novelty ElementNovel-10 | mean `0.2003` | `0.1620`; Δ `-0.0383` `**`; δ `-0.561` | `0.1700`; Δ `-0.0302` `*`; δ `-0.429` | `0.1828`; Δ `-0.0175`; δ `-0.070` | MW Holm |
 | Proposal novelty MeanKNN-10 | mean `0.1109` | `0.0746`; Δ `-0.0363` `**`; δ `-0.573` | `0.0828`; Δ `-0.0281` `*`; δ `-0.482` | `0.0914`; Δ `-0.0195`; δ `-0.202` | MW Holm |
@@ -262,11 +262,152 @@ Baseline-minimal-rephrased result:
   - `results/tables/rephrased/minimal/cached/proposal_distance_matrix.npy`
   - `results/tables/rephrased/minimal/cached/proposal_pca2d.npy`
 
-#### `# PART I: DIVERSITY`
 
-All Part I analyses use full rephrased proposal embeddings. Groups are Human, each individual AI model, and All AI combined.
+##### `# PART I: THEMATIC AND CLUSTER ANALYSIS`
 
-##### `## Analysis 1.1: Within-Group Pairwise Diversity (Remote-Clique + proposal-level mean pairwise distance)`
+##### `## Analysis 1.1: Topic Modeling (LDA - Exploratory)`
+
+Step-by-step:
+
+1. Build normalized content text from title plus abstract.
+2. Probe common unigrams and construct domain stopwords.
+3. Build a `CountVectorizer` matrix with `max_features=2000`, `min_df=2`, `max_df=0.7`, English stopwords, and unigrams/bigrams.
+4. Drop selected domain unigrams but keep bigrams.
+5. Fit LDA with `n_topics = 3`, `doc_topic_prior=0.5`, `topic_word_prior=0.5`, `max_iter=100`, batch learning, and `random_state=42`.
+6. Print topic words, perplexity, and log-likelihood.
+7. Run 10 aligned stability runs.
+8. Run topic-count sensitivity for `k=4..8`.
+
+Note:
+
+- The code and output identify three topics, but one print statement says `n_topics=5`; the actual variable is `n_topics = 3`.
+- No separate topic table artifact is currently exported.
+
+##### `## Analysis 1.2: Topic Distribution and Coverage Per Model` [TODO: updated from Human-vs-AI-lumped to per-model breakdown; entropy from former Analysis 1.3 absorbed here and that section dropped]
+
+Step-by-step:
+
+1. Use soft topic participation where a proposal counts for a topic if its probability is greater than `0.20`.
+2. [TODO] Build participation counts per group (Human, Claude, Gemini, GPT-5.2) — NOT Human vs AI lumped. A per-model breakdown reveals whether individual AI models concentrate in specific topics rather than distributing evenly, directly motivating the per-model bimodality differences seen in Part II Analysis 2.1b.
+3. [TODO] Run a chi-square permutation test across all four groups with `10000` permutations. (Old two-group Human/AI test is retained as a secondary row for comparison.)
+4. [TODO] Run per-topic Fisher exact tests for each model versus Human (three model contrasts per topic, nine tests total) with Holm correction.
+5. [TODO] Subsample each AI model to `n=23` for `1000` validation iterations to confirm per-model effects are not driven by group-size imbalance.
+6. [TODO] Plot topic-distribution heatmap with one row per group (Human, Claude, Gemini, GPT-5.2) — update from the two-row Human/AI heatmap.
+7. [TODO] Compute Shannon entropy on mean soft topic distributions per group and report normalized entropy per group. This replaces the former standalone Analysis 1.3 (Topic Coverage and Entropy), which computed the same quantity and found no difference. If a model has near-zero entropy on one topic (e.g., Claude predominately Topic_1), flag this: a model concentrated in one topic subspace will show a unimodal pairwise distance distribution rather than the bimodal pattern observed for Human and GPT-5.2 in Analysis 2.1b.
+
+Baseline-minimal-rephrased rendered result (old Human-vs-AI-lumped result, kept for reference):
+
+- Soft participation counts: Topic_1 Human `13`, AI `27`; Topic_2 Human `9`, AI `26`; Topic_3 Human `9`, AI `29`.
+- Overall soft-topic chi-square statistic `0.8361`, permutation `p=0.5990`; no significant Human/AI topic-distribution difference.
+- Per-topic Fisher tests found no FDR-significant topic over/under-representation (`q=0.4666`, `1.0000`, `1.0000`).
+- AI subsample validation showed weak topic differences: Topic_1 significant in `27/1000` subsamples, Topic_2 and Topic_3 in `0/1000`.
+- [TODO] Re-run with per-model breakdown; per-model topic concentrations expected to differ even if the overall four-group test remains non-significant.
+
+Figures:
+
+- `results/figures/rephrased/minimal/topic_distribution_comparison.png` [TODO: update to four-row heatmap]
+
+Tables:
+
+- [TODO] `results/tables/rephrased/minimal/topic_distribution_per_model.csv`
+- [TODO] `results/tables/rephrased/minimal/topic_distribution_per_model_tests.csv`
+- [TODO] `results/tables/rephrased/minimal/topic_entropy_per_model.csv`
+
+##### `## Analysis 1.3: Embedding Cluster Structure and UMAP (Primary Cluster Labels)` [TODO: section replaces former standalone Analysis 1.3 (Topic Coverage and Entropy, absorbed into Analysis 1.2); content moved from former Analysis 1.5 and placed here because cluster labels are the authoritative dependency for downstream analyses 1.4, 1.5, 2.1d, and 2.4 — they must exist before any of those run]
+
+**Motivation**: The pairwise distance bimodality observed in Part II (Analysis 2.1b) indicates the proposal embedding space contains at least two distinct semantic subfields, but does not itself define which proposals belong to which subfield. This analysis identifies that structure data-driven using Ward agglomerative clustering on all 92 proposals jointly (`X_prop`), producing per-proposal cluster labels used by all downstream analyses. No distance thresholds or assumed k are hard-coded: the number of clusters is selected by silhouette score. This analysis also computes and caches UMAP 2D coordinates so that Analysis 2.4 loads from cache and does not recompute or introduce a forward dependency.
+
+Step-by-step:
+
+1. [TODO] Select k data-driven: fit Ward agglomerative clustering (`sklearn.cluster.AgglomerativeClustering(linkage='ward')`) on all 92 proposals jointly (`X_prop`) for k = 2, 3, 4, 5. Compute silhouette score and Calinski-Harabasz score for each k. Select k maximizing average silhouette score. Report all k-selection scores. (k=2 is expected given the observed bimodality, but let the data confirm this.)
+2. [TODO] Assign all 92 proposals a cluster label using the best-k model. Print the top 5 proposal titles per cluster to verify the clusters correspond to interpretable semantic subfields (expected: Cluster A — structural/computational/multi-omics biology; Cluster B — heterogeneous microbiome/ecology/crosslinking topics). Save per-proposal cluster labels to table; these labels are the input to Analyses 1.4, 1.5, 2.1d, and 2.4.
+3. [TODO] Tabulate cluster membership per group (Human, Claude, Gemini, GPT-5.2): count proposals in each cluster. Test whether each AI model's cluster distribution differs significantly from Human's using Fisher exact tests and Holm correction. Expected result: Claude concentrates in one cluster (explaining its unimodal distance distribution); GPT-5.2 spans both clusters more like Human (explaining its bimodal distance distribution).
+4. [TODO] Compute per-group silhouette scores: for each group, compute silhouette score on only that group's proposals using the jointly-fitted cluster labels. A group concentrated in one cluster (e.g., Claude) will have low or negative silhouette scores; a group spanning well-separated clusters (e.g., Human, GPT-5.2) will have high scores. Report alongside per-group dominant-cluster fraction.
+5. [TODO] Compute and cache UMAP 2D coordinates: fit `umap.UMAP(n_neighbors=15, min_dist=0.1, n_components=2, metric='cosine', random_state=42)` on `X_prop` and save to `results/tables/rephrased/minimal/cached/proposal_umap2d.npy`. This cache is loaded by Analysis 2.4 so that UMAP is not recomputed in Part II.
+6. [TODO] Visualization: 2×2 UMAP panel (one panel per group: Human, Claude, Gemini, GPT-5.2) using the cached UMAP coordinates. Color points by cluster label using a consistent color scheme across all panels (cluster colors, not group colors). Add panel title with group name, per-group silhouette score, and dominant cluster fraction. A model with all points in one cluster will show a single-color panel; a model spanning both will show a mixed panel — this directly explains the per-model bimodality difference in Part II.
+
+Tables:
+
+- [TODO] `results/tables/rephrased/minimal/diversity_cluster_k_selection.csv`
+- [TODO] `results/tables/rephrased/minimal/diversity_cluster_membership_by_group.csv`
+- [TODO] `results/tables/rephrased/minimal/cached/proposal_umap2d.npy` (new cache output, loaded by Analysis 2.4)
+
+Figures:
+
+- [TODO] `results/figures/rephrased/minimal/cluster_membership_umap_per_group.png`
+
+##### `## Analysis 1.4: Cluster Segregation — GMM Convergent Validity and Per-Model Composition` [TODO: section renamed and extended; formerly tested only Human vs AI lumped; now expanded to per-model and cross-referenced to Analysis 1.3 Ward labels]
+
+**Motivation**: Analysis 1.3 defines authoritative cluster labels using Ward agglomerative clustering. This analysis uses a complementary GMM to: (a) confirm significant Human/AI semantic segregation via NMI/ARI (convergent validity with Analysis 1.3), and (b) reveal which specific AI models drive the segregation — the original Human-vs-AI-lumped composition table masks whether the AI-dominated cluster is specific to Claude or distributed across all three models.
+
+Step-by-step:
+
+1. Fit Gaussian mixture models for candidate `k = 3..8`.
+2. Use BIC as the primary selection criterion; also compute silhouette and Davies-Bouldin.
+3. Fit final full-covariance GMM with `random_state=42`.
+4. [TODO] Summarize GMM cluster composition per model (Human, Claude, Gemini, GPT-5.2) — NOT Human vs AI lumped. Report counts and fractions for each model in each GMM cluster. This reveals whether the AI-dominated GMM cluster is specific to one model (expected: Claude) or spread across all three.
+5. Compute NMI, ARI, and between/within cosine-distance ratio.
+6. Run `10000` permutation tests for segregation metrics.
+7. [TODO] Cross-reference GMM cluster assignments against Ward cluster labels from Analysis 1.3: compute adjusted Rand index (ARI) between the two solutions. If ARI is high, both methods agree on the same semantic regions. If ARI is low, GMM and Ward are capturing different levels of structure — the most likely explanation is that the GMM k=3 solution subdivides one Ward k=2 cluster into a human-biology subcluster and an AI-dominated subcluster, which should be stated explicitly.
+8. Plot k-selection and cluster diagnostics in embedding space.
+
+Baseline-minimal-rephrased rendered result:
+
+- Best k by BIC and silhouette: `3`.
+- Cluster sizes: `[22, 19, 51]`; two clusters were Mixed and one was AI-dominated.
+- NMI `0.0923`, permutation `p=0.0021`.
+- ARI `0.1411`, permutation `p=0.0016`.
+- Between/within distance ratio `1.2406`, permutation `p=0.0017`.
+- [TODO] Per-model GMM cluster composition not yet computed under this revised analysis design.
+- [TODO] GMM vs Ward cluster agreement (ARI between solutions) not yet computed.
+
+Figures:
+
+- `results/figures/rephrased/minimal/cluster_k_selection.png`
+- `results/figures/rephrased/minimal/cluster_analysis_visualization.png`
+- [TODO] `results/figures/rephrased/minimal/cluster_composition_per_model.png`
+
+Tables:
+
+- [TODO] `results/tables/rephrased/minimal/cluster_gmm_composition_per_model.csv`
+- [TODO] `results/tables/rephrased/minimal/cluster_gmm_vs_ward_agreement.csv`
+
+##### `## Analysis 1.5: LDA Topic–Cluster Correspondence` [TODO: new analysis; validates whether LDA topics (Analyses 1.1–1.2) and Ward embedding clusters (Analysis 1.3) measure the same latent subfield structure or provide complementary information; result determines how both are reported in the paper]
+
+**Motivation**: Analyses 1.1–1.2 characterize proposal themes via LDA word distributions (lexical similarity), while Analysis 1.3 characterizes proposal clusters via BioLinkBERT embedding proximity (semantic similarity). A PNAS/NMI reviewer will ask: "Are topics and clusters redundant?" If LDA topics and Ward clusters are co-linear — the same proposals belong to LDA Topic_X and Ward Cluster A — only one needs to appear in the main text and the other can be relegated to supplementary material. If they diverge, they offer independent views of thematic structure at different levels of granularity, and both should be reported with that distinction made explicit. This analysis provides that empirical answer rather than treating them as equivalent by assumption.
+
+Step-by-step:
+
+1. [TODO] For each proposal, retrieve: (a) LDA dominant topic (the topic index with highest soft probability from Analysis 1.1), and (b) Ward cluster label from Analysis 1.3. Cross-tabulate in a (topics × clusters) contingency table.
+2. [TODO] Compute adjusted Rand index (ARI) and normalized mutual information (NMI) between LDA topic assignment and Ward cluster label. Use `sklearn.metrics.adjusted_rand_score` and `normalized_mutual_info_score`, already importable from sklearn. High ARI/NMI (> 0.3) indicates topics and clusters measure the same latent structure; low values indicate they capture different levels of semantic organization.
+3. [TODO] Interpret the contingency table: for k=2 Ward clusters and k=3 LDA topics, which LDA topic(s) map onto Cluster A and which onto Cluster B? If one LDA topic is split across both Ward clusters, that topic is semantically heterogeneous at the embedding level — an important nuance for reporting.
+4. [TODO] Decision rule based on ARI: if ARI < 0.3, retain both topic and cluster analyses as complementary in the paper, labeling them as "lexical" versus "embedding-space" thematic structure. If ARI ≥ 0.3, use Ward cluster labels as the primary thematic axis (embedding-based, model-agnostic) in the main text and relegate LDA topics to supplementary characterization only.
+5. [TODO] Visualization: heatmap of the topic × cluster contingency table (rows = LDA topics, columns = Ward clusters), cells annotated with proposal count and the most representative proposal title in the dominant cell of each row. This gives a human-readable semantic interpretation of each cluster label and directly supports the "interpretable semantic subfields" claim from Analysis 1.3.
+
+Tables:
+
+- [TODO] `results/tables/rephrased/minimal/topic_cluster_contingency.csv`
+- [TODO] `results/tables/rephrased/minimal/topic_cluster_agreement.csv`
+
+Figures:
+
+- [TODO] `results/figures/rephrased/minimal/topic_cluster_correspondence.png`
+
+##### `### PART I Summary`
+
+Baseline-minimal-rephrased rendered result (partial — Analyses 1.3, 1.4 per-model, and 1.5 are [TODO]):
+
+- Analysis 1.2 (old Human-vs-AI-lumped): topic distribution and topic entropy did not show a significant Human/AI difference. [TODO] Per-model re-run expected to reveal per-model topic concentration patterns consistent with the bimodality structure.
+- Analysis 1.3: [TODO] Ward agglomerative clustering will define authoritative cluster labels and cache UMAP coordinates for downstream use.
+- Analysis 1.4: GMM analyses confirmed significant Human/AI semantic-region separation by NMI (`0.0923`, `p=0.0021`), ARI (`0.1411`, `p=0.0016`), and between/within distance ratio (`1.2406`, `p=0.0017`). [TODO] Per-model GMM composition and Ward–GMM agreement ARI not yet computed.
+- Analysis 1.5: [TODO] LDA topic–cluster ARI/NMI will determine whether topics and clusters are reported as redundant or complementary in the paper.
+
+
+#### `# PART II: DIVERSITY`
+
+All Part II analyses use full rephrased proposal embeddings. Groups are Human, each individual AI model, and All AI combined.
+
+##### `## Analysis 2.1: Within-Group Pairwise Diversity (Remote-Clique + proposal-level mean pairwise distance)`
 
 Step-by-step:
 
@@ -292,9 +433,74 @@ Baseline-minimal-rephrased result:
   - `results/figures/rephrased/minimal/pairwise_diversity_by_model.png`
   - `results/figures/rephrased/minimal/pairwise_diversity_boxplot.png`
 
-##### `## Analysis 1.2: Centroid Dispersion Metric (mean radius + Span-90)`
+##### `## Analysis 2.1b: Pairwise Distance Distribution — Bimodality Test` [TODO]
 
-##### `### 1.2a Within-group Centroid Dispersion`
+**Motivation**: Analysis 2.1 reveals a bimodal pairwise-distance distribution for Human and GPT-5.2 proposals, meaning the within-group mean pairwise distance is a mixture statistic blending two distinct pair populations. Not all groups are expected to be bimodal: Claude's distribution is essentially unimodal (all pairs < 0.10). The analysis tests for bimodality non-parametrically and characterizes the shape of each group's distribution using data-driven model selection — it does NOT pre-assume the number of modes, since that varies per group (Claude likely k=1, Human and GPT-5.2 likely k=2). Clusters in the embedding space are defined separately in Analysis 1.3 using `X_prop`; the distance-distribution shape is a consequence of that cluster structure, not its definition.
+
+Step-by-step:
+
+1. [TODO] Add `import diptest` (or `pip install diptest`) to the `## Helper Functions` cell, with a `try/except` fallback that installs it if missing.
+2. [TODO] For each group (Human, Claude, Gemini, GPT-5.2), apply Hartigan's dip test to the upper-triangle pairwise distance vector. Report dip statistic and p-value per group. A significant p-value indicates departure from unimodality. Reuses `group_cache` already in memory.
+3. [TODO] For each group, fit GMMs for k = 1, 2, 3 components (`sklearn.mixture.GaussianMixture(covariance_type='full', random_state=42)`) and select the best k by BIC. Do NOT assume k=2 for all groups — a unimodal group (e.g., Claude) should correctly select k=1. `sklearn` is already imported.
+4. [TODO] Report per group: best k by BIC, BIC values for each k, fitted component means and weights for the best model.
+5. [TODO] For groups where best k ≥ 2 and dip test is significant, report the valley between the two dominant modes (minimum density point between them) as a descriptive observation — not as an analytical cluster-membership threshold.
+6. [TODO] Visualization: faceted kernel density plot (one panel per group) with best-fit GMM component densities overlaid. Mark the valley point as a dashed vertical line only for groups with best k ≥ 2. Use the existing `colors` dict for fill color.
+
+Tables:
+
+- `results/tables/rephrased/minimal/diversity_pairwise_bimodality_tests.csv`
+- `results/tables/rephrased/minimal/diversity_pairwise_gmm_summary.csv`
+
+Figures:
+
+- `results/figures/rephrased/minimal/pairwise_diversity_bimodality_gmm.png`
+
+##### `## Analysis 2.1c: Cross-Group Topic Space Alignment (Human Topic Space vs AI Topic Space)` [TODO]
+
+**Motivation**: Do AI models gravitate toward similar intellectual territory as humans (their topic choices land close to human proposals in embedding space), or do they explore different regions? This cross-group alignment analysis characterizes human-AI topic space overlap without requiring exact topic matching.
+
+Step-by-step:
+
+1. [TODO] For each AI proposal, compute its minimum cosine distance to any human proposal (nearest human proposal) using the already-computed cross-group block of `D_pp` (rows: AI indices from `GROUPS`, columns: human indices from `GROUPS['Human']`).
+2. [TODO] For each human proposal, compute its minimum cosine distance to any proposal from each AI model. This gives a symmetric view: how far is each human topic from the AI topic space?
+3. [TODO] Per model, report: mean and SD of AI-to-nearest-human distances; also mean and SD of human-to-nearest-AI distances. Low mean AI-to-human = AI topics largely overlap with human topic space. High mean = AI explores different intellectual territory.
+4. [TODO] Compare the AI-to-nearest-human distance distributions across the three models using Mann-Whitney U and Holm correction. Reuse `run_group_comparison` helper.
+5. [TODO] Visualization: two-panel figure. Panel 1: strip plot of AI-to-nearest-human distances per model (x = model, y = min cosine distance to any human proposal), one dot per AI proposal, with mean line. Panel 2: strip plot of human-to-nearest-AI distances per model (x = model, y = min cosine distance to any proposal from that model), one dot per human proposal. Use existing `colors` dict.
+
+Tables:
+
+- `results/tables/rephrased/minimal/diversity_cross_group_nearest_human.csv`
+- `results/tables/rephrased/minimal/diversity_cross_group_alignment_tests.csv`
+
+Figures:
+
+- `results/figures/rephrased/minimal/cross_group_topic_alignment.png`
+
+##### `## Analysis 2.1d: Within-Cluster and Between-Cluster Diversity (Cluster-Controlled Comparison)` [TODO]
+
+**Motivation**: All existing diversity metrics (Analyses 2.1–2.5) pool all proposal pairs regardless of whether they belong to the same semantic subfield. The pairwise distance bimodality (Analysis 2.1b) shows this pooling mixes two distinct populations: within-subfield pairs (low distance) and cross-subfield pairs (high distance). The mean pairwise distance therefore confounds two effects: how diverse proposals are within a subfield, and how many subfields each group spans. This analysis separates the two by computing within-cluster diversity and between-cluster separation per group, using cluster labels from the joint embedding-space clustering in Analysis 1.3. Cluster boundaries are defined by `X_prop` geometry (Ward agglomerative), not by hand-picked distance thresholds — this ensures the same semantic regions apply to all groups and avoids circularity. Per-group clustering would be inappropriate: Claude's 23 proposals form one dense blob with no meaningful internal structure to partition. This analysis depends on cluster labels from Analysis 1.3.
+
+Step-by-step:
+
+1. [TODO] After Analysis 1.3 has assigned cluster labels, retrieve the per-proposal cluster assignments (A or B) from `diversity_cluster_membership_by_group.csv`. All 92 proposals (human and AI alike) receive a cluster label from the jointly-fitted agglomerative clustering.
+2. [TODO] For each group (Human, Claude, Gemini, GPT-5.2), split that group's proposal indices by cluster label (A or B) using the per-proposal assignments from step 1.
+3. [TODO] For each group and each cluster (A and B separately), compute within-cluster pairwise diversity: mean upper-triangle cosine distance among the proposals assigned to that cluster for that group. Uses `D_pp` and per-group-per-cluster index subsets.
+4. [TODO] Compare Human vs each AI model within-cluster diversity for Cluster A and Cluster B separately, using permutation tests (reuse `run_permutation_test` helper) and Holm correction. This is the cluster-controlled comparison.
+5. [TODO] For each group, compute between-cluster distance: mean cosine distance from Cluster-A proposals to Cluster-B proposals within the group. Human between-cluster gap is empirically ~0.67. Test whether AI models preserve or collapse this gap using permutation tests.
+6. [TODO] Visualization: 3-panel figure. Panel 1: within-cluster diversity for Cluster A, grouped boxplot per group using `colors` dict. Panel 2: same for Cluster B. Panel 3: between-cluster gap per group, horizontal bar chart with bootstrap 95% CI. Save to `FIGURES_DIR`.
+
+Tables:
+
+- `results/tables/rephrased/minimal/diversity_within_cluster_by_group.csv`
+- `results/tables/rephrased/minimal/diversity_between_cluster_gap.csv`
+
+Figures:
+
+- `results/figures/rephrased/minimal/diversity_cluster_aware_comparison.png`
+
+##### `## Analysis 2.2: Centroid Dispersion Metric (mean radius + Span-90)`
+
+##### `### 2.2a Within-group Centroid Dispersion`
 
 Step-by-step:
 
@@ -317,7 +523,7 @@ Baseline-minimal-rephrased result:
   - `results/tables/rephrased/minimal/diversity_span90_group_summary.csv`
 - Figure: `results/figures/rephrased/minimal/centroid_dispersion_by_model.png`
 
-##### `### 1.2b: Between-Group Centroid Dispersion`
+##### `### 2.2b: Between-Group Centroid Dispersion`
 
 Step-by-step:
 
@@ -340,7 +546,7 @@ Baseline-minimal-rephrased result:
   - `results/tables/rephrased/minimal/between_group_global_centroid_pairwise_tests.csv`
 - Figure: `results/figures/rephrased/minimal/between_group_global_centroid_dispersion.png`
 
-##### `## Analysis 1.2c: MST Dispersion`
+##### `## Analysis 2.2c: MST Dispersion`
 
 Step-by-step:
 
@@ -367,7 +573,7 @@ Figure:
 
 - `results/figures/rephrased/minimal/diversity_mst_dispersion.png`
 
-##### `## Analysis 1.2d: Sparseness (Medoid-Based Dispersion)`
+##### `## Analysis 2.2d: Sparseness (Medoid-Based Dispersion)`
 
 Step-by-step:
 
@@ -394,7 +600,7 @@ Figure:
 
 - `results/figures/rephrased/minimal/diversity_sparseness_medoid.png`
 
-##### `## Analysis 1.3: Nearest-Neighbor Isolation and Outlier Detection (Chamfer / NN)`
+##### `## Analysis 2.3: Nearest-Neighbor Isolation and Outlier Detection (Chamfer / NN)`
 
 Step-by-step:
 
@@ -427,11 +633,11 @@ Figure:
 
 - `results/figures/rephrased/minimal/nearest_neighbor_by_model.png`
 
-##### `## 1.4 Visualize proposals in Embedding Space V`
+##### `## 2.4 Visualize proposals in Embedding Space V`
 
 Step-by-step:
 
-1. Project full-proposal embeddings to UMAP using `n_neighbors=15`, `min_dist=0.1`, `n_components=2`, `metric='cosine'`, `random_state=42`.
+1. [TODO] Load cached UMAP 2D coordinates from `results/tables/rephrased/minimal/cached/proposal_umap2d.npy` (computed and saved by Analysis 1.3). If the cache file is missing, recompute with `umap.UMAP(n_neighbors=15, min_dist=0.1, n_components=2, metric='cosine', random_state=42)` and save the cache — but during normal execution Analysis 1.3 always runs first.
 2. Plot AI points by model, Human points with funding-aware shading, group centroids, and NN outlier rings.
 3. Run diagnostics explaining why visually clustered points can still be high-dimensional outliers.
 4. Build a complementary t-SNE projection with `perplexity=30`, `init='pca'`, `random_state=42`.
@@ -441,7 +647,17 @@ Figures:
 - `results/figures/rephrased/minimal/embedding_space_umap_2d.png`
 - `results/figures/rephrased/minimal/embedding_space_tsne.png`
 
-##### `## Analysis 1.5: Grid Entropy of Proposal Occupancy`
+[TODO] Additional steps for enriched UMAP (run after Analysis 1.3 has produced cluster labels):
+
+5. [TODO] Re-render the UMAP with per-group convex hull overlays: draw a shaded convex hull for each group in its group color at `alpha=0.15` using `scipy.spatial.ConvexHull` on the per-group UMAP 2D coordinates. `scipy` is already imported.
+6. [TODO] Overlay cross-group nearest-neighbor linking lines: for each AI proposal, draw a gray line (`alpha=0.2`, `linewidth=0.5`) connecting it to its nearest human proposal in UMAP 2D space (using the nearest-human index computed in Analysis 2.1c step 1). This visualizes which AI topics fall closest to which human topics without requiring exact topic matching.
+7. [TODO] Add background cluster-membership shading (2 zones) using the per-proposal cluster labels from Analysis 1.3: for each cluster, draw a KDE contour or shaded convex hull using a neutral gray at low alpha to visually demarcate the two semantic subfield regions without obscuring group points.
+
+Figures:
+
+- `results/figures/rephrased/minimal/embedding_space_umap_enriched.png`
+
+##### `## Analysis 2.5: Grid Entropy of Proposal Occupancy`
 
 Step-by-step:
 
@@ -468,7 +684,7 @@ Figure:
 
 - `results/figures/rephrased/minimal/diversity_entropy_group_summary.png`
 
-##### `# PART II: NOVELTY`
+##### `# PART III: NOVELTY`
 
 ##### `## Step 1: Load Prepared Literature Corpus`
 
@@ -663,97 +879,7 @@ Table:
 
 - `results/tables/rephrased/minimal/proposal_metrics_master.csv`
 
-##### `# PART III: THEMATIC AND CLUSTER ANALYSIS`
 
-##### `## Analysis 3.1: Topic Modeling (LDA - Exploratory)`
-
-Step-by-step:
-
-1. Build normalized content text from title plus abstract.
-2. Probe common unigrams and construct domain stopwords.
-3. Build a `CountVectorizer` matrix with `max_features=2000`, `min_df=2`, `max_df=0.7`, English stopwords, and unigrams/bigrams.
-4. Drop selected domain unigrams but keep bigrams.
-5. Fit LDA with `n_topics = 3`, `doc_topic_prior=0.5`, `topic_word_prior=0.5`, `max_iter=100`, batch learning, and `random_state=42`.
-6. Print topic words, perplexity, and log-likelihood.
-7. Run 10 aligned stability runs.
-8. Run topic-count sensitivity for `k=4..8`.
-
-Note:
-
-- The code and output identify three topics, but one print statement says `n_topics=5`; the actual variable is `n_topics = 3`.
-- No separate topic table artifact is currently exported.
-
-##### `## Analysis 3.2: Topic Distribution Comparison`
-
-Step-by-step:
-
-1. Use soft topic participation where a proposal counts for a topic if its probability is greater than `0.20`.
-2. Build Human vs AI participation counts by topic.
-3. Run an overall soft-topic chi-square permutation test with `10000` permutations.
-4. Run per-topic Fisher exact tests with FDR correction.
-5. Subsample AI to `n=23` for `1000` validation iterations.
-6. Plot topic-distribution heatmap and subsampled bar plot.
-
-Baseline-minimal-rephrased rendered result:
-
-- Soft participation counts: Topic_1 Human `13`, AI `27`; Topic_2 Human `9`, AI `26`; Topic_3 Human `9`, AI `29`.
-- Overall soft-topic chi-square statistic `0.8361`, permutation `p=0.5990`; no significant Human/AI topic-distribution difference.
-- Per-topic Fisher tests found no FDR-significant topic over/under-representation (`q=0.4666`, `1.0000`, `1.0000`).
-- AI subsample validation showed weak topic differences: Topic_1 significant in `27/1000` subsamples, Topic_2 and Topic_3 in `0/1000`.
-
-Figure:
-
-- `results/figures/rephrased/minimal/topic_distribution_comparison.png`
-
-##### `## Analysis 3.3: Topic Coverage and Entropy`
-
-Step-by-step:
-
-1. Use soft topic threshold `0.20`.
-2. Compute topic coverage.
-3. Compute exclusive topics requiring at least `2` proposals in one group and zero in the other.
-4. Run `10000` permutation tests for exclusive-topic counts.
-5. Compute Shannon entropy on mean soft topic distributions.
-6. Subsample AI to Human-sized samples for entropy comparisons.
-
-Baseline-minimal-rephrased rendered result:
-
-- Human and AI both covered `3/3` topics.
-- No exclusive topics.
-- Topic entropy: Human `H=1.6135`, normalized `1.0180`; AI `H=1.5987`, normalized `1.0087`.
-- AI subsampled entropy: `H=1.6012 +/- 0.0282`; Human minus AI-subsample mean difference `0.0123`, two-sided `p=0.8760`.
-
-##### `## Analysis 3.4: Cluster Composition/Segregation Analysis`
-
-Step-by-step:
-
-1. Fit Gaussian mixture models for candidate `k = 3..8`.
-2. Use BIC as the primary selection criterion; also compute silhouette and Davies-Bouldin.
-3. Fit final full-covariance GMM with `random_state=42`.
-4. Summarize cluster composition by Human vs AI.
-5. Compute NMI, ARI, and between/within cosine-distance ratio.
-6. Run `10000` permutation tests for segregation metrics.
-7. Plot k-selection and cluster diagnostics in embedding space.
-
-Baseline-minimal-rephrased rendered result:
-
-- Best k by BIC and silhouette: `3`.
-- Cluster sizes: `[22, 19, 51]`; two clusters were Mixed and one was AI-dominated.
-- NMI `0.0923`, permutation `p=0.0021`.
-- ARI `0.1411`, permutation `p=0.0016`.
-- Between/within distance ratio `1.2406`, permutation `p=0.0017`.
-
-Figures:
-
-- `results/figures/rephrased/minimal/cluster_k_selection.png`
-- `results/figures/rephrased/minimal/cluster_analysis_visualization.png`
-
-##### `### PART III Summary`
-
-Baseline-minimal-rephrased rendered result:
-
-- Topic distribution and topic entropy did not show a significant Human/AI difference in the rendered baseline run.
-- GMM cluster/segregation analyses did show significant Human/AI semantic-region separation by NMI, ARI, and between/within distance ratio.
 
 ##### `# PART IV Style Baseline`
 
@@ -921,13 +1047,13 @@ Current implementation status for future notebook edits:
 
 1. **Remote-Clique** (`implemented partially`)
 
-- Current Analysis 1.1 computes upper-triangle pairwise cosine distances for descriptions and proposal-level mean distance-to-others for inference.
+- Current Analysis 2.1 computes upper-triangle pairwise cosine distances for descriptions and proposal-level mean distance-to-others for inference.
 - To report the exact Table-3 Remote-Clique value, add `RC = (1 / N^2) * sum_i sum_j d(x_i, x_j)` explicitly and export it by group.
 
 1. **Chamfer Distance** (`implemented for k=1`)
 
-- Current Analysis 1.3 implements the nearest-neighbor version: `CD = (1 / N) * sum_i min_{j != i} d(x_i, x_j)`.
-- Analysis 1.3-B adds a mean-5NN robustness variant, not the canonical k=1 Chamfer value.
+- Current Analysis 2.3 implements the nearest-neighbor version: `CD = (1 / N) * sum_i min_{j != i} d(x_i, x_j)`.
+- Analysis 2.3-B adds a mean-5NN robustness variant, not the canonical k=1 Chamfer value.
 
 1. **MST Dispersion** (`implemented`)
 
@@ -936,7 +1062,7 @@ Current implementation status for future notebook edits:
 
 1. **Span** (`implemented as Span-90 group summary`)
 
-- Current Analysis 1.2 reports mean distance to centroid and exports `diversity_span90_group_summary.csv` for percentile span.
+- Current Analysis 2.2 reports mean distance to centroid and exports `diversity_span90_group_summary.csv` for percentile span.
 
 1. **Sparseness** (`implemented`)
 
@@ -946,7 +1072,7 @@ Current implementation status for future notebook edits:
 1. **Entropy (grid-based embedding occupancy)** (`implemented`)
 
 - Project embeddings to 2D, partition into a `5 x 5` grid, compute occupancy frequencies, and report Shannon entropy plus a normalized entropy.
-- Keep this distinct from the existing LDA topic entropy in Analysis 3.3.
+- Keep this distinct from the existing LDA topic entropy in Analysis 1.3.
 
 ## Compare_reviews_ncems_criteria.ipynb
 
