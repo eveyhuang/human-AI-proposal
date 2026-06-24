@@ -1,0 +1,4 @@
+group,cluster_pair,n_a,n_b,mean_cross_dist
+Human,Cluster_A↔Cluster_B,11,12,0.7416736483573914
+Gemini,Cluster_A↔Cluster_B,2,21,0.7334014177322388
+GPT-5.2,Cluster_A↔Cluster_B,6,17,0.7141491770744324

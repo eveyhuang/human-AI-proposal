@@ -1,0 +1,9 @@
+group,cluster,n_proposals,mean_pairwise_dist
+Human,Cluster_A,11,0.19241386651992798
+Human,Cluster_B,12,0.05415857955813408
+Claude,Cluster_A,0,
+Claude,Cluster_B,23,0.0337083637714386
+Gemini,Cluster_A,2,0.24656951427459717
+Gemini,Cluster_B,21,0.03341108188033104
+GPT-5.2,Cluster_A,6,0.13031941652297974
+GPT-5.2,Cluster_B,17,0.035625457763671875

@@ -22,72 +22,72 @@ P_019,A Unified Framework for Analyses of Proteome Turnover Dynamics,Human,Human
 P_020,Predictive Synthesis Framework for Elucidating Biophysical Cell State from Spatial Transcriptomics and Proteomics,Human,Human,0.072266445,0.076769814,0.08271224,0.09177052
 P_021,Integrating AI and Molecular Dynamics Simulations for Quantitative Prediction of Enzyme Functions,Human,Human,0.074120894,0.07731442,0.0826932,0.09036139
 P_022,Discovery and functional analysis of bacterial organelles through mining and refinement of omics data,Human,Human,0.17638795,0.18217297,0.18709429,0.19464915
-P_023,A Cross-Modal Synthesis of Biomolecular Condensate Material Properties and Cellular Function Across Species and Perturbations,gpt-5.2,AI,0.073662505,0.07966118,0.08442267,0.09154621
-P_024,"Emergent Principles of Organelle Contact Sites: A Synthesis of Proteomics, Imaging, and Genetic Interaction Data",gpt-5.2,AI,0.11790947,0.12171394,0.1272169,0.1351127
-P_025,"A Pan-Cell Atlas of Cytoskeletal Self-Organization: Integrating Live-Cell Imaging, Proteomics, and Biophysical Models",gpt-5.2,AI,0.06549635,0.07057537,0.07596554,0.08365477
-P_026,"Emergent Chromatin Domains at the Mesoscale: Synthesizing Hi-C, Imaging, and Epigenomic Data to Explain 3D Genome Function",gpt-5.2,AI,0.06775124,0.073897496,0.08006864,0.08837874
-P_027,"A Unified Synthesis of Protein Complex Stoichiometry and Assembly Pathways from Structural, Proteomic, and Ribosome Profiling Data",gpt-5.2,AI,0.13569616,0.1444057,0.15104401,0.15994538
-P_028,"Mesoscale Metabolic Channeling: Synthesizing Spatial Proteomics, Metabolomics, and Enzyme Complex Data to Map Functional Microdomains",gpt-5.2,AI,0.07531539,0.08014403,0.084069654,0.09146868
-P_029,Emergent Robustness in Gene Regulatory Networks: A Synthesis of Single-Cell Perturbation Atlases Across Cell Types,gpt-5.2,AI,0.07580938,0.07826574,0.08184161,0.090044744
-P_030,"A Community Synthesis of Mesoscale Protein Quality Control: Integrating Proteostasis Networks, Aggregation Data, and Stress Responses",gpt-5.2,AI,0.072105095,0.07817003,0.08296478,0.090830736
-P_031,"Emergent Cell Polarity from Molecular Interactions: Synthesizing Spatial Transcriptomics, Proteomics, and Imaging Across Epithelia",gpt-5.2,AI,0.119531706,0.12421463,0.12855354,0.1340427
-P_032,"A Synthesis of Mitochondrial Network Emergence: Linking Morphodynamics, Proteostasis, and Bioenergetics Across Cell Types",gpt-5.2,AI,0.06842522,0.07552455,0.081189476,0.08843786
-P_033,"Emergent Signaling Specificity: Integrating Single-Cell Phospho-Proteomics, Kinase Networks, and Imaging to Decode Pathway Crosstalk",gpt-5.2,AI,0.07582124,0.07961599,0.083749875,0.09208905
-P_034,A Comparative Synthesis of Ribosome Heterogeneity and Specialized Translation Across Tissues and Stress Conditions,gpt-5.2,AI,0.07703225,0.08038507,0.08422018,0.0911483
-P_035,"Emergent Properties of Membrane Microdomains: Integrating Lipidomics, Proteomics, and Super-Resolution Imaging of Raft-Like Assemblies",gpt-5.2,AI,0.13423188,0.13709974,0.14021304,0.14624129
-P_036,A Multi-Scale Synthesis of Endocytic Trafficking Emergence: From Coat Assembly to Organelle Identity,gpt-5.2,AI,0.069719955,0.07580236,0.081351005,0.08889842
-P_037,"Emergent Control of Cell Cycle Transitions: Integrating Single-Cell Time Series, Proteomics, and Perturbation Screens",gpt-5.2,AI,0.07535895,0.07853843,0.08333166,0.09027961
-P_038,"A Synthesis of Nuclear Body Emergence: Integrating Proteomics, RNA Localization, and Imaging of Speckles, Nucleoli, and PML Bodies",gpt-5.2,AI,0.06973213,0.07379149,0.07865575,0.08781055
-P_039,"Emergent Antibiotic Tolerance Mechanisms: Synthesizing Bacterial Single-Cell Physiology, Transcriptomics, and Metabolic Models",gpt-5.2,AI,0.13080136,0.13634679,0.14373851,0.1525136
-P_040,"A Cross-Species Synthesis of Autophagosome Biogenesis: Integrating Proteomics, Lipid Signatures, and Imaging Dynamics",gpt-5.2,AI,0.07262458,0.07860179,0.08320407,0.08943323
-P_041,"Emergent RNA Localization Codes: Synthesizing Subcellular Transcriptomics, RBP Binding Maps, and Imaging to Predict RNA Destinations",gpt-5.2,AI,0.123825446,0.12632717,0.13026412,0.13762088
-P_042,"A Community Meta-Analysis of Multivesicular Body and Exosome Biogenesis: Integrating ESCRT Networks, Proteomics, and Imaging",gpt-5.2,AI,0.06976964,0.076877564,0.08242826,0.09140784
-P_043,"Emergent Mechanics of the Nucleus: Integrating Lamin Variants, Chromatin State, and Microscopy-Based Deformation Phenotypes",gpt-5.2,AI,0.07681544,0.08400558,0.09089586,0.09891683
-P_044,"A Synthesis of Spatially Structured Immune Synapse Formation: Integrating Imaging, Proteomics, and Signaling Perturbation Data",gpt-5.2,AI,0.06612648,0.072682396,0.07848426,0.08716143
-P_045,"Emergent Principles of Protein Allostery at Scale: Integrating Structural Ensembles, Mutational Scans, and Functional Genomics",gpt-5.2,AI,0.0731835,0.07575834,0.07909373,0.085957214
-P_046,Deciphering the Sequence-to-Emergent-Property Grammar of Biomolecular Condensates,gemini-3-pro-preview,AI,0.070073165,0.07542244,0.082066044,0.088760644
-P_047,Emergence of Cellular Morphology from Cytoskeletal Crosstalk and Motor Protein Dynamics,gemini-3-pro-preview,AI,0.0681252,0.07105739,0.075788364,0.08329621
-P_048,Synthesizing the Emergent Properties of Chromatin Topology and Epigenetic Memory,gemini-3-pro-preview,AI,0.06772534,0.071363315,0.07579893,0.08270404
-P_049,Emergence of Metabolic Adaptation through Mitochondrial Reticular Network Dynamics,gemini-3-pro-preview,AI,0.067679,0.073106915,0.07793126,0.085259296
-P_050,Decoding the Mesoscale Emergence of Lipid Raft Clustering and Transmembrane Signaling,gemini-3-pro-preview,AI,0.06780692,0.07268776,0.07724233,0.0836829
-P_051,Uncovering the Rules of Nucleolar Assembly and Ribosome Biogenesis Emergence,gemini-3-pro-preview,AI,0.0686596,0.072778866,0.07708721,0.08388634
-P_052,Emergent Dynamics of Synaptic Vesicle Pools and Neurotransmitter Release Probability,gemini-3-pro-preview,AI,0.074443296,0.077128105,0.08258344,0.09092524
-P_053,Synthesizing the Mechanotransductive Emergence of Focal Adhesion Maturation,gemini-3-pro-preview,AI,0.07186873,0.0791256,0.08601177,0.09280034
-P_054,Decoding the Emergence of Stress Granules and Cellular Resilience Networks,gemini-3-pro-preview,AI,0.06784238,0.07301628,0.07819066,0.08475906
-P_055,Emergent Transport Selectivity of the Nuclear Pore Complex Assembly,gemini-3-pro-preview,AI,0.07772477,0.08073287,0.085658915,0.09264496
-P_056,Synthesizing the Emergence of Autophagosomes at ER-Mitochondria Contact Sites,gemini-3-pro-preview,AI,0.070727035,0.076349154,0.08185743,0.08918983
-P_057,Emergent Cargo Sorting Dynamics in Extracellular Vesicle Biogenesis,gemini-3-pro-preview,AI,0.06634796,0.07092535,0.07596044,0.083363205
-P_058,Decoding the Emergence of Viral Inclusion Bodies and Host Cell Hijacking,gemini-3-pro-preview,AI,0.06852945,0.07398656,0.0792315,0.08730935
-P_059,Synthesizing the Emergent Biophysics of Centrosome Maturation and Spindle Bipolarity,gemini-3-pro-preview,AI,0.07333149,0.07712534,0.08219151,0.09071608
-P_060,Emergence of Secretory Flux from Golgi Cisternal Stacking Dynamics,gemini-3-pro-preview,AI,0.065854825,0.07170946,0.07719867,0.08396929
-P_061,Decoding the Emergent Assembly of Plant Cell Wall Cellulose Synthase Rosettes,gemini-3-pro-preview,AI,0.07313566,0.07837709,0.08420688,0.091034606
-P_062,Synthesizing the Emergent Assembly of Bacterial Microcompartments,gemini-3-pro-preview,AI,0.18517214,0.1873179,0.19000739,0.19576731
-P_063,Emergence of Lipid Homeostasis through Peroxisome Biogenesis Networks,gemini-3-pro-preview,AI,0.06744717,0.07281055,0.07736491,0.08434446
-P_064,Decoding the Emergent Membrane Scission Dynamics of the ESCRT Machinery,gemini-3-pro-preview,AI,0.07238891,0.07684104,0.08193122,0.089007035
-P_065,Synthesizing the Emergent Architecture of the Cellular Glycocalyx Meshwork,gemini-3-pro-preview,AI,0.1504986,0.15404099,0.157805,0.16434608
-P_066,Emergent Contractility from Myosin II Thick Filament Assembly in Non-Muscle Cells,gemini-3-pro-preview,AI,0.06796141,0.07294569,0.07827254,0.08513969
-P_067,Decoding the Emergent Dynamics of Proteasome Clustering and Localized Degradation,gemini-3-pro-preview,AI,0.06601872,0.07022812,0.074985474,0.08250595
-P_068,Synthesizing the Emergent Meshwork of the Nuclear Lamina and Genome Tethering,gemini-3-pro-preview,AI,0.07077889,0.07585738,0.082643434,0.091187306
-P_069,Decoding the Emergent Logic of Phase-Separated Condensates: A Multi-Scale Data Synthesis of Biomolecular Organization Principles,claude-opus-4-5,AI,0.071651004,0.074487776,0.07777385,0.08336223
-P_070,"Temporal Emergence in Protein Interaction Networks: Synthesizing Dynamic Interactomics Across Cell Cycle, Circadian, and Stress Response Programs",claude-opus-4-5,AI,0.07440227,0.07648788,0.08040185,0.08804521
-P_071,"The Mesoscale Architecture of Mitochondrial Contact Sites: Integrating Structural, Proteomic, and Functional Data to Understand Emergent Organelle Communication",claude-opus-4-5,AI,0.07588793,0.080695495,0.085848644,0.09310282
-P_072,"Emergent Properties of the Cellular Crowding Landscape: Synthesizing Biophysical, Structural, and Systems Data to Understand Macromolecular Organization",claude-opus-4-5,AI,0.06527573,0.0692295,0.07439518,0.08111524
-P_073,"Deciphering the Emergence of Cellular Polarity: Multi-Scale Data Synthesis Across Molecular, Mesoscale, and Cellular Organization",claude-opus-4-5,AI,0.06633234,0.07075475,0.076016225,0.08312696
-P_074,"The Grammar of Intrinsically Disordered Regions: Synthesizing Sequence, Structure, and Function Data to Predict Emergent Behaviors",claude-opus-4-5,AI,0.07421589,0.07809971,0.08133967,0.08776317
-P_075,"Emergent Organization of the Cytoskeletal Interactome: Integrating Structural, Dynamic, and Functional Data Across Actin, Microtubule, and Intermediate Filament Networks",claude-opus-4-5,AI,0.06733842,0.0733801,0.078824475,0.08554947
-P_076,Synthesizing the Spatiotemporal Logic of Post-Translational Modification Crosstalk: From Molecular Signals to Emergent Cellular Decisions,claude-opus-4-5,AI,0.074417815,0.07684666,0.080661,0.08699741
-P_077,"The Emergent Architecture of Stress Granules: Multi-Modal Data Synthesis to Understand Assembly, Composition, and Function",claude-opus-4-5,AI,0.07050119,0.07565577,0.08030138,0.08737863
-P_078,"Decoding Emergent Metabolic Channeling: Synthesizing Structural, Interaction, and Flux Data to Understand Metabolon Organization",claude-opus-4-5,AI,0.07563974,0.07776793,0.08100359,0.08793847
-P_079,"The Emergence of Ribosome Heterogeneity: Synthesizing Structural, Compositional, and Translational Data to Understand Specialized Ribosomes",claude-opus-4-5,AI,0.06765572,0.07150118,0.07505492,0.08236479
-P_080,"Emergent Properties of the Nuclear Pore Complex: Integrating Structural, Transport, and Regulatory Data Across Scales",claude-opus-4-5,AI,0.075037144,0.07881263,0.08414628,0.09108572
-P_081,"The Emergence of Cellular Memory: Synthesizing Epigenetic, Transcriptional, and Chromatin Data to Understand Heritable Cell States",claude-opus-4-5,AI,0.06873797,0.07190844,0.0756094,0.08265803
-P_082,"Decoding the Emergent Logic of Protein Quality Control Networks: Multi-Scale Synthesis of Chaperone, Degradation, and Aggregation Data",claude-opus-4-5,AI,0.07521224,0.07771472,0.08143078,0.08863912
-P_083,"The Emergence of Signaling Specificity: Synthesizing Interaction, Localization, and Kinetic Data to Understand Pathway Insulation",claude-opus-4-5,AI,0.0700462,0.07310283,0.0768561,0.082595445
-P_084,"Emergent Properties of the Centrosome: Integrating Structural, Compositional, and Functional Data to Understand Microtubule Organizing Center Function",claude-opus-4-5,AI,0.07190666,0.078169085,0.08401718,0.09108442
-P_085,"The Emergence of Autophagosome Selectivity: Synthesizing Receptor, Cargo, and Membrane Data to Understand Selective Autophagy",claude-opus-4-5,AI,0.072156176,0.074765846,0.07809481,0.084187984
-P_086,"Decoding Emergent mRNA Fate Decisions: Synthesizing RNA-Protein Interaction, Localization, and Decay Data",claude-opus-4-5,AI,0.06601477,0.067432724,0.07034206,0.077069275
-P_087,"The Emergence of Synaptic Organization: Integrating Proteomic, Structural, and Functional Data Across Synaptic Compartments",claude-opus-4-5,AI,0.066930056,0.06989197,0.074614,0.082194574
-P_088,"Emergent Properties of the Glycocalyx: Synthesizing Glycomic, Proteomic, and Functional Data to Understand Cell Surface Organization",claude-opus-4-5,AI,0.07111226,0.07527246,0.080006085,0.08726838
-P_089,"The Emergence of Enhancer-Promoter Specificity: Synthesizing Chromatin, Transcription, and 3D Genome Data",claude-opus-4-5,AI,0.066546306,0.06970735,0.073892154,0.08215544
-P_090,"Decoding the Emergent Organization of the Endoplasmic Reticulum: Multi-Scale Synthesis of Structure, Function, and Dynamics",claude-opus-4-5,AI,0.068023905,0.072104484,0.07603327,0.083099365
-P_091,"The Emergence of Cellular Mechanoresponses: Synthesizing Force, Structural, and Signaling Data Across Mechanotransduction Pathways",claude-opus-4-5,AI,0.07882184,0.08275641,0.08652257,0.09353748
+P_023,A Cross-Modal Synthesis of Biomolecular Condensate Material Properties and Cellular Function Across Species and Perturbations,GPT-5.2,AI,0.073662505,0.07966118,0.08442267,0.09154621
+P_024,"Emergent Principles of Organelle Contact Sites: A Synthesis of Proteomics, Imaging, and Genetic Interaction Data",GPT-5.2,AI,0.11790947,0.12171394,0.1272169,0.1351127
+P_025,"A Pan-Cell Atlas of Cytoskeletal Self-Organization: Integrating Live-Cell Imaging, Proteomics, and Biophysical Models",GPT-5.2,AI,0.06549635,0.07057537,0.07596554,0.08365477
+P_026,"Emergent Chromatin Domains at the Mesoscale: Synthesizing Hi-C, Imaging, and Epigenomic Data to Explain 3D Genome Function",GPT-5.2,AI,0.06775124,0.073897496,0.08006864,0.08837874
+P_027,"A Unified Synthesis of Protein Complex Stoichiometry and Assembly Pathways from Structural, Proteomic, and Ribosome Profiling Data",GPT-5.2,AI,0.13569616,0.1444057,0.15104401,0.15994538
+P_028,"Mesoscale Metabolic Channeling: Synthesizing Spatial Proteomics, Metabolomics, and Enzyme Complex Data to Map Functional Microdomains",GPT-5.2,AI,0.07531539,0.08014403,0.084069654,0.09146868
+P_029,Emergent Robustness in Gene Regulatory Networks: A Synthesis of Single-Cell Perturbation Atlases Across Cell Types,GPT-5.2,AI,0.07580938,0.07826574,0.08184161,0.090044744
+P_030,"A Community Synthesis of Mesoscale Protein Quality Control: Integrating Proteostasis Networks, Aggregation Data, and Stress Responses",GPT-5.2,AI,0.072105095,0.07817003,0.08296478,0.090830736
+P_031,"Emergent Cell Polarity from Molecular Interactions: Synthesizing Spatial Transcriptomics, Proteomics, and Imaging Across Epithelia",GPT-5.2,AI,0.119531706,0.12421463,0.12855354,0.1340427
+P_032,"A Synthesis of Mitochondrial Network Emergence: Linking Morphodynamics, Proteostasis, and Bioenergetics Across Cell Types",GPT-5.2,AI,0.06842522,0.07552455,0.081189476,0.08843786
+P_033,"Emergent Signaling Specificity: Integrating Single-Cell Phospho-Proteomics, Kinase Networks, and Imaging to Decode Pathway Crosstalk",GPT-5.2,AI,0.07582124,0.07961599,0.083749875,0.09208905
+P_034,A Comparative Synthesis of Ribosome Heterogeneity and Specialized Translation Across Tissues and Stress Conditions,GPT-5.2,AI,0.07703225,0.08038507,0.08422018,0.0911483
+P_035,"Emergent Properties of Membrane Microdomains: Integrating Lipidomics, Proteomics, and Super-Resolution Imaging of Raft-Like Assemblies",GPT-5.2,AI,0.13423188,0.13709974,0.14021304,0.14624129
+P_036,A Multi-Scale Synthesis of Endocytic Trafficking Emergence: From Coat Assembly to Organelle Identity,GPT-5.2,AI,0.069719955,0.07580236,0.081351005,0.08889842
+P_037,"Emergent Control of Cell Cycle Transitions: Integrating Single-Cell Time Series, Proteomics, and Perturbation Screens",GPT-5.2,AI,0.07535895,0.07853843,0.08333166,0.09027961
+P_038,"A Synthesis of Nuclear Body Emergence: Integrating Proteomics, RNA Localization, and Imaging of Speckles, Nucleoli, and PML Bodies",GPT-5.2,AI,0.06973213,0.07379149,0.07865575,0.08781055
+P_039,"Emergent Antibiotic Tolerance Mechanisms: Synthesizing Bacterial Single-Cell Physiology, Transcriptomics, and Metabolic Models",GPT-5.2,AI,0.13080136,0.13634679,0.14373851,0.1525136
+P_040,"A Cross-Species Synthesis of Autophagosome Biogenesis: Integrating Proteomics, Lipid Signatures, and Imaging Dynamics",GPT-5.2,AI,0.07262458,0.07860179,0.08320407,0.08943323
+P_041,"Emergent RNA Localization Codes: Synthesizing Subcellular Transcriptomics, RBP Binding Maps, and Imaging to Predict RNA Destinations",GPT-5.2,AI,0.123825446,0.12632717,0.13026412,0.13762088
+P_042,"A Community Meta-Analysis of Multivesicular Body and Exosome Biogenesis: Integrating ESCRT Networks, Proteomics, and Imaging",GPT-5.2,AI,0.06976964,0.076877564,0.08242826,0.09140784
+P_043,"Emergent Mechanics of the Nucleus: Integrating Lamin Variants, Chromatin State, and Microscopy-Based Deformation Phenotypes",GPT-5.2,AI,0.07681544,0.08400558,0.09089586,0.09891683
+P_044,"A Synthesis of Spatially Structured Immune Synapse Formation: Integrating Imaging, Proteomics, and Signaling Perturbation Data",GPT-5.2,AI,0.06612648,0.072682396,0.07848426,0.08716143
+P_045,"Emergent Principles of Protein Allostery at Scale: Integrating Structural Ensembles, Mutational Scans, and Functional Genomics",GPT-5.2,AI,0.0731835,0.07575834,0.07909373,0.085957214
+P_046,Deciphering the Sequence-to-Emergent-Property Grammar of Biomolecular Condensates,Gemini,AI,0.070073165,0.07542244,0.082066044,0.088760644
+P_047,Emergence of Cellular Morphology from Cytoskeletal Crosstalk and Motor Protein Dynamics,Gemini,AI,0.0681252,0.07105739,0.075788364,0.08329621
+P_048,Synthesizing the Emergent Properties of Chromatin Topology and Epigenetic Memory,Gemini,AI,0.06772534,0.071363315,0.07579893,0.08270404
+P_049,Emergence of Metabolic Adaptation through Mitochondrial Reticular Network Dynamics,Gemini,AI,0.067679,0.073106915,0.07793126,0.085259296
+P_050,Decoding the Mesoscale Emergence of Lipid Raft Clustering and Transmembrane Signaling,Gemini,AI,0.06780692,0.07268776,0.07724233,0.0836829
+P_051,Uncovering the Rules of Nucleolar Assembly and Ribosome Biogenesis Emergence,Gemini,AI,0.0686596,0.072778866,0.07708721,0.08388634
+P_052,Emergent Dynamics of Synaptic Vesicle Pools and Neurotransmitter Release Probability,Gemini,AI,0.074443296,0.077128105,0.08258344,0.09092524
+P_053,Synthesizing the Mechanotransductive Emergence of Focal Adhesion Maturation,Gemini,AI,0.07186873,0.0791256,0.08601177,0.09280034
+P_054,Decoding the Emergence of Stress Granules and Cellular Resilience Networks,Gemini,AI,0.06784238,0.07301628,0.07819066,0.08475906
+P_055,Emergent Transport Selectivity of the Nuclear Pore Complex Assembly,Gemini,AI,0.07772477,0.08073287,0.085658915,0.09264496
+P_056,Synthesizing the Emergence of Autophagosomes at ER-Mitochondria Contact Sites,Gemini,AI,0.070727035,0.076349154,0.08185743,0.08918983
+P_057,Emergent Cargo Sorting Dynamics in Extracellular Vesicle Biogenesis,Gemini,AI,0.06634796,0.07092535,0.07596044,0.083363205
+P_058,Decoding the Emergence of Viral Inclusion Bodies and Host Cell Hijacking,Gemini,AI,0.06852945,0.07398656,0.0792315,0.08730935
+P_059,Synthesizing the Emergent Biophysics of Centrosome Maturation and Spindle Bipolarity,Gemini,AI,0.07333149,0.07712534,0.08219151,0.09071608
+P_060,Emergence of Secretory Flux from Golgi Cisternal Stacking Dynamics,Gemini,AI,0.065854825,0.07170946,0.07719867,0.08396929
+P_061,Decoding the Emergent Assembly of Plant Cell Wall Cellulose Synthase Rosettes,Gemini,AI,0.07313566,0.07837709,0.08420688,0.091034606
+P_062,Synthesizing the Emergent Assembly of Bacterial Microcompartments,Gemini,AI,0.18517214,0.1873179,0.19000739,0.19576731
+P_063,Emergence of Lipid Homeostasis through Peroxisome Biogenesis Networks,Gemini,AI,0.06744717,0.07281055,0.07736491,0.08434446
+P_064,Decoding the Emergent Membrane Scission Dynamics of the ESCRT Machinery,Gemini,AI,0.07238891,0.07684104,0.08193122,0.089007035
+P_065,Synthesizing the Emergent Architecture of the Cellular Glycocalyx Meshwork,Gemini,AI,0.1504986,0.15404099,0.157805,0.16434608
+P_066,Emergent Contractility from Myosin II Thick Filament Assembly in Non-Muscle Cells,Gemini,AI,0.06796141,0.07294569,0.07827254,0.08513969
+P_067,Decoding the Emergent Dynamics of Proteasome Clustering and Localized Degradation,Gemini,AI,0.06601872,0.07022812,0.074985474,0.08250595
+P_068,Synthesizing the Emergent Meshwork of the Nuclear Lamina and Genome Tethering,Gemini,AI,0.07077889,0.07585738,0.082643434,0.091187306
+P_069,Decoding the Emergent Logic of Phase-Separated Condensates: A Multi-Scale Data Synthesis of Biomolecular Organization Principles,Claude,AI,0.071651004,0.074487776,0.07777385,0.08336223
+P_070,"Temporal Emergence in Protein Interaction Networks: Synthesizing Dynamic Interactomics Across Cell Cycle, Circadian, and Stress Response Programs",Claude,AI,0.07440227,0.07648788,0.08040185,0.08804521
+P_071,"The Mesoscale Architecture of Mitochondrial Contact Sites: Integrating Structural, Proteomic, and Functional Data to Understand Emergent Organelle Communication",Claude,AI,0.07588793,0.080695495,0.085848644,0.09310282
+P_072,"Emergent Properties of the Cellular Crowding Landscape: Synthesizing Biophysical, Structural, and Systems Data to Understand Macromolecular Organization",Claude,AI,0.06527573,0.0692295,0.07439518,0.08111524
+P_073,"Deciphering the Emergence of Cellular Polarity: Multi-Scale Data Synthesis Across Molecular, Mesoscale, and Cellular Organization",Claude,AI,0.06633234,0.07075475,0.076016225,0.08312696
+P_074,"The Grammar of Intrinsically Disordered Regions: Synthesizing Sequence, Structure, and Function Data to Predict Emergent Behaviors",Claude,AI,0.07421589,0.07809971,0.08133967,0.08776317
+P_075,"Emergent Organization of the Cytoskeletal Interactome: Integrating Structural, Dynamic, and Functional Data Across Actin, Microtubule, and Intermediate Filament Networks",Claude,AI,0.06733842,0.0733801,0.078824475,0.08554947
+P_076,Synthesizing the Spatiotemporal Logic of Post-Translational Modification Crosstalk: From Molecular Signals to Emergent Cellular Decisions,Claude,AI,0.074417815,0.07684666,0.080661,0.08699741
+P_077,"The Emergent Architecture of Stress Granules: Multi-Modal Data Synthesis to Understand Assembly, Composition, and Function",Claude,AI,0.07050119,0.07565577,0.08030138,0.08737863
+P_078,"Decoding Emergent Metabolic Channeling: Synthesizing Structural, Interaction, and Flux Data to Understand Metabolon Organization",Claude,AI,0.07563974,0.07776793,0.08100359,0.08793847
+P_079,"The Emergence of Ribosome Heterogeneity: Synthesizing Structural, Compositional, and Translational Data to Understand Specialized Ribosomes",Claude,AI,0.06765572,0.07150118,0.07505492,0.08236479
+P_080,"Emergent Properties of the Nuclear Pore Complex: Integrating Structural, Transport, and Regulatory Data Across Scales",Claude,AI,0.075037144,0.07881263,0.08414628,0.09108572
+P_081,"The Emergence of Cellular Memory: Synthesizing Epigenetic, Transcriptional, and Chromatin Data to Understand Heritable Cell States",Claude,AI,0.06873797,0.07190844,0.0756094,0.08265803
+P_082,"Decoding the Emergent Logic of Protein Quality Control Networks: Multi-Scale Synthesis of Chaperone, Degradation, and Aggregation Data",Claude,AI,0.07521224,0.07771472,0.08143078,0.08863912
+P_083,"The Emergence of Signaling Specificity: Synthesizing Interaction, Localization, and Kinetic Data to Understand Pathway Insulation",Claude,AI,0.0700462,0.07310283,0.0768561,0.082595445
+P_084,"Emergent Properties of the Centrosome: Integrating Structural, Compositional, and Functional Data to Understand Microtubule Organizing Center Function",Claude,AI,0.07190666,0.078169085,0.08401718,0.09108442
+P_085,"The Emergence of Autophagosome Selectivity: Synthesizing Receptor, Cargo, and Membrane Data to Understand Selective Autophagy",Claude,AI,0.072156176,0.074765846,0.07809481,0.084187984
+P_086,"Decoding Emergent mRNA Fate Decisions: Synthesizing RNA-Protein Interaction, Localization, and Decay Data",Claude,AI,0.06601477,0.067432724,0.07034206,0.077069275
+P_087,"The Emergence of Synaptic Organization: Integrating Proteomic, Structural, and Functional Data Across Synaptic Compartments",Claude,AI,0.066930056,0.06989197,0.074614,0.082194574
+P_088,"Emergent Properties of the Glycocalyx: Synthesizing Glycomic, Proteomic, and Functional Data to Understand Cell Surface Organization",Claude,AI,0.07111226,0.07527246,0.080006085,0.08726838
+P_089,"The Emergence of Enhancer-Promoter Specificity: Synthesizing Chromatin, Transcription, and 3D Genome Data",Claude,AI,0.066546306,0.06970735,0.073892154,0.08215544
+P_090,"Decoding the Emergent Organization of the Endoplasmic Reticulum: Multi-Scale Synthesis of Structure, Function, and Dynamics",Claude,AI,0.068023905,0.072104484,0.07603327,0.083099365
+P_091,"The Emergence of Cellular Mechanoresponses: Synthesizing Force, Structural, and Signaling Data Across Mechanotransduction Pathways",Claude,AI,0.07882184,0.08275641,0.08652257,0.09353748

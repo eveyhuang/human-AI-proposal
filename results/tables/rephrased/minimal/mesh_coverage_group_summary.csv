@@ -1,0 +1,5 @@
+group,n_proposals,mean_unique_mesh,median_unique_mesh,std_unique_mesh,group_union_unique_mesh
+Human,23,79.57,71.0,32.42,750
+Claude,23,62.39,63.0,7.89,197
+Gemini,23,57.52,53.0,20.0,339
+GPT-5.2,23,68.3,61.0,29.07,450

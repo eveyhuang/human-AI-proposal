@@ -40,6 +40,90 @@ and where it is consumed downstream.
 | `data/embeddings/literature/relevant_literature_embeddings.pkl`                | Prepared literature embeddings used for proposal-to-literature distance calculations                                                  | `compare_proposals_rephrased.ipynb`                                                         |
 | `data/embeddings/reviews/minimal/ncems_criteria/review_embeddings_minimal.pkl` | Prepared NCEMS review embeddings with metadata + `review_uid` alignment                                                               | `compare_reviews_ncems_criteria.ipynb`                                                      |
 | `data/embeddings/reviews/minimal/novelty/review_embeddings_minimal.pkl`        | Prepared novelty review embeddings with metadata + `review_uid` alignment                                                             | `compare_reviews_novelty.ipynb` (future-ready; current core analysis is score-table based)  |
+|   `data/embeddings/literature/lit_lda_model.pkl`                         |   [UPDATE] Supplementary lexical LDA model (K topics) fitted on literature abstracts; used as a lexical robustness/comparison layer, not as the primary UMAP region definition      | `compare_proposals_rephrased.ipynb` (supplementary lexical analyses; Analyses 3.6b, 3.8 sensitivity)                                     |
+|   `data/prepared/rephrased/minimal/lit_topic_assignments.csv`             |   [UPDATE] Per-article supplementary LDA dominant topic index + soft topic probabilities for all 39538 literature articles                               | `compare_proposals_rephrased.ipynb` (supplementary lexical analyses; Analyses 3.6b, 3.8 sensitivity)                                     |
+| [UPDATE] `data/embeddings/literature/lit_bertopic_model.pkl`              | [UPDATE] BERTopic model fitted on existing BioLinkBERT-large literature embeddings; defines embedding-native literature topic/region labels via UMAP + clustering + c-TF-IDF topic representations | `prepare_data_for_analysis.ipynb` (new Section 12), `compare_proposals_rephrased.ipynb` (Analyses 3.5, 3.6, 3.8) |
+| [UPDATE] `data/prepared/rephrased/minimal/lit_bertopic_assignments.csv`   | [UPDATE] Per-literature-article embedding-native region label (`bertopic_topic`), optional probability/confidence, outlier flag, and human-readable c-TF-IDF label/top terms | `compare_proposals_rephrased.ipynb` (Analyses 3.5, 3.6, 3.8) |
+| [UPDATE] `data/prepared/rephrased/minimal/lit_bertopic_topic_info.csv`    | [UPDATE] Per-BERTopic-region metadata: topic id, article count, top c-TF-IDF words, representative documents/titles, and display label for UMAP annotation | `compare_proposals_rephrased.ipynb` (Analysis 3.5) |
+|   `data/embeddings/literature/lit_umap_reducer.pkl`                       |   UMAP reducer fitted on all 39538 literature embeddings (1024d); used to project proposals into the literature landscape via `transform()`, not refit | `compare_proposals_rephrased.ipynb` (Analysis 3.5)                                          |
+|   `data/embeddings/literature/lit_umap2d.npy`                             |   2D UMAP coordinates for all 39538 literature articles (shape 39538×2)                                                          | `compare_proposals_rephrased.ipynb` (Analysis 3.5)                                          |
+| [UPDATE] `results/figures/rephrased/minimal/literature_umap_bertopic_regions_prepare.png` | [UPDATE] Literature-only diagnostic UMAP: all literature articles colored by embedding-native BERTopic region with region labels annotated; no proposal overlay | `prepare_data_for_analysis.ipynb` (Section 13 diagnostic visualization) |
+
+
+###   New `prepare_data_for_analysis.ipynb` Sections
+
+[UPDATE] The following three sections must be added to `prepare_data_for_analysis.ipynb` after the existing `## 9. Review Embeddings` section and before `## 10. Artifact Summary`. All outputs are cached (skip-if-exists logic) and are loaded by `compare_proposals_rephrased.ipynb` without re-fitting.
+
+####   `## 11. Literature Topic Modeling (LDA)` [UPDATE: supplementary lexical topic model]
+
+[UPDATE] **Role in the analysis**: LDA is retained as a supplementary lexical topic model because it captures word co-occurrence themes, not necessarily the semantic neighborhoods visible in the BioLinkBERT/UMAP geometry. LDA topic labels should not be used as the primary coloring or region definition for the literature UMAP. They are used for lexical robustness checks, LDA-vs-embedding-topic agreement diagnostics, and optional supplementary tables.
+
+Step-by-step:
+
+1.   Load literature abstracts from `lit_payload['texts']` (already in memory after Section 8). Filter to articles with non-empty abstracts (`has_abstract = abstract.strip() != ''`; approximately 39172/39538 articles).
+2.   Fit `CountVectorizer(max_features=3000, min_df=3, max_df=0.7, stop_words='english', ngram_range=(1,2))` on the non-empty abstract texts. Use the same domain stopword strategy as Analysis 1.1 in the proposal notebook.
+3.   Fit LDA with `n_topics=K` (start with K=10; run sensitivity for K=8,12,15 and select by perplexity on a held-out 10% split). Use `doc_topic_prior=0.1, topic_word_prior=0.1, max_iter=50, batch_size=128, random_state=42`. Print top-15 words per topic for human interpretability check.
+4.   Assign each article its dominant topic (`argmax` of document-topic distribution) and save full soft probabilities. For the ~366 articles with empty abstracts, assign topic label `−1` (no topic).
+5.   Save `lit_lda_model.pkl` to `data/embeddings/literature/` (for potential `transform()` on new documents) and `lit_topic_assignments.csv` to `data/prepared/rephrased/minimal/` with columns: `pmid`, `dominant_topic`, `topic_prob_0..K-1`.
+
+Saved artifacts:
+
+-   `data/embeddings/literature/lit_lda_model.pkl`
+-   `data/prepared/rephrased/minimal/lit_topic_assignments.csv`
+
+#### [UPDATE] `## 12. Literature Embedding Topic Regions (BERTopic)`
+
+[UPDATE] **Motivation**: The literature UMAP is built from BioLinkBERT-large embeddings, while LDA topics are built from bag-of-words count features. If LDA labels do not align with visible UMAP islands, the plot becomes hard to interpret and can mislead readers about which "topic regions" proposals occupy. This section therefore defines literature regions using an embedding-native topic model: BERTopic fitted on the existing BioLinkBERT-large literature embeddings. Text is used afterward only to generate human-readable c-TF-IDF labels for each embedding cluster.
+
+[UPDATE] **Dependency note**: Add `bertopic` and `umap-learn` to the project environment. Use the already-computed literature embeddings; do not let BERTopic recompute default sentence-transformer embeddings.
+
+[UPDATE] Step-by-step:
+
+1. [UPDATE] Load literature titles + abstracts from `lit_payload['texts']` / `articles` and existing BioLinkBERT-large literature embeddings from `data/embeddings/literature/relevant_literature_embeddings.pkl`. L2-normalize embeddings exactly as in the literature-distance pipeline.
+2. [UPDATE] Fit BERTopic on the literature corpus only: `topics, probs = topic_model.fit_transform(lit_texts, X_lit)`. The documents are titles + abstracts; embeddings are the precomputed BioLinkBERT-large vectors. Proposals are not included in the BERTopic fit, so they cannot reshape the reference field map.
+3. [UPDATE] Configure BERTopic to use an embedding-space clustering pipeline appropriate for ~39k biomedical abstracts. Starting configuration:
+   - `UMAP(n_neighbors=30, n_components=5, min_dist=0.0, metric='cosine', random_state=42, low_memory=True)` for BERTopic's internal dimensionality reduction.
+   - [UPDATE] `MiniBatchKMeans(n_clusters=12, random_state=42, batch_size=2048, n_init=20)` as BERTopic's clustering model. HDBSCAN produced only two broad density masses in the 39k-article BioLinkBERT space; a fixed-granularity clusterer is better for the intended 10-15 interpretable literature-map regions.
+   - [UPDATE] `CountVectorizer(stop_words='english', ngram_range=(1,2), min_df=1, max_df=1.0, max_features=10000)` for c-TF-IDF topic labels; use permissive df thresholds because BERTopic applies this vectorizer to topic-level aggregate documents after clustering, where strict `min_df`/`max_df` settings can fail if the number of discovered topics is small. Use the same domain stopword strategy developed for proposal LDA where helpful.
+4. [UPDATE] Generate human-readable topic/region labels from BERTopic topic representations: save top c-TF-IDF words, representative titles/abstracts, article count, and a short display label for each non-outlier topic. Treat BERTopic topic `-1` as "embedding outlier / unassigned region".
+5. [UPDATE] Save a per-article assignment table aligned to the literature embedding order with columns: `article_idx`, `pmid`, `bertopic_topic`, `bertopic_is_outlier`, `bertopic_prob` when available, `bertopic_label`, and top-term columns or a serialized `top_terms` string.
+6. [UPDATE] Save the fitted BERTopic model and topic-info table for reuse. Do not recompute if all three output artifacts already exist.
+7. [UPDATE] Run sensitivity diagnostics before using labels in the paper: vary `n_clusters` (e.g., 10, 12, 15) and report region sizes, c-TF-IDF label interpretability, and qualitative stability of proposal-region assignments. The primary setting is `n_clusters=12`, but the final interpretation should not depend on one fragile granularity setting.
+8. [UPDATE] Compare BERTopic embedding-region labels against LDA labels using ARI/NMI and a contingency heatmap. Low agreement is not a failure; it supports reporting LDA as lexical structure and BERTopic as embedding-region structure.
+
+[UPDATE] Saved artifacts:
+
+- [UPDATE] `data/embeddings/literature/lit_bertopic_model.pkl`
+- [UPDATE] `data/prepared/rephrased/minimal/lit_bertopic_assignments.csv`
+- [UPDATE] `data/prepared/rephrased/minimal/lit_bertopic_topic_info.csv`
+- [UPDATE] `results/tables/rephrased/minimal/lit_lda_bertopic_agreement.csv`
+- [UPDATE] `results/figures/rephrased/minimal/lit_lda_bertopic_contingency.png`
+
+#### [UPDATE] `## 13. Literature-Space UMAP (Literature Only)`
+
+**Note**: Fitting UMAP on 39538 × 1024d embeddings is the most expensive step in the entire pipeline (~10–30 minutes on CPU). This must be cached with a skip-if-exists check on both output files. Do NOT refit if outputs already exist.
+
+[UPDATE] **Role in the analysis**: This section fits/caches the fixed 2D literature map on literature embeddings only. The UMAP coordinates provide the visual map; BERTopic labels from Section 12 provide the primary region colors/labels on that map. It does **not** load, project, map, or save proposal coordinates. Proposal projection into this saved literature reducer happens only in `compare_proposals_rephrased.ipynb`.
+
+Step-by-step:
+
+1.   Load `X_lit` from `lit_payload['embeddings']` (already in memory from Section 8) and L2-normalize. Do not load proposal embeddings in this prepare-data section.
+2.   Check if `data/embeddings/literature/lit_umap_reducer.pkl` and `data/embeddings/literature/lit_umap2d.npy` both exist. If so, load and skip fitting entirely.
+3.   If fitting: run `umap.UMAP(n_neighbors=20, min_dist=0.1, n_components=2, metric='cosine', random_state=42, low_memory=True)` on `X_lit`. Use `n_neighbors=20` to match the existing Step 7 UMAP parameters so Step 7 can swap in the cached coordinates without visual discontinuity. Use `low_memory=True` to handle the 39538-sample case.
+4.   Save the fitted reducer as `data/embeddings/literature/lit_umap_reducer.pkl` and the 2D literature coordinates as `data/embeddings/literature/lit_umap2d.npy`.
+5. [UPDATE] Add a literature-only diagnostic visualization cell: load `lit_umap2d.npy`, `lit_bertopic_assignments.csv`, and `lit_bertopic_topic_info.csv`; color literature articles by `bertopic_topic`; annotate each non-outlier BERTopic region with its c-TF-IDF display label; save the figure to `results/figures/rephrased/minimal/literature_umap_bertopic_regions_prepare.png`. This diagnostic intentionally does **not** overlay proposals.
+
+[UPDATE] Proposal projection boundary:
+
+- The existing Step 7 novelty visualization in `compare_proposals_rephrased.ipynb` should load `lit_umap_reducer.pkl` and `lit_umap2d.npy`, then project abstract-only proposal embeddings inside the comparison notebook.
+- Analysis 3.5 in `compare_proposals_rephrased.ipynb` should load the same literature reducer and project full-proposal embeddings (`X_prop`) inside the comparison notebook.
+- `prepare_data_for_analysis.ipynb` should not create `proposal_abstract_coords_in_lit_umap.npy` or `proposal_full_coords_in_lit_umap.npy`.
+
+Saved artifacts:
+
+-   `data/embeddings/literature/lit_umap_reducer.pkl`
+-   `data/embeddings/literature/lit_umap2d.npy`
+- [UPDATE] `results/figures/rephrased/minimal/literature_umap_bertopic_regions_prepare.png`
 
 
 ## Experiment Conditions
@@ -288,12 +372,12 @@ Note:
 Step-by-step:
 
 1. Use soft topic participation where a proposal counts for a topic if its probability is greater than `0.20`.
-2. [TODO] Build participation counts per group (Human, Claude, Gemini, GPT-5.2) — NOT Human vs AI lumped. A per-model breakdown reveals whether individual AI models concentrate in specific topics rather than distributing evenly, directly motivating the per-model bimodality differences seen in Part II Analysis 2.1b.
-3. [TODO] Run a chi-square permutation test across all four groups with `10000` permutations. (Old two-group Human/AI test is retained as a secondary row for comparison.)
-4. [TODO] Run per-topic Fisher exact tests for each model versus Human (three model contrasts per topic, nine tests total) with Holm correction.
-5. [TODO] Subsample each AI model to `n=23` for `1000` validation iterations to confirm per-model effects are not driven by group-size imbalance.
-6. [TODO] Plot topic-distribution heatmap with one row per group (Human, Claude, Gemini, GPT-5.2) — update from the two-row Human/AI heatmap.
-7. [TODO] Compute Shannon entropy on mean soft topic distributions per group and report normalized entropy per group. This replaces the former standalone Analysis 1.3 (Topic Coverage and Entropy), which computed the same quantity and found no difference. If a model has near-zero entropy on one topic (e.g., Claude predominately Topic_1), flag this: a model concentrated in one topic subspace will show a unimodal pairwise distance distribution rather than the bimodal pattern observed for Human and GPT-5.2 in Analysis 2.1b.
+2.   Build participation counts per group (Human, Claude, Gemini, GPT-5.2) — NOT Human vs AI lumped. A per-model breakdown reveals whether individual AI models concentrate in specific topics rather than distributing evenly, directly motivating the per-model bimodality differences seen in Part II Analysis 2.1b.
+3.   Run a chi-square permutation test across all four groups with `10000` permutations. (Old two-group Human/AI test is retained as a secondary row for comparison.)
+4.   Run per-topic Fisher exact tests for each model versus Human (three model contrasts per topic, nine tests total) with Holm correction.
+5.   Subsample each AI model to `n=23` for `1000` validation iterations to confirm per-model effects are not driven by group-size imbalance.
+6.   Plot topic-distribution heatmap with one row per group (Human, Claude, Gemini, GPT-5.2) — update from the two-row Human/AI heatmap.
+7.   Compute Shannon entropy on mean soft topic distributions per group and report normalized entropy per group. This replaces the former standalone Analysis 1.3 (Topic Coverage and Entropy), which computed the same quantity and found no difference. If a model has near-zero entropy on one topic (e.g., Claude predominately Topic_1), flag this: a model concentrated in one topic subspace will show a unimodal pairwise distance distribution rather than the bimodal pattern observed for Human and GPT-5.2 in Analysis 2.1b.
 
 Baseline-minimal-rephrased rendered result (old Human-vs-AI-lumped result, kept for reference):
 
@@ -301,7 +385,7 @@ Baseline-minimal-rephrased rendered result (old Human-vs-AI-lumped result, kept 
 - Overall soft-topic chi-square statistic `0.8361`, permutation `p=0.5990`; no significant Human/AI topic-distribution difference.
 - Per-topic Fisher tests found no FDR-significant topic over/under-representation (`q=0.4666`, `1.0000`, `1.0000`).
 - AI subsample validation showed weak topic differences: Topic_1 significant in `27/1000` subsamples, Topic_2 and Topic_3 in `0/1000`.
-- [TODO] Re-run with per-model breakdown; per-model topic concentrations expected to differ even if the overall four-group test remains non-significant.
+-   Re-run with per-model breakdown; per-model topic concentrations expected to differ even if the overall four-group test remains non-significant.
 
 Figures:
 
@@ -309,9 +393,9 @@ Figures:
 
 Tables:
 
-- [TODO] `results/tables/rephrased/minimal/topic_distribution_per_model.csv`
-- [TODO] `results/tables/rephrased/minimal/topic_distribution_per_model_tests.csv`
-- [TODO] `results/tables/rephrased/minimal/topic_entropy_per_model.csv`
+-   `results/tables/rephrased/minimal/topic_distribution_per_model.csv`
+-   `results/tables/rephrased/minimal/topic_distribution_per_model_tests.csv`
+-   `results/tables/rephrased/minimal/topic_entropy_per_model.csv`
 
 ##### `## Analysis 1.3: Embedding Cluster Structure and UMAP (Primary Cluster Labels)` [TODO: section replaces former standalone Analysis 1.3 (Topic Coverage and Entropy, absorbed into Analysis 1.2); content moved from former Analysis 1.5 and placed here because cluster labels are the authoritative dependency for downstream analyses 1.4, 1.5, 2.1d, and 2.4 — they must exist before any of those run]
 
@@ -319,22 +403,22 @@ Tables:
 
 Step-by-step:
 
-1. [TODO] Select k data-driven: fit Ward agglomerative clustering (`sklearn.cluster.AgglomerativeClustering(linkage='ward')`) on all 92 proposals jointly (`X_prop`) for k = 2, 3, 4, 5. Compute silhouette score and Calinski-Harabasz score for each k. Select k maximizing average silhouette score. Report all k-selection scores. (k=2 is expected given the observed bimodality, but let the data confirm this.)
-2. [TODO] Assign all 92 proposals a cluster label using the best-k model. Print the top 5 proposal titles per cluster to verify the clusters correspond to interpretable semantic subfields (expected: Cluster A — structural/computational/multi-omics biology; Cluster B — heterogeneous microbiome/ecology/crosslinking topics). Save per-proposal cluster labels to table; these labels are the input to Analyses 1.4, 1.5, 2.1d, and 2.4.
-3. [TODO] Tabulate cluster membership per group (Human, Claude, Gemini, GPT-5.2): count proposals in each cluster. Test whether each AI model's cluster distribution differs significantly from Human's using Fisher exact tests and Holm correction. Expected result: Claude concentrates in one cluster (explaining its unimodal distance distribution); GPT-5.2 spans both clusters more like Human (explaining its bimodal distance distribution).
-4. [TODO] Compute per-group silhouette scores: for each group, compute silhouette score on only that group's proposals using the jointly-fitted cluster labels. A group concentrated in one cluster (e.g., Claude) will have low or negative silhouette scores; a group spanning well-separated clusters (e.g., Human, GPT-5.2) will have high scores. Report alongside per-group dominant-cluster fraction.
-5. [TODO] Compute and cache UMAP 2D coordinates: fit `umap.UMAP(n_neighbors=15, min_dist=0.1, n_components=2, metric='cosine', random_state=42)` on `X_prop` and save to `results/tables/rephrased/minimal/cached/proposal_umap2d.npy`. This cache is loaded by Analysis 2.4 so that UMAP is not recomputed in Part II.
-6. [TODO] Visualization: 2×2 UMAP panel (one panel per group: Human, Claude, Gemini, GPT-5.2) using the cached UMAP coordinates. Color points by cluster label using a consistent color scheme across all panels (cluster colors, not group colors). Add panel title with group name, per-group silhouette score, and dominant cluster fraction. A model with all points in one cluster will show a single-color panel; a model spanning both will show a mixed panel — this directly explains the per-model bimodality difference in Part II.
+1.   Select k data-driven: fit Ward agglomerative clustering (`sklearn.cluster.AgglomerativeClustering(linkage='ward')`) on all 92 proposals jointly (`X_prop`) for k = 2, 3, 4, 5. Compute silhouette score and Calinski-Harabasz score for each k. Select k maximizing average silhouette score. Report all k-selection scores. (k=2 is expected given the observed bimodality, but let the data confirm this.)
+2.   Assign all 92 proposals a cluster label using the best-k model. Print the top 5 proposal titles per cluster to verify the clusters correspond to interpretable semantic subfields (expected: Cluster A — structural/computational/multi-omics biology; Cluster B — heterogeneous microbiome/ecology/crosslinking topics). Save per-proposal cluster labels to table; these labels are the input to Analyses 1.4, 1.5, 2.1d, and 2.4.
+3.   Tabulate cluster membership per group (Human, Claude, Gemini, GPT-5.2): count proposals in each cluster. Test whether each AI model's cluster distribution differs significantly from Human's using Fisher exact tests and Holm correction. Expected result: Claude concentrates in one cluster (explaining its unimodal distance distribution); GPT-5.2 spans both clusters more like Human (explaining its bimodal distance distribution).
+4.   Compute per-group silhouette scores: for each group, compute silhouette score on only that group's proposals using the jointly-fitted cluster labels. A group concentrated in one cluster (e.g., Claude) will have low or negative silhouette scores; a group spanning well-separated clusters (e.g., Human, GPT-5.2) will have high scores. Report alongside per-group dominant-cluster fraction.
+5.   Compute and cache UMAP 2D coordinates: fit `umap.UMAP(n_neighbors=15, min_dist=0.1, n_components=2, metric='cosine', random_state=42)` on `X_prop` and save to `results/tables/rephrased/minimal/cached/proposal_umap2d.npy`. This cache is loaded by Analysis 2.4 so that UMAP is not recomputed in Part II.
+6.   Visualization: 2×2 UMAP panel (one panel per group: Human, Claude, Gemini, GPT-5.2) using the cached UMAP coordinates. Color points by cluster label using a consistent color scheme across all panels (cluster colors, not group colors). Add panel title with group name, per-group silhouette score, and dominant cluster fraction. A model with all points in one cluster will show a single-color panel; a model spanning both will show a mixed panel — this directly explains the per-model bimodality difference in Part II.
 
 Tables:
 
-- [TODO] `results/tables/rephrased/minimal/diversity_cluster_k_selection.csv`
-- [TODO] `results/tables/rephrased/minimal/diversity_cluster_membership_by_group.csv`
-- [TODO] `results/tables/rephrased/minimal/cached/proposal_umap2d.npy` (new cache output, loaded by Analysis 2.4)
+-   `results/tables/rephrased/minimal/diversity_cluster_k_selection.csv`
+-   `results/tables/rephrased/minimal/diversity_cluster_membership_by_group.csv`
+-   `results/tables/rephrased/minimal/cached/proposal_umap2d.npy` (new cache output, loaded by Analysis 2.4)
 
 Figures:
 
-- [TODO] `results/figures/rephrased/minimal/cluster_membership_umap_per_group.png`
+-   `results/figures/rephrased/minimal/cluster_membership_umap_per_group.png`
 
 ##### `## Analysis 1.4: Cluster Segregation — GMM Convergent Validity and Per-Model Composition` [TODO: section renamed and extended; formerly tested only Human vs AI lumped; now expanded to per-model and cross-referenced to Analysis 1.3 Ward labels]
 
@@ -345,10 +429,10 @@ Step-by-step:
 1. Fit Gaussian mixture models for candidate `k = 3..8`.
 2. Use BIC as the primary selection criterion; also compute silhouette and Davies-Bouldin.
 3. Fit final full-covariance GMM with `random_state=42`.
-4. [TODO] Summarize GMM cluster composition per model (Human, Claude, Gemini, GPT-5.2) — NOT Human vs AI lumped. Report counts and fractions for each model in each GMM cluster. This reveals whether the AI-dominated GMM cluster is specific to one model (expected: Claude) or spread across all three.
+4.   Summarize GMM cluster composition per model (Human, Claude, Gemini, GPT-5.2) — NOT Human vs AI lumped. Report counts and fractions for each model in each GMM cluster. This reveals whether the AI-dominated GMM cluster is specific to one model (expected: Claude) or spread across all three.
 5. Compute NMI, ARI, and between/within cosine-distance ratio.
 6. Run `10000` permutation tests for segregation metrics.
-7. [TODO] Cross-reference GMM cluster assignments against Ward cluster labels from Analysis 1.3: compute adjusted Rand index (ARI) between the two solutions. If ARI is high, both methods agree on the same semantic regions. If ARI is low, GMM and Ward are capturing different levels of structure — the most likely explanation is that the GMM k=3 solution subdivides one Ward k=2 cluster into a human-biology subcluster and an AI-dominated subcluster, which should be stated explicitly.
+7.   Cross-reference GMM cluster assignments against Ward cluster labels from Analysis 1.3: compute adjusted Rand index (ARI) between the two solutions. If ARI is high, both methods agree on the same semantic regions. If ARI is low, GMM and Ward are capturing different levels of structure — the most likely explanation is that the GMM k=3 solution subdivides one Ward k=2 cluster into a human-biology subcluster and an AI-dominated subcluster, which should be stated explicitly.
 8. Plot k-selection and cluster diagnostics in embedding space.
 
 Baseline-minimal-rephrased rendered result:
@@ -358,19 +442,19 @@ Baseline-minimal-rephrased rendered result:
 - NMI `0.0923`, permutation `p=0.0021`.
 - ARI `0.1411`, permutation `p=0.0016`.
 - Between/within distance ratio `1.2406`, permutation `p=0.0017`.
-- [TODO] Per-model GMM cluster composition not yet computed under this revised analysis design.
-- [TODO] GMM vs Ward cluster agreement (ARI between solutions) not yet computed.
+-   Per-model GMM cluster composition not yet computed under this revised analysis design.
+-   GMM vs Ward cluster agreement (ARI between solutions) not yet computed.
 
 Figures:
 
 - `results/figures/rephrased/minimal/cluster_k_selection.png`
 - `results/figures/rephrased/minimal/cluster_analysis_visualization.png`
-- [TODO] `results/figures/rephrased/minimal/cluster_composition_per_model.png`
+-   `results/figures/rephrased/minimal/cluster_composition_per_model.png`
 
 Tables:
 
-- [TODO] `results/tables/rephrased/minimal/cluster_gmm_composition_per_model.csv`
-- [TODO] `results/tables/rephrased/minimal/cluster_gmm_vs_ward_agreement.csv`
+-   `results/tables/rephrased/minimal/cluster_gmm_composition_per_model.csv`
+-   `results/tables/rephrased/minimal/cluster_gmm_vs_ward_agreement.csv`
 
 ##### `## Analysis 1.5: LDA Topic–Cluster Correspondence` [TODO: new analysis; validates whether LDA topics (Analyses 1.1–1.2) and Ward embedding clusters (Analysis 1.3) measure the same latent subfield structure or provide complementary information; result determines how both are reported in the paper]
 
@@ -378,29 +462,29 @@ Tables:
 
 Step-by-step:
 
-1. [TODO] For each proposal, retrieve: (a) LDA dominant topic (the topic index with highest soft probability from Analysis 1.1), and (b) Ward cluster label from Analysis 1.3. Cross-tabulate in a (topics × clusters) contingency table.
-2. [TODO] Compute adjusted Rand index (ARI) and normalized mutual information (NMI) between LDA topic assignment and Ward cluster label. Use `sklearn.metrics.adjusted_rand_score` and `normalized_mutual_info_score`, already importable from sklearn. High ARI/NMI (> 0.3) indicates topics and clusters measure the same latent structure; low values indicate they capture different levels of semantic organization.
-3. [TODO] Interpret the contingency table: for k=2 Ward clusters and k=3 LDA topics, which LDA topic(s) map onto Cluster A and which onto Cluster B? If one LDA topic is split across both Ward clusters, that topic is semantically heterogeneous at the embedding level — an important nuance for reporting.
-4. [TODO] Decision rule based on ARI: if ARI < 0.3, retain both topic and cluster analyses as complementary in the paper, labeling them as "lexical" versus "embedding-space" thematic structure. If ARI ≥ 0.3, use Ward cluster labels as the primary thematic axis (embedding-based, model-agnostic) in the main text and relegate LDA topics to supplementary characterization only.
-5. [TODO] Visualization: heatmap of the topic × cluster contingency table (rows = LDA topics, columns = Ward clusters), cells annotated with proposal count and the most representative proposal title in the dominant cell of each row. This gives a human-readable semantic interpretation of each cluster label and directly supports the "interpretable semantic subfields" claim from Analysis 1.3.
+1.   For each proposal, retrieve: (a) LDA dominant topic (the topic index with highest soft probability from Analysis 1.1), and (b) Ward cluster label from Analysis 1.3. Cross-tabulate in a (topics × clusters) contingency table.
+2.   Compute adjusted Rand index (ARI) and normalized mutual information (NMI) between LDA topic assignment and Ward cluster label. Use `sklearn.metrics.adjusted_rand_score` and `normalized_mutual_info_score`, already importable from sklearn. High ARI/NMI (> 0.3) indicates topics and clusters measure the same latent structure; low values indicate they capture different levels of semantic organization.
+3.   Interpret the contingency table: for k=2 Ward clusters and k=3 LDA topics, which LDA topic(s) map onto Cluster A and which onto Cluster B? If one LDA topic is split across both Ward clusters, that topic is semantically heterogeneous at the embedding level — an important nuance for reporting.
+4.   Decision rule based on ARI: if ARI < 0.3, retain both topic and cluster analyses as complementary in the paper, labeling them as "lexical" versus "embedding-space" thematic structure. If ARI ≥ 0.3, use Ward cluster labels as the primary thematic axis (embedding-based, model-agnostic) in the main text and relegate LDA topics to supplementary characterization only.
+5.   Visualization: heatmap of the topic × cluster contingency table (rows = LDA topics, columns = Ward clusters), cells annotated with proposal count and the most representative proposal title in the dominant cell of each row. This gives a human-readable semantic interpretation of each cluster label and directly supports the "interpretable semantic subfields" claim from Analysis 1.3.
 
 Tables:
 
-- [TODO] `results/tables/rephrased/minimal/topic_cluster_contingency.csv`
-- [TODO] `results/tables/rephrased/minimal/topic_cluster_agreement.csv`
+-   `results/tables/rephrased/minimal/topic_cluster_contingency.csv`
+-   `results/tables/rephrased/minimal/topic_cluster_agreement.csv`
 
 Figures:
 
-- [TODO] `results/figures/rephrased/minimal/topic_cluster_correspondence.png`
+-   `results/figures/rephrased/minimal/topic_cluster_correspondence.png`
 
 ##### `### PART I Summary`
 
-Baseline-minimal-rephrased rendered result (partial — Analyses 1.3, 1.4 per-model, and 1.5 are [TODO]):
+Baseline-minimal-rephrased rendered result (partial — Analyses 1.3, 1.4 per-model, and 1.5 are  ):
 
-- Analysis 1.2 (old Human-vs-AI-lumped): topic distribution and topic entropy did not show a significant Human/AI difference. [TODO] Per-model re-run expected to reveal per-model topic concentration patterns consistent with the bimodality structure.
-- Analysis 1.3: [TODO] Ward agglomerative clustering will define authoritative cluster labels and cache UMAP coordinates for downstream use.
-- Analysis 1.4: GMM analyses confirmed significant Human/AI semantic-region separation by NMI (`0.0923`, `p=0.0021`), ARI (`0.1411`, `p=0.0016`), and between/within distance ratio (`1.2406`, `p=0.0017`). [TODO] Per-model GMM composition and Ward–GMM agreement ARI not yet computed.
-- Analysis 1.5: [TODO] LDA topic–cluster ARI/NMI will determine whether topics and clusters are reported as redundant or complementary in the paper.
+- Analysis 1.2 (old Human-vs-AI-lumped): topic distribution and topic entropy did not show a significant Human/AI difference.   Per-model re-run expected to reveal per-model topic concentration patterns consistent with the bimodality structure.
+- Analysis 1.3:   Ward agglomerative clustering will define authoritative cluster labels and cache UMAP coordinates for downstream use.
+- Analysis 1.4: GMM analyses confirmed significant Human/AI semantic-region separation by NMI (`0.0923`, `p=0.0021`), ARI (`0.1411`, `p=0.0016`), and between/within distance ratio (`1.2406`, `p=0.0017`).   Per-model GMM composition and Ward–GMM agreement ARI not yet computed.
+- Analysis 1.5:   LDA topic–cluster ARI/NMI will determine whether topics and clusters are reported as redundant or complementary in the paper.
 
 
 #### `# PART II: DIVERSITY`
@@ -433,18 +517,18 @@ Baseline-minimal-rephrased result:
   - `results/figures/rephrased/minimal/pairwise_diversity_by_model.png`
   - `results/figures/rephrased/minimal/pairwise_diversity_boxplot.png`
 
-##### `## Analysis 2.1b: Pairwise Distance Distribution — Bimodality Test` [TODO]
+##### `## Analysis 2.1b: Pairwise Distance Distribution — Bimodality Test`  
 
 **Motivation**: Analysis 2.1 reveals a bimodal pairwise-distance distribution for Human and GPT-5.2 proposals, meaning the within-group mean pairwise distance is a mixture statistic blending two distinct pair populations. Not all groups are expected to be bimodal: Claude's distribution is essentially unimodal (all pairs < 0.10). The analysis tests for bimodality non-parametrically and characterizes the shape of each group's distribution using data-driven model selection — it does NOT pre-assume the number of modes, since that varies per group (Claude likely k=1, Human and GPT-5.2 likely k=2). Clusters in the embedding space are defined separately in Analysis 1.3 using `X_prop`; the distance-distribution shape is a consequence of that cluster structure, not its definition.
 
 Step-by-step:
 
-1. [TODO] Add `import diptest` (or `pip install diptest`) to the `## Helper Functions` cell, with a `try/except` fallback that installs it if missing.
-2. [TODO] For each group (Human, Claude, Gemini, GPT-5.2), apply Hartigan's dip test to the upper-triangle pairwise distance vector. Report dip statistic and p-value per group. A significant p-value indicates departure from unimodality. Reuses `group_cache` already in memory.
-3. [TODO] For each group, fit GMMs for k = 1, 2, 3 components (`sklearn.mixture.GaussianMixture(covariance_type='full', random_state=42)`) and select the best k by BIC. Do NOT assume k=2 for all groups — a unimodal group (e.g., Claude) should correctly select k=1. `sklearn` is already imported.
-4. [TODO] Report per group: best k by BIC, BIC values for each k, fitted component means and weights for the best model.
-5. [TODO] For groups where best k ≥ 2 and dip test is significant, report the valley between the two dominant modes (minimum density point between them) as a descriptive observation — not as an analytical cluster-membership threshold.
-6. [TODO] Visualization: faceted kernel density plot (one panel per group) with best-fit GMM component densities overlaid. Mark the valley point as a dashed vertical line only for groups with best k ≥ 2. Use the existing `colors` dict for fill color.
+1.   Add `import diptest` (or `pip install diptest`) to the `## Helper Functions` cell, with a `try/except` fallback that installs it if missing.
+2.   For each group (Human, Claude, Gemini, GPT-5.2), apply Hartigan's dip test to the upper-triangle pairwise distance vector. Report dip statistic and p-value per group. A significant p-value indicates departure from unimodality. Reuses `group_cache` already in memory.
+3.   For each group, fit GMMs for k = 1, 2, 3 components (`sklearn.mixture.GaussianMixture(covariance_type='full', random_state=42)`) and select the best k by BIC. Do NOT assume k=2 for all groups — a unimodal group (e.g., Claude) should correctly select k=1. `sklearn` is already imported.
+4.   Report per group: best k by BIC, BIC values for each k, fitted component means and weights for the best model.
+5.   For groups where best k ≥ 2 and dip test is significant, report the valley between the two dominant modes (minimum density point between them) as a descriptive observation — not as an analytical cluster-membership threshold.
+6.   Visualization: faceted kernel density plot (one panel per group) with best-fit GMM component densities overlaid. Mark the valley point as a dashed vertical line only for groups with best k ≥ 2. Use the existing `colors` dict for fill color.
 
 Tables:
 
@@ -455,17 +539,17 @@ Figures:
 
 - `results/figures/rephrased/minimal/pairwise_diversity_bimodality_gmm.png`
 
-##### `## Analysis 2.1c: Cross-Group Topic Space Alignment (Human Topic Space vs AI Topic Space)` [TODO]
+##### `## Analysis 2.1c: Cross-Group Topic Space Alignment (Human Topic Space vs AI Topic Space)`  
 
 **Motivation**: Do AI models gravitate toward similar intellectual territory as humans (their topic choices land close to human proposals in embedding space), or do they explore different regions? This cross-group alignment analysis characterizes human-AI topic space overlap without requiring exact topic matching.
 
 Step-by-step:
 
-1. [TODO] For each AI proposal, compute its minimum cosine distance to any human proposal (nearest human proposal) using the already-computed cross-group block of `D_pp` (rows: AI indices from `GROUPS`, columns: human indices from `GROUPS['Human']`).
-2. [TODO] For each human proposal, compute its minimum cosine distance to any proposal from each AI model. This gives a symmetric view: how far is each human topic from the AI topic space?
-3. [TODO] Per model, report: mean and SD of AI-to-nearest-human distances; also mean and SD of human-to-nearest-AI distances. Low mean AI-to-human = AI topics largely overlap with human topic space. High mean = AI explores different intellectual territory.
-4. [TODO] Compare the AI-to-nearest-human distance distributions across the three models using Mann-Whitney U and Holm correction. Reuse `run_group_comparison` helper.
-5. [TODO] Visualization: two-panel figure. Panel 1: strip plot of AI-to-nearest-human distances per model (x = model, y = min cosine distance to any human proposal), one dot per AI proposal, with mean line. Panel 2: strip plot of human-to-nearest-AI distances per model (x = model, y = min cosine distance to any proposal from that model), one dot per human proposal. Use existing `colors` dict.
+1.   For each AI proposal, compute its minimum cosine distance to any human proposal (nearest human proposal) using the already-computed cross-group block of `D_pp` (rows: AI indices from `GROUPS`, columns: human indices from `GROUPS['Human']`).
+2.   For each human proposal, compute its minimum cosine distance to any proposal from each AI model. This gives a symmetric view: how far is each human topic from the AI topic space?
+3.   Per model, report: mean and SD of AI-to-nearest-human distances; also mean and SD of human-to-nearest-AI distances. Low mean AI-to-human = AI topics largely overlap with human topic space. High mean = AI explores different intellectual territory.
+4.   Compare the AI-to-nearest-human distance distributions across the three models using Mann-Whitney U and Holm correction. Reuse `run_group_comparison` helper.
+5.   Visualization: two-panel figure. Panel 1: strip plot of AI-to-nearest-human distances per model (x = model, y = min cosine distance to any human proposal), one dot per AI proposal, with mean line. Panel 2: strip plot of human-to-nearest-AI distances per model (x = model, y = min cosine distance to any proposal from that model), one dot per human proposal. Use existing `colors` dict.
 
 Tables:
 
@@ -476,18 +560,18 @@ Figures:
 
 - `results/figures/rephrased/minimal/cross_group_topic_alignment.png`
 
-##### `## Analysis 2.1d: Within-Cluster and Between-Cluster Diversity (Cluster-Controlled Comparison)` [TODO]
+##### `## Analysis 2.1d: Within-Cluster and Between-Cluster Diversity (Cluster-Controlled Comparison)`  
 
 **Motivation**: All existing diversity metrics (Analyses 2.1–2.5) pool all proposal pairs regardless of whether they belong to the same semantic subfield. The pairwise distance bimodality (Analysis 2.1b) shows this pooling mixes two distinct populations: within-subfield pairs (low distance) and cross-subfield pairs (high distance). The mean pairwise distance therefore confounds two effects: how diverse proposals are within a subfield, and how many subfields each group spans. This analysis separates the two by computing within-cluster diversity and between-cluster separation per group, using cluster labels from the joint embedding-space clustering in Analysis 1.3. Cluster boundaries are defined by `X_prop` geometry (Ward agglomerative), not by hand-picked distance thresholds — this ensures the same semantic regions apply to all groups and avoids circularity. Per-group clustering would be inappropriate: Claude's 23 proposals form one dense blob with no meaningful internal structure to partition. This analysis depends on cluster labels from Analysis 1.3.
 
 Step-by-step:
 
-1. [TODO] After Analysis 1.3 has assigned cluster labels, retrieve the per-proposal cluster assignments (A or B) from `diversity_cluster_membership_by_group.csv`. All 92 proposals (human and AI alike) receive a cluster label from the jointly-fitted agglomerative clustering.
-2. [TODO] For each group (Human, Claude, Gemini, GPT-5.2), split that group's proposal indices by cluster label (A or B) using the per-proposal assignments from step 1.
-3. [TODO] For each group and each cluster (A and B separately), compute within-cluster pairwise diversity: mean upper-triangle cosine distance among the proposals assigned to that cluster for that group. Uses `D_pp` and per-group-per-cluster index subsets.
-4. [TODO] Compare Human vs each AI model within-cluster diversity for Cluster A and Cluster B separately, using permutation tests (reuse `run_permutation_test` helper) and Holm correction. This is the cluster-controlled comparison.
-5. [TODO] For each group, compute between-cluster distance: mean cosine distance from Cluster-A proposals to Cluster-B proposals within the group. Human between-cluster gap is empirically ~0.67. Test whether AI models preserve or collapse this gap using permutation tests.
-6. [TODO] Visualization: 3-panel figure. Panel 1: within-cluster diversity for Cluster A, grouped boxplot per group using `colors` dict. Panel 2: same for Cluster B. Panel 3: between-cluster gap per group, horizontal bar chart with bootstrap 95% CI. Save to `FIGURES_DIR`.
+1.   After Analysis 1.3 has assigned cluster labels, retrieve the per-proposal cluster assignments (A or B) from `diversity_cluster_membership_by_group.csv`. All 92 proposals (human and AI alike) receive a cluster label from the jointly-fitted agglomerative clustering.
+2.   For each group (Human, Claude, Gemini, GPT-5.2), split that group's proposal indices by cluster label (A or B) using the per-proposal assignments from step 1.
+3.   For each group and each cluster (A and B separately), compute within-cluster pairwise diversity: mean upper-triangle cosine distance among the proposals assigned to that cluster for that group. Uses `D_pp` and per-group-per-cluster index subsets.
+4.   Compare Human vs each AI model within-cluster diversity for Cluster A and Cluster B separately, using permutation tests (reuse `run_permutation_test` helper) and Holm correction. This is the cluster-controlled comparison.
+5.   For each group, compute between-cluster distance: mean cosine distance from Cluster-A proposals to Cluster-B proposals within the group. Human between-cluster gap is empirically ~0.67. Test whether AI models preserve or collapse this gap using permutation tests.
+6.   Visualization: 3-panel figure. Panel 1: within-cluster diversity for Cluster A, grouped boxplot per group using `colors` dict. Panel 2: same for Cluster B. Panel 3: between-cluster gap per group, horizontal bar chart with bootstrap 95% CI. Save to `FIGURES_DIR`.
 
 Tables:
 
@@ -602,16 +686,21 @@ Figure:
 
 ##### `## Analysis 2.3: Nearest-Neighbor Isolation and Outlier Detection (Chamfer / NN)`
 
+**Note on clustering confound**: The global 1-NN distance and the 90th-percentile outlier threshold are computed over all 92 proposals together. Because the proposal embedding space contains two geometrically distant clusters (Cluster A and Cluster B from Analysis 1.3), every proposal in the smaller/remote cluster has a large NN distance simply by virtue of being across the inter-cluster gap — not because it is isolated among its semantic peers. The global 90th-percentile threshold is therefore inflated by cross-cluster pairs, and proposals in the remote cluster are systematically over-flagged as outliers. Steps 4b–4d add a cluster-conditioned NN variant that corrects for this: outlier detection is restricted to within-cluster neighbors only, so "outlier" means genuinely isolated relative to same-subfield proposals.
+
 Step-by-step:
 
 1. Compute all-by-all proposal cosine distances and set self-distances to infinity.
 2. Compute each proposal's global 1-nearest-neighbor distance.
 3. Compute the Chamfer/NN group summary.
-4. Flag unadjusted NN outliers above the 90th percentile.
-5. Compare All AI and each AI model against Human using the shared inference pipeline.
+4. Flag global NN outliers above the 90th percentile (unadjusted; retained for backward compatibility and cross-cluster gap reporting, but do NOT use as the primary outlier criterion in visualization or paper text — see step 4b).
+4b.   **Within-cluster NN isolation** (depends on `ward_labels` from Analysis 1.3): for each proposal, restrict the NN search to the subset of proposals assigned to the same Ward cluster. Compute `nn_dist_within_cluster` = distance to the nearest same-cluster neighbor using a masked sub-matrix of `D_pp_infdiag`. Proposals in a singleton cluster receive `NaN`.
+4c.   **Within-cluster outlier flagging**: for each Ward cluster separately, flag proposals whose `nn_dist_within_cluster` exceeds the 90th percentile of within-cluster NN distances for that cluster. This produces `is_nn_outlier_within_cluster` — a boolean flag that answers "is this proposal isolated among its semantic subfield peers?" rather than "is it far from the opposite cluster?"
+4d.   Print per-group within-cluster outlier counts and compare to global outlier counts to quantify the inflation. Expected result: proposals in the remote cluster that were flagged as global outliers largely disappear from the within-cluster outlier list; genuine isolates within each cluster surface more cleanly.
+5. Compare All AI and each AI model against Human using the shared inference pipeline (on `nn_dist_global`; within-cluster comparison is qualitative/descriptive).
 6. Summarize nearest-neighbor source composition.
-7. Save both global 1-NN and mean-5NN robustness outputs.
-8. Plot nearest-neighbor distributions, outlier counts, and source-composition panels.
+7. Save both global 1-NN and mean-5NN robustness outputs; add `nn_dist_within_cluster` and `is_nn_outlier_within_cluster` columns to `nn_distances.csv`.
+8. Plot nearest-neighbor distributions, outlier counts, and source-composition panels. Use `is_nn_outlier_within_cluster` (not global) for outlier ring overlays in UMAP visualizations (Analyses 2.4 and 2.4b).
 
 Baseline-minimal-rephrased result:
 
@@ -620,10 +709,11 @@ Baseline-minimal-rephrased result:
 - Claude: `0.0237`; Gemini: `0.0432`; GPT-5.2: `0.0463`.
 - All AI vs Human 1-NN: mean difference `-0.0416`, Cliff's delta `-0.6774` large, Holm MW `p=5.13e-06`, Holm permutation `p=0.000400`.
 - Claude, Gemini, and GPT-5.2 were each more locally clustered than Human after Holm correction.
+-   Within-cluster outlier counts not yet computed; expected to show substantially fewer outliers in the remote cluster once cross-cluster inflation is removed.
 
 Tables:
 
-- `results/tables/rephrased/minimal/nn_distances.csv`
+- `results/tables/rephrased/minimal/nn_distances.csv` (updated to include `nn_dist_within_cluster`, `is_nn_outlier_within_cluster`)
 - `results/tables/rephrased/minimal/mean_knn_distances_k5.csv`
 - `results/tables/rephrased/minimal/diversity_chamfer_group_summary.csv`
 - `results/tables/rephrased/minimal/diversity_nn_pairwise_tests.csv`
@@ -637,8 +727,8 @@ Figure:
 
 Step-by-step:
 
-1. [TODO] Load cached UMAP 2D coordinates from `results/tables/rephrased/minimal/cached/proposal_umap2d.npy` (computed and saved by Analysis 1.3). If the cache file is missing, recompute with `umap.UMAP(n_neighbors=15, min_dist=0.1, n_components=2, metric='cosine', random_state=42)` and save the cache — but during normal execution Analysis 1.3 always runs first.
-2. Plot AI points by model, Human points with funding-aware shading, group centroids, and NN outlier rings.
+1.   Load cached UMAP 2D coordinates from `results/tables/rephrased/minimal/cached/proposal_umap2d.npy` (computed and saved by Analysis 1.3). If the cache file is missing, recompute with `umap.UMAP(n_neighbors=15, min_dist=0.1, n_components=2, metric='cosine', random_state=42)` and save the cache — but during normal execution Analysis 1.3 always runs first.
+2. Plot AI points by model, Human points with funding-aware shading, group centroids, and NN outlier rings. Use `outliers_within_cluster` (from Analysis 2.3 step 4c) for the outlier rings when available; fall back to global `outliers` only if `ward_labels` was not computed. This prevents the cross-cluster gap from over-populating the outlier ring overlay.
 3. Run diagnostics explaining why visually clustered points can still be high-dimensional outliers.
 4. Build a complementary t-SNE projection with `perplexity=30`, `init='pca'`, `random_state=42`.
 
@@ -647,11 +737,11 @@ Figures:
 - `results/figures/rephrased/minimal/embedding_space_umap_2d.png`
 - `results/figures/rephrased/minimal/embedding_space_tsne.png`
 
-[TODO] Additional steps for enriched UMAP (run after Analysis 1.3 has produced cluster labels):
+  Additional steps for enriched UMAP (run after Analysis 1.3 has produced cluster labels):
 
-5. [TODO] Re-render the UMAP with per-group convex hull overlays: draw a shaded convex hull for each group in its group color at `alpha=0.15` using `scipy.spatial.ConvexHull` on the per-group UMAP 2D coordinates. `scipy` is already imported.
-6. [TODO] Overlay cross-group nearest-neighbor linking lines: for each AI proposal, draw a gray line (`alpha=0.2`, `linewidth=0.5`) connecting it to its nearest human proposal in UMAP 2D space (using the nearest-human index computed in Analysis 2.1c step 1). This visualizes which AI topics fall closest to which human topics without requiring exact topic matching.
-7. [TODO] Add background cluster-membership shading (2 zones) using the per-proposal cluster labels from Analysis 1.3: for each cluster, draw a KDE contour or shaded convex hull using a neutral gray at low alpha to visually demarcate the two semantic subfield regions without obscuring group points.
+5.   Re-render the UMAP with per-group convex hull overlays: draw a shaded convex hull for each group in its group color at `alpha=0.15` using `scipy.spatial.ConvexHull` on the per-group UMAP 2D coordinates. `scipy` is already imported.
+6.   Overlay cross-group nearest-neighbor linking lines: for each AI proposal, draw a gray line (`alpha=0.2`, `linewidth=0.5`) connecting it to its nearest human proposal in UMAP 2D space (using the nearest-human index computed in Analysis 2.1c step 1). This visualizes which AI topics fall closest to which human topics without requiring exact topic matching.
+7.   Add background cluster-membership shading (2 zones) using the per-proposal cluster labels from Analysis 1.3: for each cluster, draw a KDE contour or shaded convex hull using a neutral gray at low alpha to visually demarcate the two semantic subfield regions without obscuring group points.
 
 Figures:
 
@@ -684,7 +774,7 @@ Figure:
 
 - `results/figures/rephrased/minimal/diversity_entropy_group_summary.png`
 
-##### `# PART III: NOVELTY`
+#### `# PART III: NOVELTY`
 
 ##### `## Step 1: Load Prepared Literature Corpus`
 
@@ -809,9 +899,16 @@ Step-by-step:
 
 1. Build metadata aligned to abstract-embedding order.
 2. Join review/style fields from proposal metadata when available.
-3. Project literature abstracts and proposal abstracts into 2D with t-SNE and UMAP.
-4. Plot literature points and Human/AI proposal points.
-5. Produce a publication-year-colored literature view.
+3. [UPDATE] **Load** pre-computed literature UMAP coordinates and the literature UMAP reducer from prepare_data Section 13, then project abstract-only proposal embeddings inside `compare_proposals_rephrased.ipynb`. Current implementation (cell 97) calls `umap.UMAP(...).fit_transform(literature_embeddings)` every run — this is expensive (~10–30 min on CPU) and produces non-deterministic coordinates if the cache is missing. After prepare_data Section 13 is implemented, replace with:
+   - Load `data/embeddings/literature/lit_umap2d.npy` → `literature_2d_umap`
+   - Load `data/embeddings/literature/lit_umap_reducer.pkl` → fitted literature reducer
+   - L2-normalize abstract-only proposal embeddings and run `reducer.transform(...)` inside the comparison notebook → `proposals_2d_umap`
+   - If either literature UMAP artifact is missing, fall back to refitting with `n_neighbors=20, min_dist=0.1, metric='cosine', random_state=42` and warn the user to run prepare_data first
+4. Plot literature points and Human/AI proposal points (existing visualization logic unchanged).
+5. Produce a publication-year-colored literature view reusing the same `literature_2d_umap` and `proposals_2d_umap` (existing cell 98 logic unchanged).
+6.   The t-SNE cell (cell 96) is unaffected — t-SNE does not support `transform()` so it must refit jointly each time; this is acceptable for t-SNE only.
+
+Note on embedding consistency: Step 7 uses abstract-only proposal embeddings (`proposal_embeddings_section1_only.pkl`) because the literature corpus consists of title+abstract only (not full papers). Using abstract-only embeddings for proposals ensures the two corpora are in a comparable embedding subspace. Analysis 3.5 (new) projects full-proposal embeddings into the same literature UMAP inside `compare_proposals_rephrased.ipynb`; prepare_data does not save proposal UMAP coordinates.
 
 Figures:
 
@@ -860,6 +957,110 @@ Step-by-step:
 Table:
 
 - `results/tables/rephrased/minimal/nearest_literature_neighbors_top3.csv`
+
+##### `## Analysis 3.5: Literature-Anchored UMAP with Embedding-Native Topic Regions` [UPDATE]
+
+[UPDATE] **Motivation**: The existing UMAP in Analysis 2.4 is fitted on 92 proposals and shows their internal clustering relative to each other. This analysis provides a fundamentally different view: where do proposals land within the much larger literature landscape? By fitting UMAP on all 39538 literature articles and projecting proposals in (not refitting), the proposal points land in the fixed BioLinkBERT-large literature map. The background literature points are now colored by **embedding-native BERTopic region labels** from `prepare_data_for_analysis.ipynb` Section 12, not by LDA. This matters because LDA topics are lexical word co-occurrence themes and may not align with the visible embedding geometry. BERTopic regions are derived by clustering the BioLinkBERT embedding neighborhoods directly with fixed-granularity MiniBatchKMeans, while c-TF-IDF terms provide human-readable labels afterward.
+
+Step-by-step:
+
+1. [UPDATE] Load precomputed literature artifacts from `prepare_data_for_analysis.ipynb`: `data/embeddings/literature/lit_umap2d.npy` (literature 2D coords, shape 39538×2), `data/embeddings/literature/lit_umap_reducer.pkl` (fitted literature reducer), `data/prepared/rephrased/minimal/lit_bertopic_assignments.csv`, and `data/prepared/rephrased/minimal/lit_bertopic_topic_info.csv`. Then project full-proposal embeddings (`X_prop`) into the literature UMAP inside `compare_proposals_rephrased.ipynb`; do not load proposal UMAP coordinates from prepare_data.
+2. [UPDATE] Generate the background scatter: plot all literature points at low alpha (`alpha=0.04`, size 1-3) colored by `bertopic_topic` using a stable qualitative palette. BERTopic topic `-1` should be plotted light gray and labeled "embedding outlier / unassigned".
+3. [UPDATE] Add embedding-region labels: for each non-outlier BERTopic topic, compute the 2D centroid or medoid of all literature points assigned to that topic and place a text annotation with the c-TF-IDF display label from `lit_bertopic_topic_info.csv`. Prefer labels based on top 3-5 terms plus topic id and article count. Use `adjustText` or manual offsets to avoid overlap.
+4. [UPDATE] Overlay proposal points: plot 92 projected proposal points with larger markers colored by author group (Human, Claude, Gemini, GPT-5.2) using the existing `colors` dict. Add a legend for author groups. Use distinct marker shapes per group (e.g., circle, square, triangle, diamond) so color-blind readers can distinguish groups.
+5. [UPDATE] Add optional per-group convex hulls over proposal points using `scipy.spatial.ConvexHull` at `alpha=0.12`. Label each hull with the group name, but suppress hulls if they obscure dense BERTopic region labels.
+6. [UPDATE] Produce a second panel that subplots by author group (2×2) with the BERTopic-colored literature background repeated in each panel and only one group's proposals shown in the foreground. This helps identify which embedding-native regions each group concentrates in vs. which it avoids.
+7. [UPDATE] Produce an LDA-colored version only as a supplementary diagnostic figure, explicitly labeled "lexical LDA topics overlaid on embedding map" so readers do not confuse LDA topics with UMAP-derived regions.
+
+Tables:
+
+- [UPDATE] None required for the primary visualization only; region coverage is quantified in Analysis 3.6, and LDA-vs-BERTopic agreement is quantified in prepare_data Section 12.
+
+Figures:
+
+- [UPDATE] `results/figures/rephrased/minimal/literature_umap_with_bertopic_regions.png` (combined view; primary)
+- [UPDATE] `results/figures/rephrased/minimal/literature_umap_bertopic_by_author_group.png` (2×2 per-group panels; primary)
+- [UPDATE] `results/figures/rephrased/minimal/literature_umap_with_lda_topics_supplement.png` (supplementary lexical diagnostic)
+
+##### `## Analysis 3.6: Literature Embedding-Region Coverage per Author Group` [UPDATE]
+
+[UPDATE] **Motivation**: Analysis 3.5 is visual; this analysis quantifies it in the original high-dimensional BioLinkBERT space. For each proposal, the k nearest literature neighbors carry BERTopic embedding-region labels. Aggregating those labels across all proposals in an author group yields that group's "literature-grounded embedding-region distribution." A group covering many distinct BERTopic regions is more topically diverse in the domain sense and, unlike the previous LDA-only version, the region labels are derived from the same embedding geometry as the map.
+
+Step-by-step:
+
+1. [UPDATE] Load `data/prepared/rephrased/minimal/lit_bertopic_assignments.csv`. Build a lookup array aligned to literature embedding order: `article_idx -> bertopic_topic`, plus `bertopic_label` and `bertopic_is_outlier`.
+2. [UPDATE] For each proposal, retrieve its top-k nearest literature neighbor indices from `D_pl_sorted_idx[:, :k]` in the original high-dimensional embedding space. Use `k=20` as the primary setting and run sensitivity checks at `k=10, 25, 50`.
+3. [UPDATE] Map each neighbor to its BERTopic region. Exclude BERTopic `-1` from region-breadth metrics but report the fraction of nearest neighbors that are unassigned/outlier as a separate "unassigned neighbor fraction".
+4. [UPDATE] For each proposal, compute the soft embedding-region distribution over its k nearest literature neighbors: for each BERTopic region R, `weight_R = count of neighbors with region R / number of assigned neighbors`. Also compute proposal-level dominant region, max-region weight/purity, Shannon entropy, effective number of regions `exp(entropy)`, and unassigned-neighbor fraction.
+5. [UPDATE] Aggregate by author group: sum soft region-weight vectors across all proposals in each group and normalize. Report region breadth (`weight > 5%`), Shannon entropy, effective region count, dominant-region fraction, and HHI concentration.
+6. [UPDATE] Compare author groups on proposal-level region concentration (`max_region_weight`), region entropy, and unassigned-neighbor fraction using Human vs each AI model Mann-Whitney tests with Holm correction. Use permutation tests for group-level breadth/effective region count.
+7. [UPDATE] Visualization: stacked bar chart with one bar per author group, segments colored by BERTopic region using the same palette as Analysis 3.5. Add a compact label table mapping region ids to c-TF-IDF labels.
+8. [UPDATE] Save an LDA-based version as a supplementary comparison (`Analysis 3.6b`) but treat BERTopic region coverage as the primary topic-region result.
+
+Tables:
+
+- [UPDATE] `results/tables/rephrased/minimal/bertopic_region_coverage_per_group.csv` (group-level distribution + breadth + entropy + effective region count + HHI)
+- [UPDATE] `results/tables/rephrased/minimal/bertopic_region_coverage_per_proposal.csv` (proposal-level soft region vectors + dominant region + purity + entropy + unassigned fraction)
+- [UPDATE] `results/tables/rephrased/minimal/bertopic_region_coverage_tests.csv` (permutation tests + per-group vs Human MW tests)
+- [UPDATE] `results/tables/rephrased/minimal/lit_topic_coverage_per_group.csv` (supplementary LDA lexical version; keep existing artifact for continuity)
+- [UPDATE] `results/tables/rephrased/minimal/lit_topic_coverage_per_proposal.csv` (supplementary LDA lexical version; keep existing artifact for continuity)
+- [UPDATE] `results/tables/rephrased/minimal/lit_topic_coverage_tests.csv` (supplementary LDA lexical version; keep existing artifact for continuity)
+
+Figures:
+
+- [UPDATE] `results/figures/rephrased/minimal/bertopic_region_coverage_stacked_bar.png` (primary)
+- [UPDATE] `results/figures/rephrased/minimal/lit_topic_coverage_stacked_bar.png` (supplementary LDA lexical comparison)
+
+##### `## Analysis 3.7: MeSH Term Coverage per Author Group`  
+
+**Motivation**: MeSH (Medical Subject Headings) terms are curated, hierarchical domain labels assigned by PubMed indexers. Unlike LDA topics (statistical), MeSH terms are human-assigned and broadly recognized as ground-truth domain categories. The number of unique MeSH terms covered by an author group's nearest literature neighbors is a direct, interpretable measure of domain breadth that does not depend on any model fit.
+
+Implementation notes:
+
+- MeSH coverage is available on ~76% of literature articles (30,312/39,538); articles without MeSH terms are excluded from neighbor counting but not from k-NN selection. This means effective k may be lower than 20 for some proposals (use only neighbors with non-empty MeSH lists).
+- MeSH terms have a hierarchy; use only top-level (major) MeSH descriptors to avoid double-counting near-synonyms. Major descriptors are typically the first one or two terms in the list; alternatively, restrict to MeSH terms with no slash qualifier (e.g., "Cardiovascular System" not "Cardiovascular System/physiology").
+
+Step-by-step:
+
+1.   For each proposal, retrieve its top-k (`k=20`) nearest literature neighbor indices from `D_pl_sorted_idx`. For each neighbor, look up `articles[idx]['mesh_terms']`. Filter to neighbors with non-empty MeSH lists.
+2.   From the filtered neighbor MeSH lists, extract unique major MeSH descriptors (no qualifier after slash; or simply unique entries from `mesh_terms` list at face value since they appear to already be descriptor-level). Count unique terms per proposal. This is the per-proposal MeSH coverage score.
+3.   Also record the full union of unique MeSH terms across all proposals in each author group — this is the group-level MeSH breadth.
+4.   Compare per-proposal unique MeSH counts across groups: Human vs each AI model using Mann-Whitney U and Holm correction. Report per-group mean ± SD and group-level union count.
+5.   Visualization: boxplot of per-proposal unique MeSH count by author group, with individual points overlaid. Secondary bar chart showing group-level total unique MeSH terms covered.
+
+Tables:
+
+-   `results/tables/rephrased/minimal/mesh_coverage_per_proposal.csv` (proposal-level unique MeSH count + union set)
+-   `results/tables/rephrased/minimal/mesh_coverage_group_summary.csv` (group-level mean, SD, union count)
+-   `results/tables/rephrased/minimal/mesh_coverage_tests.csv` (MW tests with Holm correction)
+
+Figures:
+
+-   `results/figures/rephrased/minimal/mesh_coverage_by_group.png`
+
+##### `## Analysis 3.8: Publication Year Recency of Nearest Literature (Within Embedding Region)` [UPDATE]
+
+[UPDATE] **Motivation**: Proposals that engage with older literature may be building on well-established ideas; proposals anchored in recent literature may address cutting-edge questions. However, a naive comparison of neighbor publication years is confounded by field/region: some biomedical areas have much older literatures than others. This analysis controls for that by comparing publication year distributions *within BERTopic embedding-region strata* — comparing Human vs AI recency for proposals whose nearest literature neighbors fall in the same BioLinkBERT-derived literature region. LDA-stratified recency can be retained as a supplementary lexical sensitivity check, but the primary control should use BERTopic regions.
+
+Step-by-step:
+
+1.   For each proposal, retrieve its top-k (`k=20`) nearest literature neighbors from `D_pl_sorted_idx`. For each neighbor, look up `articles[idx]['publication_date']` and extract the integer year (first 4 characters). Compute per-proposal median neighbor year and mean neighbor year.
+2. [UPDATE] Assign each proposal a "literature-region stratum" using its majority BERTopic region from Analysis 3.6 (i.e., the BERTopic region with highest weight in the proposal's top-k neighbor distribution). Proposals whose top-k neighbors fall predominantly in no single assigned region (max weight < 20%) or mostly into BERTopic `-1` are marked as stratum `mixed_or_unassigned`.
+3. [UPDATE] Within each non-mixed BERTopic region stratum, compare per-proposal median neighbor year between Human and each AI model using Mann-Whitney U and Holm correction. Only test strata with ≥ 3 proposals per group.
+4.   Also report the overall (across-strata) comparison as a descriptive supplement, clearly noting the topic-confound limitation.
+5. [UPDATE] Visualization: strip + box plot faceted by BERTopic region stratum. Each panel shows per-proposal median neighbor year on the y-axis, author group on the x-axis. Annotate with the BERTopic region label and the stratum's overall year range from the literature corpus. A group with consistently higher median years is engaging with more recent literature within the same embedding-defined domain.
+
+Tables:
+
+- [UPDATE] `results/tables/rephrased/minimal/lit_neighbor_year_per_proposal.csv` (proposal-level median + mean neighbor year + BERTopic region stratum)
+- [UPDATE] `results/tables/rephrased/minimal/lit_neighbor_year_within_region_tests.csv` (per-region-stratum MW tests with Holm correction)
+- [UPDATE] `results/tables/rephrased/minimal/lit_neighbor_year_region_group_summary.csv` (group-level mean/median year by BERTopic region stratum)
+- [UPDATE] `results/tables/rephrased/minimal/lit_neighbor_year_within_lda_topic_tests.csv` (optional supplementary lexical sensitivity check)
+
+Figures:
+
+- [UPDATE] `results/figures/rephrased/minimal/lit_neighbor_year_by_group_within_bertopic_region.png` (primary)
+- [UPDATE] `results/figures/rephrased/minimal/lit_neighbor_year_by_group_within_lda_topic_supplement.png` (optional supplementary lexical sensitivity check)
 
 ##### `## Unified Proposal-Level Metric Export`
 
@@ -1041,7 +1242,7 @@ Baseline-minimal-rephrased result:
 - Style-only classification was weak/non-significant after leakage-safe CV, so full-proposal style alone does not strongly predict source in this rendered run.
 - Centroid differences persist after style controls, while NN isolation weakens after style-adjusted embedding residualization.
 
-#### Diversity Metric Definitions Aligned to Table-3 Naming
+##### Diversity Metric Definitions Aligned to Table-3 Naming
 
 Current implementation status for future notebook edits:
 
