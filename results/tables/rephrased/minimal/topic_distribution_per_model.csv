@@ -1,5 +1,5 @@
-model,Topic_1,Topic_2,Topic_3
-Human,13,9,9
-Claude,8,5,16
-Gemini,13,4,8
-GPT-5.2,6,17,5
+model,Topic_1,Topic_2
+Human,15,14
+Claude,14,13
+Gemini,7,20
+GPT-5.2,16,13

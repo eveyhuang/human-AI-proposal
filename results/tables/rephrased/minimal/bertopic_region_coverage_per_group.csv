@@ -1,0 +1,5 @@
+group,n_proposals,breadth_gt5pct,shannon_entropy,effective_region_count,dominant_region_frac,hhi_concentration,mean_unassigned_neighbor_frac,region_0_weight,region_1_weight,region_2_weight,region_3_weight,region_4_weight,region_5_weight,region_6_weight,region_7_weight,region_8_weight,region_9_weight,region_10_weight,region_11_weight
+Human,23,3,1.1583,3.1845,0.5217,0.3855,0.0,0.3217,0.5217,0.0,0.0435,0.0,0.0848,0.0,0.0261,0.0,0.0,0.0022,0.0
+Claude,23,1,0.0155,1.0156,0.9978,0.9957,0.0,0.0,0.9978,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0022
+Gemini,23,2,0.379,1.4608,0.913,0.8373,0.0,0.0565,0.913,0.0,0.0022,0.0,0.0043,0.0,0.0217,0.0,0.0,0.0022,0.0
+GPT-5.2,23,3,0.8587,2.36,0.737,0.5713,0.0,0.15,0.737,0.0022,0.0565,0.0,0.0043,0.0,0.05,0.0,0.0,0.0,0.0

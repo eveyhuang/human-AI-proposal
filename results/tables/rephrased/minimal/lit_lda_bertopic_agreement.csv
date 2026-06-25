@@ -1,2 +1,2 @@
 n_articles_compared,lda_topics,bertopic_regions,ari_lda_vs_bertopic,nmi_lda_vs_bertopic,interpretation
-39172,15,2,0.005947037788163749,0.013461588991868934,low agreement means lexical LDA and embedding regions are complementary
+39172,15,12,0.05000901729832666,0.11238436381813845,low agreement means lexical LDA and embedding regions are complementary

@@ -1,4 +1,3 @@
-lda_topic,Cluster_A,Cluster_B
-Topic_1,4,27
-Topic_2,10,22
-Topic_3,5,24
+lda_topic_display,"Cluster_A: mass spectrometry, proteomics imaging, synthesizing emergent","Cluster_B: data understand, decoding emergent, integrating structural, multi scale"
+"Topic_1: functional data, integrating structural, emergent properties, multi scale",10,36
+"Topic_2: protein interaction, decoding emergent, single cell, synthesizing emergent",9,37

@@ -1,0 +1,3 @@
+ward_cluster,ward_cluster_name,n_documents,display_label,contrastive_terms,ctfidf_label_raw,ctfidf_terms,label_strategy
+0,Cluster_A,19,"mass spectrometry, proteomics imaging, synthesizing emergent",mass spectrometry; proteomics imaging; synthesizing emergent,"emergent, synthesizing, data, protein",emergent; synthesizing; data; protein; bacterial; proteomics; imaging; transcriptomics; rna; cell,contrastive_phrase_v4
+1,Cluster_B,73,"data understand, decoding emergent, integrating structural, multi scale",data understand; decoding emergent; integrating structural; multi scale,"emergent, data, emergence, synthesizing",emergent; data; emergence; synthesizing; synthesis; integrating; cell; organization; decoding; understand,contrastive_phrase_v4
