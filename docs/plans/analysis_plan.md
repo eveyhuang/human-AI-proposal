@@ -184,10 +184,12 @@ Stars indicate corrected/primary significance for the model-vs-Human contrast: `
 | Proposal novelty MeanKNN-10 | mean `0.1109` | `0.0746`; Δ `-0.0363` `**`; δ `-0.573` | `0.0828`; Δ `-0.0281` `*`; δ `-0.482` | `0.0914`; Δ `-0.0195`; δ `-0.202` | MW Holm |
 | Proposal novelty normalized `novelty_z` | mean `1.0508` | `0.4966`; Δ `-0.5541` `*`; δ `-0.444` | `0.6700`; Δ `-0.3808`; δ `-0.388` | `0.7937`; Δ `-0.2571`; δ `0.025` | MW Holm |
 | Proposal literature-space outliers mean-10NN | Human `5/23` (`21.7%`) | `0/23` (`0.0%`) | `2/23` (`8.7%`) | `3/23` (`13.0%`) | Fisher Holm; no model significant |
+| Pairwise-distance bimodality 2.1b | dip `0.142`; best GMM `k=3` | dip `0.014`; `p=0.991`; best `k=1` | dip `0.071`; `p<.001`; best `k=3` | dip `0.167`; `p<.001`; best `k=3` | Dip test + BIC |
 | Topic distribution + Ward/GMM clusters | topics T1/T2 `15/14`; Ward A/B `11/12`; GMM clusters `5/11/7` | topics `14/13`; Ward A/B `0/23` `**`; GMM `12/0/11` | topics `7/20`; Ward A/B `2/21` `*`; GMM `3/2/18` | topics `16/13`; Ward A/B `6/17`; GMM `2/6/15` | Topic 4-group perm `p=0.0240`; Ward Fisher Holm; GMM NMI `p=0.0033`, ARI `p=0.0014` |
 | LDA topic vs Ward cluster correspondence | ARI `-0.0068`; NMI `0.0006`; lexical topics and embedding clusters are complementary | not model-specific | not model-specific | not model-specific | ARI/NMI descriptive |
 | Literature BERTopic region coverage | group entropy `1.1583`; effective regions `3.1845`; dominant frac `0.5217` | entropy `0.0155` `*`; effective `1.0156`; dominant `0.9978` | entropy `0.3790`; effective `1.4608`; dominant `0.9130`; Holm trend `q=0.0793` | entropy `0.8587`; effective `2.3600`; dominant `0.7370` | MW Holm on proposal-level region entropy / max-region weight |
 | Literature MeSH coverage | mean unique MeSH `79.57`; union `750` | mean `62.39`; union `197` | mean `57.52`; union `339`; Holm trend `q=0.0748` | mean `68.30`; union `450` | MW Holm; no model significant |
+| Within-region literature year 3.8 | medians `2021.5` or `2023.5` by region | no Human contrast significant | no Human contrast significant | stratum-1 median `2024.5` vs Human `2023.5`, ns | MW Holm |
 | Style-only source classifier | AUROC `0.561 ± 0.166`; balanced accuracy `0.584 ± 0.117`; permutation `p=0.2977` | not model-specific; no style-adjusted residualization cells rendered | not model-specific; no style-adjusted residualization cells rendered | not model-specific; no style-adjusted residualization cells rendered | 5-fold CV + AUROC permutation |
 | NCEMS R1 review diversity | Human review diversity > AI-all; Y2 all metrics `***`; Y1 4/9 metrics `*` | per-model within-review diversity not estimable; each model has one review/proposal | per-model within-review diversity not estimable; each model has one review/proposal | per-model within-review diversity not estimable; each model has one review/proposal | Paired Wilcoxon FDR |
 | NCEMS R1 Human-AI review similarity, Y1 cosine | Human-Human baseline | Human-AI vs Human-Human δ `-0.042` | Human-AI vs Human-Human δ `0.083` | Human-AI vs Human-Human δ `-0.236` | MW FDR; all model contrasts ns (`q=0.8852`) |
@@ -267,7 +269,7 @@ Use the standardized boxplot helper pattern for all group-comparison distributio
 
 Ground-truth audited notebook: `baseline(minimal)-rephrased/compare_proposals_rephrased.ipynb`.
 
-Purpose: compare Human and AI research proposals after all proposal texts have been rephrased into a standardized neutral academic style. This audit reflects the notebook outputs saved in the `.ipynb` through the final JSON merge cell.
+Purpose: compare Human and AI research proposals after all proposal texts have been rephrased into a standardized neutral academic style. This audit reflects the notebook outputs saved in the `.ipynb` through the final JSON merge cell. The older style-adjusted residualization analyses are not present in the audited notebook and should not be treated as executed results.
 
 Global settings:
 
