@@ -1,5 +1,4 @@
 stratum,stratum_label,comparison,n_group,n_human,median_year_group,median_year_human,u_stat,p_value,p_holm
-0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",GPT-5.2 vs Human,3,8,2021.0,2021.5,5.0,0.1734267366014891,0.5202802098044673
-1,"details use execution, myosin motors, nascent chain, origin life",Claude vs Human,23,12,2023.5,2023.5,124.5,0.6466341855451374,1.0
-1,"details use execution, myosin motors, nascent chain, origin life",Gemini vs Human,21,12,2023.5,2023.5,124.0,0.9547202640008208,1.0
-1,"details use execution, myosin motors, nascent chain, origin life",GPT-5.2 vs Human,17,12,2024.5,2023.5,139.5,0.09065499508879998,0.36261998035519993
+1,"details use execution, myosin motors, nascent chain, origin life",Claude vs Human,22,4,2021.0,2022.0,27.5,0.24006272084076663,0.7201881625222999
+1,"details use execution, myosin motors, nascent chain, origin life",Gemini vs Human,23,4,2022.5,2022.0,59.0,0.3871958892250962,0.7201881625222999
+1,"details use execution, myosin motors, nascent chain, origin life",GPT-5.2 vs Human,23,4,2023.0,2022.0,62.5,0.2631376775179157,0.7201881625222999

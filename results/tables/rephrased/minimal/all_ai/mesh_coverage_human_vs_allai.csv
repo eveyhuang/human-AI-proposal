@@ -1,0 +1,2 @@
+human_mesh_mean,ai_mesh_mean,mw_p,cliffs_delta,cliffs_delta_ci_lo,cliffs_delta_ci_hi,human_union_size,ai_full_union_size,ai_boot_union_mean,ai_boot_union_ci_lo,ai_boot_union_ci_hi
+108.0,72.23188405797102,2.3010559505427503e-08,-0.7813484562066793,-0.9590579710144927,-0.5450220541902963,1248,604,377.755,304.0,462.0

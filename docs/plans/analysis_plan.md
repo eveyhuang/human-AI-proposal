@@ -35,28 +35,28 @@ and where it is consumed downstream.
 | `data/prepared/rephrased/minimal/review_scores_wide.csv`                      | Proposal-level AI review score means (NCEMS + novelty criteria)                                                                       | `compare_proposals_rephrased.ipynb` (final merge), `metric_score_relationship.ipynb`        |
 | `data/prepared/rephrased/minimal/human_y2_scores_wide.csv`           | Proposal-level Human-Y2 quantitative score means mapped to NCEMS-equivalent score columns                                             | `metric_score_relationship.ipynb`                                                           |
 | `data/prepared/rephrased/minimal/literature_corpus_prepared.json`    | Prepared literature corpus payload for novelty analyses (articles + search metadata), moved out of proposal notebook raw-loading path | `compare_proposals_rephrased.ipynb`                                                         |
-| `data/embeddings/rephrased/minimal/proposal_embeddings_human_ai_rephrased.pkl` | Prepared full-proposal embeddings (AI/Human) + metadata                                                                               | `compare_proposals_rephrased.ipynb`                                                         |
-| `data/embeddings/rephrased/minimal/proposal_embeddings_section1_only.pkl`      | Prepared abstract-only proposal embeddings for literature novelty comparisons                                                         | `compare_proposals_rephrased.ipynb`                                                         |
-| `data/embeddings/literature/relevant_literature_embeddings.pkl`                | Prepared literature embeddings used for proposal-to-literature distance calculations                                                  | `compare_proposals_rephrased.ipynb`                                                         |
+| `data/embeddings/rephrased/minimal/proposal_embeddings_human_ai_rephrased.pkl` | Prepared full-proposal embeddings (AI/Human) + metadata. Use for proposal-vs-proposal analyses only: proposal clustering, proposal-space UMAPs, diversity, centroid, NN, medoid, and sparseness metrics | `compare_proposals_rephrased.ipynb`                                                         |
+| `data/embeddings/rephrased/minimal/proposal_embeddings_section1_only.pkl`      | Prepared Section-1 / abstract-only proposal embeddings. This is the required proposal representation for all proposal-to-literature comparisons, including novelty distances, literature-space UMAP projection, BERTopic-region coverage, MeSH-neighbor coverage, and literature-neighbor recency | `compare_proposals_rephrased.ipynb`                                                         |
+| `data/embeddings/literature/relevant_literature_embeddings.pkl`                | Prepared literature abstract embeddings used for proposal-to-literature distance calculations. Compare only against Section-1 / abstract-only proposal embeddings, not full-proposal embeddings | `compare_proposals_rephrased.ipynb`                                                         |
 | `data/embeddings/reviews/minimal/ncems_criteria/review_embeddings_minimal.pkl` | Prepared NCEMS review embeddings with metadata + `review_uid` alignment                                                               | `compare_reviews_ncems_criteria.ipynb`                                                      |
 | `data/embeddings/reviews/minimal/novelty/review_embeddings_minimal.pkl`        | Prepared novelty review embeddings with metadata + `review_uid` alignment                                                             | `compare_reviews_novelty.ipynb` (future-ready; current core analysis is score-table based)  |
-|   `data/embeddings/literature/lit_lda_model.pkl`                         |   [UPDATE] Supplementary lexical LDA model (K topics) fitted on literature abstracts; used as a lexical robustness/comparison layer, not as the primary UMAP region definition      | `compare_proposals_rephrased.ipynb` (supplementary lexical analyses; Analyses 3.6b, 3.8 sensitivity)                                     |
-|   `data/prepared/rephrased/minimal/lit_topic_assignments.csv`             |   [UPDATE] Per-article supplementary LDA dominant topic index + soft topic probabilities for all 39538 literature articles                               | `compare_proposals_rephrased.ipynb` (supplementary lexical analyses; Analyses 3.6b, 3.8 sensitivity)                                     |
-| [UPDATE] `data/embeddings/literature/lit_bertopic_model.pkl`              | [UPDATE] BERTopic model fitted on existing BioLinkBERT-large literature embeddings; defines embedding-native literature topic/region labels via UMAP + clustering + c-TF-IDF topic representations | `prepare_data_for_analysis.ipynb` (new Section 12), `compare_proposals_rephrased.ipynb` (Analyses 3.5, 3.6, 3.8) |
-| [UPDATE] `data/prepared/rephrased/minimal/lit_bertopic_assignments.csv`   | [UPDATE] Per-literature-article embedding-native region label (`bertopic_topic`), optional probability/confidence, outlier flag, and human-readable c-TF-IDF label/top terms | `compare_proposals_rephrased.ipynb` (Analyses 3.5, 3.6, 3.8) |
-| [UPDATE] `data/prepared/rephrased/minimal/lit_bertopic_topic_info.csv`    | [UPDATE] Per-BERTopic-region metadata: topic id, article count, top c-TF-IDF words, representative documents/titles, and display label for UMAP annotation | `compare_proposals_rephrased.ipynb` (Analysis 3.5) |
-|   `data/embeddings/literature/lit_umap_reducer.pkl`                       |   UMAP reducer fitted on all 39538 literature embeddings (1024d); used to project proposals into the literature landscape via `transform()`, not refit | `compare_proposals_rephrased.ipynb` (Analysis 3.5)                                          |
+|   `data/embeddings/literature/lit_lda_model.pkl`                         |     Supplementary lexical LDA model (K topics) fitted on literature abstracts; used as a lexical robustness/comparison layer, not as the primary UMAP region definition      | `compare_proposals_rephrased.ipynb` (supplementary lexical analyses; Analyses 3.6b, 3.8 sensitivity)                                     |
+|   `data/prepared/rephrased/minimal/lit_topic_assignments.csv`             |     Per-article supplementary LDA dominant topic index + soft topic probabilities for all 39538 literature articles                               | `compare_proposals_rephrased.ipynb` (supplementary lexical analyses; Analyses 3.6b, 3.8 sensitivity)                                     |
+|   `data/embeddings/literature/lit_bertopic_model.pkl`              |   BERTopic model fitted on existing BioLinkBERT-large literature embeddings; defines embedding-native literature topic/region labels via UMAP + clustering + c-TF-IDF topic representations | `prepare_data_for_analysis.ipynb` (new Section 12), `compare_proposals_rephrased.ipynb` (Analyses 3.5, 3.6, 3.8) |
+|   `data/prepared/rephrased/minimal/lit_bertopic_assignments.csv`   |   Per-literature-article embedding-native region label (`bertopic_topic`), optional probability/confidence, outlier flag, and human-readable c-TF-IDF label/top terms | `compare_proposals_rephrased.ipynb` (Analyses 3.5, 3.6, 3.8) |
+|   `data/prepared/rephrased/minimal/lit_bertopic_topic_info.csv`    |   Per-BERTopic-region metadata: topic id, article count, top c-TF-IDF words, representative documents/titles, and display label for UMAP annotation | `compare_proposals_rephrased.ipynb` (Analysis 3.5) |
+|   `data/embeddings/literature/lit_umap_reducer.pkl`                       |   UMAP reducer fitted on all 39538 literature embeddings (1024d); used to project Section-1 / abstract-only proposal embeddings into the literature landscape via `transform()`, not refit | `compare_proposals_rephrased.ipynb` (Step 7, Analysis 3.5)                                          |
 |   `data/embeddings/literature/lit_umap2d.npy`                             |   2D UMAP coordinates for all 39538 literature articles (shape 39538×2)                                                          | `compare_proposals_rephrased.ipynb` (Analysis 3.5)                                          |
-| [UPDATE] `results/figures/rephrased/minimal/literature_umap_bertopic_regions_prepare.png` | [UPDATE] Literature-only diagnostic UMAP: all literature articles colored by embedding-native BERTopic region with region labels annotated; no proposal overlay | `prepare_data_for_analysis.ipynb` (Section 13 diagnostic visualization) |
+|   `results/figures/rephrased/minimal/literature_umap_bertopic_regions_prepare.png` |   Literature-only diagnostic UMAP: all literature articles colored by embedding-native BERTopic region with region labels annotated; no proposal overlay | `prepare_data_for_analysis.ipynb` (Section 13 diagnostic visualization) |
 
 
 ###   New `prepare_data_for_analysis.ipynb` Sections
 
-[UPDATE] The following three sections must be added to `prepare_data_for_analysis.ipynb` after the existing `## 9. Review Embeddings` section and before `## 10. Artifact Summary`. All outputs are cached (skip-if-exists logic) and are loaded by `compare_proposals_rephrased.ipynb` without re-fitting.
+  The following three sections must be added to `prepare_data_for_analysis.ipynb` after the existing `## 9. Review Embeddings` section and before `## 10. Artifact Summary`. All outputs are cached (skip-if-exists logic) and are loaded by `compare_proposals_rephrased.ipynb` without re-fitting.
 
 ####   `## 11. Literature Topic Modeling (LDA)` [UPDATE: supplementary lexical topic model]
 
-[UPDATE] **Role in the analysis**: LDA is retained as a supplementary lexical topic model because it captures word co-occurrence themes, not necessarily the semantic neighborhoods visible in the BioLinkBERT/UMAP geometry. LDA topic labels should not be used as the primary coloring or region definition for the literature UMAP. They are used for lexical robustness checks, LDA-vs-embedding-topic agreement diagnostics, and optional supplementary tables.
+  **Role in the analysis**: LDA is retained as a supplementary lexical topic model because it captures word co-occurrence themes, not necessarily the semantic neighborhoods visible in the BioLinkBERT/UMAP geometry. LDA topic labels should not be used as the primary coloring or region definition for the literature UMAP. They are used for lexical robustness checks, LDA-vs-embedding-topic agreement diagnostics, and optional supplementary tables.
 
 Step-by-step:
 
@@ -71,39 +71,39 @@ Saved artifacts:
 -   `data/embeddings/literature/lit_lda_model.pkl`
 -   `data/prepared/rephrased/minimal/lit_topic_assignments.csv`
 
-#### [UPDATE] `## 12. Literature Embedding Topic Regions (BERTopic)`
+####   `## 12. Literature Embedding Topic Regions (BERTopic)`
 
-[UPDATE] **Motivation**: The literature UMAP is built from BioLinkBERT-large embeddings, while LDA topics are built from bag-of-words count features. If LDA labels do not align with visible UMAP islands, the plot becomes hard to interpret and can mislead readers about which "topic regions" proposals occupy. This section therefore defines literature regions using an embedding-native topic model: BERTopic fitted on the existing BioLinkBERT-large literature embeddings. Text is used afterward only to generate human-readable c-TF-IDF labels for each embedding cluster.
+  **Motivation**: The literature UMAP is built from BioLinkBERT-large embeddings, while LDA topics are built from bag-of-words count features. If LDA labels do not align with visible UMAP islands, the plot becomes hard to interpret and can mislead readers about which "topic regions" proposals occupy. This section therefore defines literature regions using an embedding-native topic model: BERTopic fitted on the existing BioLinkBERT-large literature embeddings. Text is used afterward only to generate human-readable c-TF-IDF labels for each embedding cluster.
 
-[UPDATE] **Dependency note**: Add `bertopic` and `umap-learn` to the project environment. Use the already-computed literature embeddings; do not let BERTopic recompute default sentence-transformer embeddings.
+  **Dependency note**: Add `bertopic` and `umap-learn` to the project environment. Use the already-computed literature embeddings; do not let BERTopic recompute default sentence-transformer embeddings.
 
-[UPDATE] Step-by-step:
+  Step-by-step:
 
-1. [UPDATE] Load literature titles + abstracts from `lit_payload['texts']` / `articles` and existing BioLinkBERT-large literature embeddings from `data/embeddings/literature/relevant_literature_embeddings.pkl`. L2-normalize embeddings exactly as in the literature-distance pipeline.
-2. [UPDATE] Fit BERTopic on the literature corpus only: `topics, probs = topic_model.fit_transform(lit_texts, X_lit)`. The documents are titles + abstracts; embeddings are the precomputed BioLinkBERT-large vectors. Proposals are not included in the BERTopic fit, so they cannot reshape the reference field map.
-3. [UPDATE] Configure BERTopic to use an embedding-space clustering pipeline appropriate for ~39k biomedical abstracts. Starting configuration:
+1.   Load literature titles + abstracts from `lit_payload['texts']` / `articles` and existing BioLinkBERT-large literature embeddings from `data/embeddings/literature/relevant_literature_embeddings.pkl`. L2-normalize embeddings exactly as in the literature-distance pipeline.
+2.   Fit BERTopic on the literature corpus only: `topics, probs = topic_model.fit_transform(lit_texts, X_lit)`. The documents are titles + abstracts; embeddings are the precomputed BioLinkBERT-large vectors. Proposals are not included in the BERTopic fit, so they cannot reshape the reference field map.
+3.   Configure BERTopic to use an embedding-space clustering pipeline appropriate for ~39k biomedical abstracts. Starting configuration:
    - `UMAP(n_neighbors=30, n_components=5, min_dist=0.0, metric='cosine', random_state=42, low_memory=True)` for BERTopic's internal dimensionality reduction.
-   - [UPDATE] `MiniBatchKMeans(n_clusters=12, random_state=42, batch_size=2048, n_init=20)` as BERTopic's clustering model. HDBSCAN produced only two broad density masses in the 39k-article BioLinkBERT space; a fixed-granularity clusterer is better for the intended 10-15 interpretable literature-map regions.
-   - [UPDATE] `CountVectorizer(stop_words='english', ngram_range=(1,2), min_df=1, max_df=1.0, max_features=10000)` for c-TF-IDF topic labels; use permissive df thresholds because BERTopic applies this vectorizer to topic-level aggregate documents after clustering, where strict `min_df`/`max_df` settings can fail if the number of discovered topics is small. Use the same domain stopword strategy developed for proposal LDA where helpful.
-4. [UPDATE] Generate human-readable topic/region labels from BERTopic topic representations, but do **not** use the raw top 4 c-TF-IDF terms directly when they overlap heavily across regions. Build display labels with `contrastive_phrase_v4`: vectorize literature titles + abstracts with unigrams, bigrams, and trigrams; score candidate phrases by region-vs-rest enrichment; prefer multi-word phrases; penalize terms that appear across many regions rather than banning them outright; avoid generic singleton biomedical terms such as `cell`, `cells`, `cancer`, `emerging`, `study`, `review`, and `potential`; and use MMR-style token-overlap penalties so each label is not internally redundant. Multi-word phrases containing a generic word can still be used when the full phrase is region-specific, e.g. `therapeutic potential`. Save both the raw c-TF-IDF label (`display_label_raw_ctfidf`) and the contrastive phrase label (`display_label`) so the visualization emphasizes differences between nearby regions while preserving the original topic representation for auditability. Treat BERTopic topic `-1` as "embedding outlier / unassigned region".
-5. [UPDATE] Save a per-article assignment table aligned to the literature embedding order with columns: `article_idx`, `pmid`, `bertopic_topic`, `bertopic_is_outlier`, `bertopic_prob` when available, `bertopic_label`, `bertopic_top_terms`, `bertopic_contrastive_terms`, and `bertopic_label_strategy`.
-6. [UPDATE] Save the fitted BERTopic model and topic-info table for reuse. Do not recompute if all three output artifacts already exist.
-7. [UPDATE] Run sensitivity diagnostics before using labels in the paper: vary `n_clusters` (e.g., 10, 12, 15) and report region sizes, c-TF-IDF label interpretability, and qualitative stability of proposal-region assignments. The primary setting is `n_clusters=12`, but the final interpretation should not depend on one fragile granularity setting.
-8. [UPDATE] Compare BERTopic embedding-region labels against LDA labels using ARI/NMI and a contingency heatmap. Low agreement is not a failure; it supports reporting LDA as lexical structure and BERTopic as embedding-region structure.
+   -   `MiniBatchKMeans(n_clusters=12, random_state=42, batch_size=2048, n_init=20)` as BERTopic's clustering model. HDBSCAN produced only two broad density masses in the 39k-article BioLinkBERT space; a fixed-granularity clusterer is better for the intended 10-15 interpretable literature-map regions.
+   -   `CountVectorizer(stop_words='english', ngram_range=(1,2), min_df=1, max_df=1.0, max_features=10000)` for c-TF-IDF topic labels; use permissive df thresholds because BERTopic applies this vectorizer to topic-level aggregate documents after clustering, where strict `min_df`/`max_df` settings can fail if the number of discovered topics is small. Use the same domain stopword strategy developed for proposal LDA where helpful.
+4.   Generate human-readable topic/region labels from BERTopic topic representations, but do **not** use the raw top 4 c-TF-IDF terms directly when they overlap heavily across regions. Build display labels with `contrastive_phrase_v4`: vectorize literature titles + abstracts with unigrams, bigrams, and trigrams; score candidate phrases by region-vs-rest enrichment; prefer multi-word phrases; penalize terms that appear across many regions rather than banning them outright; avoid generic singleton biomedical terms such as `cell`, `cells`, `cancer`, `emerging`, `study`, `review`, and `potential`; and use MMR-style token-overlap penalties so each label is not internally redundant. Multi-word phrases containing a generic word can still be used when the full phrase is region-specific, e.g. `therapeutic potential`. Save both the raw c-TF-IDF label (`display_label_raw_ctfidf`) and the contrastive phrase label (`display_label`) so the visualization emphasizes differences between nearby regions while preserving the original topic representation for auditability. Treat BERTopic topic `-1` as "embedding outlier / unassigned region".
+5.   Save a per-article assignment table aligned to the literature embedding order with columns: `article_idx`, `pmid`, `bertopic_topic`, `bertopic_is_outlier`, `bertopic_prob` when available, `bertopic_label`, `bertopic_top_terms`, `bertopic_contrastive_terms`, and `bertopic_label_strategy`.
+6.   Save the fitted BERTopic model and topic-info table for reuse. Do not recompute if all three output artifacts already exist.
+7.   Run sensitivity diagnostics before using labels in the paper: vary `n_clusters` (e.g., 10, 12, 15) and report region sizes, c-TF-IDF label interpretability, and qualitative stability of proposal-region assignments. The primary setting is `n_clusters=12`, but the final interpretation should not depend on one fragile granularity setting.
+8.   Compare BERTopic embedding-region labels against LDA labels using ARI/NMI and a contingency heatmap. Low agreement is not a failure; it supports reporting LDA as lexical structure and BERTopic as embedding-region structure.
 
-[UPDATE] Saved artifacts:
+  Saved artifacts:
 
-- [UPDATE] `data/embeddings/literature/lit_bertopic_model.pkl`
-- [UPDATE] `data/prepared/rephrased/minimal/lit_bertopic_assignments.csv`
-- [UPDATE] `data/prepared/rephrased/minimal/lit_bertopic_topic_info.csv`
-- [UPDATE] `results/tables/rephrased/minimal/lit_lda_bertopic_agreement.csv`
-- [UPDATE] `results/figures/rephrased/minimal/lit_lda_bertopic_contingency.png`
+-   `data/embeddings/literature/lit_bertopic_model.pkl`
+-   `data/prepared/rephrased/minimal/lit_bertopic_assignments.csv`
+-   `data/prepared/rephrased/minimal/lit_bertopic_topic_info.csv`
+-   `results/tables/rephrased/minimal/lit_lda_bertopic_agreement.csv`
+-   `results/figures/rephrased/minimal/lit_lda_bertopic_contingency.png`
 
-#### [UPDATE] `## 13. Literature-Space UMAP (Literature Only)`
+####   `## 13. Literature-Space UMAP (Literature Only)`
 
 **Note**: Fitting UMAP on 39538 × 1024d embeddings is the most expensive step in the entire pipeline (~10–30 minutes on CPU). This must be cached with a skip-if-exists check on both output files. Do NOT refit if outputs already exist.
 
-[UPDATE] **Role in the analysis**: This section fits/caches the fixed 2D literature map on literature embeddings only. The UMAP coordinates provide the visual map; BERTopic labels from Section 12 provide the primary region colors/labels on that map. It does **not** load, project, map, or save proposal coordinates. Proposal projection into this saved literature reducer happens only in `compare_proposals_rephrased.ipynb`.
+  **Role in the analysis**: This section fits/caches the fixed 2D literature map on literature embeddings only. The UMAP coordinates provide the visual map; BERTopic labels from Section 12 provide the primary region colors/labels on that map. It does **not** load, project, map, or save proposal coordinates. Proposal projection into this saved literature reducer happens only in `compare_proposals_rephrased.ipynb`.
 
 Step-by-step:
 
@@ -111,19 +111,20 @@ Step-by-step:
 2.   Check if `data/embeddings/literature/lit_umap_reducer.pkl` and `data/embeddings/literature/lit_umap2d.npy` both exist. If so, load and skip fitting entirely.
 3.   If fitting: run `umap.UMAP(n_neighbors=20, min_dist=0.1, n_components=2, metric='cosine', random_state=42, low_memory=True)` on `X_lit`. Use `n_neighbors=20` to match the existing Step 7 UMAP parameters so Step 7 can swap in the cached coordinates without visual discontinuity. Use `low_memory=True` to handle the 39538-sample case.
 4.   Save the fitted reducer as `data/embeddings/literature/lit_umap_reducer.pkl` and the 2D literature coordinates as `data/embeddings/literature/lit_umap2d.npy`.
-5. [UPDATE] Add a literature-only diagnostic visualization cell: load `lit_umap2d.npy`, `lit_bertopic_assignments.csv`, and `lit_bertopic_topic_info.csv`; color literature articles by `bertopic_topic`; annotate each non-outlier BERTopic region with its c-TF-IDF display label; save the figure to `results/figures/rephrased/minimal/literature_umap_bertopic_regions_prepare.png`. This diagnostic intentionally does **not** overlay proposals.
+5.   Add a literature-only diagnostic visualization cell: load `lit_umap2d.npy`, `lit_bertopic_assignments.csv`, and `lit_bertopic_topic_info.csv`; color literature articles by `bertopic_topic`; annotate each non-outlier BERTopic region with its c-TF-IDF display label; save the figure to `results/figures/rephrased/minimal/literature_umap_bertopic_regions_prepare.png`. This diagnostic intentionally does **not** overlay proposals.
 
-[UPDATE] Proposal projection boundary:
+  Proposal projection boundary:
 
-- The existing Step 7 novelty visualization in `compare_proposals_rephrased.ipynb` should load `lit_umap_reducer.pkl` and `lit_umap2d.npy`, then project abstract-only proposal embeddings inside the comparison notebook.
-- Analysis 3.5 in `compare_proposals_rephrased.ipynb` should load the same literature reducer and project full-proposal embeddings (`X_prop`) inside the comparison notebook.
+- **Representation rule**: any comparison against literature embeddings must use Section-1 / abstract-only proposal embeddings from `proposal_embeddings_section1_only.pkl`. Do not use full-proposal embeddings (`X_prop`) for proposal-to-literature distances, literature-space UMAPs, literature-neighbor tables, MeSH-neighbor coverage, publication-year recency, or BERTopic-region coverage.
+- The existing Step 7 novelty visualization in `compare_proposals_rephrased.ipynb` should load `lit_umap_reducer.pkl` and `lit_umap2d.npy`, then project Section-1 / abstract-only proposal embeddings inside the comparison notebook.
+- Analysis 3.5 in `compare_proposals_rephrased.ipynb` should load the same literature reducer and project Section-1 / abstract-only proposal embeddings (`proposal_embeddings_section1_only.pkl`) inside the comparison notebook, so literature-space maps use the same proposal representation as proposal-to-literature novelty distances.
 - `prepare_data_for_analysis.ipynb` should not create `proposal_abstract_coords_in_lit_umap.npy` or `proposal_full_coords_in_lit_umap.npy`.
 
 Saved artifacts:
 
 -   `data/embeddings/literature/lit_umap_reducer.pkl`
 -   `data/embeddings/literature/lit_umap2d.npy`
-- [UPDATE] `results/figures/rephrased/minimal/literature_umap_bertopic_regions_prepare.png`
+-   `results/figures/rephrased/minimal/literature_umap_bertopic_regions_prepare.png`
 
 
 ## Experiment Conditions
@@ -162,6 +163,8 @@ This study now has four generation conditions:
 
 > **Update (July 1, 2026):** compact proposal results below have been refreshed from the rendered `baseline(minimal)-rephrased/compare_proposals_rephrased.ipynb` outputs; NCEMS rows reflect the executed baseline/minimal review notebook audit.
 
+> **Representation update (July 2, 2026):** proposal-to-literature analyses have been standardized to use Section-1 / abstract-only proposal embeddings. Literature-relative novelty, literature-space outlier, BERTopic-region coverage, MeSH-neighbor, and literature-neighbor recency numbers below reflect the last audited rendered outputs and should be refreshed by rerunning Part III after this code change.
+
 
 ### Compact Results Table
 
@@ -195,6 +198,65 @@ Stars indicate corrected/primary significance for the model-vs-Human contrast: `
 | NCEMS R3 self-preference | compares each evaluator's self vs other AI proposals | self `3.8783`, other `3.8870`; δ `-0.053` | self `4.1435`, other `4.5304`; δ `-0.732` `***` | self `4.0043`, other `3.8065`; δ `0.933` `***` | MW FDR |
 | Novelty-framework reviews, cross-eval rerun | Human reference from novelty-review notebook | Claude ~ Human; `q=0.8428` | Human > Gemini; δ `0.7788` `***` | GPT > Human; δ `-0.4631` `*` | MW FDR |
 | Metric-score relationship (executed baseline-minimal outputs) | semantic-distance metrics are mostly negative with NCEMS and often positive with novelty criteria | model-specific score/metric validation not estimated in compact table | model-specific score/metric validation not estimated in compact table | model-specific score/metric validation not estimated in compact table | Spearman |
+
+
+## Data Visualization Guide
+
+This guide summarizes the visual conventions used in the audited `baseline(minimal)-rephrased/compare_proposals_rephrased.ipynb` notebook and should be treated as the default style for future condition notebooks unless an analysis requires a specific exception.
+
+### Color Scheme and Metadata Encoding
+
+- Use the shared group palette consistently: Human `#DC143C`, Claude `#4A90E2`, Gemini `#7B68EE`, GPT-5.2 `#3CB371`.
+- Use `#808080` only as a fallback for unknown groups. Use a distinct muted aggregate color for combined All-AI views when needed, currently `#B56576`.
+- Proposal-level Human funding status should override the generic Human color when individual Human points are plotted: funded Human proposals use dark red `#8B0000`; nonfunded or unknown-funding Human proposals use light coral `#F08080`.
+- Top-ranked proposals should be marked with a black outline/ring, using `is_top5_ranked` when available. This applies to both boxplot jitter points and UMAP/scatter proposal markers.
+- Outlier overlays should use outline rings rather than replacing the base point color. Proposal-space or within-cluster outliers use magenta outlines; literature-space comparison overlays may use an additional cyan outline when two outlier definitions are shown together.
+- Literature-background points in literature-space UMAPs should remain small and semi-transparent so proposal markers and BERTopic region labels remain visually dominant.
+
+### Standard Boxplot Grammar
+
+Use the standardized boxplot helper pattern for all group-comparison distributions.
+
+- Box: standard median line, IQR box, whiskers, and outlier points. Fill each box with the group color at 70% opacity and use black outlines/median lines.
+- Jittered scatter: overlay individual observations with random horizontal jitter of approximately `±0.15` units, point size around `20`, and 50% opacity. Use the same group color unless proposal metadata specify funded/nonfunded Human coloring. Add a black ring for top-ranked proposals.
+- Mean + 95% CI: plot the bootstrapped mean as a filled diamond marker of roughly `50` points, with vertical error bars for the 95% bootstrap confidence interval. Draw this above jitter points.
+- Proposal-level panels should preserve `proposal_uid` or equivalent metadata columns through reshaping/melting so funding and top-rank encodings survive into the plotting layer.
+- Non-proposal observations, such as pairwise distances or CV folds, should still use the standardized box/point/mean-CI grammar but should not force proposal-level funding or ranking metadata onto datapoints that do not represent a single proposal.
+- Grouped metric panels, such as novelty metrics across multiple `k` values, should use dodged standardized boxplots with a group legend and the same metadata legend when proposal-level rows are available.
+
+### Violin, Ridge, and Histogram Views
+
+- Violin plots should be used sparingly as descriptive distribution-shape diagnostics, not as the primary group-comparison figure when inferential interpretation is expected. For proposal metric comparisons, prefer the standardized boxplot grammar above.
+- If a violin plot is used, it should follow the same group palette, show median/quartile or mean annotations clearly, and avoid duplicating an adjacent standardized boxplot unless the shape view adds information.
+- Ridge plots are appropriate for dense pairwise-distance distributions where the full shape and skew are important. Use group-colored density fills, with solid median and dashed mean lines in the same group color.
+- Histograms should use consistent binning across groups, transparent fills, and log-scale counts when long tails obscure most of the distribution. They should be labeled as descriptive full-range views.
+
+### UMAP and Embedding-Space Projections
+
+- Reuse cached UMAP coordinates whenever available. Proposal-space UMAPs should load `results/tables/rephrased/minimal/cached/proposal_umap2d.npy`; literature-space UMAPs should use the fixed literature reducer and coordinates from `data/embeddings/literature/lit_umap_reducer.pkl` and `data/embeddings/literature/lit_umap2d.npy`.
+- Literature-space UMAPs and BERTopic-region overlays must project Section-1 / abstract-only proposal embeddings, not full-proposal embeddings. This keeps proposal markers comparable to the literature abstract embeddings and to the proposal-to-literature novelty metrics.
+- Do not refit UMAP inside a visualization cell if a cache exists. If recomputation is unavoidable, use the documented parameters and save the cache for downstream panels.
+- Axis labels should identify the coordinate system: `UMAP-1` / `UMAP-2` for proposal-space maps, and `Literature UMAP Dim 1` / `Literature UMAP Dim 2` for literature-anchored maps.
+- Proposal markers should follow the metadata encoding above: AI groups use the group palette; funded Human uses dark red; nonfunded/unknown Human uses light coral; top-ranked proposals have black outlines.
+- Per-cluster UMAP zooms should retain the same marker semantics and use panel titles with cluster names, total `n`, and compact discriminative topic labels when available.
+- Literature-region UMAPs should color the fixed literature background by BERTopic embedding-region labels, not LDA lexical topics. LDA-colored maps are supplementary diagnostics only.
+- UMAP legends should explicitly explain black outlines, funding colors, outlier rings, and any literature-region colors that are needed to interpret the panel.
+
+### Effect-Size and Significance Panels
+
+- Pair distribution panels with statistical comparisons should be paired with an effect-size panel when space allows.
+- Cliff's delta panels should use a vertical zero reference line, horizontal CIs, and group-colored markers for the model-vs-Human contrast.
+- Label effect-size axes with the direction of the comparison, e.g. `Cliff's δ (bootstrap 95% CI)` or `AI − Human`. If positive/negative direction changes by metric, state that in the axis label or caption.
+- Significance stars should reflect corrected p-values where correction is part of the analysis. Use the compact table convention: `*** p<.001`, `** p<.01`, `* p<.05`.
+
+### Labels, Legends, and Export Standards
+
+- Titles should name the analysis object and, when useful, include a second line describing key encodings such as `diamond/error bar = mean bootstrap 95% CI`.
+- Axis labels should use metric units or definitions rather than variable names. Examples: `Pairwise cosine distance`, `Distance to group centroid`, `Cosine distance to global centroid`, `Nearest-Neighbor Distance`, `Unique MeSH descriptors`.
+- Include sample sizes in tick labels, panel titles, legends, or adjacent tables when group size differences could affect interpretation.
+- Use legends only when they decode colors, markers, line styles, or rings. Place legends outside or below crowded panels when they would obscure data.
+- Use light grids for quantitative y-axes (`alpha` around `0.2-0.3`) and avoid heavy gridlines on embedding maps.
+- Save figures under the appropriate condition-specific `results/figures/...` directory with descriptive filenames, `dpi` at least `200` for notebook diagnostics and `300` for manuscript-style figures, and `bbox_inches='tight'`.
 
 
 ## Notebooks and analyses
@@ -602,6 +664,7 @@ Baseline-minimal-rephrased rendered result:
 - Literature embeddings: `39538`.
 - Loaded abstract-only proposal embeddings from `data/embeddings/rephrased/minimal/proposal_embeddings_section1_only.pkl`.
 - Abstract-only proposal embeddings: Human `(23, 1024)`, AI `(69, 1024)`.
+- Representation rule for all later literature comparisons: stack these Section-1 embeddings as Human rows followed by AI rows to align with `proposal_meta`; use this matrix as `X_prop_lit`.
 
 ##### `## Shared Novelty Precomputation (CAREFUL, computationally expensive)`
 
@@ -609,6 +672,7 @@ Baseline-minimal-rephrased rendered result:
 
 - Loaded literature kNN cache for `39538` papers from `results/tables/rephrased/minimal/cached/lit_knn_distances_50.npy`.
 - Proposal-to-literature distance matrix `D_pl` shape: `(92, 39538)`.
+- Updated implementation: `D_pl` must be computed from Section-1 / abstract-only proposal embeddings (`X_prop_lit @ X_lit.T`), not from full-proposal embeddings (`X_prop @ X_lit.T`).
 - Computed reusable literature kNN baselines up to `k=50`.
 
 ##### `## Step 2.5: Element Novelty Percentiles`
@@ -660,13 +724,16 @@ Baseline-minimal-rephrased rendered result:
 
 - The current notebook cell for the UMAP literature-space view has no saved output in the `.ipynb`.
 - The cell code targets `results/figures/rephrased/minimal/proposals_in_literature_space_umap.png`, and that file exists on disk.
+- Updated implementation: the view loads the fixed literature UMAP (`lit_umap2d.npy` + `lit_umap_reducer.pkl`) and projects Section-1 / abstract-only proposal embeddings into that map. It should not use full-proposal embeddings or a stale generic `proposals_2d_umap` object.
 - The current notebook text says the view fits UMAP on literature only and projects proposals into that space; it does not render the previously documented t-SNE or publication-year literature-space figures in the saved output.
+- Refresh status: rerun this cell after rerunning the shared novelty precomputation to regenerate the figure under the Section-1-only representation rule.
 
 ##### `### Step 7B: Literature-Space Outliers and High-Novelty Flags`
 
 Baseline-minimal-rephrased rendered result:
 
 - Saved `literature_space_outliers_mean_knn_k10.csv`, `literature_space_outliers_element0.csv`, `literature_space_outliers_z.csv`, and `literature_space_outlier_prevalence_tests.csv`.
+- Updated implementation: outlier flags and the outlier-comparison UMAP are based on the same Section-1 / abstract-only proposal-to-literature distances and projection used in Step 7.
 - Mean-10NN and ElementNovel-0 outliers:
   - Human `5/23` (`21.7%`).
   - Claude `0/23`, Holm Fisher `p=0.1473`.
@@ -693,6 +760,7 @@ Baseline-minimal-rephrased rendered result:
 Baseline-minimal-rephrased rendered result:
 
 - Loaded BERTopic display-label strategy from prepare-data artifacts: `contrastive_phrase_v4`.
+- Updated implementation: proposal markers are Section-1 / abstract-only proposal embeddings projected into the fixed literature UMAP. This map should use the same proposal representation as Step 7 and the novelty-distance matrix.
 - Saved primary combined literature-region UMAP: `literature_umap_with_bertopic_regions.png`.
 - Saved split zoom: `literature_umap_with_bertopic_regions_split_zoom.png`.
 - Proposal x split for zoom panes: `6.447`; left pane `n=19`, right pane `n=73`.
@@ -855,6 +923,637 @@ Current implementation status for future notebook edits:
 
 - Project embeddings to 2D, partition into a `5 x 5` grid, compute occupancy frequencies, and report Shannon entropy plus a normalized entropy.
 - Keep this distinct from the existing LDA topic entropy in Analysis 1.3.
+
+### Compare_proposals_all_ai.ipynb
+
+#### Notebook Scope and Global Settings
+
+Notebook path: `baseline(minimal)-rephrased/compare_proposals_all_ai.ipynb`.
+
+Purpose: compare Human proposals against the full pooled AI proposal set (Claude + Gemini + GPT-5.2 combined, n=69) using the same analysis families as `compare_proposals_rephrased.ipynb`. All primary comparisons are binary (Human vs All-AI). Per-model breakdowns are produced only as supplementary tables and are never primary figures. The notebook addresses the N-imbalance problem (23 human vs 69 AI proposals) through a bootstrap subsampling strategy that is generated once at the start and reused across all N-sensitive diversity analyses.
+
+Global settings:
+
+- Condition label: `baseline-minimal-rephrased`.
+- `CONDITION = 'minimal'`.
+- `N_BOOT = 1000` (number of bootstrap subsamples for N-sensitive metrics).
+- `BOOT_SEED = 42`.
+- `N_HUMAN = 23`; `N_AI_POOL = 69`; `N_SUBSAMPLE = 23` (subsample size matches human N).
+- Proposal input: `data/prepared/rephrased/minimal/all_proposals.json`.
+- Tables output root: `results/tables/rephrased/minimal/all_ai/`.
+- Figures output root: `results/figures/rephrased/minimal/all_ai/`.
+- Full-proposal embedding cache: `data/embeddings/rephrased/minimal/proposal_embeddings_human_ai_rephrased.pkl`.
+- Abstract/Section-1 embedding cache: `data/embeddings/rephrased/minimal/proposal_embeddings_section1_only.pkl`.
+- Literature embedding cache: `data/embeddings/literature/relevant_literature_embeddings.pkl`.
+- Literature kNN cache (precomputed in `compare_proposals_rephrased.ipynb`): `results/tables/rephrased/minimal/cached/lit_knn_distances_50.npy`.
+- Shared proposal distance matrix (precomputed): `results/tables/rephrased/minimal/cached/proposal_distance_matrix.npy`.
+- Shared proposal PCA 2D coords (precomputed): `results/tables/rephrased/minimal/cached/proposal_pca2d.npy`.
+- Shared proposal UMAP 2D coords (precomputed): `results/tables/rephrased/minimal/cached/proposal_umap2d.npy`.
+- Shared proposal metadata: `results/tables/rephrased/minimal/proposal_metadata.csv`.
+- BERTopic model: `data/embeddings/literature/lit_bertopic_model.pkl`.
+- Literature BERTopic assignments: `data/prepared/rephrased/minimal/lit_bertopic_assignments.csv`.
+- Literature UMAP reducer: `data/embeddings/literature/lit_umap_reducer.pkl`.
+- Literature 2D UMAP: `data/embeddings/literature/lit_umap2d.npy`.
+- Literature articles: `data/prepared/rephrased/minimal/literature_corpus_prepared.json`.
+
+Embedding-use boundary:
+
+- Use full-proposal embeddings (`X_prop`) for proposal-vs-proposal structure: clustering, proposal-space UMAP, pairwise diversity, centroid/global-centroid dispersion, nearest-neighbor isolation, MST, sparseness, and style/semantic source checks.
+- Use Section-1 / abstract-only proposal embeddings (`X_prop_lit`) for every proposal-to-literature analysis: ElementNovel, MeanKNN, normalized novelty, literature-space outlier flags, literature-space UMAPs, BERTopic-region coverage, nearest-literature-neighbor MeSH coverage, and literature-neighbor publication-year recency.
+
+Display colors:
+
+- `Human`: same color as in `compare_proposals_rephrased.ipynb`.
+- `All AI`: a single distinct color (e.g., `#E07B39`, a muted orange) used for all pooled-AI points and bars.
+- Per-model supplementary figures may reuse the existing per-model palette from `compare_proposals_rephrased.ipynb`.
+
+#### N-Sensitivity Classification and Subsampling Policy
+
+This notebook applies a fixed policy to every analysis, determined by whether the metric's expected value changes as a function of group size N when the underlying distribution is held constant.
+
+**N-sensitive metrics — use bootstrap subsampling for effect size estimates:**
+- Mean pairwise distance (partially N-sensitive due to model mixing across 3 AI systems).
+- MST dispersion (mean MST edge length decreases monotonically with N).
+- Nearest-neighbor / Chamfer distance (min-NN distance decreases monotonically with N).
+- Centroid dispersion / global-centroid distance (moderately N-sensitive; centroid precision improves with N).
+- Sparseness / medoid-based dispersion (moderately N-sensitive).
+- Grid entropy (more proposals fill more cells, pushing entropy upward).
+- Group-level union MeSH count (monotone in N by definition; do not compare group-union for 23 vs 69 directly).
+- BERTopic group-level breadth / region count (monotone in N; use per-proposal MW tests as primary instead).
+
+**N-insensitive metrics — use Mann-Whitney or permutation test on full groups (23 vs 69) directly:**
+- Per-proposal novelty metrics: ElementNovel, MeanKNN, novelty_z (proposal-level, compared via MW).
+- Per-proposal MeSH count (proposal-level MW).
+- Per-proposal BERTopic region weight / entropy (proposal-level MW).
+- Cluster membership proportions (Fisher or chi-square; conditions on group sizes).
+- LDA topic participation proportions (chi-square; conditions on group sizes).
+- Style features (proposal-level MW).
+- Pairwise-similarity tests for categorical outcomes (Fisher, chi-square).
+
+**Significance testing policy for N-sensitive metrics:**
+- Use permutation tests on the full 23-vs-69 assignment as the source of p-values. Permutation tests correctly account for group sizes in their null distribution and remain valid with unequal N.
+- Use the bootstrap-subsampled estimate (mean over 1000 subsamples of n=23 from the 69 AI pool) as the reported effect size and for the human-vs-AI mean difference.
+- Report both the full n=69 AI metric value (in supplementary) and the subsampled n=23 mean ± 95% CI (in the main table).
+
+#### `## Condition Configuration`
+
+Step-by-step:
+
+1. Set `CONDITION = 'minimal'`.
+2. Set `N_BOOT = 1000`, `BOOT_SEED = 42`, `N_SUBSAMPLE = 23`.
+3. Set `REUSE_CACHED_EMBEDDINGS = True` (load all embedding and distance caches from `compare_proposals_rephrased.ipynb` precomputation; do not recompute).
+4. Define output directories `TABLES_DIR = results/tables/rephrased/minimal/all_ai/` and `FIGURES_DIR = results/figures/rephrased/minimal/all_ai/`. Create both if they do not exist.
+
+#### `# Setup and Imports`
+
+Step-by-step:
+
+1. Import standard libraries: `numpy`, `pandas`, `scipy`, `sklearn`, `matplotlib`, `seaborn`, `networkx`, `statsmodels`.
+2. Locate project root.
+3. Define all input/output paths as constants using `pathlib.Path`.
+4. Create output directories.
+
+##### `## Helper Functions`
+
+Copy or import the following helpers from `compare_proposals_rephrased.ipynb`. Do not rewrite from scratch; use identical implementations so results are numerically consistent:
+
+- `cliffs_delta(x, y)`.
+- `bootstrap_cliffs_delta_ci(x, y, n_boot, random_state)`.
+- `add_mean_ci_to_boxplot(ax, data_list, positions, ...)`.
+- `fmt_p(p)` (significance formatter).
+- `proposal_mean_pairwise_distance(idx_array, D)` (mean upper-triangle pairwise distance for a group index array and precomputed distance matrix).
+- `mst_dispersion(idx_array, D)` (mean MST edge length for a group).
+- `sparseness_medoid(idx_array, D)` (mean distance from medoid).
+- `chamfer_nn_distance(idx_array, D)` (mean nearest-neighbor distance within a group, excluding self).
+- `grid_entropy(coords_2d, grid_size=5)` (Shannon entropy of grid occupancy for a set of 2D points).
+- Bootstrap CI helper: `boot_ci(values, alpha=0.05)` returning `(lower, upper)` from a 1D array of bootstrap replicates.
+- Holm correction wrapper (or use `statsmodels.stats.multitest.multipletests(..., method='holm')`).
+
+Add one new helper not in the original notebook:
+
+- `bootstrap_group_metric(metric_fn, ai_indices, D_or_coords, n_boot, n_subsample, seed)`: draws `n_boot` subsamples of size `n_subsample` without replacement from `ai_indices`, applies `metric_fn` to each subsample, returns the array of `n_boot` metric values. `metric_fn` signature: `fn(idx_array, D_or_coords) -> float`.
+
+##### `## Load Prepared Proposal Data`
+
+Step-by-step:
+
+1. Load `data/prepared/rephrased/minimal/all_proposals.json` into a list of proposal dicts.
+2. Build `proposal_meta` DataFrame from the loaded list (columns: `proposal_uid`, `title`, `group_model`, `group_binary`).
+3. Assert counts: `n_human == 23`, `n_ai == 69`, `n_total == 92`.
+4. Build index arrays:
+   - `human_idx = np.where(proposal_meta['group_binary'] == 'Human')[0]` (shape `(23,)`).
+   - `ai_idx = np.where(proposal_meta['group_binary'] == 'AI')[0]` (shape `(69,)`).
+   - Per-model index arrays for supplementary heterogeneity test: `claude_idx`, `gemini_idx`, `gpt_idx` (each shape `(23,)`).
+5. Print group counts to confirm.
+
+##### `## Load Shared Precomputed Caches`
+
+Step-by-step:
+
+1. Load `results/tables/rephrased/minimal/cached/proposal_distance_matrix.npy` as `D_pp` (shape `(92, 92)`). This is the full inter-proposal cosine-distance matrix used in all diversity calculations.
+2. Load `results/tables/rephrased/minimal/cached/proposal_pca2d.npy` as `X_pca2d` (shape `(92, 2)`).
+3. Load `results/tables/rephrased/minimal/cached/proposal_umap2d.npy` as `X_umap2d` (shape `(92, 2)`).
+4. Load full-proposal embeddings from `data/embeddings/rephrased/minimal/proposal_embeddings_human_ai_rephrased.pkl`. Extract `X_prop` (shape `(92, 1024)`), L2-normalized.
+5. Load literature kNN distances from `results/tables/rephrased/minimal/cached/lit_knn_distances_50.npy` (shape `(92, 50)`). Also load `results/tables/rephrased/minimal/cached/lit_knn_indices_50.npy` (shape `(92, 50)`) if needed for MeSH analyses.
+6. Load abstract-only embeddings from `data/embeddings/rephrased/minimal/proposal_embeddings_section1_only.pkl` (used for novelty step 2).
+7. Load literature articles from `data/prepared/rephrased/minimal/literature_corpus_prepared.json`.
+8. Load literature BERTopic assignments from `data/prepared/rephrased/minimal/lit_bertopic_assignments.csv`.
+
+Do not recompute any of these. If a cache file does not exist, raise a `FileNotFoundError` with a message directing the user to run `compare_proposals_rephrased.ipynb` first.
+
+##### `## Generate Bootstrap Subsamples (One-Time, Stored for All Analyses)`
+
+**This is the central subsampling cell. It must execute before any N-sensitive analysis. All subsequent N-sensitive analyses reuse `boot_ai_idx_samples`; they do not generate their own samples.**
+
+Step-by-step:
+
+1. Initialize `rng = np.random.default_rng(BOOT_SEED)`.
+2. Generate `boot_ai_idx_samples`: a Python list of `N_BOOT` arrays, each of shape `(N_SUBSAMPLE,)`, drawn without replacement from `ai_idx`.
+   ```python
+   boot_ai_idx_samples = [
+       rng.choice(ai_idx, size=N_SUBSAMPLE, replace=False)
+       for _ in range(N_BOOT)
+   ]
+   ```
+3. Print confirmation: `f"Generated {N_BOOT} bootstrap subsamples of size {N_SUBSAMPLE} from {len(ai_idx)} AI proposals."`.
+4. Save `boot_ai_idx_samples` as a numpy array to `results/tables/rephrased/minimal/all_ai/bootstrap_ai_idx_samples.npy` (shape `(N_BOOT, N_SUBSAMPLE)`) for reproducibility.
+5. Compute and print model-composition variance across bootstrap samples: for each of the 1000 subsamples, count how many proposals come from Claude, Gemini, and GPT-5.2. Report mean ± SD of each model count across the 1000 subsamples. Expected: mean ~7.67 from each model, SD captures the sampling variability. This is a diagnostic that confirms random subsampling does not systematically exclude any model.
+
+#### `# PREFLIGHT: AI Model Heterogeneity Tests`
+
+**Purpose:** Before all primary analyses, test whether the three AI models form a statistically homogeneous group on every primary outcome variable. This justifies (or flags concerns about) the pooling approach. Results go to a supplementary table only; they do not appear as primary figures. If Kruskal-Wallis is significant for a metric, the pooled estimate is reported with an explicit note in the methods that within-AI heterogeneity exists.
+
+Step-by-step:
+
+1. Define the set of outcomes to test: all per-proposal numeric metrics available at this point in the notebook, including proposal-level pairwise distance (each proposal's mean distance to others in its group), centroid distance (distance from each proposal to its group centroid), NN distance (distance to nearest neighbor within the group), and any per-proposal novelty metrics loaded from the shared cache if pre-computed. Additional metrics (MeSH count, novelty scores, BERTopic region entropy) are added as they are computed in later cells, and those cells append their Kruskal-Wallis result to the same running heterogeneity table.
+
+2. For each metric with per-proposal values available for Claude (`n=23`), Gemini (`n=23`), GPT-5.2 (`n=23`):
+   - Run `scipy.stats.kruskal(*[claude_vals, gemini_vals, gpt_vals])`.
+   - Record: `metric`, `H_stat`, `p_value`, `n_claude`, `n_gemini`, `n_gpt`.
+
+3. Apply Holm correction across all K-W tests: `multipletests(p_values, method='holm')`.
+
+4. Save `results/tables/rephrased/minimal/all_ai/supplementary_ai_heterogeneity_kruskal_wallis.csv` with columns: `metric`, `H_stat`, `p_kw`, `p_holm`, `significant_after_holm`.
+
+5. Print summary: how many metrics show significant between-model heterogeneity after Holm correction. Print the sentence that will appear in the paper methods: `"We tested between-model heterogeneity across the three AI systems (Kruskal-Wallis) for all primary outcome variables. X of Y outcomes showed significant between-model heterogeneity after Holm correction (see Supplementary Table S_). We treat the pooled estimate as the average effect across these three frontier AI systems and report per-model breakdowns in Supplementary Table S_."`.
+
+#### `# PART I: THEMATIC AND CLUSTER ANALYSIS`
+
+All Ward cluster labels, BERTopic topic assignments, UMAP coordinates, and GMM labels are loaded from the precomputed caches produced by `compare_proposals_rephrased.ipynb`. No clustering is refit in this notebook.
+
+##### `## Analysis 1.1: Topic Modeling (LDA — Exploratory)`
+
+**Changes from per-model notebook:** The LDA model is already fitted on all 92 documents and does not change. The only change is that the downstream test is a 2-group chi-square (Human vs All-AI) instead of a 4-group test.
+
+Step-by-step:
+
+1. Load `results/tables/rephrased/minimal/lda_topic_contrastive_labels.csv` and the per-proposal dominant-topic assignment from `results/tables/rephrased/minimal/topic_cluster_assignment_labels.csv`.
+2. Build a contingency table: rows = `[Human, All_AI]`, columns = `[Topic_1, Topic_2]`.
+3. Run `scipy.stats.chi2_contingency` on the 2×2 table and a permutation test (10,000 permutations, permute binary group label, recompute chi2 statistic).
+4. Report: chi2 statistic, df=1, p-value (chi-square), permutation p-value.
+5. Save `results/tables/rephrased/minimal/all_ai/lda_topic_distribution_human_vs_allai.csv` with columns: `group`, `n_topic1`, `n_topic2`, `pct_topic1`, `pct_topic2`, `chi2`, `p_chi2`, `p_permutation`.
+6. Add supplementary table: per-model topic distribution (reuse `topic_distribution_per_model.csv` from the main notebook output directory; do not recompute).
+
+No figure required for this analysis; it is reported as a table only.
+
+##### `## Analysis 1.2: Topic Distribution and Coverage (Binary)`
+
+Step-by-step:
+
+1. For topic soft-participation (threshold `>0.20`): compute counts for Human and All-AI combined.
+2. Run 2-group Fisher exact test for each topic (Human vs All-AI).
+3. Compute topic entropy for Human (already in `topic_entropy_per_model.csv`) and for All-AI combined (pool all 69 soft-probability vectors, compute group-level distribution).
+4. Save `results/tables/rephrased/minimal/all_ai/topic_distribution_human_vs_allai_participation.csv`.
+5. No figure required; supplementary table only.
+
+##### `## Analysis 1.3: Cluster Membership (Binary Fisher Test)`
+
+Step-by-step:
+
+1. Load Ward cluster assignments from `results/tables/rephrased/minimal/ward_cluster_bertopic_style_labels.csv`.
+2. Build 2×2 contingency: rows = `[Human, All_AI]`, columns = `[Cluster_A, Cluster_B]`.
+3. Run Fisher exact test (two-sided). Report odds ratio and 95% CI.
+4. Compute per-group cluster composition proportions.
+5. Save `results/tables/rephrased/minimal/all_ai/cluster_membership_human_vs_allai.csv` with columns: `group`, `n_cluster_a`, `n_cluster_b`, `pct_cluster_a`, `pct_cluster_b`, `fisher_OR`, `fisher_p`.
+6. **Supplementary table:** load `results/tables/rephrased/minimal/diversity_cluster_membership_by_group.csv` (per-model cluster breakdown from main notebook); copy to `results/tables/rephrased/minimal/all_ai/supplementary_cluster_membership_by_model.csv`.
+
+Figure 1.3: One 2-panel figure.
+- Panel A: Stacked bar showing Human vs All-AI cluster composition (% Cluster_A and Cluster_B).
+- Panel B: UMAP scatter of all 92 proposals, colored by group (Human = group color, All-AI = All-AI color), with Ward cluster boundaries annotated. Load UMAP coords from `X_umap2d`.
+- Save `results/figures/rephrased/minimal/all_ai/cluster_membership_human_vs_allai.png`.
+
+##### `## Analysis 1.4: GMM Segregation (Human vs AI Binary)`
+
+**No changes needed.** GMM segregation metrics (NMI, ARI, between/within distance ratio) are natively binary (Human vs AI label). They are not N-sensitive because they measure label-vs-cluster agreement on a fixed embedding space.
+
+Step-by-step:
+
+1. Load GMM cluster assignments from `results/tables/rephrased/minimal/cluster_gmm_composition_per_model.csv` and recompute binary GMM label alignment using `human_idx` and `ai_idx`.
+2. Compute NMI and ARI between binary Human/AI label and GMM cluster label for all 92 proposals.
+3. Run permutation test (10,000 permutations of the binary group label) for NMI and ARI.
+4. Report within-human mean distance, within-AI mean distance, between-Human-AI mean distance, and between/within ratio. Run permutation test for the ratio.
+5. Save `results/tables/rephrased/minimal/all_ai/gmm_segregation_human_vs_allai.csv`.
+
+No new figure required; report values in the results table.
+
+##### `## Analysis 1.5: LDA Topic–Cluster Correspondence`
+
+No changes. This analysis is not group-dependent. Load results from `results/tables/rephrased/minimal/topic_cluster_agreement.csv` and copy to `results/tables/rephrased/minimal/all_ai/topic_cluster_agreement.csv` for the all-AI notebook's output directory.
+
+#### `# PART II: DIVERSITY`
+
+**Critical design rule for all Part II analyses:** Every diversity metric that is N-sensitive (see the N-Sensitivity Classification above) must produce three reported values:
+1. `human_metric`: the metric computed on the 23 human proposals. No subsampling needed for the human side.
+2. `ai_full_metric`: the metric computed on the full 69 AI proposals. Reported in the supplementary table only. Answers "how much space does the collective AI output occupy?"
+3. `ai_boot_mean` ± `ai_boot_ci`: the mean ± 95% CI of the metric computed across the 1000 bootstrap subsamples of n=23 from the 69 AI proposals. This is the **primary comparison value**. Answers "how diverse is a typical AI proposal set of the same size as the human set?"
+
+The primary figure for every N-sensitive diversity metric shows human_metric vs ai_boot_mean ± CI. The main results table reports `ai_boot_mean` and its CI as the AI estimate. `ai_full_metric` appears in a footnote or supplementary column.
+
+For significance testing of N-sensitive metrics: run the permutation test on the full 23-vs-69 assignment (permute group labels, recompute the metric difference). The permutation test is valid with unequal N because it correctly models the null distribution for the actual group sizes.
+
+##### `## Analysis 2.1: Within-Group Pairwise Diversity`
+
+N-sensitivity: **partial** (mean pairwise distance is asymptotically N-robust for i.i.d. data, but the pooled AI group is not i.i.d. due to model mixing). Apply bootstrap subsampling as a correction.
+
+Step-by-step:
+
+1. Compute `human_pairwise = proposal_mean_pairwise_distance(human_idx, D_pp)`.
+2. Compute `ai_full_pairwise = proposal_mean_pairwise_distance(ai_idx, D_pp)`.
+3. Compute `boot_pairwise_vals = bootstrap_group_metric(proposal_mean_pairwise_distance, ai_idx, D_pp, N_BOOT, N_SUBSAMPLE, BOOT_SEED)` using `boot_ai_idx_samples`. Report `ai_boot_mean = np.mean(boot_pairwise_vals)` and `ai_boot_ci = boot_ci(boot_pairwise_vals)`.
+4. Permutation test: pool `human_idx` and `ai_idx`, permute binary label 10,000 times, recompute the difference in mean pairwise distance between the two groups.
+5. Also compute per-model supplementary values: `claude_pairwise`, `gemini_pairwise`, `gpt_pairwise` (these are already in `diversity_remote_clique_group_summary.csv` from the main notebook; load rather than recompute).
+6. **Within-model average** (required for PNAS methods comparison): compute `within_model_avg_pairwise = np.mean([claude_pairwise, gemini_pairwise, gpt_pairwise])`. Report this in the supplementary table alongside `ai_full_pairwise` and `ai_boot_mean`.
+7. Save `results/tables/rephrased/minimal/all_ai/diversity_pairwise_human_vs_allai.csv` with columns: `group`, `human_metric`, `ai_full_metric`, `ai_boot_mean`, `ai_boot_ci_lo`, `ai_boot_ci_hi`, `within_model_avg`, `perm_p`.
+8. Save per-proposal pairwise values for each proposal (mean distance to all others in its group) for MW test: compute proposal-level mean pairwise distances for human and AI proposals. Run `mannwhitneyu(ai_proposal_pairwise, human_proposal_pairwise, alternative='two-sided')`. Compute Cliff's delta and bootstrap 95% CI. Save `results/tables/rephrased/minimal/all_ai/diversity_pairwise_proposal_level_human_vs_allai.csv`.
+
+Figure 2.1: Two-panel figure.
+- Panel A: Side-by-side boxplot with jitter + mean diamond (same style as `pairwise_diversity_boxplot.png` from main notebook but only two groups). Show Human vs All-AI using proposal-level pairwise distances. Add bootstrap-corrected mean ± CI as a separate diamond marker in a distinct style (e.g., hollow diamond) above the standard mean diamond to visually distinguish the full-group mean from the N-corrected mean.
+- Panel B: Forest plot showing Cliff's delta for All-AI vs Human with 95% bootstrap CI and MW p-value (Holm if multiple tests exist; otherwise unadjusted).
+- Save `results/figures/rephrased/minimal/all_ai/pairwise_diversity_human_vs_allai.png`.
+
+##### `## Analysis 2.1b: Pairwise Distance Bimodality — RESTRUCTURED`
+
+**This analysis is restructured from the per-model notebook because pooled AI bimodality is partially artifactual.**
+
+Step-by-step:
+
+1. Compute the full pairwise distance distribution for the pooled 69 AI proposals (upper triangle of `D_pp[ai_idx,:][:,ai_idx]`).
+2. Decompose this distribution into two labeled components:
+   - Within-model pairs: pairs where both proposals are from the same model.
+   - Between-model pairs: pairs where proposals are from different models.
+   Use `claude_idx`, `gemini_idx`, `gpt_idx` to assign each pair a label.
+3. Run the Hartigan dip test separately on:
+   - Within-model pairs (H0: this distribution is unimodal).
+   - Between-model pairs.
+   - Full pooled AI distribution.
+4. Run the dip test on the human pairwise distance distribution for comparison.
+5. Save `results/tables/rephrased/minimal/all_ai/diversity_pairwise_bimodality_decomposed.csv` with columns: `group`, `n_pairs`, `dip_stat`, `p_dip`, `interpretation`.
+6. Figure: Three-panel KDE plot showing (a) Human pairwise distances, (b) pooled AI pairwise distances with within-model and between-model sub-distributions overlaid as stacked fills, (c) within-model-only AI pairwise distances. This makes the artifactual contribution of model mixing visible.
+7. Save `results/figures/rephrased/minimal/all_ai/pairwise_diversity_bimodality_decomposed.png`.
+8. In the results text, explicitly state: "The bimodality observed in the pooled AI pairwise distance distribution reflects the mixture of within-model pairs (tight clusters) and between-model pairs (larger separations); only the within-model distribution is directly comparable to the human distribution."
+
+##### `## Analysis 2.1c: Cross-Group Topic Space Alignment`
+
+N-sensitivity: **not sensitive** (per-AI-proposal distance to its nearest human neighbor is a proposal-level metric). Use MW directly.
+
+Step-by-step:
+
+1. For each AI proposal `i` in `ai_idx`, find its nearest human neighbor: `min(D_pp[i, human_idx])`. Store as `ai_to_nearest_human` (length 69).
+2. For each human proposal `j` in `human_idx`, find its nearest AI neighbor: `min(D_pp[j, ai_idx])`. Store as `human_to_nearest_ai` (length 23).
+3. Run MW test: `ai_to_nearest_human` vs `human_to_nearest_ai`. Report mean ± SD for each direction, U statistic, p-value, Cliff's delta, 95% CI.
+4. Save `results/tables/rephrased/minimal/all_ai/diversity_cross_group_alignment_human_vs_allai.csv`.
+5. No new figure required; report as table.
+
+##### `## Analysis 2.1d: Within-Cluster Diversity`
+
+N-sensitivity: **not sensitive within clusters** (cluster membership controls for the embedding-space confound and naturally stratifies proposals into comparable groups).
+
+Step-by-step:
+
+1. Load Ward cluster assignments from `ward_cluster_bertopic_style_labels.csv`.
+2. For each cluster (`Cluster_A`, `Cluster_B`):
+   - Compute within-cluster mean pairwise distance for human proposals in that cluster.
+   - Compute within-cluster mean pairwise distance for AI proposals in that cluster.
+   - Run MW test (AI vs Human within cluster). Report U, p-value, Cliff's delta.
+3. Note: If a cluster has fewer than 3 proposals in either group, skip the MW test and report `n_too_small`.
+4. Save `results/tables/rephrased/minimal/all_ai/diversity_within_cluster_human_vs_allai.csv`.
+
+##### `## Analysis 2.2a: Centroid Dispersion (LOO and Global)`
+
+N-sensitivity: **yes, moderate**. Apply bootstrap subsampling.
+
+Step-by-step:
+
+1. Compute `human_centroid_loo`: for each human proposal, compute its distance to the LOO centroid of the other 22 human proposals. Report mean across proposals.
+2. Compute `ai_full_centroid_loo` on the full 69 AI proposals.
+3. Compute `boot_centroid_vals` by applying the LOO-centroid metric to each of the 1000 bootstrap subsamples. Report `ai_boot_mean` and `ai_boot_ci`.
+4. Compute Span-90 for human and for each bootstrap subsample. Report mean Span-90 across bootstrap iterations.
+5. Permutation test on full 23-vs-69 assignment.
+6. Report Cliff's delta using proposal-level LOO-centroid distances (per-proposal metric) and MW test (valid with unequal N for proposal-level values).
+7. Save `results/tables/rephrased/minimal/all_ai/diversity_centroid_human_vs_allai.csv` with columns: `human_loo_mean`, `ai_full_loo_mean`, `ai_boot_loo_mean`, `ai_boot_loo_ci_lo`, `ai_boot_loo_ci_hi`, `human_span90`, `ai_boot_span90_mean`, `mw_p`, `cliffs_delta`, `perm_p`.
+
+Figure 2.2a: Two-panel figure.
+- Panel A: Boxplot of per-proposal LOO-centroid distances for Human vs All-AI (n=69, full), with the bootstrap-corrected mean ± CI shown as a separate annotation.
+- Panel B: Forest plot of Cliff's delta + 95% CI, MW p-value.
+- Save `results/figures/rephrased/minimal/all_ai/centroid_dispersion_human_vs_allai.png`.
+
+##### `## Analysis 2.2b: Between-Group Global-Centroid Distance`
+
+N-sensitivity: **yes, moderate**. Apply bootstrap subsampling for the AI global-centroid distances.
+
+Step-by-step:
+
+1. Compute global centroid of all 92 proposals: `global_centroid = X_prop.mean(axis=0)`.
+2. Per-proposal distance to global centroid: `global_dist = np.array([np.linalg.norm(X_prop[i] - global_centroid) for i in range(92)])`.
+3. Human global-centroid distances: `global_dist[human_idx]`. AI full: `global_dist[ai_idx]`.
+4. Bootstrap: for each subsample in `boot_ai_idx_samples`, compute mean of `global_dist[subsample]`. Report `ai_boot_mean_global` and `ai_boot_ci_global`.
+5. MW test on full per-proposal global distances (human vs AI, 23 vs 69). Cliff's delta.
+6. Permutation test.
+7. Save `results/tables/rephrased/minimal/all_ai/diversity_global_centroid_human_vs_allai.csv`.
+
+##### `## Analysis 2.2c: MST Dispersion`
+
+N-sensitivity: **yes, strong**. MST edge length decreases monotonically with N. Bootstrap subsampling is required for the primary comparison.
+
+Step-by-step:
+
+1. Compute `human_mst = mst_dispersion(human_idx, D_pp)`.
+2. Compute `ai_full_mst = mst_dispersion(ai_idx, D_pp)`.
+3. Compute `boot_mst_vals = [mst_dispersion(s, D_pp) for s in boot_ai_idx_samples]`. Report `ai_boot_mst_mean = np.mean(boot_mst_vals)` and `ai_boot_mst_ci = boot_ci(boot_mst_vals)`.
+4. Permutation test on full assignment: pool `human_idx` and `ai_idx`, permute the binary label, recompute `human_mst - ai_mst` difference, repeat 10,000 times.
+5. The primary reported comparison is `human_mst` vs `ai_boot_mst_mean ± ai_boot_mst_ci`. The full `ai_full_mst` is reported in the supplementary column.
+6. Save `results/tables/rephrased/minimal/all_ai/diversity_mst_human_vs_allai.csv`.
+
+Figure 2.2c: Single panel showing Human MST value as a horizontal line with 95% bootstrap CI band (computed by bootstrapping human as well for symmetry), and AI bootstrap distribution as a violin or histogram. Alternatively, show as a two-bar chart with error bars from bootstrap CIs. Save `results/figures/rephrased/minimal/all_ai/diversity_mst_human_vs_allai.png`.
+
+##### `## Analysis 2.2d: Sparseness (Medoid-Based Dispersion)`
+
+N-sensitivity: **yes, moderate**. Apply bootstrap subsampling.
+
+Step-by-step:
+
+1. Compute `human_sparseness = sparseness_medoid(human_idx, D_pp)`.
+2. Compute `ai_full_sparseness = sparseness_medoid(ai_idx, D_pp)`.
+3. Compute `boot_sparseness_vals` using `boot_ai_idx_samples`. Report `ai_boot_mean` and `ai_boot_ci`.
+4. Per-proposal distance to group medoid (proposal-level metric): compute for human and AI proposals. Run MW test. Cliff's delta.
+5. Permutation test on full assignment.
+6. Save `results/tables/rephrased/minimal/all_ai/diversity_sparseness_human_vs_allai.csv`.
+
+##### `## Analysis 2.3: Nearest-Neighbor Isolation (Chamfer / NN Distance)`
+
+N-sensitivity: **yes, strong**. NN distance decreases monotonically with N. Bootstrap subsampling is required.
+
+Step-by-step:
+
+1. Compute per-proposal within-group NN distance for each human proposal (distance to nearest other human). `human_nn_per_proposal` (length 23).
+2. Compute per-proposal within-group NN distance for each AI proposal (distance to nearest other AI within the full 69-pool). `ai_full_nn_per_proposal` (length 69).
+3. For bootstrap: for each subsample `s` in `boot_ai_idx_samples`, compute each proposal's within-subsample NN distance. Record the **mean across the 23 proposals** in that subsample. `boot_chamfer_vals` (length 1000). Report `ai_boot_chamfer_mean` and `ai_boot_chamfer_ci`.
+4. MW test: `ai_full_nn_per_proposal` vs `human_nn_per_proposal`. Cliff's delta and 95% CI.
+5. Permutation test on full assignment.
+6. Nearest-neighbor source composition for All-AI (supplementary only): for each AI proposal, determine whether its global nearest neighbor (across all 92 proposals, not just within-group) is Human, same-model AI, or other-model AI. Load from `results/tables/rephrased/minimal/nearest_neighbor_source_composition.csv`; aggregate to Human vs All-AI framing.
+7. Save `results/tables/rephrased/minimal/all_ai/diversity_chamfer_human_vs_allai.csv` with both full-n=69 and boot-corrected estimates.
+8. Save `results/tables/rephrased/minimal/all_ai/nearest_neighbor_source_composition_human_vs_allai.csv`.
+
+Figure 2.3: Same panel style as Analysis 2.1 (boxplot + jitter + mean diamond). Show Human vs All-AI proposal-level NN distances. Annotate with bootstrap-corrected Chamfer distance mean ± CI. Save `results/figures/rephrased/minimal/all_ai/nearest_neighbor_human_vs_allai.png`.
+
+##### `## Analysis 2.4: UMAP Embedding Space Visualization`
+
+N-sensitivity: **not applicable** (visualization only; uses fixed UMAP coords from cache).
+
+Step-by-step:
+
+1. Load `X_umap2d` from cache.
+2. Color each point as Human or All-AI.
+3. Add Ward cluster boundary annotations (convex hull or ellipse per cluster).
+4. Save `results/figures/rephrased/minimal/all_ai/embedding_space_umap_human_vs_allai.png`.
+5. Optional per-cluster zoom: same as Analysis 2.4b in main notebook but colored by binary group.
+6. Save `results/figures/rephrased/minimal/all_ai/embedding_space_umap_per_cluster_zoom_human_vs_allai.png`.
+
+##### `## Analysis 2.5: Grid Entropy of Proposal Occupancy`
+
+N-sensitivity: **yes, strong**. More proposals fill more grid cells. Bootstrap subsampling is required.
+
+Step-by-step:
+
+1. Load `X_pca2d` from cache. Use PCA 2D for grid computation (same as main notebook).
+2. Compute `human_entropy = grid_entropy(X_pca2d[human_idx], grid_size=5)` and `human_normalized_entropy`.
+3. Compute `ai_full_entropy = grid_entropy(X_pca2d[ai_idx], grid_size=5)`.
+4. Compute `boot_entropy_vals`: for each subsample `s` in `boot_ai_idx_samples`, compute `grid_entropy(X_pca2d[s], grid_size=5)`. Report `ai_boot_entropy_mean` and `ai_boot_entropy_ci`.
+5. Permutation test on full assignment.
+6. The primary comparison is `human_entropy` vs `ai_boot_entropy_mean ± ai_boot_entropy_ci`. Report `ai_full_entropy` in supplementary.
+7. Save `results/tables/rephrased/minimal/all_ai/diversity_grid_entropy_human_vs_allai.csv`.
+8. Figure: Bar chart of human entropy vs AI bootstrap-mean entropy with error bars. Save `results/figures/rephrased/minimal/all_ai/diversity_entropy_human_vs_allai.png`.
+
+##### `## Part II Summary Table`
+
+After all Part II analyses, compile a unified diversity summary table:
+
+Columns: `metric`, `human_value`, `ai_full_n69_value`, `ai_boot_n23_mean`, `ai_boot_n23_ci_lo`, `ai_boot_n23_ci_hi`, `within_model_avg` (where applicable), `perm_p`, `mw_p`, `cliffs_delta`, `cliffs_delta_ci_lo`, `cliffs_delta_ci_hi`.
+
+Save `results/tables/rephrased/minimal/all_ai/diversity_summary_human_vs_allai.csv`.
+
+This table is the primary Table for Part II results in the paper.
+
+#### `# PART III: NOVELTY`
+
+All novelty metrics are proposal-level values compared with Mann-Whitney. They are **not N-sensitive** for validity purposes (MW is valid with 23 vs 69). Cliff's delta and bootstrap 95% CIs are reported alongside all MW tests. No bootstrap subsampling is needed for novelty analyses.
+
+##### `## Steps 1–2: Load Literature Corpus and Embeddings`
+
+Step-by-step:
+
+1. Load literature articles from `data/prepared/rephrased/minimal/literature_corpus_prepared.json`.
+2. Load literature kNN distances from `results/tables/rephrased/minimal/cached/lit_knn_distances_50.npy` (shape `(92, 50)`). No recomputation.
+3. Load abstract-only proposal embeddings for novelty section from `data/embeddings/rephrased/minimal/proposal_embeddings_section1_only.pkl`. Extract human and AI abstract embeddings.
+4. Stack Human then AI Section-1 embeddings to match `proposal_meta`, L2-normalize as `X_prop_lit`, and use `X_prop_lit` for all proposal-to-literature distances and projections. Do not substitute full-proposal `X_prop` in Part III.
+
+##### `## Analysis 3.2.5 / Step 2.5: Element Novelty Percentiles`
+
+Step-by-step:
+
+1. Load `results/tables/rephrased/minimal/novelty_element_percentiles.csv`. This contains per-proposal ElementNovel scores at various k thresholds.
+2. Split into `human_novel` (rows where `group_binary == 'Human'`) and `ai_novel` (rows where `group_binary == 'AI'`, n=69).
+3. For each ElementNovel column (`element_novel_0`, `element_novel_1`, `element_novel_5`, `element_novel_10`):
+   - Run `mannwhitneyu(ai_vals, human_vals, alternative='two-sided')`.
+   - Compute Cliff's delta and bootstrap 95% CI.
+4. Apply Holm correction across the 4 tests.
+5. Save `results/tables/rephrased/minimal/all_ai/novelty_element_percentiles_human_vs_allai.csv`.
+6. Add Kruskal-Wallis heterogeneity test results (Claude vs Gemini vs GPT on each ElementNovel metric) to the running heterogeneity table (`supplementary_ai_heterogeneity_kruskal_wallis.csv`).
+
+##### `## Step 3: Raw Novelty Scores (Mean kNN to Literature)`
+
+Step-by-step:
+
+1. Load `results/tables/rephrased/minimal/novelty_mean_knn_scores.csv`. Contains per-proposal `mean_knn_5`, `mean_knn_10`, `mean_knn_20`, `mean_knn_50`.
+2. For each kNN metric: MW test (human n=23 vs AI n=69), Cliff's delta, bootstrap CI.
+3. Apply Holm correction across the 4 kNN metrics.
+4. Load `results/tables/rephrased/minimal/novelty_local_density_normalized.csv`. Contains `novelty_ratio` and `novelty_z`.
+5. MW tests for `novelty_ratio` and `novelty_z`. Holm correction.
+6. Save `results/tables/rephrased/minimal/all_ai/novelty_meanknn_human_vs_allai.csv` and `results/tables/rephrased/minimal/all_ai/novelty_normalized_human_vs_allai.csv`.
+7. Add K-W heterogeneity tests for all novelty metrics to the running heterogeneity table.
+
+Figure 3: Three-panel figure (ElementNovel-0, MeanKNN-10, novelty_z) using boxplot + jitter + mean diamond style (same as main notebook). Two groups only: Human and All-AI. Save `results/figures/rephrased/minimal/all_ai/novelty_human_vs_allai.png`.
+
+##### `## Step 7B: Literature-Space Outliers`
+
+Step-by-step:
+
+1. Load `results/tables/rephrased/minimal/literature_space_outliers_mean_knn_k10.csv` and `literature_space_outliers_element0.csv` and `literature_space_outliers_z.csv`.
+2. For each outlier definition, build a 2×2 contingency table: rows = `[Human, All_AI]`, columns = `[outlier, not_outlier]`.
+3. Run Fisher exact test (two-sided). Apply Holm correction across the 3 outlier definitions.
+4. Report: Human outlier count/fraction, AI outlier count/fraction, Fisher OR, p-value, Holm q.
+5. Save `results/tables/rephrased/minimal/all_ai/literature_space_outliers_human_vs_allai.csv`.
+
+##### `## Analysis 3.5: Literature-Anchored UMAP`
+
+Step-by-step:
+
+1. Load `data/embeddings/literature/lit_umap_reducer.pkl` and `data/embeddings/literature/lit_umap2d.npy`.
+2. Load abstract/Section-1 proposal embeddings from `data/embeddings/rephrased/minimal/proposal_embeddings_section1_only.pkl`, stack Human then AI rows to match `proposal_meta`, L2-normalize, and project all 92 proposals into the literature UMAP space using `lit_umap_reducer.transform(X_prop_lit)`.
+3. Load `data/prepared/rephrased/minimal/lit_bertopic_assignments.csv` for region labels.
+4. Plot: all 39538 literature articles in gray; Human proposals in human color; All-AI proposals in all-AI color. Annotate BERTopic region labels.
+5. Save `results/figures/rephrased/minimal/all_ai/literature_umap_human_vs_allai.png`.
+6. Also save a per-group panel version (two panels side-by-side: human proposals, AI proposals) for direct visual comparison. Save `results/figures/rephrased/minimal/all_ai/literature_umap_human_vs_allai_split.png`.
+
+##### `## Analysis 3.6: Literature Embedding-Region Coverage`
+
+N-sensitivity: **mixed**.
+- Per-proposal region entropy and max-region weight are proposal-level metrics → MW test, no subsampling needed.
+- Group-level breadth (number of distinct regions covered by the group) is N-sensitive → **use bootstrap subsampling for group-breadth comparison**.
+- Group-level region entropy (entropy of the group-level region distribution) is N-sensitive → **use bootstrap subsampling**.
+
+Step-by-step:
+
+1. Load `results/tables/rephrased/minimal/bertopic_region_coverage_per_proposal.csv`. Contains per-proposal `dominant_region`, `max_region_weight`, `region_entropy`, `effective_region_count`.
+2. Primary proposal-level tests (MW, no subsampling):
+   - `max_region_weight`: MW (AI vs Human). Cliff's delta. Holm with other region metrics.
+   - `region_entropy`: MW (AI vs Human). Cliff's delta.
+   - `effective_region_count`: MW (AI vs Human). Cliff's delta.
+3. Group-level breadth test (with bootstrap):
+   - For human: `human_breadth = len(set(proposal_meta.loc[human_idx, 'dominant_region']))`.
+   - For full AI: `ai_full_breadth = len(set(proposal_meta.loc[ai_idx, 'dominant_region']))`.
+   - For bootstrap: for each subsample `s` in `boot_ai_idx_samples`, compute `breadth_s = len(set(proposal_meta.loc[s, 'dominant_region']))`. Report `ai_boot_breadth_mean` and `ai_boot_breadth_ci`. Note: breadth values are integers, so CI is over a discrete distribution.
+   - **Do not compare `ai_full_breadth` to `human_breadth` as the primary test.** Report it in supplementary only.
+4. Group-level region-distribution entropy (with bootstrap):
+   - Compute the distribution of proposals across BERTopic regions for all 69 AI proposals, compute Shannon entropy.
+   - For bootstrap: for each subsample, compute region-distribution entropy. Report mean ± CI.
+5. Add K-W heterogeneity tests for `max_region_weight` and `region_entropy` to the running heterogeneity table.
+6. Save `results/tables/rephrased/minimal/all_ai/bertopic_region_coverage_human_vs_allai.csv` and `results/tables/rephrased/minimal/all_ai/bertopic_region_breadth_human_vs_allai.csv`.
+
+Figure 3.6: Stacked bar chart showing Human and All-AI region composition (proportion of proposals in each BERTopic region), plus a forest plot of MW effect sizes for proposal-level region metrics. Save `results/figures/rephrased/minimal/all_ai/bertopic_region_coverage_human_vs_allai.png`.
+
+##### `## Analysis 3.7: MeSH Term Coverage`
+
+N-sensitivity: **mixed**.
+- Per-proposal unique MeSH count is proposal-level → MW test, no subsampling needed.
+- Group-level union MeSH count is N-sensitive (monotone in N) → **use bootstrap subsampling; do not compare group-union MeSH for n=23 vs n=69 directly**.
+
+Step-by-step:
+
+1. Load or recompute per-proposal unique MeSH counts (using `K_MESH = 20` nearest literature neighbors, same as main notebook). Load `results/tables/rephrased/minimal/mesh_coverage_per_proposal.csv` if it exists and contains the per-proposal `unique_mesh_count`.
+2. Primary test (no subsampling): MW test on `unique_mesh_count` for human (n=23) vs AI (n=69). Cliff's delta and bootstrap 95% CI.
+3. Group-level union MeSH (with bootstrap):
+   - `human_union_mesh = len(union of all MeSH sets for human proposals)`.
+   - `ai_full_union_mesh = len(union of all MeSH sets for all 69 AI proposals)`.
+   - For bootstrap: for each subsample `s` in `boot_ai_idx_samples`, compute `union_mesh_s`. Report `ai_boot_union_mesh_mean` and `ai_boot_union_mesh_ci`.
+   - **The primary union-MeSH comparison is human vs `ai_boot_union_mesh_mean ± CI`.** Report `ai_full_union_mesh` in a supplementary column with the note that it reflects n=69 vs n=23.
+4. Add K-W heterogeneity test for `unique_mesh_count` to the running heterogeneity table.
+5. Save `results/tables/rephrased/minimal/all_ai/mesh_coverage_human_vs_allai.csv` with columns: `human_mean_unique_mesh`, `human_union_mesh`, `ai_full_mean_unique_mesh`, `ai_full_union_mesh`, `ai_boot_mean_unique_mesh`, `ai_boot_union_mesh_mean`, `ai_boot_union_mesh_ci_lo`, `ai_boot_union_mesh_ci_hi`, `mw_p`, `mw_p_holm`, `cliffs_delta`, `cliffs_delta_ci_lo`, `cliffs_delta_ci_hi`.
+
+Figure 3.7: Two-panel figure.
+- Panel A: Boxplot of per-proposal unique MeSH count for Human vs All-AI (n=69 shown, bootstrap-corrected mean annotated).
+- Panel B: Bar chart of group-union MeSH count: one bar for Human (n=23), one bar for All-AI bootstrap mean (n=23 equivalent) with 95% CI error bar, and a supplementary marker or footnote showing the n=69 full-pool value.
+- Save `results/figures/rephrased/minimal/all_ai/mesh_coverage_human_vs_allai.png`.
+
+##### `## Analysis 3.8: Publication Year Recency`
+
+No changes from main notebook logic. Load `results/tables/rephrased/minimal/lit_neighbor_year_per_proposal.csv` and run MW tests for Human vs All-AI within each BERTopic stratum. No subsampling needed (per-proposal metric). Save `results/tables/rephrased/minimal/all_ai/lit_neighbor_year_human_vs_allai.csv`.
+
+#### `# PART IV: STYLE`
+
+All style analyses use per-proposal features compared with MW. No subsampling needed.
+
+Step-by-step:
+
+1. Load `results/tables/rephrased/minimal/style_features.csv` (already computed in main notebook).
+2. For each of the 18 style features: MW test (human n=23 vs AI n=69), Cliff's delta.
+3. Apply Holm correction across the 18 features.
+4. Save `results/tables/rephrased/minimal/all_ai/style_features_human_vs_allai.csv`.
+5. Re-run style-only Human-vs-AI classifier (LogisticRegression with L2 penalty, 5-fold stratified CV) using binary Human/AI label. Report AUROC, balanced accuracy, and permutation p-value.
+6. **Note on class imbalance:** with 23 human vs 69 AI, the classifier is imbalanced. Use `class_weight='balanced'` in LogisticRegression and `StratifiedKFold` for CV. Report both macro-average and per-class precision/recall.
+7. Save `results/tables/rephrased/minimal/all_ai/style_only_classifier_human_vs_allai.csv`.
+8. Figure: two-panel figure — (a) per-feature effect sizes with Cliff's delta forest plot, (b) CV AUROC distribution across folds. Save `results/figures/rephrased/minimal/all_ai/style_human_vs_allai.png`.
+
+#### `## Finalize Heterogeneity Table`
+
+After all analyses have appended their Kruskal-Wallis results to the running heterogeneity table:
+
+1. Apply Holm correction across all K-W tests in the table.
+2. Save the final `results/tables/rephrased/minimal/all_ai/supplementary_ai_heterogeneity_kruskal_wallis.csv`.
+3. Print the summary sentence for the methods section.
+
+#### `## Unified Summary Export`
+
+Step-by-step:
+
+1. Compile the unified diversity + novelty summary table from all Part II and Part III outputs.
+2. Save `results/tables/rephrased/minimal/all_ai/proposal_metrics_summary_human_vs_allai.csv` with one row per metric, containing human value, full AI value, bootstrap-corrected AI value (where applicable), CI bounds, permutation p-value, MW p-value, Holm-corrected q, Cliff's delta, and delta CI.
+3. This table is intended to be the single source for the main paper results table comparing Human vs All-AI.
+
+#### Output File Inventory
+
+Tables (`results/tables/rephrased/minimal/all_ai/`):
+
+- `bootstrap_ai_idx_samples.npy`
+- `supplementary_ai_heterogeneity_kruskal_wallis.csv`
+- `lda_topic_distribution_human_vs_allai.csv`
+- `topic_distribution_human_vs_allai_participation.csv`
+- `cluster_membership_human_vs_allai.csv`
+- `supplementary_cluster_membership_by_model.csv`
+- `gmm_segregation_human_vs_allai.csv`
+- `topic_cluster_agreement.csv`
+- `diversity_pairwise_human_vs_allai.csv`
+- `diversity_pairwise_proposal_level_human_vs_allai.csv`
+- `diversity_pairwise_bimodality_decomposed.csv`
+- `diversity_cross_group_alignment_human_vs_allai.csv`
+- `diversity_within_cluster_human_vs_allai.csv`
+- `diversity_centroid_human_vs_allai.csv`
+- `diversity_global_centroid_human_vs_allai.csv`
+- `diversity_mst_human_vs_allai.csv`
+- `diversity_sparseness_human_vs_allai.csv`
+- `diversity_chamfer_human_vs_allai.csv`
+- `nearest_neighbor_source_composition_human_vs_allai.csv`
+- `diversity_grid_entropy_human_vs_allai.csv`
+- `diversity_summary_human_vs_allai.csv`
+- `novelty_element_percentiles_human_vs_allai.csv`
+- `novelty_meanknn_human_vs_allai.csv`
+- `novelty_normalized_human_vs_allai.csv`
+- `literature_space_outliers_human_vs_allai.csv`
+- `bertopic_region_coverage_human_vs_allai.csv`
+- `bertopic_region_breadth_human_vs_allai.csv`
+- `mesh_coverage_human_vs_allai.csv`
+- `lit_neighbor_year_human_vs_allai.csv`
+- `style_features_human_vs_allai.csv`
+- `style_only_classifier_human_vs_allai.csv`
+- `proposal_metrics_summary_human_vs_allai.csv`
+
+Figures (`results/figures/rephrased/minimal/all_ai/`):
+
+- `cluster_membership_human_vs_allai.png`
+- `embedding_space_umap_human_vs_allai.png`
+- `embedding_space_umap_per_cluster_zoom_human_vs_allai.png`
+- `pairwise_diversity_human_vs_allai.png`
+- `pairwise_diversity_bimodality_decomposed.png`
+- `centroid_dispersion_human_vs_allai.png`
+- `diversity_mst_human_vs_allai.png`
+- `nearest_neighbor_human_vs_allai.png`
+- `diversity_entropy_human_vs_allai.png`
+- `novelty_human_vs_allai.png`
+- `literature_umap_human_vs_allai.png`
+- `literature_umap_human_vs_allai_split.png`
+- `bertopic_region_coverage_human_vs_allai.png`
+- `mesh_coverage_human_vs_allai.png`
+- `style_human_vs_allai.png`
 
 ### Compare_reviews_ncems_criteria.ipynb
 
