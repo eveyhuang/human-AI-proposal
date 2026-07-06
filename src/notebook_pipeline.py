@@ -818,7 +818,7 @@ def _render_compare_proposals_rephrased(notebook: Dict[str, Any],
         FIGURES_DIR = RESULTS_DIR / 'figures' / condition
         TABLES_DIR = RESULTS_DIR / 'tables' / condition
         PROPOSAL_EMBEDDINGS_FILE = PROJECT_ROOT / 'data' / 'embeddings' / condition / 'proposal_embeddings_human_ai_rephrased.pkl'
-        ABSTRACT_EMBEDDINGS_FILE = PROJECT_ROOT / 'data' / 'embeddings' / condition / 'proposal_embeddings_section1_only.pkl'
+        ABSTRACT_EMBEDDINGS_FILE = PROJECT_ROOT / 'data' / 'embeddings' / condition / 'proposal_embeddings_rephrased_abstract.pkl'
         MAIN_IDEA_EMBEDDINGS_FILE = PROJECT_ROOT / 'data' / 'embeddings' / condition / 'proposal_embeddings_main_idea_only.pkl'
         LITERATURE_EMBEDDINGS_FILE = PROJECT_ROOT / 'data' / 'embeddings' / 'literature' / 'relevant_literature_embeddings.pkl'
         FIGURES_DIR.mkdir(parents=True, exist_ok=True)
@@ -1360,9 +1360,8 @@ def _render_generate_reviews(notebook: Dict[str, Any], condition: ConditionConfi
     """))
     ncems_idx = _find_code_cell_index(rendered, ["str(SCRIPTS_DIR / 'generate_reviews_ncems_criteria.py')", 'latest_ncems = sorted'])
     _set_cell_source(rendered, ncems_idx, dedent("""\
-        existing_ncems = sorted(NCEMS_REVIEWS_DIR.glob('ncems_reviews_*.json'))
-        if existing_ncems and SKIP_NCEMS_IF_EXISTS:
-            latest_ncems = existing_ncems[-1]
+        latest_ncems = latest_reusable_review_file(NCEMS_REVIEWS_DIR, 'ncems_reviews_*.json')
+        if latest_ncems and SKIP_NCEMS_IF_EXISTS:
             print(f'✓ Reusing existing NCEMS reviews: {latest_ncems}')
         else:
             subprocess.check_call([
@@ -1377,9 +1376,8 @@ def _render_generate_reviews(notebook: Dict[str, Any], condition: ConditionConfi
     """))
     novelty_idx = _find_code_cell_index(rendered, ["str(SCRIPTS_DIR / 'generate_reviews_novelty.py')", 'latest_novelty = sorted'])
     _set_cell_source(rendered, novelty_idx, dedent("""\
-        existing_novelty = sorted(NOVELTY_REVIEWS_DIR.glob('novelty_reviews_*.json'))
-        if existing_novelty and SKIP_NOVELTY_IF_EXISTS:
-            latest_novelty = existing_novelty[-1]
+        latest_novelty = latest_reusable_review_file(NOVELTY_REVIEWS_DIR, 'novelty_reviews_*.json')
+        if latest_novelty and SKIP_NOVELTY_IF_EXISTS:
             print(f'✓ Reusing existing novelty reviews: {latest_novelty}')
         else:
             subprocess.check_call([

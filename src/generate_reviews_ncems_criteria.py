@@ -33,6 +33,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(mess
 logger = logging.getLogger(__name__)
 
 MAX_FULL_TEXT_CHARS = 60_000
+DEFAULT_HUMAN_REVIEW_CACHE_CONDITION = 'minimal'
 
 
 # ─── Helpers (mirrors eval_proposals_ncems_criteria.ipynb) ────────────────────
@@ -73,6 +74,85 @@ def _infer_human_author(source_file: str) -> str:
     if 'y2' in sf:
         return 'human-y2'
     return 'human'
+
+
+def _is_human_author(author: str) -> bool:
+    return str(author or '').lower().startswith('human')
+
+
+def _review_key(title: str, author: str, evaluator: str) -> Tuple[str, str, str]:
+    return (
+        str(title or '').strip(),
+        str(author or '').strip(),
+        str(evaluator or '').strip(),
+    )
+
+
+def _is_rephrased_review_payload(payload: Dict[str, Any]) -> bool:
+    human_inputs = payload.get('human_inputs', []) or []
+    human_inputs_text = ' '.join(str(path) for path in human_inputs)
+    return (
+        payload.get('rephrased') is True
+        and 'data/human-proposals/rephrased' in human_inputs_text
+    )
+
+
+def _is_successful_review(review: Dict[str, Any]) -> bool:
+    return bool(review.get('evaluations')) and not review.get('parse_error')
+
+
+def load_cached_human_reviews(cache_condition: str,
+                              evaluators: List[str]) -> Dict[Tuple[str, str, str], Dict[str, Any]]:
+    """
+    Load reusable human-proposal reviews from a canonical condition.
+
+    Human proposals are shared across conditions, so a successful review for the
+    same title/cohort/evaluator can be copied instead of re-requested.
+    """
+    cache_dir = Path(f'data/reviews/ai_reviews/{cache_condition}/ncems_criteria')
+    cache: Dict[Tuple[str, str, str], Dict[str, Any]] = {}
+    if not cache_dir.exists():
+        logger.info(f"No human review cache directory found: {cache_dir}")
+        return cache
+
+    evaluator_set = set(evaluators)
+    for path in sorted(cache_dir.glob('ncems_reviews_*.json'), reverse=True):
+        try:
+            with open(path) as f:
+                payload = json.load(f)
+        except Exception as e:
+            logger.warning(f"Could not read human review cache {path}: {e}")
+            continue
+
+        if not _is_rephrased_review_payload(payload):
+            logger.info(f"Skipping non-rephrased human review cache: {path}")
+            continue
+
+        loaded_from_file = 0
+        for review in payload.get('reviews', []) or []:
+            title = review.get('title', '')
+            author = review.get('author', '')
+            evaluator = review.get('evaluator', '')
+            if not _is_human_author(author) or evaluator not in evaluator_set:
+                continue
+            if not _is_successful_review(review):
+                continue
+
+            key = _review_key(title, author, evaluator)
+            if key in cache:
+                continue
+
+            cached_review = dict(review)
+            cached_review['copied_from_review_file'] = str(path)
+            cached_review['copied_from_condition'] = cache_condition
+            cache[key] = cached_review
+            loaded_from_file += 1
+
+        if loaded_from_file:
+            logger.info(f"Loaded {loaded_from_file} cached human NCEMS reviews from {path}")
+
+    logger.info(f"Reusable human NCEMS reviews available: {len(cache)}")
+    return cache
 
 
 AI_SECTION_COLUMNS = [
@@ -173,7 +253,7 @@ def main():
 
     # ── Paths ─────────────────────────────────────────────────────────────────
     ai_dir = Path(f'data/ai-proposals/rephrased/{condition}')
-    human_dir = Path(f'data/human-proposals/rephrased/{condition}')
+    human_dir = Path('data/human-proposals/rephrased')
     output_dir = Path(f'data/reviews/ai_reviews/{condition}/ncems_criteria')
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -198,6 +278,10 @@ def main():
 
     prompt_manager = PromptManager()
     _ = prompt_manager.get_template(template)
+    human_review_cache = load_cached_human_reviews(
+        DEFAULT_HUMAN_REVIEW_CACHE_CONDITION,
+        evaluator_models,
+    )
 
     # ── Output file ────────────────────────────────────────────────────────────
     run_ts = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -209,10 +293,11 @@ def main():
         'template': template,
         'research_call_source': 'data/call_and_info.json',
         'human_inputs': [
-            f'data/human-proposals/rephrased/{condition}/human_proposals_rephrased_y1_*.json',
-            f'data/human-proposals/rephrased/{condition}/human_proposals_rephrased_y2_*.json',
+            'data/human-proposals/rephrased/human_proposals_rephrased_y1_*.json',
+            'data/human-proposals/rephrased/human_proposals_rephrased_y2_*.json',
         ],
         'ai_input': f'data/ai-proposals/rephrased/{condition}/ai_proposals_*.csv',
+        'human_review_cache_condition': DEFAULT_HUMAN_REVIEW_CACHE_CONDITION,
         'evaluators': evaluator_models,
         'rephrased': True,
         'reviews': [],
@@ -229,6 +314,14 @@ def main():
 
         for evaluator in evaluator_models:
             pbar.set_description(f"{evaluator} | {title[:40]}")
+            cached_review = human_review_cache.get(_review_key(title, author, evaluator))
+            if cached_review:
+                output_data['reviews'].append(dict(cached_review))
+                pbar.update(1)
+                with open(output_path, 'w') as f:
+                    json.dump(output_data, f, indent=2, ensure_ascii=False)
+                continue
+
             try:
                 raw = ai_interface.generate_content(prompt, model_name=evaluator,
                                                     temperature=0, max_tokens=4096)

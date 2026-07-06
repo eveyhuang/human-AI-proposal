@@ -210,18 +210,21 @@ This guide summarizes the visual conventions used in the audited `baseline(minim
 ### Color Scheme and Metadata Encoding
 
 - Use the shared group palette consistently: Human `#DC143C`, Claude `#4A90E2`, Gemini `#7B68EE`, GPT-5.2 `#3CB371`.
-- Use `#808080` only as a fallback for unknown groups. Use a distinct muted aggregate color for combined All-AI views when needed, currently `#B56576`.
-- Proposal-level Human funding status should override the generic Human color when individual Human points are plotted: funded Human proposals use dark red `#8B0000`; nonfunded or unknown-funding Human proposals use light coral `#F08080`.
-- Top-ranked proposals should be marked with a black outline/ring, using `is_top5_ranked` when available. This applies to both boxplot jitter points and UMAP/scatter proposal markers.
+- Use `#808080` only as a fallback for unknown groups. Combined All-AI views use Claude blue `#4A90E2` for stronger contrast from the Human red palette.
+- Proposal-level Human funding status should be encoded as an outline/ring rather than a second red fill: funded Human proposals use a magenta ring `#FF00FF` around the base Human-colored point. Nonfunded or unknown-funding Human proposals keep the ordinary Human point fill with no funding ring.
+- Top-ranked proposals should be marked with a black outline/ring, using `is_top5_ranked` when available. This applies to both boxplot jitter points and UMAP/scatter proposal markers. If a point is both funded Human and top-ranked, show both encodings as nested rings, with the funded magenta ring inside the top-ranked black ring.
+- When deriving `is_top5_ranked` from review ranks, select the five smallest rows with `nsmallest(5)` or an equivalent stable top-k operation rather than filtering on `rank <= 5`; averaged tie ranks can skip values and otherwise yield fewer than five highlighted proposals.
+- In pooled All-AI analyses, `ranking_AI_reviews_global` is global only within the pooled AI proposal set (`1-69`) and is `NA` for Human proposals. Human top-ranked markers should come from the Human ranking field used by the rephrased notebook, not from a mixed Human+AI rank.
 - Outlier overlays should use outline rings rather than replacing the base point color. Proposal-space or within-cluster outliers use magenta outlines; literature-space comparison overlays may use an additional cyan outline when two outlier definitions are shown together.
 - Literature-background points in literature-space UMAPs should remain small and semi-transparent so proposal markers and BERTopic region labels remain visually dominant.
+- Whenever used, legends should explicitly explain black top-ranked outlines, magenta funded-Human rings, outlier rings, and any literature-region colors that are needed to interpret the panel.
 
 ### Standard Boxplot Grammar
 
 Use the standardized boxplot helper pattern for all group-comparison distributions.
 
 - Box: standard median line, IQR box, whiskers, and outlier points. Fill each box with the group color at 70% opacity and use black outlines/median lines.
-- Jittered scatter: overlay individual observations with random horizontal jitter of approximately `±0.15` units, point size around `20`, and 50% opacity. Use the same group color unless proposal metadata specify funded/nonfunded Human coloring. Add a black ring for top-ranked proposals.
+- Jittered scatter: overlay individual observations with random horizontal jitter of approximately `±0.15` units, point size around `20`, and 50% opacity. Use the same group color for the point fill. When proposal metadata are available, add a magenta ring for funded Human proposals and a black ring for top-ranked proposals.
 - Mean + 95% CI: plot the bootstrapped mean as a filled diamond marker of roughly `50` points, with vertical error bars for the 95% bootstrap confidence interval. Draw this above jitter points.
 - Proposal-level panels should preserve `proposal_uid` or equivalent metadata columns through reshaping/melting so funding and top-rank encodings survive into the plotting layer.
 - Non-proposal observations, such as pairwise distances or CV folds, should still use the standardized box/point/mean-CI grammar but should not force proposal-level funding or ranking metadata onto datapoints that do not represent a single proposal.
@@ -240,10 +243,10 @@ Use the standardized boxplot helper pattern for all group-comparison distributio
 - Literature-space UMAPs and BERTopic-region overlays must project Section-1 / abstract-only proposal embeddings, not full-proposal embeddings. This keeps proposal markers comparable to the literature abstract embeddings and to the proposal-to-literature novelty metrics.
 - Do not refit UMAP inside a visualization cell if a cache exists. If recomputation is unavoidable, use the documented parameters and save the cache for downstream panels.
 - Axis labels should identify the coordinate system: `UMAP-1` / `UMAP-2` for proposal-space maps, and `Literature UMAP Dim 1` / `Literature UMAP Dim 2` for literature-anchored maps.
-- Proposal markers should follow the metadata encoding above: AI groups use the group palette; funded Human uses dark red; nonfunded/unknown Human uses light coral; top-ranked proposals have black outlines.
+- Proposal markers should follow the metadata encoding above: AI groups use the group palette; Human uses the Human palette color; funded Human proposals add a magenta ring; top-ranked proposals from both Human and AI have black outlines.
 - Per-cluster UMAP zooms should retain the same marker semantics and use panel titles with cluster names, total `n`, and compact discriminative topic labels when available.
 - Literature-region UMAPs should color the fixed literature background by BERTopic embedding-region labels, not LDA lexical topics. LDA-colored maps are supplementary diagnostics only.
-- UMAP legends should explicitly explain black outlines, funding colors, outlier rings, and any literature-region colors that are needed to interpret the panel.
+- UMAP legends should explicitly explain black top-ranked outlines, magenta funded-Human rings, outlier rings, and any literature-region colors that are needed to interpret the panel.
 
 ### Effect-Size and Significance Panels
 

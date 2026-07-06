@@ -1,10 +1,16 @@
 group,stratum,stratum_label,n,mean_year,median_year
-Human,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",15,2022.2,2022.5
-Human,1,"details use execution, myosin motors, nascent chain, origin life",4,2022.2,2022.0
-Human,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",2,2021.5,2021.5
-Human,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",1,2023.0,2023.0
-Human,7,"transgene expression, metabolite production, study illustrates, precise genome",1,2023.0,2023.0
-Claude,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",1,2022.5,2022.5
-Claude,1,"details use execution, myosin motors, nascent chain, origin life",22,2021.3,2021.0
-Gemini,1,"details use execution, myosin motors, nascent chain, origin life",23,2022.8,2022.5
-GPT-5.2,1,"details use execution, myosin motors, nascent chain, origin life",23,2023.1,2023.0
+Human,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",8,2022.3,2021.75
+Human,1,"details use execution, myosin motors, nascent chain, origin life",11,2022.1,2022.0
+Human,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",1,2020.0,2020.0
+Human,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",2,2022.5,2022.5
+Human,8,"bla ctx, spectrum lactamase esbl, sequence types sts, coli isolates",1,2022.0,2022.0
+Claude,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",6,2020.9,2020.75
+Claude,1,"details use execution, myosin motors, nascent chain, origin life",13,2020.9,2021.0
+Claude,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",1,2020.0,2020.0
+Claude,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",3,2021.3,2021.5
+Gemini,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",7,2021.2,2021.5
+Gemini,1,"details use execution, myosin motors, nascent chain, origin life",15,2022.5,2023.0
+Gemini,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",1,2022.0,2022.0
+GPT-5.2,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",5,2021.5,2021.5
+GPT-5.2,1,"details use execution, myosin motors, nascent chain, origin life",16,2022.7,2022.5
+GPT-5.2,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",2,2022.5,2022.5

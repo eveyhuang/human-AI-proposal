@@ -1,0 +1,3 @@
+group,n_proposals,breadth_gt5pct,shannon_entropy,effective_region_count,dominant_region_frac,mean_unassigned_neighbor_frac,region_0_weight,region_1_weight,region_2_weight,region_3_weight,region_4_weight,region_5_weight,region_6_weight,region_7_weight,region_8_weight,region_9_weight,region_10_weight,region_11_weight,dominant_region_breadth_human,dominant_region_breadth_ai_full,dominant_region_breadth_ai_boot_mean,dominant_region_breadth_ai_boot_ci_lo,dominant_region_breadth_ai_boot_ci_hi
+Human,23,4,1.2807,3.5991,0.4804,0.0,0.3457,0.4804,0.0065,0.0522,0.0,0.0696,0.0,0.0109,0.0217,0.0,0.0,0.013,5,4,3.521,2.0,4.0
+All AI,69,3,1.0038,2.7286,0.6297,0.0,0.258,0.6297,0.008,0.0558,0.0,0.0442,0.0,0.0036,0.0,0.0,0.0007,0.0,5,4,3.521,2.0,4.0

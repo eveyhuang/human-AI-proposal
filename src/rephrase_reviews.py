@@ -46,7 +46,7 @@ load_dotenv(Path('.env'), override=True)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 logger = logging.getLogger(__name__)
 
-GEMINI_MODEL = 'gemini-2.5-flash-lite'
+GEMINI_MODEL = 'gemini-3.5-flash'
 RETRY_DELAYS = [5, 15, 30]
 REST_MODEL_FALLBACKS = ['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-3-flash-preview']
 

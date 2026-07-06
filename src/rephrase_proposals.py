@@ -5,12 +5,15 @@ neutralizing stylistic and structural differences while preserving scientific co
 Uses a three-step pipeline:
   Step 1 (SUMMARIZE): Extract core semantic facts from the original text,
           stripping all stylistic patterns (sentence rhythms, punctuation habits,
-          vocabulary choices, rhetorical framing) into a compact neutral summary.
+          vocabulary choices, rhetorical framing, promotional language) into a compact neutral summary.
   Step 2 (FILL): Generate the standardized template from the summary only,
           so template prose is driven by formatting rules rather than source style.
-  Step 3 (MAIN_IDEA): Generate a 3-sentence distillation of the core scientific
-          concepts and proposed ideas, suitable for measuring semantic distances
-          and counting unique ideas without stylistic noise from the full template.
+  
+  Step 3 (ABSTRACT): Based on the facts extracted in Step 1, generate a style-neutral abstract in PubMed
+          biomedical article format, between 150-300 words. Follows the standard format of abstracts in biomedical
+          journal articles published on PubMed; must include information about background/objective, 
+          methods, results, and conclusion. Do not make up any information that is not in the list of 
+          facts from STEP 1.
 
 The template mirrors the NCEMS call for proposals and evaluation criteria:
   Section 1 – Scientific Background & Research Question
@@ -28,8 +31,8 @@ Outputs:
     data/human-proposals/rephrased/<condition>/human_proposals_rephrased_y2_<timestamp>.json
 
 Each output record contains:
-    standardized_text – full 13-sentence template (5 sections)
-    main_idea         – 3-sentence core-concept summary for semantic analysis
+    standardized_text   – full 13-sentence template (5 sections)
+    rephrased_abstract  – 5-sentence PubMed-style abstract for literature-distance analyses
 """
 
 import argparse
@@ -52,7 +55,7 @@ load_dotenv(Path('.env'), override=True)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 logger = logging.getLogger(__name__)
 
-GEMINI_MODEL = 'gemini-3.1-flash-lite-preview'
+GEMINI_MODEL = 'gemini-3.5-flash'
 RETRY_DELAYS = [5, 15, 30]   # seconds between retries on API errors
 
 # ─── Two-step summarize → fill pipeline ───────────────────────────────────────
@@ -135,20 +138,30 @@ STYLE RULES — follow these exactly:
 - Output ONLY the filled template with the five section headings and their sentences. No preamble, no commentary."""
 
 
-MAIN_IDEA_SYSTEM = """You are a scientific analyst. You will be given a numbered list of semantic facts extracted from a research proposal. Write exactly 3 sentences that capture the proposal's core scientific concepts and ideas.
+ABSTRACT_SYSTEM = """You are a scientific writer. You will be given a numbered list of semantic facts extracted from a research proposal. Write a structured abstract in the style of a PubMed biomedical research article.
 
-RULES:
-- Sentence 1: State the specific scientific phenomenon or question being studied and the key gap it addresses. Focus on the biological or computational problem itself.
-- Sentence 2: State the core methodological idea — the central analytical strategy or conceptual approach that makes this proposal distinct.
-- Sentence 3: State what the proposal would uniquely contribute: the novel insight, resource, or framework that does not yet exist.
+ABSTRACT STRUCTURE — write exactly 5 sentences in this order:
 
-STYLE:
-- Third-person neutral register. No first person ("I", "we").
-- Declarative, concrete, jargon-minimized. Name specific methods, datasets, or phenomena only when they define the idea.
-- Do not summarize logistics (timeline, team, open science). Focus exclusively on scientific content.
-- Do not use hyphens to join compound modifiers (write "single cell" not "single-cell").
-- Each sentence 18–22 words. No hedging.
-- Output ONLY the 3 sentences as a single paragraph. No labels, no preamble."""
+Sentence 1 (Background, 25–35 words): State the research domain and the specific biological or computational phenomenon under study, and explain its importance for the field. Draw from facts 1 and 3.
+
+Sentence 2 (Gap, 20–30 words): Identify the specific scientific gap or open question that this project addresses, and state what is currently not understood or achievable. Draw from facts 2 and 3.
+
+Sentence 3 (Objective and approach, 30–40 words): State the primary research objective, then describe the overall analytical strategy and the key methods, models, or tools that will be applied. Draw from facts 4, 6, and 7.
+
+Sentence 4 (Data and integration, 25–35 words): Name the key datasets or databases to be used and describe how they will be integrated or synthesized to achieve the objective. Draw from facts 9 and 10.
+
+Sentence 5 (Contribution and significance, 20–30 words): State the primary expected output — the novel knowledge, resource, method, or framework — and explain its significance for the field or for downstream research. Draw from facts 4 and 5.
+
+STYLE RULES:
+- Third-person neutral register only. No first person ("I", "we", "our", "the authors").
+- Use present tense for established background and current limitations ("Phase separation regulates...", "Current methods cannot...").
+- Use future tense for what this project will do ("This project will...", "The study will develop...", "Results will establish...").
+- Declarative, concrete statements. No hedging ("may", "might", "could", "is expected to") unless a fact explicitly states uncertainty.
+- Word target: 120–200 words total.
+- Do not use hyphens to join compound modifiers: write "single cell" not "single-cell", "large scale" not "large-scale".
+- Do not mention team composition, funding, timeline, milestones, budget, or open science plans.
+- No bullet points, numbered lists, or line breaks between sentences.
+- Output ONLY the 5 sentences as a single uninterrupted paragraph. No section labels, no preamble, no commentary."""
 
 
 TITLE_SYSTEM = """You are a scientific editor. Rephrase this research proposal title into standard academic title format. Rules:
@@ -218,7 +231,7 @@ def load_existing_human_rephrases(existing_path: Optional[Path]) -> Dict[str, Di
         key = human_proposal_key(proposal)
         if not key:
             continue
-        if proposal.get('standardized_text') and proposal.get('main_idea'):
+        if proposal.get('standardized_text') and proposal.get('rephrased_abstract'):
             cached[key] = proposal
     return cached
 
@@ -294,41 +307,43 @@ def fill_template(client: genai.Client, summary: str,
     return _call_gemini(client, prompt, label="fill_template", max_retries=max_retries)
 
 
-def generate_main_idea(client: genai.Client, summary: str,
-                       max_retries: int = 3) -> Optional[str]:
-    """Step 3: Generate a 3-sentence core-concept summary from the extracted facts.
-    Uses the same style-stripped facts as Step 2, so main_idea is independent of
-    source style and suitable for semantic distance analysis."""
+def generate_abstract(client: genai.Client, summary: str,
+                      max_retries: int = 3) -> Optional[str]:
+    """Step 3 (ABSTRACT): Based on the facts extracted in Step 1, generate a style-neutral abstract in PubMed
+          biomedical article format, between 150-300 words. Follows the standard format of abstracts in biomedical
+          journal articles published on PubMed; must include information about background/objective, 
+          methods, results, and conclusion. Do not make up any information that is not in the list of 
+          facts from STEP 1 and 2."""
     if not summary or not summary.strip():
         return None
-    prompt = (f"{MAIN_IDEA_SYSTEM}\n\n"
-              f"---\nEXTRACTED FACTS:\n{summary.strip()}\n---\nCORE IDEA:")
-    return _call_gemini(client, prompt, label="main_idea", max_retries=max_retries)
+    prompt = (f"{ABSTRACT_SYSTEM}\n\n"
+              f"---\nEXTRACTED FACTS:\n{summary.strip()}\n---\nABSTRACT:")
+    return _call_gemini(client, prompt, label="abstract", max_retries=max_retries)
 
 
 def extract_proposal(client: genai.Client, full_text: str,
                      max_retries: int = 3) -> dict:
-    """Three-step pipeline: summarize → fill template → generate main idea.
+    """Three-step pipeline: summarize → fill template → abstract.
 
     Returns a dict with:
-        standardized_text: full 13-sentence template (headers stripped)
-        main_idea:         3-sentence core-concept summary
+        standardized_text:  full 13-sentence template (headers stripped)
+        rephrased_abstract: PubMed-style abstract for proposal-to-literature comparisons
     Both fields are empty strings on failure.
     """
-    result = {'standardized_text': '', 'main_idea': ''}
+    result = {'standardized_text': '', 'rephrased_abstract': ''}
 
     summary = summarize_proposal(client, full_text, max_retries=max_retries)
     if not summary:
-        logger.warning("Summarization step returned None; skipping fill and main_idea.")
+        logger.warning("Summarization step returned None; skipping fill and abstract.")
         return result
 
     filled = fill_template(client, summary, max_retries=max_retries)
     if filled:
         result['standardized_text'] = strip_section_headers(filled)
 
-    idea = generate_main_idea(client, summary, max_retries=max_retries)
-    if idea:
-        result['main_idea'] = idea
+    abstract = generate_abstract(client, summary, max_retries=max_retries)
+    if abstract:
+        result['rephrased_abstract'] = abstract
 
     return result
 
@@ -391,7 +406,7 @@ def rephrase_ai_proposals(client: genai.Client, ai_csv_path: Path,
         full_text = build_ai_full_text(row)
         extracted = extract_proposal(client, full_text)
         rephrased_df.at[idx, 'standardized_text'] = extracted['standardized_text']
-        rephrased_df.at[idx, 'main_idea'] = extracted['main_idea']
+        rephrased_df.at[idx, 'rephrased_abstract'] = extracted['rephrased_abstract']
 
         logger.info(f"  [{row_num}/{len(df)}] {model_label}: {title_orig[:60]}...")
 
@@ -433,7 +448,7 @@ def rephrase_human_proposals(client: genai.Client,
             full_text = build_human_full_text(proposal)
             extracted = extract_proposal(client, full_text)
             p['standardized_text'] = extracted['standardized_text']
-            p['main_idea'] = extracted['main_idea']
+            p['rephrased_abstract'] = extracted['rephrased_abstract']
 
             logger.info(f"  [{i+1}/{len(proposals)}] {title[:60]}...")
         rephrased_proposals.append(p)

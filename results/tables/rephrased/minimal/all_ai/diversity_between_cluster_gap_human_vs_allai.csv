@@ -1,0 +1,3 @@
+group,cluster_pair,n_a,n_b,mean_cross_dist
+Human,Cluster_A<->Cluster_B,6,17,0.7336680889129639
+All AI,Cluster_A<->Cluster_B,6,63,0.7235233187675476

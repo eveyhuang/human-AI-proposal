@@ -1,3 +1,3 @@
-metric,human_mean,ai_mean,mw_p,cliffs_delta
-median_neighbor_year,2022.2173913043478,2022.427536231884,0.5216245264503614,0.08947700063011972
-mean_neighbor_year,2021.0652173913043,2021.484782608696,0.0952140123202743,0.23377441713925645
+stratum,stratum_label,comparison,n_group,n_human,median_year_group,median_year_human,mean_year_group,mean_year_human,u_stat,p_value,cliffs_delta,p_holm
+0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",All AI vs Human,18,8,2021.5,2021.75,2021.1944444444443,2022.3125,43.0,0.10173296957558806,-0.4027777777777778,0.2034659391511761
+1,"details use execution, myosin motors, nascent chain, origin life",All AI vs Human,44,11,2022.0,2022.0,2022.090909090909,2022.090909090909,256.5,0.7659034533950781,0.05991735537190083,0.7659034533950781

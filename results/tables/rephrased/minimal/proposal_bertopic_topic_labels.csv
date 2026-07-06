@@ -1,3 +1,3 @@
 bertopic_topic,bertopic_topic_name,n_documents,display_label,contrastive_terms,raw_bertopic_ctfidf_terms,label_strategy
-0,BT_0,73,"data understand, decoding emergent, integrating structural, multi scale",data understand; decoding emergent; integrating structural; multi scale,"decoding, understand, organization, data understand",contrastive_phrase_v4
-1,BT_1,19,"mass spectrometry, proteomics imaging, synthesizing emergent",mass spectrometry; proteomics imaging; synthesizing emergent,"bacterial, mass, mechanisms, analysis",contrastive_phrase_v4
+0,BT_0,80,"data understand, decoding emergent, integrating structural, multi scale",data understand; decoding emergent; integrating structural; multi scale,"decoding, structural, understand, organization",contrastive_phrase_v4
+1,BT_1,12,"mass spectrometry, 3d genome function, adaptation mitochondrial reticular, analysis bacterial organelles",mass spectrometry; 3d genome function; adaptation mitochondrial reticular; analysis bacterial organelles,"mass, 3d genome function, networks synthesizing dynamic, properties membrane",contrastive_phrase_v4
