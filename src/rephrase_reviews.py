@@ -8,6 +8,7 @@ This script extracts three fields for each review:
 
 Usage (run from project root):
     python src/rephrase_reviews.py
+    python src/rephrase_reviews.py --skip-human --ai-reviews-path data/reviews/ai_reviews/minimal/ncems_criteria/ncems_reviews_*.json
 
 Inputs (default):
     data/reviews/human_reviews/human_reviews_human-y2.xlsx
@@ -17,7 +18,7 @@ Inputs (default):
 Outputs (overwritten each run, no timestamp files):
     data/reviews/human_reviews/rephrased/human_reviews_human-y2_rephrased.csv
     data/reviews/human_reviews/rephrased/human_reviews_human-y1_rephrased.csv
-    data/reviews/ai_reviews/minimal/ncems_criteria/rephrased/ncems_reviews_rephrased.json
+    <AI review input directory>/rephrased/ncems_reviews_rephrased.json
 """
 
 import argparse
@@ -440,6 +441,16 @@ def parse_args() -> argparse.Namespace:
         default='data/reviews/ai_reviews/minimal/ncems_criteria',
         help='Path to AI review JSON file or directory containing JSON files.',
     )
+    parser.add_argument(
+        '--ai-output-path',
+        default=None,
+        help='Optional output path for rephrased AI review JSON. Defaults to <AI review input directory>/rephrased/ncems_reviews_rephrased.json.',
+    )
+    parser.add_argument(
+        '--skip-human',
+        action='store_true',
+        help='Skip rephrasing human review workbooks.',
+    )
     parser.add_argument('--model', default=GEMINI_MODEL, help='Gemini model name to use.')
     parser.add_argument('--max-retries', type=int, default=3, help='LLM call retries on transient errors.')
     parser.add_argument('--limit', type=int, default=None,
@@ -458,27 +469,30 @@ def main() -> None:
     client = _build_client(api_key)
 
     # Human reviews: one stable output file per workbook.
-    human_out_dir = Path('data/reviews/human_reviews/rephrased')
-    human_out_dir.mkdir(parents=True, exist_ok=True)
+    if args.skip_human:
+        logger.info('Skipping human review rephrasing.')
+    else:
+        human_out_dir = Path('data/reviews/human_reviews/rephrased')
+        human_out_dir.mkdir(parents=True, exist_ok=True)
 
-    for human_file in args.human_files:
-        path = Path(human_file)
-        if not path.exists():
-            logger.warning(f'Human file not found, skipping: {path}')
-            continue
+        for human_file in args.human_files:
+            path = Path(human_file)
+            if not path.exists():
+                logger.warning(f'Human file not found, skipping: {path}')
+                continue
 
-        rephrased_df = rephrase_human_workbook(
-            client=client,
-            workbook_path=path,
-            model=args.model,
-            max_retries=args.max_retries,
-            limit=args.limit,
-        )
+            rephrased_df = rephrase_human_workbook(
+                client=client,
+                workbook_path=path,
+                model=args.model,
+                max_retries=args.max_retries,
+                limit=args.limit,
+            )
 
-        out_name = f"{path.stem}_rephrased.csv"
-        out_path = human_out_dir / out_name
-        rephrased_df.to_csv(out_path, index=False)
-        logger.info(f'Saved rephrased human reviews -> {out_path}')
+            out_name = f"{path.stem}_rephrased.csv"
+            out_path = human_out_dir / out_name
+            rephrased_df.to_csv(out_path, index=False)
+            logger.info(f'Saved rephrased human reviews -> {out_path}')
 
     # AI reviews: one stable output JSON.
     ai_path = Path(args.ai_reviews_path)
@@ -493,9 +507,13 @@ def main() -> None:
             limit=args.limit,
         )
 
-        ai_out_dir = Path('data/reviews/ai_reviews/minimal/ncems_criteria/rephrased')
-        ai_out_dir.mkdir(parents=True, exist_ok=True)
-        ai_out_path = ai_out_dir / 'ncems_reviews_rephrased.json'
+        if args.ai_output_path:
+            ai_out_path = Path(args.ai_output_path)
+        elif ai_path.is_dir():
+            ai_out_path = ai_path / 'rephrased' / 'ncems_reviews_rephrased.json'
+        else:
+            ai_out_path = ai_path.parent / 'rephrased' / 'ncems_reviews_rephrased.json'
+        ai_out_path.parent.mkdir(parents=True, exist_ok=True)
         with open(ai_out_path, 'w') as f:
             json.dump(rephrased_ai, f, indent=2, ensure_ascii=False)
         logger.info(f'Saved rephrased AI reviews -> {ai_out_path}')

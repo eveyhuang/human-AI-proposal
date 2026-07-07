@@ -36,7 +36,7 @@ and where it is consumed downstream.
 | `data/prepared/rephrased/minimal/human_y2_scores_wide.csv`           | Proposal-level Human-Y2 quantitative score means mapped to NCEMS-equivalent score columns                                             | `metric_score_relationship.ipynb`                                                           |
 | `data/prepared/rephrased/minimal/literature_corpus_prepared.json`    | Prepared literature corpus payload for novelty analyses (articles + search metadata), moved out of proposal notebook raw-loading path | `compare_proposals_rephrased.ipynb`                                                         |
 | `data/embeddings/rephrased/minimal/proposal_embeddings_human_ai_rephrased.pkl` | Prepared full-proposal embeddings (AI/Human) + metadata. Use for proposal-vs-proposal analyses only: proposal clustering, proposal-space UMAPs, diversity, centroid, NN, medoid, and sparseness metrics | `compare_proposals_rephrased.ipynb`                                                         |
-| `data/embeddings/rephrased/minimal/proposal_embeddings_section1_only.pkl`      | Prepared Section-1 / abstract-only proposal embeddings. This is the required proposal representation for all proposal-to-literature comparisons, including novelty distances, literature-space UMAP projection, BERTopic-region coverage, MeSH-neighbor coverage, and literature-neighbor recency | `compare_proposals_rephrased.ipynb`                                                         |
+| `data/embeddings/rephrased/minimal/proposal_embeddings_rephrased_abstract.pkl` | Prepared Section-1 / abstract-only proposal embeddings. This is the required proposal representation for all proposal-to-literature comparisons, including novelty distances, literature-space UMAP projection, BERTopic-region coverage, MeSH-neighbor coverage, and literature-neighbor recency | `compare_proposals_rephrased.ipynb`                                                         |
 | `data/embeddings/literature/relevant_literature_embeddings.pkl`                | Prepared literature abstract embeddings used for proposal-to-literature distance calculations. Compare only against Section-1 / abstract-only proposal embeddings, not full-proposal embeddings | `compare_proposals_rephrased.ipynb`                                                         |
 | `data/embeddings/reviews/minimal/ncems_criteria/review_embeddings_minimal.pkl` | Prepared NCEMS review embeddings with metadata + `review_uid` alignment                                                               | `compare_reviews_ncems_criteria.ipynb`                                                      |
 | `data/embeddings/reviews/minimal/novelty/review_embeddings_minimal.pkl`        | Prepared novelty review embeddings with metadata + `review_uid` alignment                                                             | `compare_reviews_novelty.ipynb` (future-ready; current core analysis is score-table based)  |
@@ -115,9 +115,9 @@ Step-by-step:
 
   Proposal projection boundary:
 
-- **Representation rule**: any comparison against literature embeddings must use Section-1 / abstract-only proposal embeddings from `proposal_embeddings_section1_only.pkl`. Do not use full-proposal embeddings (`X_prop`) for proposal-to-literature distances, literature-space UMAPs, literature-neighbor tables, MeSH-neighbor coverage, publication-year recency, or BERTopic-region coverage.
+- **Representation rule**: any comparison against literature embeddings must use Section-1 / abstract-only proposal embeddings from `proposal_embeddings_rephrased_abstract.pkl`. Do not use full-proposal embeddings (`X_prop`) for proposal-to-literature distances, literature-space UMAPs, literature-neighbor tables, MeSH-neighbor coverage, publication-year recency, or BERTopic-region coverage.
 - The existing Step 7 novelty visualization in `compare_proposals_rephrased.ipynb` should load `lit_umap_reducer.pkl` and `lit_umap2d.npy`, then project Section-1 / abstract-only proposal embeddings inside the comparison notebook.
-- Analysis 3.5 in `compare_proposals_rephrased.ipynb` should load the same literature reducer and project Section-1 / abstract-only proposal embeddings (`proposal_embeddings_section1_only.pkl`) inside the comparison notebook, so literature-space maps use the same proposal representation as proposal-to-literature novelty distances.
+- Analysis 3.5 in `compare_proposals_rephrased.ipynb` should load the same literature reducer and project Section-1 / abstract-only proposal embeddings (`proposal_embeddings_rephrased_abstract.pkl`) inside the comparison notebook, so literature-space maps use the same proposal representation as proposal-to-literature novelty distances.
 - `prepare_data_for_analysis.ipynb` should not create `proposal_abstract_coords_in_lit_umap.npy` or `proposal_full_coords_in_lit_umap.npy`.
 
 Saved artifacts:
@@ -136,19 +136,15 @@ This study now has four generation conditions:
 - LLMs generate ideas/proposals under the minimal prompt pipeline with rephrasing.
 - This condition is the current reference condition and all completed results in this plan come from it.
 
-1. `high_temperature` (**planned next**)
+1. C0: `one_at_a_time` + high temperature (**planned next**)
 
-- LLMs use the same minimal idea/proposal prompt pipeline as the baseline condition.
-- The only intended generation change is higher sampling temperature: `GENERATION_TEMPERATURE = 0.8` in the rendered proposal-generation notebook.
-- Use this condition to test whether increasing model sampling temperature increases diversity and literature-relative novelty of AI-generated ideas/proposals.
+- LLMs use the same minimal idea/proposal prompt pipeline as the baseline condition, except that it generates one idea at a time from each model instead of all 23 at once.
+- use temperature = 0.9 for each model
 
-1. `how_to_think` (**planned next**)
 
-- LLMs first use an LLM-suggested “how to think” process, then generate ideas/proposals using that process.
+1. C1:`persona` + high temperature (**planned next**)
 
-1. `persona` (**planned next**)
-
-- LLMs generate ideas/proposals while adopting human-scientist author personas.
+- LLMs generate ideas/proposals one at a time, while adopting human-scientist author personas. use temperature = 0.9 for each model
 - Inputs include titles/abstracts of recent papers by the target author(s) during idea generation.
 
 ### Cross-condition comparison plan
@@ -168,30 +164,43 @@ This study now has four generation conditions:
 
 ### Compact Results Table
 
-Stars indicate corrected/primary significance for the model-vs-Human contrast: `*** p<.001`, `** p<.01`, `* p<.05`; blank means not significant. Unless noted, `Δ` is AI model minus Human, so negative values mean Human is higher.
+Stars indicate corrected/primary significance for the model-vs-Human contrast: `*** p<.001`, `** p<.01`, `* p<.05`; blank means not significant. Unless noted, `Δ` is AI model minus Human, so negative values mean Human is higher. **[CRITICAL CHANGE] For the matrix-derived diversity rows (2.1, 2.2a–2.2d, 2.3) the stars now reflect the group-level permutation (label-shuffle) test, Holm-corrected across the model contrasts — not Mann–Whitney. See the inference note directly below.**
 For the `All AI vs Human` column, pooled values come from the dedicated audited `compare_proposals_all_ai.ipynb` binary notebook; some literature-relative rows therefore use slightly different Human-side summaries than the four-group notebook.
+
+> **[CRITICAL CHANGE] Primary inference for within-group diversity metrics: permutation, not Mann–Whitney.**
+>
+> Every proposal-level *within-group diversity* metric — mean pairwise distance (2.1), LOO-centroid distance (2.2a), global-centroid distance (2.2b), MST edge weight (2.2c), medoid sparseness (2.2d), and nearest-neighbor / Chamfer distance (2.3) — is a function of a single shared within-group pairwise-distance matrix. The 23 per-proposal values inside a group are therefore **statistically dependent**: each is computed from the same set of proposals and shares terms with the others. Mann–Whitney + Holm assumes independent observations; applied to these coupled quantities it treats correlated numbers as i.i.d. and returns anti-conservative p-values (e.g. `MW p=3.5e-09` in 2.1) that **overstate the evidence**. The effect is real and survives the correct test — this is a *reporting* fix, not a finding that disappears.
+>
+> The valid inference is the **group-level label-permutation test** (shuffle Human/AI labels, recompute the group statistic, build the null distribution). It is already computed for every diversity metric and permutes at the exchangeable unit — the proposal label — so it is unaffected by the within-matrix dependence.
+>
+> **Rule — apply in every step below and in every future condition notebook:**
+> 1. Report the **permutation p-value (Holm-corrected across the model contrasts) as PRIMARY** for every matrix-derived diversity metric, and set significance stars from it.
+> 2. **Drop the Mann–Whitney / Holm p-values** from these metrics, or keep them only in a clearly labelled footnote: *"MW/Holm shown for reference only — not valid inference for a matrix-derived metric."* Never let a MW p-value carry a significance star or headline a diversity result.
+> 3. **2.2c (MST) and 2.5 (grid entropy) are already permutation-primary** and are the template for the rest.
+> 4. **Exemption — do NOT change Part III/IV.** Literature-relative novelty (ElementNovel, MeanKNN, `novelty_z`), MeSH coverage, literature-neighbor year, and style features measure each proposal against a **fixed external reference** (the 39,538-abstract corpus / a style model), so their per-proposal values **are** independent and Mann–Whitney/Holm stays valid. Literature-space outlier prevalence (Fisher) and review diversity (paired Wilcoxon across independent proposals) are likewise valid and unchanged.
+> 5. **How to avoid this going forward:** any statistic that is a function of a shared distance/adjacency matrix among the compared items must be tested by permutation/randomization at the exchangeable unit. Never feed matrix-derived per-item values into a rank-sum test as if they were independent samples.
 
 | Analysis | Human reference | Claude vs Human | Gemini vs Human | GPT-5.2 vs Human | All AI vs Human | Primary test |
 | --- | --- | --- | --- | --- | --- | --- |
-| Proposal diversity 2.1 pairwise / Remote-Clique family | mean pairwise `0.4429` | `0.0337`; Δ `-0.3670` `***`; δ `-1.000` | `0.1505`; Δ `-0.2838` `***`; δ `-0.826` | `0.3148`; Δ `-0.1546` `**`; δ `-0.478` | `0.1824`; Δ `-0.2605` `***`; δ `-0.768` | MW Holm |
-| Proposal diversity 2.2a centroid LOO | centroid LOO `0.2665` | `0.0178`; Δ `-0.2451` `***`; δ `-1.000` | `0.0802`; Δ `-0.1862` `***`; δ `-0.826` | `0.1787`; Δ `-0.0848` `**`; δ `-0.478` | `0.0991`; Δ `-0.1674` `***`; δ `-0.768` | MW Holm |
-| Proposal diversity 2.2b global centroid | global-centroid dist `0.2926` | `0.0400`; H-AI `0.2526` `***`; δ `0.887` | `0.0869`; H-AI `0.2057` `***`; δ `0.705` | `0.1704`; H-AI `0.1222` `**`; δ `0.580` | `0.0989`; H-AI `0.1937` `***`; δ `0.724` | MW Holm |
-| Proposal diversity 2.2c MST dispersion | MST `0.1126` | `0.0241`; Δ `-0.0885` `***` | `0.0643`; Δ `-0.0482` `**` | `0.0733`; Δ `-0.0393` `*` | `0.0638`; Δ `-0.0488` `***` | Permutation Holm |
-| Proposal diversity 2.2d sparseness | sparseness `0.3721` | `0.0267`; Δ `-0.3454` `***`; δ `-0.915` | `0.0870`; Δ `-0.2810` `***`; δ `-0.765` | `0.2052`; Δ `-0.1656` `***`; δ `-0.595` | `0.1098`; Δ `-0.2623` `***`; δ `-0.742` | MW Holm |
-| Proposal diversity 2.3 1-NN / Chamfer | Chamfer `0.0822` | `0.0237`; Δ `-0.0505` `***`; δ `-0.813` | `0.0432`; Δ `-0.0413` `***`; δ `-0.713` | `0.0463`; Δ `-0.0331` `**`; δ `-0.507` | `0.0415`; Δ `-0.0407` `***`; δ `-0.844` | MW Holm |
-| Proposal diversity 2.5 grid entropy | normalized entropy `0.4145` | `0.7494`; Δ `+0.3349` `**` | `0.2268`; Δ `-0.1876` | `0.2861`; Δ `-0.1284` | `0.2667`; Δ `-0.1477` | Permutation Holm |
-| Proposal novelty ElementNovel-0 | mean `0.0989` | `0.0658`; Δ `-0.0332` `**`; δ `-0.580` | `0.0717`; Δ `-0.0272` `**`; δ `-0.565` | `0.0792`; Δ `-0.0198` `*`; δ `-0.353` | `0.0642`; binary Holm `q=3.50e-09`; δ `-0.826` | MW Holm |
-| Proposal novelty ElementNovel-10 | mean `0.2003` | `0.1620`; Δ `-0.0383` `**`; δ `-0.561` | `0.1700`; Δ `-0.0302` `*`; δ `-0.429` | `0.1828`; Δ `-0.0175`; δ `-0.070` | `0.1542`; binary Holm `q=2.83e-10`; δ `-0.912` | MW Holm |
-| Proposal novelty MeanKNN-10 | mean `0.1109` | `0.0746`; Δ `-0.0363` `**`; δ `-0.573` | `0.0828`; Δ `-0.0281` `*`; δ `-0.482` | `0.0914`; Δ `-0.0195`; δ `-0.202` | `0.0755`; binary Holm `q=3.94e-08`; δ `-0.807` | MW Holm |
-| Proposal novelty normalized `novelty_z` | mean `1.0508` | `0.4966`; Δ `-0.5541` `*`; δ `-0.444` | `0.6700`; Δ `-0.3808`; δ `-0.388` | `0.7937`; Δ `-0.2571`; δ `0.025` | `0.4535`; binary Holm `q=0.0021`; δ `-0.459` | MW Holm |
-| Proposal literature-space outliers mean-10NN | Human `5/23` (`21.7%`) | `0/23` (`0.0%`) | `2/23` (`8.7%`) | `3/23` (`13.0%`) | `1/69` (`1.45%`) `***`; binary Holm `q=0.000024` | Fisher Holm; no model significant |
-| Pairwise-distance bimodality 2.1b | dip `0.142`; best GMM `k=3` | dip `0.014`; `p=0.991`; best `k=1` | dip `0.071`; `p<.001`; best `k=3` | dip `0.167`; `p<.001`; best `k=3` | dip `0.085`; within/between-model dips both `<.001` | Dip test + BIC |
-| Topic distribution + Ward/GMM clusters | topics T1/T2 `15/14`; Ward A/B `11/12`; GMM clusters `5/11/7` | topics `14/13`; Ward A/B `0/23` `**`; GMM `12/0/11` | topics `7/20`; Ward A/B `2/21` `*`; GMM `3/2/18` | topics `16/13`; Ward A/B `6/17`; GMM `2/6/15` | dominant topics `14/9` vs AI `32/37`; Ward OR `6.99` `***`; GMM NMI `0.577`, ARI `0.326` | Topic 4-group perm `p=0.0240`; Ward Fisher Holm; GMM NMI `p=0.0033`, ARI `p=0.0014` |
-| LDA topic vs Ward cluster correspondence | ARI `-0.0068`; NMI `0.0006`; lexical topics and embedding clusters are complementary | not model-specific | not model-specific | not model-specific | inherited cached ARI/NMI; same correspondence result | ARI/NMI descriptive |
-| Literature BERTopic region coverage | group entropy `1.1583`; effective regions `3.1845`; dominant frac `0.5217` | entropy `0.0155` `*`; effective `1.0156`; dominant `0.9978` | entropy `0.3790`; effective `1.4608`; dominant `0.9130`; Holm trend `q=0.0793` | entropy `0.8587`; effective `2.3600`; dominant `0.7370` | entropy `0.1236`; effective `1.1579`; breadth boot `1.34 [1,2]`; Holm `q=2.8e-05` | MW Holm on proposal-level region entropy / max-region weight |
-| Literature MeSH coverage | mean unique MeSH `79.57`; union `750` | mean `62.39`; union `197` | mean `57.52`; union `339`; Holm trend `q=0.0748` | mean `68.30`; union `450` | mean `72.2`; union boot `377.8 [304,462]`; MW `***` | MW Holm; no model significant |
-| Within-region literature year 3.8 | medians `2021.5` or `2023.5` by region | no Human contrast significant | no Human contrast significant | stratum-1 median `2024.5` vs Human `2023.5`, ns | median `2022.43`; mean `2021.48`; ns | MW Holm |
-| Style-only source classifier | AUROC `0.561 ± 0.166`; balanced accuracy `0.584 ± 0.117`; permutation `p=0.2977` | not model-specific; no style-adjusted residualization cells rendered | not model-specific; no style-adjusted residualization cells rendered | not model-specific; no style-adjusted residualization cells rendered | AUROC `0.568`; perm `p=0.2575`; `1/18` style features Holm sig | 5-fold CV + AUROC permutation |
+| **[CRITICAL CHANGE]** Proposal diversity 2.1 pairwise / Remote-Clique family | mean pairwise `0.3411` | `0.1523`; Δ `-0.1895`; perm `q=0.0004` `***`; δ `-0.826` | `0.0978`; Δ `-0.2291`; perm `q=0.0004` `***`; δ `-0.913` | `0.1997`; Δ `-0.1535`; perm `q=0.0018` `**`; δ `-0.739` | AI boot `0.1524` vs Human `0.3411`; δ `-0.826`; perm `p=0.0001` `***` | Permutation (label-shuffle) Holm |
+| **[CRITICAL CHANGE]** Proposal diversity 2.2a centroid LOO | centroid LOO `0.1953` | `0.0813`; Δ `-0.1149`; perm `q=0.0464` `*`; δ `-0.826` | `0.0515`; Δ `-0.1434`; perm `q=0.0064` `**`; δ `-0.913` | `0.1084`; Δ `-0.0880`; perm `q=0.0945` ns | AI boot `0.0821` vs Human `0.1953`; δ `-0.826`; perm `p=0.0089` `**` | Permutation (label-shuffle) Holm |
+| **[CRITICAL CHANGE]** Proposal diversity 2.2b global centroid | global-centroid dist `0.1913` | `0.0784`; H-AI `0.1128`; perm `q=0.3760` ns; δ `0.682` | `0.0542`; H-AI `0.1370`; perm `q=0.0855` ns; δ `0.766` | `0.1031`; H-AI `0.0882`; perm `q=0.9575` ns; δ `0.641` | AI boot `0.0793` vs Human `0.1913`; δ `-0.696`; perm `p=0.0078` `**` | Permutation (label-shuffle) Holm |
+| Proposal diversity 2.2c MST dispersion | MST `0.1004` | `0.0623`; Δ `-0.0381` `*` | `0.0584`; Δ `-0.0420` `*` | `0.0667`; Δ `-0.0337` `*` | AI boot `0.0613` vs Human `0.1004`; perm `***` | Permutation Holm |
+| **[CRITICAL CHANGE]** Proposal diversity 2.2d sparseness | sparseness `0.2218` | `0.0906`; Δ `-0.1292`; perm `q=0.0486` `*`; δ `-0.693` | `0.0597`; Δ `-0.1621`; perm `q=0.0064` `**`; δ `-0.822` | `0.1194`; Δ `-0.1010`; perm `q=0.0907` ns | AI boot `0.0926` vs Human `0.2218`; δ `-0.699`; perm `p=0.0098` `**` | Permutation (label-shuffle) Holm |
+| **[CRITICAL CHANGE]** Proposal diversity 2.3 1-NN / Chamfer | Chamfer `0.0751` | `0.0386`; Δ `-0.0338`; perm `q=0.0186` `*`; δ `-0.826` | `0.0566`; Δ `-0.0358`; perm `q=0.0186` `*`; δ `-0.826` | `0.0409`; Δ `-0.0286`; perm `q=0.0352` `*`; δ `-0.696` | AI boot `0.0432` vs Human `0.0751`; δ `-0.869`; perm `p=0.0002` `***` | Permutation (label-shuffle) Holm |
+| Proposal diversity 2.5 grid entropy | normalized entropy `0.3304` | `0.2802`; Δ `-0.0502`; ns | `0.2297`; Δ `-0.1007`; ns | `0.2790`; Δ `-0.0514`; ns | AI boot `0.3640` vs Human `0.3304`; perm `p=0.771` | Permutation Holm |
+| Proposal novelty ElementNovel-0 | mean `0.0993` | `0.0871`; Δ `-0.0122`; Holm ns | `0.0923`; Δ `-0.0070`; ns | `0.0818`; Δ `-0.0175`; MW Holm ns; perm trend `q=0.112` | AI `0.0871` vs Human `0.0993`; Holm `q=0.275`; ns | MW Holm |
+| Proposal novelty ElementNovel-10 | mean `0.2171` | `0.1965`; Δ `-0.0206`; ns | `0.1985`; Δ `-0.0186`; ns | `0.1839`; Δ `-0.0332`; MW ns; perm trend `q=0.0528` | AI `0.1930` vs Human `0.2171`; Holm `q=0.126`; ns | MW Holm |
+| Proposal novelty MeanKNN-10 | mean `0.1151` | `0.1009`; Δ `-0.0143`; ns | `0.1045`; Δ `-0.0107`; ns | `0.0918`; Δ `-0.0233`; MW ns; perm `q=0.0363` | AI `0.0990` vs Human `0.1151`; Holm `q=0.798`; ns | MW Holm |
+| Proposal novelty normalized `novelty_z` | mean `0.7323` | `0.5313`; Δ `-0.2011`; ns | `0.6950`; Δ `-0.0374`; ns | `0.4146`; Δ `-0.3178`; MW ns; perm trend `q=0.0969` | AI `0.5469` vs Human `0.7323`; Holm `q=0.798`; ns | MW Holm |
+| Proposal literature-space outliers mean-10NN | Human `7/23` (`30.4%`) | `1/23` (`4.3%`), Holm `q=0.094` | `2/23` (`8.7%`), `q=0.135` | `0/23`, `q=0.0275` `*` | Human `7/23` (`30.4%`) vs AI `3/69` (`4.3%`); Holm `q=0.00585`; element0 `q=0.0281`; z ns | Fisher Holm |
+| Pairwise-distance bimodality 2.1b | dip `0.1628`; best GMM `k=3` | dip `0.0710`; `p<.001`; best `k=3` | dip `0.0408`; `p=0.0042`; best `k=2` | dip `0.1040`; `p<.001`; best `k=3` | human dip `0.1628`; AI dip `0.0671`; within/between-model dips both `<.001` | Dip test + BIC |
+| Topic distribution + Ward/GMM clusters | topics T1/T2 `15/14`; Ward A/B `6/17`; GMM `9/6/8` | topics `14/13`; Ward A/B `2/21`; GMM `3/2/18` | topics `7/20`; Ward A/B `1/22`; GMM `2/1/20` | topics `16/13`; Ward A/B `3/20`; GMM `16/3/4` | topics ns (`p=0.327`); Ward OR `3.706`, `p=0.0665`; GMM ratio `1.062`, `p=0.0305`, NMI `0.577`, ARI `0.326` | Topic 4-group perm `p=0.0250`; Ward Fisher Holm; GMM ARI `p=0.0123`, ratio `p=0.0346` |
+| LDA topic vs Ward cluster correspondence | ARI `-0.0050`; NMI `0.0000`; lexical topics and embedding clusters are complementary | not model-specific | not model-specific | not model-specific | inherited cached ARI/NMI; same correspondence result | ARI/NMI descriptive |
+| Literature BERTopic region coverage | group entropy `1.2807`; effective regions `3.5991`; dominant frac `0.4804` | entropy `1.0942`; effective `2.9867`; Holm ns | entropy `0.9029`; effective `2.4668`; Holm ns | entropy `0.8833`; effective `2.4189`; Holm ns | group entropy `1.0038`; effective `2.7286`; breadth boot `3.521 [2,4]`; proposal-level raw p≈`0.039`, Holm ns `q=0.193` | MW Holm on proposal-level region entropy / max-region weight |
+| Literature MeSH coverage | mean unique MeSH `80.00`; union `825` | mean `90.30`; union `834`; Holm ns | mean `84.26`; union `706`; Holm ns | mean `80.70`; union `623`; Holm ns | mean `85.09` vs Human `80.0`; union boot `750.5 [625,860]`; MW `p=0.825` | MW Holm; no model significant |
+| Within-region literature year 3.8 | stratum medians `2021.75` / `2022.00` | no Human contrast significant | no Human contrast significant | no Human contrast significant | strata 0/1 medians ns; Holm `q=0.203` and `q=0.766` | MW Holm |
+| Style-only source classifier | AUROC `0.521 ± 0.227`; balanced accuracy `0.531 ± 0.133`; permutation `p=0.4496` | not model-specific; no style-adjusted residualization cells rendered | not model-specific; no style-adjusted residualization cells rendered | not model-specific; no style-adjusted residualization cells rendered | AUROC `0.518 ± 0.229`; perm `p=0.421`; `1/18` style features Holm sig | 5-fold CV + AUROC permutation |
 | NCEMS R1 review diversity | Human review diversity > AI-all; Y2 all metrics `***`; Y1 4/9 metrics `*` | per-model within-review diversity not estimable; each model has one review/proposal | per-model within-review diversity not estimable; each model has one review/proposal | per-model within-review diversity not estimable; each model has one review/proposal | `—` | Paired Wilcoxon FDR |
 | NCEMS R1 Human-AI review similarity, Y1 cosine | Human-Human baseline | Human-AI vs Human-Human δ `-0.042` | Human-AI vs Human-Human δ `0.083` | Human-AI vs Human-Human δ `-0.236` | `—` | MW FDR; all model contrasts ns (`q=0.8852`) |
 | NCEMS R1 Y1/Y2 within-cohort review similarity | Human-Y1 `0.9583`; Human-Y2 `0.9524` | AI model-specific not estimated in four-group Y1/Y2 table | AI model-specific not estimated in four-group Y1/Y2 table | AI model-specific not estimated in four-group Y1/Y2 table | `—` | AI-all: Y2 Human vs AI `***`; Y1 trend ns |
@@ -200,7 +209,7 @@ For the `All AI vs Human` column, pooled values come from the dedicated audited 
 | NCEMS quality reviews, cross-eval only | Human-all mean `3.5855` | mean `4.0739`; δ `-0.652` `***` | mean `3.6761`; δ `0.070` | mean `4.4739`; δ `-0.992` `***` | `—` | MW FDR |
 | NCEMS R3 self-preference | compares each evaluator's self vs other AI proposals | self `3.8783`, other `3.8870`; δ `-0.053` | self `4.1435`, other `4.5304`; δ `-0.732` `***` | self `4.0043`, other `3.8065`; δ `0.933` `***` | `—` | MW FDR |
 | Novelty-framework reviews, cross-eval rerun | Human reference from novelty-review notebook | Claude ~ Human; `q=0.8428` | Human > Gemini; δ `0.7788` `***` | GPT > Human; δ `-0.4631` `*` | `—` | MW FDR |
-| Metric-score relationship (executed baseline-minimal outputs) | semantic-distance metrics are mostly negative with NCEMS and often positive with novelty criteria | model-specific score/metric validation not estimated in compact table | model-specific score/metric validation not estimated in compact table | model-specific score/metric validation not estimated in compact table | `—` | Spearman |
+| Metric-score relationship (executed baseline-minimal outputs) | semantic-distance/group-dispersion metrics are strongly negative with NCEMS relevance (`r=-0.722`) and overall NCEMS score for `chamfer_group` (`r=-0.546`), but moderately positive with selected novelty-framework criteria (`r~0.33-0.38`) | model-specific score/metric validation not estimated in compact table | model-specific score/metric validation not estimated in compact table | model-specific score/metric validation not estimated in compact table | Human-Y2 metric-score block now shows only trend-level correlations (`p>=0.0526`) | Spearman / MW outlier tests |
 
 
 ## Data Visualization Guide
@@ -273,28 +282,18 @@ Use the standardized boxplot helper pattern for all group-comparison distributio
 
 Ground-truth audited notebook: `baseline(minimal)-rephrased/compare_proposals_rephrased.ipynb`.
 
-Purpose: compare Human and AI research proposals after all proposal texts have been rephrased into a standardized neutral academic style. This audit reflects the notebook outputs saved in the `.ipynb` through the final JSON merge cell. The older style-adjusted residualization analyses are not present in the audited notebook and should not be treated as executed results.
+Purpose: compare Human and AI research proposals after proposal texts have been rephrased into a standardized neutral academic style. This audit reflects the rendered notebook outputs saved in the `.ipynb` after the July 2026 rephrase refresh. Older result claims from the prior rephrase model should not be reused.
 
 Global settings:
 
-- Condition label for results in this section: `baseline-minimal-rephrased`.
+- Condition label: `baseline-minimal-rephrased`.
 - Proposal input: `data/prepared/rephrased/minimal/all_proposals.json`.
-- NCEMS review input: `data/prepared/rephrased/minimal/ncems_criteria_all_reviews.csv`.
 - Tables: `results/tables/rephrased/minimal`.
 - Figures: `results/figures/rephrased/minimal`.
 - Full-proposal embedding cache: `data/embeddings/rephrased/minimal/proposal_embeddings_human_ai_rephrased.pkl`.
-- Abstract/Section-1 embedding cache: `data/embeddings/rephrased/minimal/proposal_embeddings_section1_only.pkl`.
+- Section-1 / abstract-only embedding cache: `data/embeddings/rephrased/minimal/proposal_embeddings_rephrased_abstract.pkl`.
 - Literature embedding cache: `data/embeddings/literature/relevant_literature_embeddings.pkl`.
-
-#### `## Condition Configuration`
-
-Baseline-minimal-rephrased rendered result:
-
-- `CONDITION = 'minimal'`.
-- `REUSE_CACHED_PROPOSAL_EMBEDDINGS = True`.
-- `REUSE_CACHED_MAIN_IDEA_EMBEDDINGS = True`.
-- `REUSE_CACHED_LITERATURE_EMBEDDINGS = True`.
-- The configuration cell has no printed notebook output.
+- Literature-space projection cache for proposals: `data/embeddings/literature/proposals_section1_lit_umap2d.npy`.
 
 #### `# Setup and Imports`
 
@@ -303,54 +302,30 @@ Baseline-minimal-rephrased rendered result:
 - Working directory: `baseline(minimal)-rephrased`.
 - Project root: `/Users/eveyhuang/Documents/NICO/human-AI-proposal`.
 - PyTorch `2.9.1`; CUDA unavailable.
-
-##### `## Helper Functions`
-
-Baseline-minimal-rephrased rendered result:
-
 - Helper functions loaded, including proposal-level mean pairwise diversity, bootstrap 95% CIs, and Holm multiple-testing adjustment.
 
-##### `## Load Prepared Proposal Data`
+##### `## Load Prepared Proposal Data and Metadata`
 
 Baseline-minimal-rephrased rendered result:
 
 - Loaded proposals from `data/prepared/rephrased/minimal/all_proposals.json`.
 - AI proposals: `69`; Human proposals: `23`.
 - AI model counts: GPT-5.2 `23`, Gemini `23`, Claude `23`.
+- Metadata coverage: proposals `92`, panel ranking `23`, AI-review ranking `92`, funding `23`.
+- Text scope: `standardized_text` with template headers stripped.
+- Average cleaned length: AI `1859` characters, Human `1845` characters.
 
-##### `## Load Prepared NCEMS Reviews`
-
-Baseline-minimal-rephrased rendered result:
-
-- Loaded `361` NCEMS review rows.
-- Unique reviewed proposals: `92`.
-- Proposal-level aggregated review rows: `95`.
-
-##### `## Prepare Proposal Texts`
+##### `## Load Prepared Full-Proposal Embeddings and Shared Caches`
 
 Baseline-minimal-rephrased rendered result:
 
-- Used `standardized_text` with template headers stripped.
-- Average cleaned length: AI `1807` characters, Human `1803` characters.
-
-##### `## Load Prepared Full-Proposal Embeddings`
-
-Baseline-minimal-rephrased rendered result:
-
-- Loaded full-proposal embeddings from `data/embeddings/rephrased/minimal/proposal_embeddings_human_ai_rephrased.pkl`.
-- AI embeddings shape: `(69, 1024)`.
-- Human embeddings shape: `(23, 1024)`.
-- Saved `results/tables/rephrased/minimal/proposal_metadata.csv` with `92` rows.
-
-##### `## Shared Distance-Matrix Precomputation`
-
-Baseline-minimal-rephrased rendered result:
-
+- Loaded full-proposal embeddings from `proposal_embeddings_human_ai_rephrased.pkl`.
+- AI embeddings shape: `(69, 1024)`; Human embeddings shape: `(23, 1024)`.
+- Saved `proposal_metadata.csv` with `92` rows.
 - Saved shared caches to `results/tables/rephrased/minimal/cached`.
 - `X_prop` shape: `(92, 1024)`; `D_pp` shape: `(92, 92)`.
 - Groups: Human `23`, Claude `23`, GPT-5.2 `23`, Gemini `23`, All AI `69`.
-- Review ranking coverage: `96.7%`; top-5 outlined proposals: `21.7%`; Human funding coverage: `87.0%`.
-- Outputs: `proposal_meta.csv`, `proposal_distance_matrix.npy`, `proposal_pca2d.npy`.
+- Review ranking coverage: `100.0%`; top-5 outlined proposals: `21.7%`; Human funding coverage: `100.0%`.
 
 #### `# PART I: THEMATIC AND CLUSTER ANALYSIS`
 
@@ -358,17 +333,18 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
+- Topic-model text: normalized content text (`title + abstract`) to reduce formatting/template confounding.
 - Prepared `92` topic-model texts: Human `23`, AI `69`.
 - Document-term matrix: `(92, 192)`; dropped `8` domain unigrams while keeping bigrams.
-- Topic-count selection tested `k=2..8`; selected `n_topics=2` by the conservative CV criterion.
+- Topic-count selection tested `k=2..8`; selected `n_topics=2` by the conservative held-out perplexity rule.
 - Final LDA: perplexity `228.80`, log-likelihood `-3520.48`.
 - Topic labels:
-  - Topic 1: `functional data, integrating structural, emergent properties, multi scale` (`46` dominant documents).
-  - Topic 2: `protein interaction, decoding emergent, single cell, synthesizing emergent` (`46` dominant documents).
+  - Topic_1: `functional data, integrating structural, emergent properties, multi scale` (`46` dominant documents).
+  - Topic_2: `protein interaction, decoding emergent, single cell, synthesizing emergent` (`46` dominant documents).
 - Stability validation across 10 aligned runs:
-  - Topic 1: `60.0% +/- 14.1%` top-10 overlap, cosine `0.813 +/- 0.042`.
-  - Topic 2: `47.8% +/- 19.3%` top-10 overlap, cosine `0.784 +/- 0.051`.
-- Topic-count sensitivity found Human/AI association significant for `k=3..8`, but not for selected `k=2` (`chi2=0.9275`, `p=0.3355`).
+  - Topic_1: `60.0% +/- 14.1%` top-10 overlap, cosine `0.813 +/- 0.042`.
+  - Topic_2: `47.8% +/- 19.3%` top-10 overlap, cosine `0.784 +/- 0.051`.
+- Topic-count sensitivity: selected `k=2` is not associated with Human/AI grouping (`chi2=0.9275`, `p=0.3355`), while larger exploratory `k=3..8` values show significant chi-square tests.
 - Outputs: `lda_topic_k_selection.csv`, `lda_topic_contrastive_labels.csv`.
 
 ##### `## Analysis 1.2: Topic Distribution and Coverage Per Model`
@@ -381,8 +357,9 @@ Baseline-minimal-rephrased rendered result:
   - Claude: Topic_1 `14` (`61%`), Topic_2 `13` (`57%`).
   - Gemini: Topic_1 `7` (`30%`), Topic_2 `20` (`87%`).
   - GPT-5.2: Topic_1 `16` (`70%`), Topic_2 `13` (`57%`).
-- Four-group chi-square `6.1008`, permutation `p=0.0240` (significant).
-- Per-topic Fisher tests vs Human: `0/6` significant after Holm correction. Gemini had the strongest unadjusted shifts, Topic_1 `p=0.0377`, `q=0.2261`; Topic_2 `p=0.0909`, `q=0.4547`.
+- Four-group chi-square `6.1008`, permutation `p=0.0250`.
+- Per-topic Fisher tests vs Human: `0/6` significant after Holm correction.
+- Strongest unadjusted shifts: Gemini Topic_1 `p=0.0377`, Holm `q=0.2261`; Gemini Topic_2 `p=0.0909`, Holm `q=0.4547`.
 - Topic entropy:
   - Human `H=0.6897`, normalized `0.9950`, covered `2/2`, dominant `Topic_1`.
   - Claude `H=0.6904`, normalized `0.9960`, covered `2/2`, dominant `Topic_1`.
@@ -391,55 +368,50 @@ Baseline-minimal-rephrased rendered result:
 - Outputs: `topic_distribution_per_model.csv`, `topic_distribution_per_model_tests.csv`, `topic_entropy_per_model.csv`.
 - Figure: `topic_distribution_comparison.png`.
 
-##### `## Analysis 1.3: Embedding Cluster Structure and UMAP (Primary Cluster Labels)`
+##### `## Analysis 1.3: Embedding Cluster Structure - Ward Agglomerative + UMAP Cache`
 
 Baseline-minimal-rephrased rendered result:
 
-- Ward agglomerative k-selection:
-  - `k=2`: silhouette `0.9055`, Calinski-Harabasz `277.8` (selected).
-  - `k=3`: silhouette `0.8127`, Calinski-Harabasz `153.2`.
-  - `k=4`: silhouette `0.7681`, Calinski-Harabasz `108.1`.
-  - `k=5`: silhouette `0.7698`, Calinski-Harabasz `85.5`.
-- Best k: `2`; cluster sizes `[19, 73]`.
+- Ward k-selection:
+  - `k=2`: silhouette `0.9102`, Calinski-Harabasz `199.9` (selected).
+  - `k=3`: silhouette `0.8625`, Calinski-Harabasz `112.5`.
+  - `k=4`: silhouette `0.8331`, Calinski-Harabasz `79.5`.
+  - `k=5`: silhouette `0.1428`, Calinski-Harabasz `62.9`.
+- Best k: `2`; cluster sizes `[12, 80]`.
 - Ward cluster labels:
-  - Cluster_A: `19` documents, `mass spectrometry, proteomics imaging, synthesizing emergent`.
-  - Cluster_B: `73` documents, `data understand, decoding emergent, integrating structural, multi scale`.
-- Optional proposal BERTopic sensitivity produced `2` non-outlier topics with `0.0%` outlier fraction, matching the two Ward regions.
+  - Cluster_A: `12` documents, `mass spectrometry, 3d genome function, adaptation mitochondrial reticular, analysis bacterial organelles`.
+  - Cluster_B: `80` documents, `data understand, decoding emergent, integrating structural, multi scale`.
+- Optional proposal BERTopic sensitivity produced `2` non-outlier topics; outlier fraction `0.0%`.
 - Cluster membership by group:
-  - Human: Cluster_A `11`, Cluster_B `12`.
-  - Claude: Cluster_A `0`, Cluster_B `23`.
-  - Gemini: Cluster_A `2`, Cluster_B `21`.
-  - GPT-5.2: Cluster_A `6`, Cluster_B `17`.
-- Fisher tests vs Human:
-  - Claude differs for both clusters, `q=0.001216`.
-  - Gemini differs for both clusters, `q=0.029426`.
-  - GPT-5.2 does not differ after Holm correction, `q=0.442802`.
-- Per-group silhouette/dominant-cluster fraction: Human `0.8371`/`52%`, Claude `NaN`/`100%`, Gemini `0.9291`/`91%`, GPT-5.2 `0.9156`/`74%`.
+  - Human: Cluster_A `6`, Cluster_B `17`.
+  - Claude: Cluster_A `2`, Cluster_B `21`.
+  - Gemini: Cluster_A `1`, Cluster_B `22`.
+  - GPT-5.2: Cluster_A `3`, Cluster_B `20`.
+- Fisher tests vs Human: no model-vs-Human cluster contrast survives Holm correction; Claude `q=0.9709`, Gemini `q=0.5755`, GPT-5.2 `q=0.9709`.
+- Per-group silhouette / dominant-cluster fraction: Human `0.8558` / `74%`, Claude `0.9315` / `91%`, Gemini `0.9100` / `96%`, GPT-5.2 `0.9250` / `87%`.
 - Cached `proposal_umap2d.npy`.
 - Outputs: `ward_cluster_bertopic_style_labels.csv`, `proposal_bertopic_assignments.csv`, `proposal_bertopic_topic_labels.csv`, `diversity_cluster_k_selection.csv`, `diversity_cluster_membership_by_group.csv`.
 - Figures: `proposal_ward_clusters_labeled_umap.png`, `proposal_bertopic_topics_labeled_umap.png`, `cluster_membership_umap_per_group.png`.
 
-##### `## Analysis 1.4: Cluster Segregation - GMM Convergent Validity and Per-Model Composition`
+##### `## Analysis 1.4: GMM Cluster Segregation and Per-Model Composition`
 
 Baseline-minimal-rephrased rendered result:
 
-- GMM k-selection over `k=3..8` selected `k=3` by BIC and silhouette.
-- GMM cluster sizes: `[22, 19, 51]`.
-- Cluster composition:
-  - Cluster 0: total `22`, Human `5`, AI `17`, `22.7%` Human, Mixed.
-  - Cluster 1: total `19`, Human `11`, AI `8`, `57.9%` Human, Mixed.
-  - Cluster 2: total `51`, Human `7`, AI `44`, `13.7%` Human, AI-dominated.
+- GMM k-selection selected `k=3` by BIC.
+- GMM cluster sizes: `[30, 12, 50]`; all three clusters are mixed under the notebook's dominance thresholds.
 - Segregation metrics:
-  - NMI `0.0923`, permutation `p=0.0033`.
-  - ARI `0.1411`, permutation `p=0.0014`.
-  - Within-human mean distance `0.4429`, within-AI `0.1826`, between Human-AI `0.3880`.
-  - Between/within ratio `1.2406`, permutation `p=0.0017`.
+  - NMI `0.0443`, permutation `p=0.0574` (not significant).
+  - ARI `0.0856`, permutation `p=0.0123`.
+  - Within-Human mean distance `0.3411 +/- 0.3262`.
+  - Within-AI mean distance `0.1510 +/- 0.2515`.
+  - Between Human-AI mean distance `0.2613 +/- 0.3111`.
+  - Between/within ratio `1.0622`, permutation `p=0.0346`.
 - Per-model GMM composition:
-  - Human: GMM-0 `5` (`22%`), GMM-1 `11` (`48%`), GMM-2 `7` (`30%`).
-  - Claude: GMM-0 `12` (`52%`), GMM-1 `0` (`0%`), GMM-2 `11` (`48%`).
-  - Gemini: GMM-0 `3` (`13%`), GMM-1 `2` (`9%`), GMM-2 `18` (`78%`).
-  - GPT-5.2: GMM-0 `2` (`9%`), GMM-1 `6` (`26%`), GMM-2 `15` (`65%`).
-- GMM k=3 vs Ward k=2 agreement: ARI `0.4976`, NMI `0.6772`; notebook interpretation: high agreement, same latent clusters.
+  - Human: GMM-0 `9` (`39%`), GMM-1 `6` (`26%`), GMM-2 `8` (`35%`).
+  - Claude: GMM-0 `3` (`13%`), GMM-1 `2` (`9%`), GMM-2 `18` (`78%`).
+  - Gemini: GMM-0 `2` (`9%`), GMM-1 `1` (`4%`), GMM-2 `20` (`87%`).
+  - GPT-5.2: GMM-0 `16` (`70%`), GMM-1 `3` (`13%`), GMM-2 `4` (`17%`).
+- GMM k=3 vs Ward k=2 agreement: ARI `0.3455`, NMI `0.5738`.
 - Outputs: `cluster_gmm_composition_per_model.csv`, `cluster_gmm_vs_ward_agreement.csv`.
 - Figures: `cluster_k_selection.png`, `cluster_analysis_visualization.png`, `cluster_composition_per_model.png`.
 
@@ -447,12 +419,9 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- LDA topics vs Ward clusters: ARI `-0.0068`, NMI `0.0006`.
-- Notebook interpretation: low agreement; report LDA lexical structure and embedding-space clusters as complementary axes.
-- Contingency table:
-  - Topic_1 (`functional data...`): Cluster_A `10`, Cluster_B `36`.
-  - Topic_2 (`protein interaction...`): Cluster_A `9`, Cluster_B `37`.
-- Decision rule outcome: report both as complementary.
+- LDA topics vs Ward clusters: ARI `-0.0050`, NMI `0.0000`.
+- Contingency table: Topic_1 has Cluster_A `6`, Cluster_B `40`; Topic_2 has Cluster_A `6`, Cluster_B `40`.
+- Interpretation: LDA lexical topics and Ward embedding clusters are complementary, not redundant.
 - Outputs: `topic_cluster_contingency.csv`, `topic_cluster_assignment_labels.csv`, `topic_cluster_agreement.csv`.
 - Figure: `topic_cluster_correspondence.png`.
 
@@ -460,43 +429,40 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- LDA selected `2` topics; results are exploratory with small-sample/stability limitations.
-- Per-model topic distribution differs overall (`perm-p=0.0240`), though per-topic model-vs-Human Fisher tests are not significant after Holm correction.
-- Ward clustering finds `2` high-silhouette embedding clusters; Claude is entirely in Cluster_B, Gemini is mostly Cluster_B, and GPT-5.2 spans both clusters more than Claude/Gemini.
-- GMM segregation metrics show significant Human/AI semantic-region separation.
-- LDA topics and Ward clusters have near-zero agreement, so they should be treated as complementary lexical vs embedding-space structure.
+- Topics differ overall across author groups (`perm-p=0.0250`), but per-topic model-vs-Human tests are not significant after Holm correction.
+- Ward clustering finds two high-silhouette regions, but model-vs-Human cluster-membership Fisher tests are not significant after Holm correction in the current rerun.
+- GMM shows weak but significant Human/AI separation by ARI and between/within distance ratio; NMI is a trend.
+- LDA topics and Ward clusters have near-zero agreement.
 
 #### `# PART II: DIVERSITY`
 
-##### `## Analysis 2.1: Within-Group Pairwise Diversity (Remote-Clique + proposal-level mean pairwise distance)`
+##### `## Analysis 2.1: Within-Group Pairwise Diversity`
 
 Baseline-minimal-rephrased rendered result:
 
 - Group summary:
-  - Human: Remote-Clique `0.4237`, proposal mean-pairwise `0.4429`.
-  - Claude: `0.0322`, proposal mean-pairwise `0.0337`.
-  - GPT-5.2: `0.3011`, proposal mean-pairwise `0.3148`.
-  - Gemini: `0.1439`, proposal mean-pairwise `0.1505`.
-  - All AI: `0.1799`, proposal mean-pairwise `0.1826`.
-- Pairwise-distance distributions:
-  - Human mean `0.4429`, median `0.6984`, SD `0.3182`.
-  - Claude mean `0.0337`, median `0.0337`, SD `0.0069`.
-  - GPT-5.2 mean `0.3148`, median `0.0447`, SD `0.3301`.
-  - Gemini mean `0.1505`, median `0.0348`, SD `0.2613`.
-- Inference table was saved as `diversity_pairwise_tests.csv`.
+  - Human: Remote-Clique `0.3263`, proposal mean-pairwise `0.3411`.
+  - Claude: Remote-Clique `0.1456`, proposal mean-pairwise `0.1523`.
+  - GPT-5.2: Remote-Clique `0.1910`, proposal mean-pairwise `0.1997`.
+  - Gemini: Remote-Clique `0.0936`, proposal mean-pairwise `0.0978`.
+  - All AI: Remote-Clique `0.1488`, proposal mean-pairwise `0.1510`.
+- **[CRITICAL CHANGE] Primary test = group-level permutation (label-shuffle), Holm-corrected. `mean_pairwise_dist` is derived from the shared within-group distance matrix, so the MW/Holm p-values are invalid (non-independent inputs) and are retained below for reference only — do not report them as evidence.** Model-vs-Human tests:
+  - Claude: mean difference `-0.1895`, Cliff's delta `-0.826`, **permutation Holm `q=0.0004` `***`** (MW/Holm `5.51e-08`, ref only).
+  - Gemini: mean difference `-0.2291`, delta `-0.913`, **permutation Holm `q=0.0004` `***`** (MW/Holm `2.45e-09`, ref only).
+  - GPT-5.2: mean difference `-0.1535`, delta `-0.739`, **permutation Holm `q=0.0018` `**`** (MW/Holm `6.67e-07`, ref only).
+  - All AI: mean difference `-0.1907`, delta `-0.826`, **permutation Holm `q=0.0004` `***`** (MW/Holm `9.75e-10`, ref only).
 - Outputs: `diversity_remote_clique_group_summary.csv`, `diversity_pairwise_proposal_level.csv`, `diversity_pairwise_tests.csv`.
 - Figures: `pairwise_diversity_by_model.png`, `pairwise_diversity_boxplot.png`.
 
-##### `## Analysis 2.1b: Pairwise Distance Bimodality Test`
+##### `## Analysis 2.1b: Pairwise Distance Bimodality Test + GMM`
 
 Baseline-minimal-rephrased rendered result:
 
 - Hartigan dip and GMM BIC:
-  - Human: dip `0.1420`, `p=0.00000`, best GMM k `3`.
-  - Claude: dip `0.0141`, `p=0.99126`, best GMM k `1`.
-  - Gemini: dip `0.0706`, `p=0.00000`, best GMM k `3`.
-  - GPT-5.2: dip `0.1673`, `p=0.00000`, best GMM k `3`.
-- Interpretation: Claude is unimodal/tightly clustered; Human, Gemini, and GPT-5.2 show multimodal pairwise-distance structure.
+  - Human: dip `0.1628`, `p=0.0000`, best GMM k `3`.
+  - Claude: dip `0.0710`, `p=0.0000`, best GMM k `3`.
+  - Gemini: dip `0.0408`, `p=0.0042`, best GMM k `2`.
+  - GPT-5.2: dip `0.1040`, `p=0.0000`, best GMM k `3`.
 - Outputs: `diversity_pairwise_bimodality_tests.csv`, `diversity_pairwise_gmm_summary.csv`.
 - Figure: `pairwise_diversity_bimodality_gmm.png`.
 
@@ -504,14 +470,14 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- Nearest-Human distances:
-  - Claude AI-to-Human `0.0325 +/- 0.0057`; Human-to-Claude `0.3595 +/- 0.3420`.
-  - Gemini AI-to-Human `0.0419 +/- 0.0341`; Human-to-Gemini `0.0973 +/- 0.0714`.
-  - GPT-5.2 AI-to-Human `0.0487 +/- 0.0266`; Human-to-GPT-5.2 `0.0776 +/- 0.0571`.
-- AI-to-nearest-Human MW tests after Holm:
-  - Claude vs Gemini `q=0.8778`.
-  - Claude vs GPT-5.2 `q=0.0795`.
-  - Gemini vs GPT-5.2 `q=0.1433`.
+- AI-to-nearest-Human / Human-to-nearest-AI distances:
+  - Claude: `0.0418 +/- 0.0305` / `0.0775 +/- 0.0740`.
+  - Gemini: `0.0422 +/- 0.0286` / `0.0881 +/- 0.0844`.
+  - GPT-5.2: `0.0475 +/- 0.0351` / `0.0733 +/- 0.0654`.
+- **[CRITICAL CHANGE] AI-to-nearest-Human distances are matrix-derived (nearest-neighbor distances over the shared cross-group distance matrix), so MW/Holm is not valid inference here. Compute a label-permutation test on the group-level statistic and report that as primary; the MW/Holm q-values below are reference-only and must not carry significance claims.** AI-to-nearest-Human tests:
+  - Claude vs Gemini `q=0.0305` (MW, ref only).
+  - Claude vs GPT-5.2 `q=0.2080` (MW, ref only).
+  - Gemini vs GPT-5.2 `q=0.8605` (MW, ref only).
 - Outputs: `diversity_cross_group_nearest_human.csv`, `diversity_cross_group_alignment_tests.csv`.
 - Figure: `cross_group_topic_alignment.png`.
 
@@ -520,48 +486,45 @@ Baseline-minimal-rephrased rendered result:
 Baseline-minimal-rephrased rendered result:
 
 - Within-cluster mean pairwise diversity:
-  - Human Cluster_A `n=11`, mean `0.1924`; Human Cluster_B `n=12`, mean `0.0542`.
-  - Claude Cluster_A `n=0`; Claude Cluster_B `n=23`, mean `0.0337`.
-  - Gemini Cluster_A `n=2`, mean `0.2466`; Gemini Cluster_B `n=21`, mean `0.0334`.
-  - GPT-5.2 Cluster_A `n=6`, mean `0.1303`; GPT-5.2 Cluster_B `n=17`, mean `0.0356`.
-- Between-cluster gap:
-  - Human `0.7417`, Gemini `0.7334`, GPT-5.2 `0.7141`; Claude has no between-cluster gap because all Claude proposals are in Cluster_B.
-- Within-cluster tests vs Human:
-  - Cluster_A Gemini vs Human `q=0.3929`; GPT-5.2 vs Human `q=0.0002226`.
-  - Cluster_B Claude vs Human `q=2.90e-25`; Gemini vs Human `q=1.12e-25`; GPT-5.2 vs Human `q=6.57e-20`.
+  - Human Cluster_A `n=6`, mean `0.2416`; Human Cluster_B `n=17`, mean `0.0577`.
+  - Claude Cluster_A `n=2`, mean `0.1764`; Claude Cluster_B `n=21`, mean `0.0375`.
+  - Gemini Cluster_A `n=1`, mean `0.0000`; Gemini Cluster_B `n=22`, mean `0.0363`.
+  - GPT-5.2 Cluster_A `n=3`, mean `0.1544`; GPT-5.2 Cluster_B `n=20`, mean `0.0383`.
+- Between-cluster gaps: Human `0.7337`, Claude `0.7252`, Gemini `0.7445`, GPT-5.2 `0.7131`.
+- **[CRITICAL CHANGE] Within-cluster MPD is matrix-derived and heavily coupled (every value comes from one cluster's pairwise matrix). The Cluster_B q-values below (e.g. `1.58e-46`) are an artifact of treating dependent distances as i.i.d. and grossly overstate evidence — do not report them. Replace with a cluster-conditional label-permutation test and report that as primary; the MW/Holm q-values are reference-only.** Within-cluster tests vs Human:
+  - Cluster_A: Claude `q=0.6250`; GPT-5.2 `q=0.0784`; Gemini not tested (`n=1`). (MW, ref only.)
+  - Cluster_B: Claude `q=6.59e-39`; Gemini `q=1.58e-46`; GPT-5.2 `q=1.88e-38`. (MW, ref only — not valid inference.)
 - Outputs: `diversity_within_cluster_by_group.csv`, `diversity_between_cluster_gap.csv`.
 - Figure: `diversity_cluster_aware_comparison.png`.
 
-##### `## Analysis 2.2: Centroid Dispersion Metric (mean radius + Span-90)`
-
-##### `### 2.2a Within-group Centroid Dispersion`
+##### `### 2.2a: Within-Group Centroid Dispersion`
 
 Baseline-minimal-rephrased rendered result:
 
 - Centroid LOO means and Span-90:
-  - Human `0.2665`, Span-90 `0.3137`.
-  - Claude `0.0178`, Span-90 `0.0214`.
-  - GPT-5.2 `0.1787`, Span-90 `0.4673`.
-  - Gemini `0.0802`, Span-90 `0.0275`.
-  - All AI `0.0968`, Span-90 `0.5841`.
-- Human comparison summary:
-  - All AI vs Human: mean difference `-0.1720`, delta `-0.7681`, MW Holm `1.18e-08`, permutation Holm `0.0009999`.
-  - Claude vs Human: mean difference `-0.2451`, delta `-1.0000`, MW Holm `6.91e-11`, permutation Holm `0.000400`.
-  - GPT-5.2 vs Human: mean difference `-0.0848`, delta `-0.4783`, MW Holm `0.00131`, permutation Holm `0.1005`.
-  - Gemini vs Human: mean difference `-0.1862`, delta `-0.8261`, MW Holm `5.51e-08`, permutation Holm `0.000400`.
+  - Human `0.1953`, Span-90 `0.5129`.
+  - Claude `0.0813`, Span-90 `0.0315`.
+  - GPT-5.2 `0.1084`, Span-90 `0.4607`.
+  - Gemini `0.0515`, Span-90 `0.0236`.
+  - All AI `0.0793`, Span-90 `0.0326`.
+- **[CRITICAL CHANGE] Primary test = group-level permutation (label-shuffle), Holm-corrected. LOO-centroid distance is matrix-derived, so the MW/Holm values are reference-only and must not be reported as evidence.** Human comparisons:
+  - Claude: mean difference `-0.1149`, delta `-0.826`, **permutation Holm `q=0.0464` `*`** (MW/Holm `5.51e-08`, ref only).
+  - Gemini: mean difference `-0.1434`, delta `-0.913`, **permutation Holm `q=0.0064` `**`** (MW/Holm `2.45e-09`, ref only).
+  - GPT-5.2: mean difference `-0.0880`, delta `-0.739`, **permutation Holm `q=0.0945` ns** (MW/Holm `6.67e-07`, ref only).
+  - All AI: mean difference `-0.1154`, delta `-0.826`, **permutation Holm `q=0.0168` `*`** (MW/Holm `9.75e-10`, ref only).
 - Outputs: `centroid_distances.csv`, `diversity_span90_group_summary.csv`, `diversity_centroid_pairwise_tests.csv`.
 - Figure: `centroid_dispersion_by_model.png`.
 
-##### `### 2.2b: Between-Group Centroid Dispersion`
+##### `### 2.2b: Between-Group Global-Centroid Distance`
 
 Baseline-minimal-rephrased rendered result:
 
-- Global-centroid mean distance: Human `0.2926`, Claude `0.0400`, GPT-5.2 `0.1704`, Gemini `0.0869`, All AI `0.0991`.
-- Key Human comparisons:
-  - Human vs Claude: mean difference `0.2526`, delta `0.8866`, MW Holm `2.46e-06`, permutation Holm `0.0009999`.
-  - Human vs GPT-5.2: mean difference `0.1222`, delta `0.5803`, MW Holm `0.00543`, permutation Holm `0.3215`.
-  - Human vs Gemini: mean difference `0.2057`, delta `0.7051`, MW Holm `0.000351`, permutation Holm `0.0104`.
-  - Human vs All AI: mean difference `0.1935`, delta `0.7240`, MW Holm `2.27e-06`, permutation Holm `0.0009999`.
+- Global-centroid mean distance: Human `0.1913`, Claude `0.0784`, GPT-5.2 `0.1031`, Gemini `0.0542`, All AI `0.0786`.
+- **[CRITICAL CHANGE] Primary test = group-level permutation (label-shuffle), Holm-corrected. Global-centroid distance is matrix-derived, so MW/Holm is reference-only. Under the valid permutation test NO per-model global-centroid contrast is significant — the MW `***`/`**` stars were an artifact of the independence violation. (The pooled All-AI contrast in the binary notebook does survive at perm `p=0.0078`; see the binary Analysis 2.2b.)** Human comparisons:
+  - Human vs Claude: mean difference `0.1128`, delta `0.682`, **permutation Holm `q=0.3760` ns** (MW/Holm `0.000614`, ref only).
+  - Human vs Gemini: mean difference `0.1370`, delta `0.766`, **permutation Holm `q=0.0855` ns** (MW/Holm `0.000082`, ref only).
+  - Human vs GPT-5.2: mean difference `0.0882`, delta `0.641`, **permutation Holm `q=0.9575` ns** (MW/Holm `0.001435`, ref only).
+  - Human vs All AI: mean difference `0.1127`, delta `0.696`, **permutation Holm `q=0.0830` ns** (MW/Holm `0.000006`, ref only).
 - Outputs: `between_group_global_centroid_distances.csv`, `between_group_global_centroid_group_summary.csv`, `between_group_global_centroid_pairwise_tests.csv`.
 - Figure: `between_group_global_centroid_dispersion.png`.
 
@@ -569,12 +532,12 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- MST dispersion: Human `0.1126`, Claude `0.0241`, GPT-5.2 `0.0733`, Gemini `0.0643`, All AI `0.0427`.
+- MST dispersion: Human `0.1004`, Claude `0.0623`, GPT-5.2 `0.0667`, Gemini `0.0584`, All AI `0.0419`.
 - Permutation tests vs Human after Holm:
-  - Claude difference `-0.0885`, `q=0.000400`.
-  - All AI difference `-0.0699`, `q=0.000400`.
-  - Gemini difference `-0.0482`, `q=0.00720`.
-  - GPT-5.2 difference `-0.0393`, `q=0.0109`.
+  - Claude difference `-0.0381`, `q=0.0333`.
+  - Gemini difference `-0.0420`, `q=0.0333`.
+  - GPT-5.2 difference `-0.0337`, `q=0.0333`.
+  - All AI difference `-0.0584`, `q=0.0028`.
 - Outputs: `diversity_mst_group_summary.csv`, `diversity_mst_pairwise_permutation.csv`.
 - Figure: `diversity_mst_dispersion.png`.
 
@@ -582,12 +545,12 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- Sparseness: Human `0.3721`, Claude `0.0267`, GPT-5.2 `0.2052`, Gemini `0.0870`, All AI `0.1098`.
-- Pairwise tests vs Human after Holm:
-  - Claude mean difference `-0.3454`, delta `-0.9149`, MW Holm `2.98e-09`, permutation Holm `0.000400`.
-  - All AI mean difference `-0.2640`, delta `-0.7580`, MW Holm `1.88e-08`, permutation Holm `0.000600`.
-  - Gemini mean difference `-0.2810`, delta `-0.7647`, MW Holm `5.42e-07`, permutation Holm `0.000400`.
-  - GPT-5.2 mean difference `-0.1656`, delta `-0.5945`, MW Holm `6.42e-05`, permutation Holm `0.0409`.
+- Sparseness: Human `0.2218`, Claude `0.0906`, GPT-5.2 `0.1194`, Gemini `0.0597`, All AI `0.0923`.
+- **[CRITICAL CHANGE] Primary test = group-level permutation (label-shuffle), Holm-corrected. Medoid sparseness is matrix-derived, so the MW/Holm values are reference-only.** Pairwise tests vs Human:
+  - Claude: mean difference `-0.1292`, delta `-0.693`, **permutation Holm `q=0.0486` `*`** (MW/Holm `6.36e-06`, ref only).
+  - Gemini: mean difference `-0.1621`, delta `-0.822`, **permutation Holm `q=0.0064` `**`** (MW/Holm `1.27e-07`, ref only).
+  - GPT-5.2: mean difference `-0.1010`, delta `-0.647`, **permutation Holm `q=0.0907` ns** (MW/Holm `1.34e-05`, ref only).
+  - All AI: mean difference `-0.1307`, delta `-0.721`, **permutation Holm `q=0.0144` `*`** (MW/Holm `1.27e-07`, ref only).
 - Outputs: `diversity_medoid_distances.csv`, `diversity_sparseness_group_summary.csv`, `diversity_sparseness_pairwise_tests.csv`.
 - Figure: `diversity_sparseness_medoid.png`.
 
@@ -595,228 +558,139 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- Chamfer/mean NN distance: Human `0.0822`, Claude `0.0237`, GPT-5.2 `0.0463`, Gemini `0.0432`, All AI `0.0337`.
-- NN tests vs Human:
-  - All AI mean difference `-0.0416`, delta `-0.6774`, MW Holm `5.13e-06`, permutation Holm `0.000400`.
-  - Claude mean difference `-0.0505`, delta `-0.8129`, MW Holm `7.31e-06`, permutation Holm `0.000400`.
-  - GPT-5.2 mean difference `-0.0331`, delta `-0.5066`, MW Holm `0.00335`, permutation Holm `0.0169`.
-  - Gemini mean difference `-0.0413`, delta `-0.7127`, MW Holm `7.24e-05`, permutation Holm `0.00780`.
-- Within-cluster NN outlier counts were computed:
-  - Global outliers `10`; within-cluster outliers `10`.
-  - Human: global `7/23`, within-cluster `9/23`.
-  - Claude: global `0/23`, within-cluster `1/23`.
-  - GPT-5.2: global `2/23`, within-cluster `0/23`.
-  - Gemini: global `1/23`, within-cluster `0/23`.
-- Global NN outlier threshold: `0.0984`; total global outliers `10/92`.
-- Nearest-neighbor source composition:
-  - Human: nearest Human `7/23`.
-  - Claude: nearest Human `1/23`, same group `19/23`, other AI `3/23`.
-  - GPT-5.2: nearest Human `7/23`, same group `11/23`, other AI `5/23`.
-  - Gemini: nearest Human `1/23`, same group `13/23`, other AI `9/23`.
-  - All AI: nearest Human `9/69`, same group `60/69`.
+- Chamfer/mean NN distance: Human `0.0751`, Claude `0.0386`, GPT-5.2 `0.0409`, Gemini `0.0566`, All AI `0.0330`.
+- **[CRITICAL CHANGE] Primary test = group-level permutation (label-shuffle), Holm-corrected. Nearest-neighbor / Chamfer distance is matrix-derived, so the MW/Holm values are reference-only.** NN tests vs Human:
+  - Claude: mean difference `-0.0338`, delta `-0.826`, **permutation Holm `q=0.0186` `*`** (MW/Holm `5.01e-06`, ref only).
+  - Gemini: mean difference `-0.0358`, delta `-0.826`, **permutation Holm `q=0.0186` `*`** (MW/Holm `5.01e-06`, ref only).
+  - GPT-5.2: mean difference `-0.0286`, delta `-0.696`, **permutation Holm `q=0.0352` `*`** (MW/Holm `5.54e-05`, ref only).
+  - All AI: mean difference `-0.0328`, delta `-0.783`, **permutation Holm `q=0.0020` `**`** (MW/Holm `8.81e-08`, ref only).
+- Unadjusted NN outliers: threshold `0.0883`, total `10/92`; Human `6`, GPT-5.2 `2`, Gemini `1`, Claude `1`.
+- Nearest-neighbor source composition: Human nearest Human `6/23`; Claude nearest Human `0/23`, same group `11/23`, other AI `12/23`; GPT-5.2 nearest Human `1/23`, same group `12/23`, other AI `10/23`; Gemini nearest Human `0/23`, same group `13/23`, other AI `10/23`; All AI nearest Human `1/69`, same group `68/69`.
 - Outputs: `nn_distances.csv`, `mean_knn_distances_k5.csv`, `diversity_chamfer_group_summary.csv`, `nearest_neighbor_source_composition.csv`, `diversity_nn_pairwise_tests.csv`.
-- Figure: `nearest_neighbor_by_model.png`.
+- Figures: `nearest_neighbor_by_model.png`, `embedding_space_umap_reviewaware.png`.
 
-##### `## 2.4 Visualize proposals in Embedding Space V`
+##### `## Analysis 2.4: UMAP Embedding-Space Visualization`
 
 Baseline-minimal-rephrased rendered result:
 
 - Loaded cached UMAP from `results/tables/rephrased/minimal/cached/proposal_umap2d.npy`, shape `(92, 2)`.
 - Saved `embedding_space_umap_2d.png`.
-- The currently rendered notebook did not save a t-SNE output cell for this section, although `embedding_space_tsne.png` exists on disk from prior/generated outputs.
-
-##### `### Analysis 2.4b: Per-Cluster Zoom - UMAP Detail View`
-
-Baseline-minimal-rephrased rendered result:
-
-- Added per-cluster UMAP detail view.
-- Figure: `embedding_space_umap_per_cluster_zoom.png`.
+- Saved review-aware UMAP `embedding_space_umap_reviewaware.png`.
+- Saved per-cluster detail view `embedding_space_umap_per_cluster_zoom.png`.
 
 ##### `## Analysis 2.5: Grid Entropy of Proposal Occupancy`
 
 Baseline-minimal-rephrased rendered result:
 
-- PCA-grid entropy (`5 x 5`):
-  - Human entropy `1.3341`, normalized `0.4145`.
-  - Claude entropy `2.4122`, normalized `0.7494`.
-  - GPT-5.2 entropy `0.9208`, normalized `0.2861`.
-  - Gemini entropy `0.7302`, normalized `0.2268`.
-  - All AI entropy `1.0686`, normalized `0.3320`.
-- Permutation tests vs Human after Holm:
-  - Claude difference `0.3349`, `q=0.00840`.
-  - Gemini difference `-0.1876`, `q=0.2832`.
-  - GPT-5.2 difference `-0.1284`, `q=0.4578`.
-  - All AI difference `-0.0825`, `q=0.4734`.
+- PCA-grid entropy (`5 x 5`), normalized:
+  - Human `0.3304`.
+  - Claude `0.2802`.
+  - GPT-5.2 `0.2790`.
+  - Gemini `0.2297`.
+  - All AI `0.2950`.
+- Permutation tests vs Human after Holm: all non-significant; Claude `q=1.0`, Gemini `q=1.0`, GPT-5.2 `q=1.0`, All AI `q=1.0`.
 - Outputs: `diversity_entropy_group_summary.csv`, `diversity_entropy_pairwise_permutation.csv`.
 - Figure: `diversity_entropy_group_summary.png`.
 
-#### `# PART III: NOVELTY`
+#### `# PART III: NOVELTY AND LITERATURE-ANCHORED ANALYSES`
 
-##### `## Step 1: Load Prepared Literature Corpus`
+##### `## Literature Corpus and Shared Novelty Precomputation`
 
 Baseline-minimal-rephrased rendered result:
 
 - Loaded `39538` PubMed articles from `data/prepared/rephrased/minimal/literature_corpus_prepared.json`.
-- Search queries: `1`.
-- Prepared `39538` literature texts with average length `1584` characters.
-- Query: `(("emergent properties" OR emergence) AND ("molecular biosciences" OR "cellular biosciences" OR "molecular biology" OR "cell biology"))`.
-- Figure: `literature_corpus_overview.png`.
-
-##### `## Step 2: Embed Literature Corpus`
-
-Baseline-minimal-rephrased rendered result:
-
 - Loaded cached literature embeddings from `data/embeddings/literature/relevant_literature_embeddings.pkl`.
-- Literature embeddings: `39538`.
-- Loaded abstract-only proposal embeddings from `data/embeddings/rephrased/minimal/proposal_embeddings_section1_only.pkl`.
-- Abstract-only proposal embeddings: Human `(23, 1024)`, AI `(69, 1024)`.
-- Representation rule for all later literature comparisons: stack these Section-1 embeddings as Human rows followed by AI rows to align with `proposal_meta`; use this matrix as `X_prop_lit`.
-
-##### `## Shared Novelty Precomputation (CAREFUL, computationally expensive)`
-
-Baseline-minimal-rephrased rendered result:
-
-- Loaded literature kNN cache for `39538` papers from `results/tables/rephrased/minimal/cached/lit_knn_distances_50.npy`.
-- Proposal-to-literature distance matrix `D_pl` shape: `(92, 39538)`.
-- Updated implementation: `D_pl` must be computed from Section-1 / abstract-only proposal embeddings (`X_prop_lit @ X_lit.T`), not from full-proposal embeddings (`X_prop @ X_lit.T`).
-- Computed reusable literature kNN baselines up to `k=50`.
+- Loaded abstract-only proposal embeddings from `proposal_embeddings_rephrased_abstract.pkl`.
+- Literature-space analyses use Section-1 / abstract-only proposal embeddings, not full-proposal embeddings.
+- Loaded literature kNN cache `lit_knn_distances_50.npy`.
+- Proposal-to-literature distance matrix `D_pl`: `(92, 39538)`.
 
 ##### `## Step 2.5: Element Novelty Percentiles`
 
 Baseline-minimal-rephrased rendered result:
 
-- Saved `novelty_element_percentiles.csv` and `novelty_element_percentiles_pairwise_tests.csv`.
-- ElementNovel model-vs-Human highlights:
-  - `element_novel_0`: Claude difference `-0.0332`, `q=0.00233`; Gemini `-0.0272`, `q=0.00233`; GPT-5.2 `-0.0198`, `q=0.0410`.
-  - `element_novel_1`: Claude `-0.0375`, `q=0.00155`; Gemini `-0.0299`, `q=0.0121`; GPT-5.2 not significant, `q=0.7417`.
-  - `element_novel_5`: Claude `-0.0376`, `q=0.00273`; Gemini `-0.0300`, `q=0.0230`; GPT-5.2 not significant, `q=0.6925`.
-  - `element_novel_10`: Claude `-0.0383`, `q=0.00344`; Gemini `-0.0302`, `q=0.0261`; GPT-5.2 not significant, `q=0.6925`.
+- Group means:
+  - Human: ElementNovel-0 `0.0993`, ElementNovel-10 `0.2171`.
+  - Claude: ElementNovel-0 `0.0871`, ElementNovel-10 `0.1965`.
+  - Gemini: ElementNovel-0 `0.0923`, ElementNovel-10 `0.1985`.
+  - GPT-5.2: ElementNovel-0 `0.0818`, ElementNovel-10 `0.1839`.
+- MW Holm tests: no ElementNovel model-vs-Human comparison survives MW Holm correction.
+- Permutation Holm tests flag GPT-5.2 for ElementNovel-1 (`q=0.0330`) and ElementNovel-5 (`q=0.0414`); ElementNovel-10 is a trend (`q=0.0528`).
+- Outputs: `novelty_element_percentiles.csv`, `novelty_element_percentiles_pairwise_tests.csv`.
 - Figure: `novelty_analysis_element_percentiles.png`.
 
-##### `## Step 3: Raw Novelty Scores (Mean k-NN to Literature)`
+##### `## Step 3: Mean kNN Novelty Scores and Local Density`
 
 Baseline-minimal-rephrased rendered result:
 
-- Saved `novelty_mean_knn_scores.csv`, `novelty_mean_knn_pairwise_tests.csv`, `novelty_local_density_normalized.csv`, and `novelty_local_density_pairwise_tests.csv`.
-- MeanKNN model-vs-Human highlights:
-  - `mean_knn_5`: Claude difference `-0.0357`, `q=0.00319`; Gemini `-0.0285`, `q=0.00390`; GPT-5.2 not significant, `q=0.0950`.
-  - `mean_knn_10`: Claude `-0.0363`, `q=0.00273`; Gemini `-0.0281`, `q=0.0105`; GPT-5.2 not significant, `q=0.2443`.
-  - `mean_knn_20`: Claude `-0.0371`, `q=0.00112`; Gemini `-0.0280`, `q=0.0191`; GPT-5.2 not significant, `q=0.3677`.
-  - `mean_knn_50`: Claude `-0.0377`, `q=0.000944`; Gemini `-0.0284`, `q=0.0333`; GPT-5.2 not significant, `q=0.5241`.
+- MeanKNN-10 group means: Human `0.1151`, Claude `0.1009`, Gemini `0.1045`, GPT-5.2 `0.0918`.
+- MW Holm tests: no MeanKNN model-vs-Human comparison survives MW Holm correction.
+- Permutation Holm tests flag GPT-5.2 for MeanKNN-5 (`q=0.0426`), MeanKNN-10 (`q=0.0363`), MeanKNN-20 (`q=0.0348`), and MeanKNN-50 (`q=0.0339`).
 - Normalized novelty:
   - `novelty_ratio`: no model-vs-Human contrast significant after Holm correction.
-  - `novelty_z`: Claude lower than Human, difference `-0.5541`, MW Holm `0.0305`, permutation Holm `0.00210`; Gemini is borderline by MW Holm `0.0501` and not significant by permutation Holm; GPT-5.2 not significant.
+  - `novelty_z`: no MW Holm significance; GPT-5.2 has permutation trend `q=0.0969`.
+- Outputs: `novelty_mean_knn_scores.csv`, `novelty_mean_knn_pairwise_tests.csv`, `novelty_local_density_normalized.csv`, `novelty_local_density_pairwise_tests.csv`, `novelty_all_pairwise_tests.csv`.
 - Figures: `novelty_analysis_mean_knn.png`, `novelty_analysis_local_density.png`.
 
-##### `## Step 5: Statistical Tests for Novelty Metrics`
+##### `## Step 7: Literature-Space UMAP and Step 7B Outliers`
 
 Baseline-minimal-rephrased rendered result:
 
-- Saved combined `novelty_all_pairwise_tests.csv`.
-- Printed combined ElementNovel, MeanKNN, and normalized-novelty tables. The saved combined table reflects the same model-vs-Human contrasts summarized in Steps 2.5 and 3.
+- Literature-space UMAP loaded fixed literature coordinates `lit_umap2d.npy` with shape `(39538, 2)` and cached proposal projection `proposals_section1_lit_umap2d.npy` with shape `(92, 2)`.
+- Saved `proposals_in_literature_space_umap.png`.
+- Literature-space outlier prevalence tests:
+  - Mean-10NN outliers: Human `7/23` (`30.4%`), Claude `1/23` (`4.3%`, Holm `q=0.0940`), Gemini `2/23` (`8.7%`, `q=0.1346`), GPT-5.2 `0/23` (`q=0.0275`).
+  - ElementNovel-0 outliers: Human `6/23` (`26.1%`), Claude `2/23`, Gemini `2/23`, GPT-5.2 `0/23`; none significant after Holm (`q>=0.0647`).
+  - `novelty_z` outliers: Human `5/23` (`21.7%`), Claude `2/23`, Gemini `3/23`, GPT-5.2 `0/23`; none significant after Holm (`q>=0.1473`).
+- Saved `proposals_in_literature_space_umap_outliers_comparison_k10.png`.
+- Outputs: `literature_space_outliers_mean_knn_k10.csv`, `literature_space_outliers_element0.csv`, `literature_space_outliers_z.csv`, `literature_space_outlier_prevalence_tests.csv`, `nearest_literature_neighbors_top3.csv`, `novelty_scores_from_literature.csv`.
 
-##### `## Step 6: Visualize Novelty Results`
-
-Baseline-minimal-rephrased rendered result:
-
-- Saved novelty visualization figures:
-  - `novelty_analysis_element_percentiles.png`
-  - `novelty_analysis_mean_knn.png`
-  - `novelty_analysis_local_density.png`
-
-##### `## Step 7: Visualize Proposals in Literature Embedding Space`
+##### `## Analysis 3.5: Literature-Anchored UMAP - BERTopic Embedding Regions`
 
 Baseline-minimal-rephrased rendered result:
 
-- The current notebook cell for the UMAP literature-space view has no saved output in the `.ipynb`.
-- The cell code targets `results/figures/rephrased/minimal/proposals_in_literature_space_umap.png`, and that file exists on disk.
-- Updated implementation: the view loads the fixed literature UMAP (`lit_umap2d.npy` + `lit_umap_reducer.pkl`) and projects Section-1 / abstract-only proposal embeddings into that map. It should not use full-proposal embeddings or a stale generic `proposals_2d_umap` object.
-- The current notebook text says the view fits UMAP on literature only and projects proposals into that space; it does not render the previously documented t-SNE or publication-year literature-space figures in the saved output.
-- Refresh status: rerun this cell after rerunning the shared novelty precomputation to regenerate the figure under the Section-1-only representation rule.
-
-##### `### Step 7B: Literature-Space Outliers and High-Novelty Flags`
-
-Baseline-minimal-rephrased rendered result:
-
-- Saved `literature_space_outliers_mean_knn_k10.csv`, `literature_space_outliers_element0.csv`, `literature_space_outliers_z.csv`, and `literature_space_outlier_prevalence_tests.csv`.
-- Updated implementation: outlier flags and the outlier-comparison UMAP are based on the same Section-1 / abstract-only proposal-to-literature distances and projection used in Step 7.
-- Mean-10NN and ElementNovel-0 outliers:
-  - Human `5/23` (`21.7%`).
-  - Claude `0/23`, Holm Fisher `p=0.1473`.
-  - Gemini `2/23`, Holm `p=0.8280`.
-  - GPT-5.2 `3/23`, Holm `p=0.8280`.
-- `novelty_z` outliers:
-  - Human `6/23` (`26.1%`).
-  - Claude `0/23`, Holm `p=0.0647`.
-  - Gemini `2/23`, Holm `p=0.4855`.
-  - GPT-5.2 `2/23`, Holm `p=0.4855`.
-- Figure: `proposals_in_literature_space_umap_outliers_comparison_k10.png`.
-
-##### `## Additional Analysis: Nearest Neighbors in Literature for Every Proposal`
-
-Baseline-minimal-rephrased rendered result:
-
-- Saved `nearest_literature_neighbors_top3.csv`.
-- Top mean-10NN proposals included Human `MaiTool - LLM-powered bioinformatics tools for microbiome analysis` (`0.2082`) and Human `Searching the crosslinking mass spectrometry universe for new protein-protein interactions` (`0.1964`).
-- Lowest mean-10NN proposals included Claude `Decoding Emergent mRNA Fate Decisions...` (`0.0674`) and Human `Multimodel single-cell frameworks...` (`0.0681`).
-- Top ElementNovel-0 proposals included Human `MaiTool...` (`0.1995`), Gemini `Synthesizing the Emergent Assembly of Bacterial Microcompartments` (`0.1782`), and Human `Searching the crosslinking...` (`0.1684`).
-
-##### `## Analysis 3.5: Literature-Anchored UMAP with Embedding-Native Topic Regions`
-
-Baseline-minimal-rephrased rendered result:
-
-- Loaded BERTopic display-label strategy from prepare-data artifacts: `contrastive_phrase_v4`.
-- Updated implementation: proposal markers are Section-1 / abstract-only proposal embeddings projected into the fixed literature UMAP. This map should use the same proposal representation as Step 7 and the novelty-distance matrix.
+- Reused cached Section-1 proposal projection: `data/embeddings/literature/proposals_section1_lit_umap2d.npy`.
+- BERTopic display-label strategy: `contrastive_phrase_v4`.
 - Saved primary combined literature-region UMAP: `literature_umap_with_bertopic_regions.png`.
 - Saved split zoom: `literature_umap_with_bertopic_regions_split_zoom.png`.
-- Proposal x split for zoom panes: `6.447`; left pane `n=19`, right pane `n=73`.
+- Proposal x split for zoom panes: `6.325`; left pane `n=36`, right pane `n=56`.
 - Saved per-author-group panels: `literature_umap_bertopic_by_author_group.png`.
-- Analysis completed successfully.
 
 ##### `## Analysis 3.6: Literature Embedding-Region Coverage per Author Group`
 
 Baseline-minimal-rephrased rendered result:
 
 - Group-level BERTopic region coverage:
-  - Human: breadth `3`, entropy `1.1583`, effective region count `3.1845`, dominant region fraction `0.5217`, unassigned neighbor fraction `0.0`.
-  - Claude: breadth `1`, entropy `0.0155`, effective region count `1.0156`, dominant region fraction `0.9978`, unassigned `0.0`.
-  - Gemini: breadth `2`, entropy `0.3790`, effective region count `1.4608`, dominant region fraction `0.9130`, unassigned `0.0`.
-  - GPT-5.2: breadth `3`, entropy `0.8587`, effective region count `2.3600`, dominant region fraction `0.7370`, unassigned `0.0`.
-- MW tests vs Human after Holm:
-  - Claude max-region weight higher than Human, `q=0.0150`; Claude region entropy lower, `q=0.0150`.
-  - Gemini max-region weight and entropy differ only before Holm, both Holm `q=0.0793`.
-  - GPT-5.2 does not differ from Human on max-region weight or entropy after Holm correction.
-  - Unassigned neighbor fractions are all `0.0`; tests `q=1.0`.
-- Supplementary LDA lexical topic coverage saved to `lit_topic_coverage_*.csv`.
+  - Human: breadth `4`, entropy `1.2807`, effective regions `3.5991`, dominant fraction `0.4804`.
+  - Claude: breadth `4`, entropy `1.0942`, effective regions `2.9867`, dominant fraction `0.5652`.
+  - Gemini: breadth `2`, entropy `0.9029`, effective regions `2.4668`, dominant fraction `0.6522`.
+  - GPT-5.2: breadth `3`, entropy `0.8833`, effective regions `2.4189`, dominant fraction `0.6717`.
+- MW tests vs Human after Holm: no BERTopic proposal-level region metric is significant; max-region-weight strongest raw tests are Gemini `p=0.0396`, Holm `q=0.3561`, and GPT-5.2 `p=0.0923`, Holm `q=0.5851`.
+- Unassigned neighbor fractions are all `0.0`.
 - Outputs: `bertopic_region_coverage_per_group.csv`, `bertopic_region_coverage_per_proposal.csv`, `bertopic_region_coverage_tests.csv`, `lit_topic_coverage_per_group.csv`, `lit_topic_coverage_per_proposal.csv`, `lit_topic_coverage_tests.csv`.
-- Figures: `bertopic_region_coverage_stacked_bar.png`, `lit_topic_coverage_stacked_bar.png`.
+- Figure: `bertopic_region_coverage_stacked_bar.png`.
 
 ##### `## Analysis 3.7: MeSH Term Coverage per Author Group`
 
 Baseline-minimal-rephrased rendered result:
 
 - Group MeSH summary:
-  - Human: mean unique MeSH `79.57`, median `71.0`, SD `32.42`, group union `750`.
-  - Claude: mean `62.39`, median `63.0`, SD `7.89`, group union `197`.
-  - Gemini: mean `57.52`, median `53.0`, SD `20.00`, group union `339`.
-  - GPT-5.2: mean `68.30`, median `61.0`, SD `29.07`, group union `450`.
-- MW tests vs Human after Holm:
-  - Claude `q=0.4126`.
-  - Gemini `q=0.0748`.
-  - GPT-5.2 `q=0.4126`.
+  - Human: mean unique MeSH `80.00`, median `76.0`, SD `21.02`, group union `825`.
+  - Claude: mean `90.30`, median `82.0`, SD `25.64`, group union `834`.
+  - Gemini: mean `84.26`, median `75.0`, SD `29.07`, group union `706`.
+  - GPT-5.2: mean `80.70`, median `68.0`, SD `26.86`, group union `623`.
+- MW tests vs Human after Holm: Claude `q=0.9359`, Gemini `q=1.0`, GPT-5.2 `q=1.0`; no significant MeSH coverage differences.
 - Outputs: `mesh_coverage_per_proposal.csv`, `mesh_coverage_group_summary.csv`, `mesh_coverage_tests.csv`.
 - Figure: `mesh_coverage_by_group.png`.
 
-##### `## Analysis 3.8: Publication Year Recency of Nearest Literature (Within Embedding Region)`
+##### `## Analysis 3.8: Publication Year Recency of Nearest Literature`
 
 Baseline-minimal-rephrased rendered result:
 
-- Within-region MW tests:
-  - Stratum `0`, GPT-5.2 vs Human: median year `2021.0` vs `2021.5`, `p=0.1734`, Holm `q=0.5203`.
-  - Stratum `1`, Claude vs Human: `2023.5` vs `2023.5`, `p=0.6466`, Holm `q=1.0`.
-  - Stratum `1`, Gemini vs Human: `2023.5` vs `2023.5`, `p=0.9547`, Holm `q=1.0`.
-  - Stratum `1`, GPT-5.2 vs Human: `2024.5` vs `2023.5`, `p=0.0907`, Holm `q=0.3626`.
-- No within-region recency contrast is significant after Holm correction.
+- Within-BERTopic-region MW tests:
+  - Stratum `0`: Claude median `2020.75` vs Human `2021.75`, Holm `q=1.0`; Gemini `2021.50` vs `2021.75`, `q=0.6141`; GPT-5.2 `2021.50` vs `2021.75`, `q=1.0`.
+  - Stratum `1`: Claude median `2021.00` vs Human `2022.00`, `q=1.0`; Gemini `2023.00` vs `2022.00`, `q=1.0`; GPT-5.2 `2022.50` vs `2022.00`, `q=1.0`.
+- No within-region publication-year contrast is significant after Holm correction.
 - Outputs: `lit_neighbor_year_per_proposal.csv`, `lit_neighbor_year_within_region_tests.csv`, `lit_neighbor_year_region_group_summary.csv`.
 - Figure: `lit_neighbor_year_by_group_within_bertopic_region.png`.
 
@@ -826,53 +700,39 @@ Baseline-minimal-rephrased rendered result:
 
 - Master dataframe rows after merges: `92` (expected `92`).
 - Merged BERTopic literature-region metrics into `proposal_metrics_master_df`.
-- Saved `proposal_metrics_master.csv`.
-- `proposal_metrics_master.csv` has `92` rows and `41` columns, including diversity, novelty, outlier, and BERTopic-region metrics.
+- Saved `proposal_metrics_master.csv` with `92` rows.
 
-##### `# PART IV Style Baseline`
+#### `# PART IV: Style Baseline`
 
-##### `### Exract stylistic features`
+##### `### Extract stylistic features`
 
 Baseline-minimal-rephrased rendered result:
 
 - Built style feature table: `92` documents x `18` features.
 - Group means:
-  - AI average sentence length `18.341`, stopword rate `0.296`, hedge rate `0.0`, FK grade `17.932`.
-  - Human average sentence length `18.378`, stopword rate `0.293`, hedge rate `0.0`, FK grade `17.642`.
+  - AI average sentence length `19.736`, stopword rate `0.339`, hedge rate `0.000`, FK grade `16.983`.
+  - Human average sentence length `19.642`, stopword rate `0.342`, hedge rate `0.001`, FK grade `16.749`.
 - Saved `style_features.csv` with `92` rows x `21` columns.
-
-##### `#### Visualization: Style feature distributions by group (Human vs each AI model)`
-
-Baseline-minimal-rephrased rendered result:
-
 - Saved `style_features_by_model_boxplots.png`.
-- Summary table was printed by group; the largest visible mean difference was type-token ratio, with Human mean `0.637` vs Claude `0.669`, Gemini `0.672`, GPT-5.2 `0.671`.
 
-##### `### Analysis 2.3.5: Style-only baseline (can style predict source?)`
-
-Baseline-minimal-rephrased rendered result:
-
-- Style-only Human-vs-AI classifier used 18 style features.
-- CV AUROC `0.561 +/- 0.166`.
-- CV balanced accuracy `0.584 +/- 0.117`.
-- Permutation test: observed AUROC `0.561`, null mean `0.504 +/- 0.098`, `p=0.2977`.
-- Notebook interpretation: style-only separation is weak; downstream separation is less likely to be purely stylistic.
-- Top positive AI-like coefficients: `type_token_ratio` `0.7949`, `comma_per_1k_chars` `0.4151`, `stopword_rate` `0.3746`, `fk_grade_level` `0.2876`.
-- Top Human-like coefficients: `n_sents` `-0.5360`, `hedge_rate` `-0.3689`, `flesch_reading_ease` `-0.2968`, `n_words` `-0.2302`.
-
-##### `#### Visualization: Style-only baseline results (CV + permutation test)`
+##### `### Style-Only Baseline: Can Style Predict Source?`
 
 Baseline-minimal-rephrased rendered result:
 
-- Saved `style_only_baseline_viz.png`.
+- Style-only Human-vs-AI classifier used `18` style features.
+- CV AUROC `0.521 +/- 0.227`.
+- CV balanced accuracy `0.531 +/- 0.133`.
+- Permutation test: observed AUROC `0.521`, null mean `0.504 +/- 0.096`, `p=0.4496`.
+- Top standardized coefficients by absolute value: `hedge_rate` `-0.9277`, `newline_per_1k_chars` `0.5140`, `type_token_ratio` `0.4882`, `n_sents` `-0.4749`, `comma_per_1k_chars` `0.3929`.
+- Interpretation: style-only separation is weak and non-significant.
+- Figure: `style_only_baseline_viz.png`.
 
 ##### Non-rendered style-adjusted analyses previously listed
 
 Baseline-minimal-rephrased rendered result:
 
-- The audited notebook does not contain rendered cells for the previously listed style residualization, style-adjusted centroid dispersion, style-adjusted NN residual embeddings, or style-adjusted 2D UMAP analyses.
+- The audited notebook does not contain rendered cells for style residualization, style-adjusted centroid dispersion, style-adjusted NN residual embeddings, or style-adjusted 2D UMAP analyses.
 - Corresponding figures are not present in `results/figures/rephrased/minimal`: `centroid_dispersion_style_adjusted.png`, `nearest_neighbor_by_model_style_adjusted.png`, and `embedding_space_2d_style_adjusted.png`.
-- Those old result claims should not be treated as outputs of the current `compare_proposals_rephrased.ipynb` run.
 
 ##### `# Save All Proposals to a Single JSON`
 
@@ -881,21 +741,19 @@ Baseline-minimal-rephrased rendered result:
 - Input JSON: `data/prepared/rephrased/minimal/all_proposals.json`.
 - Output JSON: `results/tables/rephrased/minimal/all_proposals.json`.
 - Master rows: `92`; output records: `92`; records missing a master row: `0`.
-- Missing values in diversity family: `0`.
-- Missing values in novelty family: `0`.
+- Missing values in diversity family: `0`; missing values in novelty family: `0`.
 - Outlier flag alignment with top-10% rule: `1.000` for `is_lit_outlier_mean10`, `is_lit_outlier_element0`, and `is_lit_outlier_z`.
 
 ##### Baseline-minimal-rephrased Results Summary
 
-- Human proposals are more semantically spread than AI proposals across pairwise diversity, centroid dispersion, global-centroid distance, MST dispersion, sparseness, and nearest-neighbor isolation.
-- Claude is the most concentrated AI model: all Claude proposals fall in Ward Cluster_B, Claude has unimodal pairwise distances, and Claude has sharply lower BERTopic literature-region entropy than Human.
-- Gemini is also concentrated relative to Human in embedding clusters and literature-region coverage, though some effects become non-significant after Holm correction.
-- GPT-5.2 is closer to Human than Claude/Gemini on several structure and literature-region metrics, but still lower than Human on multiple diversity metrics.
-- Topic distribution differs across the four author groups in the current rendered run, but per-topic model-vs-Human Fisher tests are not significant after Holm correction.
-- LDA topics and Ward embedding clusters are complementary, not redundant (ARI `-0.0068`, NMI `0.0006`).
-- Human proposals are more novel relative to literature than Claude and Gemini on ElementNovel and MeanKNN metrics; GPT-5.2 is often not significant after correction beyond ElementNovel-0.
-- Literature-space outlier prevalence is descriptively higher for Human proposals but not significant after Holm correction.
-- Style-only classification is weak and non-significant in the current rendered notebook.
+- Human proposals remain more semantically spread than AI proposals across pairwise diversity, centroid dispersion, MST dispersion, sparseness, and nearest-neighbor isolation.
+- Ward cluster membership is less sharply model-separated than the older rerun: no model-vs-Human Ward Fisher contrast survives Holm correction.
+- GMM still shows weak Human/AI separation by ARI and between/within ratio, but NMI is not significant.
+- Topic distribution differs overall across author groups, driven mainly by Gemini's topic mix, but no per-topic model-vs-Human contrast survives Holm correction.
+- Literature novelty effects are now concentrated mainly in GPT-5.2 under permutation tests; no ElementNovel or MeanKNN model-vs-Human contrast survives MW Holm correction.
+- Literature-space outlier prevalence remains higher for Human, with GPT-5.2 having `0/23` mean-10NN outliers vs Human `7/23` after Holm correction.
+- BERTopic literature-region coverage, MeSH coverage, and literature-neighbor publication year do not show Holm-significant model-vs-Human differences in the current four-group notebook.
+- Style-only classification remains weak and non-significant.
 
 ##### Diversity Metric Definitions Aligned to Table-3 Naming
 
@@ -903,7 +761,7 @@ Current implementation status for future notebook edits:
 
 1. **Remote-Clique** (`implemented partially`)
 
-- Current Analysis 2.1 computes upper-triangle pairwise cosine distances for descriptions and proposal-level mean distance-to-others for inference.
+- Current Analysis 2.1 computes upper-triangle pairwise cosine distances and proposal-level mean distance-to-others for inference.
 - To report the exact Table-3 Remote-Clique value, add `RC = (1 / N^2) * sum_i sum_j d(x_i, x_j)` explicitly and export it by group.
 
 1. **Chamfer Distance** (`implemented for k=1`)
@@ -927,8 +785,8 @@ Current implementation status for future notebook edits:
 
 1. **Entropy (grid-based embedding occupancy)** (`implemented`)
 
-- Project embeddings to 2D, partition into a `5 x 5` grid, compute occupancy frequencies, and report Shannon entropy plus a normalized entropy.
-- Keep this distinct from the existing LDA topic entropy in Analysis 1.3.
+- Project embeddings to 2D, partition into a `5 x 5` grid, compute occupancy frequencies, and report Shannon entropy plus normalized entropy.
+- Keep this distinct from LDA topic entropy in Analysis 1.2.
 
 ### Compare_proposals_all_ai.ipynb
 
@@ -944,7 +802,7 @@ Global settings:
 - Proposal input: `data/prepared/rephrased/minimal/all_proposals.json`.
 - Tables output root: `results/tables/rephrased/minimal/all_ai/`.
 - Figures output root: `results/figures/rephrased/minimal/all_ai/`.
-- Proposal-space analyses use full-proposal embeddings; proposal-to-literature analyses use Section-1 / abstract-only embeddings.
+- Proposal-space analyses use full-proposal embeddings. Proposal-to-literature analyses use Section-1 / abstract-only proposal embeddings from `proposal_embeddings_rephrased_abstract.pkl`.
 
 #### `## Condition Configuration`
 
@@ -952,18 +810,23 @@ Baseline-minimal-rephrased rendered result:
 
 - Binary comparison setup: Human `23` vs pooled AI `69`.
 - Bootstrap policy for N-sensitive metrics: `1000` subsamples of size `23`, seed `42`.
-- Shared proposal caches loaded from the per-model notebook precomputation; literature-relative analyses reuse cached proposal-to-literature distances and projections.
+- `is_top5_ranked` was reset to Human top-5 plus the five smallest pooled AI-only global ranks.
 
 #### `## Load Shared Precomputed Caches`
 
 Baseline-minimal-rephrased rendered result:
 
-- Shared proposal caches loaded successfully.
 - Proposal distance matrix `D_pp`: `(92, 92)`.
-- Proposal PCA coordinates: `(92, 2)`.
-- Proposal UMAP coordinates: `(92, 2)`.
+- Proposal PCA coordinates `X_pca2d`: `(92, 2)`.
+- Proposal UMAP coordinates `X_umap2d`: `(92, 2)`.
+- Literature self-kNN distances `lit_knn_distances_50`: `(39538, 50)`.
+- Full proposal embeddings `X_prop`: `(92, 1024)`.
+- Literature embeddings `X_lit`: `(39538, 1024)`.
+- Section-1 / abstract-only proposal embeddings `X_prop_nov`: `(92, 1024)`.
+- Proposal-to-literature nearest-neighbor cache: sorted indices `(92, 39538)`, sorted top distances `(92, 50)`.
+- Metadata loaded as `proposal_meta: (92, 14)` with group counts Human `23`, All AI `69` (`23` Claude, `23` Gemini, `23` GPT-5.2).
 
-#### `## Generate Bootstrap Subsamples (One-Time — Reused by All N-Sensitive Analyses)`
+#### `## Generate Bootstrap Subsamples (One-Time - Reused by All N-Sensitive Analyses)`
 
 Baseline-minimal-rephrased rendered result:
 
@@ -977,18 +840,9 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- `8/14` audited outcomes showed significant Claude/Gemini/GPT-5.2 heterogeneity after Holm correction.
-- Significant heterogeneity was concentrated in novelty metrics:
-  - ElementNovel `0/1/5/10`.
-  - MeanKNN `5/10/20/50`.
-- Not significant after Holm:
-  - per-proposal mean pairwise distance.
-  - per-proposal NN distance.
-  - per-proposal global-centroid distance.
-  - unique MeSH count.
-  - BERTopic region entropy.
-  - BERTopic max-region weight.
-- Output: `supplementary_ai_heterogeneity_kruskal_wallis.csv`.
+- `0/14` audited outcomes showed significant Claude/Gemini/GPT-5.2 heterogeneity after Holm correction.
+- All final Holm-adjusted p-values are `1.0` in `supplementary_ai_heterogeneity_kruskal_wallis.csv`.
+- The largest raw Kruskal-Wallis effects were still non-significant after correction, including `mean_knn_20` (`H=3.1216`, raw `p=0.2100`) and `element_novel_0` (`H=2.8394`, raw `p=0.2418`).
 
 #### `# PART I: THEMATIC AND CLUSTER ANALYSIS`
 
@@ -1009,17 +863,20 @@ Baseline-minimal-rephrased rendered result:
 Baseline-minimal-rephrased rendered result:
 
 - Topic participation Fisher tests:
-  - Topic_1: Human-in `14`, AI-in `32`, `p=0.3357`, Holm `q=0.6713`.
-  - Topic_2: Human-in `9`, AI-in `37`, `p=0.3357`, Holm `q=0.6713`.
+  - Topic_1: Human-in `14`, AI-in `32`, Fisher `p=0.3357`, Holm `q=0.6713`.
+  - Topic_2: Human-in `9`, AI-in `37`, Fisher `p=0.3357`, Holm `q=0.6713`.
 - No binary topic-participation contrast survives Holm correction.
-- Output: `topic_distribution_human_vs_allai_participation.csv`.
+- Output: `topic_participation_human_vs_allai.csv`.
 
 ##### `## Analysis 1.3: Ward Cluster Membership (Human vs All-AI)`
 
 Baseline-minimal-rephrased rendered result:
 
-- Ward cluster Fisher exact: odds ratio `6.990`, `p=0.0006` (`***`).
-- Subsequent within-cluster summary implies Human proposals are more represented in Cluster_A than the pooled AI set, while All-AI is concentrated in Cluster_B.
+- Cluster counts:
+  - Cluster_A: Human `6`, All AI `6`.
+  - Cluster_B: Human `17`, All AI `63`.
+- Ward cluster Fisher exact: odds ratio `3.706`, `p=0.0665`.
+- This is a trend toward Human over-representation in Cluster_A, but not significant at `p<0.05`.
 - Figure: `cluster_membership_human_vs_allai.png`.
 - Outputs: `cluster_membership_human_vs_allai.csv`, `supplementary_cluster_membership_by_model.csv`.
 
@@ -1027,21 +884,19 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- Within-Human mean distance `0.4429`.
-- Within-AI mean distance `0.1826`.
-- Between-group mean distance `0.3880`.
-- Between/within ratio `1.2406`, permutation `p=0.0035` (`**`).
-- Binary Human-vs-AI cluster agreement:
-  - NMI `0.5772`.
-  - ARI `0.3259`.
+- Within-Human mean distance `0.3411`.
+- Within-AI mean distance `0.1510`.
+- Between-group mean distance `0.2613`.
+- Between/within ratio `1.0622`, permutation `p=0.0305`.
+- Binary Human-vs-AI cluster agreement: NMI `0.5772`, ARI `0.3259`.
 - Output: `gmm_segregation_human_vs_allai.csv`.
 
-##### `## Analysis 1.5: LDA Topic–Cluster Correspondence`
+##### `## Analysis 1.5: LDA Topic-Cluster Correspondence`
 
 Baseline-minimal-rephrased rendered result:
 
-- The audited all-AI notebook does not print a new correspondence summary; it reuses the cached `topic_cluster_agreement.csv` from `compare_proposals_rephrased.ipynb`.
-- Current inherited correspondence result remains: ARI `-0.0068`, NMI `0.0006`, indicating near-zero agreement between lexical LDA topics and Ward embedding clusters.
+- The all-AI notebook reuses the cached topic-cluster correspondence from `compare_proposals_rephrased.ipynb`.
+- Current inherited correspondence result remains near zero: ARI `-0.0068`, NMI `0.0006`, supporting the interpretation that lexical LDA topics and embedding Ward clusters capture complementary structure.
 
 #### `# PART II: DIVERSITY`
 
@@ -1049,24 +904,24 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- Human mean pairwise distance `0.4429`.
-- AI full-pool mean pairwise distance `0.1826` (`n=69`).
-- AI bootstrap mean pairwise distance `0.1824`, `95% CI [0.0390, 0.2900]` (`n=23`-equivalent).
-- Within-model average `0.1663`.
-- MW `p<0.0001`, permutation `p=0.0001`, Cliff's delta `-0.768` `[-0.913, -0.623]`.
-- Figures: `pairwise_diversity_human_vs_allai.png`.
-- Outputs: `diversity_pairwise_human_vs_allai.csv`, `diversity_pairwise_proposal_level_human_vs_allai.csv`.
+- Human mean pairwise distance `0.3411`.
+- AI full-pool mean pairwise distance `0.1510` (`n=69`).
+- AI bootstrap mean pairwise distance `0.1524`, `95% CI [0.0393, 0.2512]` (`n=23`-equivalent).
+- Within-model average `0.1499`.
+- **[CRITICAL CHANGE] Primary = permutation `p=0.0001` `***` (matrix-derived metric). The MW `p=3.50e-09` is reference-only and must not be reported as evidence — this is exactly the invalid headline p-value flagged in review.** Cliff's delta `-0.826` `[-0.942, -0.681]`.
+- Figure: `pairwise_diversity_human_vs_allai.png`.
+- Output: `diversity_pairwise_human_vs_allai.csv`.
 
 ##### `## Analysis 2.1b: Pairwise Distance Bimodality (Decomposed)`
 
 Baseline-minimal-rephrased rendered result:
 
 - Hartigan dip tests:
-  - Human `0.1420`, `p=0.0000`.
-  - All-AI pooled `0.0850`, `p=0.0000`.
-  - AI within-model pairs `0.0765`, `p=0.0000`.
-  - AI between-model pairs `0.0894`, `p=0.0000`.
-- Both the pooled AI distribution and its within/between-model components are non-unimodal in the rendered notebook.
+  - Human `0.1628`, `p=0.0000`.
+  - All-AI pooled `0.0671`, `p=0.0000`.
+  - AI within-model pairs `0.0692`, `p=0.0000`.
+  - AI between-model pairs `0.0665`, `p=0.0000`.
+- All pairwise-distance distributions are non-unimodal in the rendered notebook.
 - Figure: `pairwise_diversity_bimodality_decomposed.png`.
 - Output: `diversity_pairwise_bimodality_decomposed.csv`.
 
@@ -1074,29 +929,34 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- AI-to-nearest-Human mean distance `0.0410`.
-- Human-to-nearest-AI mean distance `0.0756`.
-- MW `p=0.0308` (`*`), Cliff's delta `-0.302`.
-- The pooled AI set sits closer to the human proposal set than humans do to the pooled AI set under this nearest-neighbor framing.
+- AI-to-nearest-Human mean distance `0.0439`.
+- Human-to-nearest-AI mean distance `0.0707`.
+- **[CRITICAL CHANGE] Matrix-derived cross-group distance — replace MW with a label-permutation test as primary; MW `p=0.1333` is reference-only (result is null either way).** Cliff's delta `-0.210` `[-0.509, 0.086]`.
+- The nearest-cross-group asymmetry is not significant in the current rendered output.
+- Figure: `cross_group_topic_alignment_human_vs_allai.png`.
 - Output: `diversity_cross_group_alignment_human_vs_allai.csv`.
 
 ##### `## Analysis 2.1d: Within-Cluster Diversity`
 
 Baseline-minimal-rephrased rendered result:
 
-- Cluster_A: Human `n=11`, MPD `0.1924`; AI `n=8`, MPD `0.1522`; MW `p=0.0091`.
-- Cluster_B: Human `n=12`, MPD `0.0542`; AI `n=61`, MPD `0.0380`; MW `p=6.84e-08`.
-- Even after conditioning on Ward region, pooled AI proposals remain less spread than Human proposals.
-- Output: `diversity_within_cluster_human_vs_allai.csv`.
+- Within-cluster MPD:
+  - Cluster_A: Human `n=6`, MPD `0.2416`; All AI `n=6`, MPD `0.1493`.
+  - Cluster_B: Human `n=17`, MPD `0.0577`; All AI `n=63`, MPD `0.0402`.
+- **[CRITICAL CHANGE] Within-cluster MPD is matrix-derived and heavily coupled; the MW/Holm p-values below (especially Cluster_B `4.23e-10`) are an i.i.d.-violation artifact and must not be reported. Use a cluster-conditional label-permutation test as primary; MW/Holm reference-only.** Within-cluster tests:
+  - Cluster_A: Cliff's delta `-1.000` (MW `p=0.00216`, Holm `q=0.00216`, ref only).
+  - Cluster_B: Cliff's delta `-0.993` (MW `p=4.23e-10`, Holm `q=8.46e-10`, ref only).
+- Between-cluster gaps are similar by group: Human `0.7337`, All AI `0.7235`.
+- Outputs: `diversity_within_cluster_human_vs_allai.csv`, `diversity_within_cluster_tests_human_vs_allai.csv`, `diversity_between_cluster_gap_human_vs_allai.csv`.
 
 ##### `## Analysis 2.2a: Centroid Dispersion (LOO)`
 
 Baseline-minimal-rephrased rendered result:
 
-- Human LOO centroid distance `0.2665`.
-- AI full-pool `0.0968`.
-- AI bootstrap mean `0.0991`, `95% CI [0.0206, 0.1626]`.
-- MW `p<0.0001`, permutation `p=0.0004`, Cliff's delta `-0.768`.
+- Human LOO centroid distance `0.1953`.
+- AI full-pool `0.0793`.
+- AI bootstrap mean `0.0821`, `95% CI [0.0207, 0.1388]`.
+- **[CRITICAL CHANGE] Primary = permutation `p=0.0089` `**` (matrix-derived metric); MW `p<0.0001` reference-only.** Cliff's delta `-0.826`.
 - Figure: `centroid_dispersion_human_vs_allai.png`.
 - Output: `diversity_centroid_human_vs_allai.csv`.
 
@@ -1104,20 +964,21 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- Human global-centroid mean `0.2926`.
-- AI full-pool mean `0.0991`.
-- AI bootstrap mean `0.0989`, `95% CI [0.0416, 0.1516]`.
-- MW `p<0.0001`, permutation `p=0.0001`.
+- Human global-centroid mean `0.1913`.
+- AI full-pool mean `0.0786`.
+- AI bootstrap mean `0.0793`, `95% CI [0.0276, 0.1310]`.
+- **[CRITICAL CHANGE] Primary = permutation `p=0.0078` `**` (matrix-derived metric); MW `p<0.0001` reference-only. Report this pooled All-AI result — the four-group per-model global-centroid contrasts do NOT survive the permutation test, so per-model MW stars must not be reported.** Cliff's delta `-0.696`.
+- Figure: `global_centroid_dispersion_human_vs_allai.png`.
 - Output: `diversity_global_centroid_human_vs_allai.csv`.
 
 ##### `## Analysis 2.2c: MST Dispersion`
 
 Baseline-minimal-rephrased rendered result:
 
-- Human MST mean edge `0.1126`.
-- AI full-pool MST mean edge `0.0427`.
-- AI bootstrap mean `0.0638`, `95% CI [0.0272, 0.0767]`.
-- Observed difference `-0.0699`, permutation `p=0.0002` (`***`).
+- Human MST mean edge `0.1004`.
+- AI full-pool MST mean edge `0.0419`.
+- AI bootstrap mean `0.0613`, `95% CI [0.0276, 0.0737]`.
+- Observed difference `-0.0584`, permutation `p=0.0010`.
 - Figure: `diversity_mst_human_vs_allai.png`.
 - Output: `diversity_mst_human_vs_allai.csv`.
 
@@ -1125,10 +986,10 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- Human sparseness `0.3721`.
-- AI full-pool sparseness `0.1098`.
-- AI bootstrap mean `0.1098`, `95% CI [0.0308, 0.1813]`.
-- MW `p<0.0001`, permutation `p=0.0002`, Cliff's delta `-0.742`.
+- Human sparseness `0.2218`.
+- AI full-pool sparseness `0.0923`.
+- AI bootstrap mean `0.0926`, `95% CI [0.0313, 0.1533]`.
+- **[CRITICAL CHANGE] Primary = permutation `p=0.0098` `**` (matrix-derived metric); MW `p<0.0001` reference-only.** Cliff's delta `-0.699`.
 - Figure: `diversity_sparseness_human_vs_allai.png`.
 - Output: `diversity_sparseness_human_vs_allai.csv`.
 
@@ -1136,15 +997,11 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- Human Chamfer `0.0822`.
-- AI full-pool Chamfer `0.0337`.
-- AI bootstrap mean `0.0415`, `95% CI [0.0267, 0.0567]`.
-- MW `p<0.0001`, permutation `p=0.0001`.
-- AI nearest-neighbor source composition:
-  - Claude `29`.
-  - Gemini `17`.
-  - GPT `14`.
-  - Human `9`.
+- Human Chamfer `0.0751`.
+- AI full-pool Chamfer `0.0330`.
+- AI bootstrap mean `0.0432`, `95% CI [0.0269, 0.0589]`.
+- **[CRITICAL CHANGE] Primary = permutation `p=0.0002` `***` (matrix-derived metric); MW `p<0.0001` reference-only.** Cliff's delta `-0.869`.
+- AI nearest-neighbor source composition: Claude `25`, Gemini `22`, GPT `21`, Human `1`.
 - Figure: `nearest_neighbor_human_vs_allai.png`.
 - Outputs: `diversity_chamfer_human_vs_allai.csv`, `nearest_neighbor_source_composition_human_vs_allai.csv`.
 
@@ -1155,31 +1012,31 @@ Baseline-minimal-rephrased rendered result:
 - Saved pooled binary proposal-space views:
   - `embedding_space_umap_human_vs_allai.png`.
   - `embedding_space_umap_per_cluster_zoom_human_vs_allai.png`.
+- Figure styling follows the shared visualization guide: model/group colors, dark red funded Human markers, and black outlines for top-5 ranked proposals.
 
 ##### `## Analysis 2.5: Grid Entropy`
 
 Baseline-minimal-rephrased rendered result:
 
-- Human normalized entropy `0.4145`.
-- AI full-pool entropy `0.3320`.
-- AI bootstrap mean `0.2667`, `95% CI [0.1105, 0.7586]`.
-- Permutation `p=0.4971`.
-- Grid entropy is the main pooled diversity metric that is not significant in the rendered binary notebook.
+- Human normalized entropy `0.3304`.
+- AI full-pool entropy `0.2950`.
+- AI bootstrap mean `0.3640`, `95% CI [0.2148, 0.8289]`.
+- Permutation `p=0.7710`; not significant.
 - Figure: `diversity_entropy_human_vs_allai.png`.
-- Output: `diversity_grid_entropy_human_vs_allai.csv`.
+- Output: `diversity_entropy_human_vs_allai.csv`.
 
 ##### `## Part II Diversity Summary Table`
 
 Baseline-minimal-rephrased rendered result:
 
-- Summary table rows:
-  - Mean Pairwise Distance: Human `0.4429`, AI boot `0.1824`, perm `0.0001`.
-  - LOO Centroid Distance: Human `0.2665`, AI boot `0.0991`, perm `0.0004`.
-  - Global Centroid Distance: Human `0.2926`, AI boot `0.0989`, perm `0.0001`.
-  - MST Mean Edge Weight: Human `0.1126`, AI boot `0.0638`, perm `0.0002`.
-  - Sparseness: Human `0.3721`, AI boot `0.1098`, perm `0.0002`.
-  - Chamfer: Human `0.0822`, AI boot `0.0415`, perm `0.0001`.
-  - Grid Entropy: Human `0.4145`, AI boot `0.2667`, perm `0.4971`.
+- **[CRITICAL CHANGE] This permutation-primary summary table (perm p per metric, no MW) is the canonical diversity result to cite in the manuscript. All metrics except Grid Entropy (perm `0.7710`, null) are significant by the valid permutation test.** Summary table rows:
+  - Mean Pairwise Distance: Human `0.3411`, AI boot `0.1524`, perm `0.0001`, Cliff's delta `-0.826`.
+  - LOO Centroid Distance: Human `0.1953`, AI boot `0.0821`, perm `0.0089`, Cliff's delta `-0.826`.
+  - Global Centroid Distance: Human `0.1913`, AI boot `0.0793`, perm `0.0078`, Cliff's delta `-0.696`.
+  - MST Mean Edge Weight: Human `0.1004`, AI boot `0.0613`, perm `0.0010`.
+  - Sparseness: Human `0.2218`, AI boot `0.0926`, perm `0.0098`, Cliff's delta `-0.699`.
+  - Chamfer: Human `0.0751`, AI boot `0.0432`, perm `0.0002`, Cliff's delta `-0.869`.
+  - Grid Entropy: Human `0.3304`, AI boot `0.3640`, perm `0.7710`.
 - Output: `diversity_summary_human_vs_allai.csv`.
 
 #### `# PART III: NOVELTY`
@@ -1189,79 +1046,81 @@ Baseline-minimal-rephrased rendered result:
 Baseline-minimal-rephrased rendered result:
 
 - Human vs All-AI means and Holm-corrected MW results:
-  - `element_novel_0`: Human `0.1220`, AI `0.0642`, Holm `q=3.50e-09`, Cliff's delta `-0.826`.
-  - `element_novel_1`: Human `0.1965`, AI `0.1150`, Holm `q=7.37e-10`, delta `-0.876`.
-  - `element_novel_5`: Human `0.2286`, AI `0.1396`, Holm `q=2.86e-10`, delta `-0.905`.
-  - `element_novel_10`: Human `0.2478`, AI `0.1542`, Holm `q=2.83e-10`, delta `-0.912`.
-- Human proposals are more literature-distant than the pooled AI set across all audited ElementNovel thresholds.
+  - `element_novel_0`: Human `0.0993`, AI `0.0871`, raw `p=0.2752`, Holm `q=0.2752`, Cliff's delta `-0.153`.
+  - `element_novel_1`: Human `0.1687`, AI `0.1469`, raw `p=0.0298`, Holm `q=0.1191`, Cliff's delta `-0.304`.
+  - `element_novel_5`: Human `0.1994`, AI `0.1757`, raw `p=0.0364`, Holm `q=0.1191`, Cliff's delta `-0.293`.
+  - `element_novel_10`: Human `0.2171`, AI `0.1930`, raw `p=0.0632`, Holm `q=0.1265`, Cliff's delta `-0.260`.
+- No ElementNovel metric survives Holm correction in the current all-AI rendered output.
 - Output: `novelty_element_percentiles_human_vs_allai.csv`.
 
 ##### `## Step 3: Mean kNN Novelty Scores and Local Density`
 
 Baseline-minimal-rephrased rendered result:
 
-- MeanKNN metrics all favor Human over pooled AI:
-  - `mean_knn_5`: Human `0.1316`, AI `0.0706`, Holm `q=2.48e-08`, delta `-0.822`.
-  - `mean_knn_10`: Human `0.1374`, AI `0.0755`, Holm `q=3.94e-08`, delta `-0.807`.
-  - `mean_knn_20`: Human `0.1440`, AI `0.0803`, Holm `q=3.94e-08`, delta `-0.801`.
-  - `mean_knn_50`: Human `0.1542`, AI `0.0869`, Holm `q=3.94e-08`, delta `-0.806`.
+- MeanKNN metrics do not survive Holm correction:
+  - `mean_knn_5`: Human `0.1094`, AI `0.0945`, raw `p=0.1820`, Holm `q=0.7977`, delta `-0.187`.
+  - `mean_knn_10`: Human `0.1151`, AI `0.0990`, raw `p=0.1820`, Holm `q=0.7977`, delta `-0.187`.
+  - `mean_knn_20`: Human `0.1211`, AI `0.1041`, raw `p=0.1595`, Holm `q=0.7977`, delta `-0.197`.
+  - `mean_knn_50`: Human `0.1299`, AI `0.1117`, raw `p=0.1146`, Holm `q=0.6874`, delta `-0.221`.
 - Normalized novelty:
-  - `novelty_ratio`: Human `1.2234`, AI `1.1667`, `p=0.3484` (not significant).
-  - `novelty_z`: Human `1.0431`, AI `0.4535`, Holm `q=0.0021`, delta `-0.459`.
+  - `novelty_ratio`: Human `1.2373`, AI `1.2125`, raw/Holm `p=0.8077`, delta `-0.035`.
+  - `novelty_z`: Human `0.7323`, AI `0.5469`, raw `p=0.2873`, Holm `q=0.7977`, delta `-0.149`.
 - Figure: `novelty_human_vs_allai.png`.
-- Outputs: `novelty_meanknn_human_vs_allai.csv`, `novelty_normalized_human_vs_allai.csv`.
+- Output: `novelty_knn_density_human_vs_allai.csv`.
 
 ##### `## Step 7B: Literature-Space Outliers`
 
 Baseline-minimal-rephrased rendered result:
 
-- All three outlier definitions produced the same binary prevalence in the rendered notebook:
-  - Human `9/23` (`39.1%`).
-  - All AI `1/69` (`1.45%`).
-- Fisher tests:
-  - `is_lit_outlier_mean10`: `p=0.000008`, Holm `q=0.000024`.
-  - `is_lit_outlier_element0`: `p=0.000008`, Holm `q=0.000024`.
-  - `is_lit_outlier_z`: `p=0.000008`, Holm `q=0.000024`.
-- Human proposals are much more likely than the pooled AI set to occupy literature-space outlier positions in this binary notebook.
+- Literature-space outlier prevalence:
+  - `is_lit_outlier_mean10`: Human `7/23` (`30.4%`), All AI `3/69` (`4.3%`), Fisher `p=0.00195`, Holm `q=0.00585`.
+  - `is_lit_outlier_element0`: Human `6/23` (`26.1%`), All AI `4/69` (`5.8%`), Fisher `p=0.0141`, Holm `q=0.0281`.
+  - `is_lit_outlier_z`: Human `5/23` (`21.7%`), All AI `5/69` (`7.2%`), Fisher `p=0.1137`, Holm `q=0.1137`.
+- Human proposals are more likely than the pooled AI set to occupy mean-10NN and element0 literature-space outlier positions.
 - Output: `literature_space_outliers_human_vs_allai.csv`.
 
-##### `## Analysis 3.5: Literature-Anchored UMAP`
+##### `## Analysis 3.5: Literature-Anchored UMAP - BERTopic Embedding Regions`
 
 Baseline-minimal-rephrased rendered result:
 
-- Loaded precomputed literature-space proposal coordinates: `(92, 2)`.
+- Reused prepare-data literature UMAP/BERTopic artifacts; no refit.
+- Loaded cached Section-1 proposal projection: `data/embeddings/literature/proposals_section1_lit_umap2d.npy`.
+- BERTopic display-label strategy: `contrastive_phrase_v4`.
 - Saved pooled binary literature-space figures:
   - `literature_umap_human_vs_allai.png`.
-  - `literature_umap_human_vs_allai_split.png`.
+  - `literature_umap_bertopic_by_group_human_vs_allai.png`.
 
 ##### `## Analysis 3.6: BERTopic Region Coverage`
 
 Baseline-minimal-rephrased rendered result:
 
-- Breadth:
-  - Human `5` distinct regions.
-  - AI full pool `2`.
-  - AI bootstrap breadth `1.34`, `95% CI [1.00, 2.00]`.
+- Group-level BERTopic region coverage:
+  - Human: breadth `4`, Shannon entropy `1.2807`, effective regions `3.5991`, dominant-region fraction `0.4804`.
+  - All AI: breadth `3`, Shannon entropy `1.0038`, effective regions `2.7286`, dominant-region fraction `0.6297`.
+  - Bootstrap AI breadth: mean `3.521`, `95% CI [2.0, 4.0]`.
 - Proposal-level region metrics:
-  - `max_region_weight`: Human `0.8000`, AI `0.9580`, MW `p=0.000014`, Holm `q=0.000028`, delta `0.563`.
-  - `region_entropy`: Human `0.4960`, AI `0.1236`, MW `p=0.000009`, Holm `q=0.000028`, delta `-0.575`.
-  - `effective_region_count`: Human `1.7854`, AI `1.1579`, MW `p=0.000009`, Holm `q=0.000028`, delta `-0.575`.
-- Human proposals cover more BERTopic literature regions and distribute their nearest-literature neighborhoods less concentratively than the pooled AI set.
+  - `max_region_weight`: Human `0.9000`, AI `0.9355`, raw `p=0.0401`, Holm `q=0.1934`, delta `0.251`.
+  - `region_entropy`: Human `0.2587`, AI `0.1469`, raw `p=0.0387`, Holm `q=0.1934`, delta `-0.253`.
+  - `effective_region_count`: Human `1.3690`, AI `1.1968`, raw `p=0.0387`, Holm `q=0.1934`, delta `-0.253`.
+  - `n_regions_gt5pct`: Human `1.3478`, AI `1.2319`, raw `p=0.4353`, Holm `q=0.8707`.
+  - `unassigned_neighbor_frac`: both `0.0`, Holm `q=1.0`.
+- Interpretation: pooled AI neighborhoods are somewhat more concentrated, but proposal-level BERTopic metrics do not survive the family-level Holm correction in the saved coverage table.
 - Figure: `bertopic_region_coverage_human_vs_allai.png`.
-- Outputs: `bertopic_region_coverage_human_vs_allai.csv`, `bertopic_region_breadth_human_vs_allai.csv`.
+- Outputs: `bertopic_region_coverage_human_vs_allai.csv`, `bertopic_region_coverage_group_human_vs_allai.csv`, `bertopic_region_coverage_per_proposal_human_vs_allai.csv`.
 
 ##### `## Analysis 3.7: MeSH Term Coverage`
 
 Baseline-minimal-rephrased rendered result:
 
-- Built MeSH sets from `20` nearest literature neighbors.
+- Built MeSH sets from `20` nearest literature neighbors; mean per-proposal MeSH count was `83.8`.
 - Per-proposal unique MeSH count:
-  - Human mean `108.0`.
-  - AI mean `72.2`.
-  - MW `p<0.0001`, Cliff's delta `-0.781`.
+  - Human mean `80.0`.
+  - AI mean `85.09`.
+  - MW `p=0.8251`, Cliff's delta `0.0315`.
 - Group-level breadth:
-  - Human union MeSH `1248`.
-  - AI bootstrap union mean `377.8`, `95% CI [304.0, 462.0]`.
+  - Human union MeSH `825`.
+  - AI full-pool union MeSH `1255`.
+  - AI bootstrap union mean `750.5`, `95% CI [625.0, 860.0]`.
 - Figure: `mesh_coverage_human_vs_allai.png`.
 - Output: `mesh_coverage_human_vs_allai.csv`.
 
@@ -1269,11 +1128,11 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- Loaded publication-year comparison table with `92` rows.
-- Binary Human-vs-All-AI year contrasts:
-  - `median_neighbor_year`: Human `2022.22`, AI `2022.43`, `p=0.5216`, delta `0.089`.
-  - `mean_neighbor_year`: Human `2021.07`, AI `2021.48`, `p=0.0952`, delta `0.234`.
-- No pooled Human-vs-All-AI publication-year contrast is significant in the rendered notebook.
+- Within-BERTopic-region literature-neighbor year contrasts:
+  - Stratum `0` (`related morbidity, stage diagnosis, combination strategies, clinical intervention`): All AI median `2021.5`, Human median `2021.75`, raw `p=0.1017`, Holm `q=0.2035`, Cliff's delta `-0.403`.
+  - Stratum `1` (`details use execution, myosin motors, nascent chain, origin life`): All AI median `2022.0`, Human median `2022.0`, raw `p=0.7659`, Holm `q=0.7659`, Cliff's delta `0.060`.
+- No pooled Human-vs-All-AI publication-year contrast is significant after within-region correction.
+- Figure: `lit_neighbor_year_by_group_within_bertopic_region_human_vs_allai.png`.
 - Output: `lit_neighbor_year_human_vs_allai.csv`.
 
 #### `# PART IV: STYLE`
@@ -1281,13 +1140,10 @@ Baseline-minimal-rephrased rendered result:
 Baseline-minimal-rephrased rendered result:
 
 - `1/18` style features is significant after Holm correction.
-- Significant feature:
-  - `type_token_ratio`: Human `0.6370`, AI `0.6706`, MW `p=0.000526`, Holm `q=0.009469`, delta `0.485`.
-- All other audited style features are non-significant after Holm correction.
-- Style-only Human-vs-AI classifier:
-  - AUROC `0.568` (5-fold CV).
-  - Permutation `p=0.2575`.
-- The pooled binary notebook therefore shows weak style-only separability despite one lexical richness feature surviving Holm correction.
+- Significant Holm-corrected feature:
+  - `hedge_rate`: Human `0.001200`, AI `0.000114`, MW `p=0.000600`, Holm `q=0.010797`, Cliff's delta `-0.235`.
+- Raw but not Holm-significant features include `type_token_ratio` (Human `0.5904`, AI `0.6079`, raw `p=0.0275`, Holm `q=0.4396`) and `dash_per_1k_chars` (raw `p=0.00656`, Holm `q=0.1116`).
+- Style-only Human-vs-AI classifier: AUROC `0.518 +/- 0.229`, permutation `p=0.4212`, `18` features.
 - Figure: `style_human_vs_allai.png`.
 - Outputs: `style_features_human_vs_allai.csv`, `style_only_classifier_human_vs_allai.csv`.
 
@@ -1295,22 +1151,22 @@ Baseline-minimal-rephrased rendered result:
 
 Baseline-minimal-rephrased rendered result:
 
-- Final heterogeneity audit remained `8/14` significant outcomes after Holm correction.
-- The rendered notebook again localizes most pooled-AI heterogeneity to novelty metrics rather than the pooled proposal-space, BERTopic, or MeSH contrasts.
+- Final heterogeneity audit remains `0/14` significant outcomes after Holm correction.
 - Output: `supplementary_ai_heterogeneity_kruskal_wallis.csv`.
 
 #### `## Unified Summary Export`
 
 Baseline-minimal-rephrased rendered result:
 
-- Final summary table contains `39` rows across `6` domains.
-- Significant row counts by domain:
+- Final summary table contains `41` rows across `6` domains.
+- Raw significant row counts by domain in `proposal_metrics_summary_human_vs_allai.csv`:
   - BERTopic `3`.
   - Diversity `6`.
-  - MeSH `1`.
-  - Novelty-Element `4`.
-  - Novelty-KNN `5`.
-  - Style `1`.
+  - MeSH `0`.
+  - Novelty-Element `2`.
+  - Novelty-KNN `0`.
+  - Style `3`.
+- Important correction nuance: these summary-domain counts are based on the row-level `sig` labels in the unified export. The family-specific tables show that ElementNovel, MeanKNN, and BERTopic proposal-level metrics do not survive their Holm corrections in the current all-AI audit; the robust binary findings are proposal-space diversity and two literature-space outlier definitions.
 - All outputs saved under `results/tables/rephrased/minimal/all_ai/`.
 - All figures saved under `results/figures/rephrased/minimal/all_ai/`.
 - Notebook completed successfully.
@@ -2087,54 +1943,25 @@ Step-by-step:
 3. Merge prepared AI review score means, prepared Human-Y2 score means, and unified proposal metrics from `proposal_metrics_master.csv`.
 4. Reuse the merged proposal-level dataframe for NCEMS, novelty, and Human-Y2 correlation analyses.
 
-Baseline-minimal result:
+Baseline-minimal rendered result:
 
-- Prepared proposals loaded: `92`.
-- Prepared AI review-score mean rows loaded: `92`.
-- Prepared Human-Y2 score mean rows loaded: `11`.
-
-#### `## 0. Load Prepared Review Score Tables (No Re-Aggregation)`
-
-Step-by-step:
-
-1. Load `data/prepared/rephrased/minimal/review_scores_wide.csv`.
-2. Load `data/prepared/rephrased/minimal/human_y2_scores_wide.csv`.
-3. Validate that prepared score-table columns required for downstream analyses are present.
-
-Baseline-minimal result:
-
-- Loaded proposals from `data/prepared/rephrased/minimal/all_proposals.json`.
-- Loaded AI review score means from `data/prepared/rephrased/minimal/review_scores_wide.csv` (`92` rows).
-- Loaded Human-Y2 score means from `data/prepared/rephrased/minimal/human_y2_scores_wide.csv` (`11` rows).
+- Prepared proposals loaded: `92` from `data/prepared/rephrased/minimal/all_proposals.json`.
+- Prepared AI review-score mean rows loaded: `92` from `data/prepared/rephrased/minimal/review_scores_wide.csv`.
+- Prepared Human-Y2 score mean rows loaded: `11` from `data/prepared/rephrased/minimal/human_y2_scores_wide.csv`.
 - Prepared score tables validated successfully.
 
 #### `## 1. Load Data and Build Unified DataFrame`
 
-Step-by-step:
-
-1. Flatten prepared proposal records into a proposal-level dataframe.
-2. Merge prepared AI score means by normalized title key.
-3. Merge prepared Human-Y2 score means by normalized title key.
-4. Prefer unified proposal metrics from `results/tables/rephrased/minimal/proposal_metrics_master.csv` when present.
-5. Keep proposal metadata, score columns, semantic metrics, and outlier flags in one merged table.
-
-Baseline-minimal result:
+Baseline-minimal rendered result:
 
 - Unified proposal metrics merged from `results/tables/rephrased/minimal/proposal_metrics_master.csv`.
-- Analysis dataframe shape: `(92, 59)`.
+- Analysis dataframe shape: `(92, 66)`.
 - Groups present: `Human`, `claude-opus-4-5`, `gemini-3-pro-preview`, `gpt-5.2`.
+- Final merged dataframe exported to `results/tables/rephrased/minimal/metric-score/metric_score_df.csv` with `92` rows and `66` columns.
 
 #### `## 1b. Define Metric Families and Score Groups`
 
-Step-by-step:
-
-1. Build semantic metric families from the available diversity and novelty metrics.
-2. Detect whether any legacy semantic metrics remain available.
-3. Detect available style metrics.
-4. Define NCEMS score columns, novelty-framework score columns, and outlier flags.
-5. Choose the literature-distance metric fallback used in downstream summaries.
-
-Baseline-minimal result:
+Baseline-minimal rendered result:
 
 - Semantic metrics total: `24`.
 - New diversity metrics: `14`.
@@ -2143,17 +1970,20 @@ Baseline-minimal result:
 - Style metrics present: `0`.
 - NCEMS score columns present: `8`.
 - Novelty score columns present: `7`.
-- Outlier flags present: `3/8`.
+- Outlier flags present in the merged dataframe: `is_nn_outlier`, `is_mean5nn_outlier`, `is_lit_outlier_mean10`, `is_lit_outlier_element0`, `is_lit_outlier_z`.
 - Literature distance metric used: `mean_knn_10`.
+
+Available new diversity metrics:
+
+- `mean_pairwise_dist`, `centroid_dist_raw`, `centroid_dist_loo`, `global_centroid_dist`, `nn_dist_global`, `mean_5nn_dist_global`, `medoid_dist`, `remote_clique_group`, `chamfer_group`, `mst_dispersion_group`, `span90_group`, `sparseness_group`, `grid_entropy_group`, `grid_entropy_group_norm`.
+
+Available new novelty metrics:
+
+- `element_novel_0`, `element_novel_1`, `element_novel_5`, `element_novel_10`, `mean_knn_5`, `mean_knn_10`, `mean_knn_20`, `mean_knn_50`, `novelty_ratio`, `novelty_z`.
 
 #### `## 1c. Score Distribution by Group`
 
-Step-by-step:
-
-1. Summarize proposal-level NCEMS overall means by group.
-2. Summarize proposal-level novelty-framework overall means by group.
-
-Baseline-minimal result:
+Baseline-minimal rendered result:
 
 - NCEMS `review_score_mean` by group:
   - Human: mean `3.586`, SD `0.465`
@@ -2173,25 +2003,29 @@ Step-by-step:
 1. Compute Spearman correlations between all available semantic metrics and NCEMS score criteria.
 2. Build an annotated heatmap marking `p < 0.05`.
 3. Print the full semantic-vs-NCEMS correlation matrix.
+4. Save correlation and p-value tables under `results/tables/rephrased/minimal/metric-score/`.
 
-Baseline-minimal result:
+Baseline-minimal rendered result:
 
-- Strong negative associations with `relevance_to_emergent_phenomena` dominated the printed matrix:
-  - `remote_clique_group`, `chamfer_group`, `mst_dispersion_group`, and `sparseness_group`: `r=-0.722`
-  - `mean_5nn_dist_global`: `r=-0.574`
-  - `global_centroid_dist`: `r=-0.552`
-- `novelty_and_significance` was also generally negative for semantic-distance metrics:
-  - `nn_dist_global`: `r=-0.498`
-  - `mean_5nn_dist_global`: `r=-0.485`
-  - `global_centroid_dist`: `r=-0.457`
-- Some metrics were positively associated with feasibility/data-oriented NCEMS criteria:
-  - `span90_group` vs `data_identification`: `r=0.566`
-  - `span90_group` vs `rigor_of_approach`: `r=0.504`
-  - `span90_group` vs `open_science_commitment`: `r=0.472`
+- Strong negative associations with `relevance_to_emergent_phenomena` dominated the current output:
+  - `grid_entropy_group`, `grid_entropy_group_norm`, `sparseness_group`, `span90_group`, `remote_clique_group`, `mst_dispersion_group`, and `chamfer_group`: `r=-0.7220`, `p<0.001`.
+  - `nn_dist_global`: `r=-0.5973`, `p<0.001`.
+  - `mean_5nn_dist_global`: `r=-0.5958`, `p<0.001`.
+  - `mean_pairwise_dist`, `centroid_dist_raw`, and `centroid_dist_loo`: `r=-0.5945`, `p<0.001`.
+  - `medoid_dist`: `r=-0.5929`, `p<0.001`.
+  - `global_centroid_dist`: `r=-0.5656`, `p<0.001`.
+- Overall NCEMS score was also lower for more group-level dispersion under `chamfer_group`: `review_score_mean r=-0.5458`, `p<0.001`.
+- The clearest positive NCEMS association was with `data_identification` for the group-dispersion metrics `sparseness_group`, `span90_group`, `remote_clique_group`, and `mst_dispersion_group`: `r=0.5065`, `p<0.001`.
+- This replaces the older audited values that reported stronger positive `span90_group` associations with `data_identification`, `rigor_of_approach`, and `open_science_commitment`.
 
 Figure:
 
 - `results/figures/rephrased/minimal/metric-score/corr_semantic_ncems.png`
+
+Tables:
+
+- `results/tables/rephrased/minimal/metric-score/spearman_corr_semantic_all_scores.csv`
+- `results/tables/rephrased/minimal/metric-score/spearman_pval_semantic_all_scores.csv`
 
 #### `## 2b. Correlation: Semantic Metrics vs Novelty Review Scores`
 
@@ -2201,22 +2035,21 @@ Step-by-step:
 2. Build an annotated heatmap marking `p < 0.05`.
 3. Print the full semantic-vs-novelty correlation matrix.
 
-Baseline-minimal result:
+Baseline-minimal rendered result:
 
-- Positive associations were common for novelty-oriented criteria:
-  - `mean_pairwise_dist` vs `new_question_topic_or_framing`: `r=0.481`
-  - `mean_pairwise_dist` vs `new_theory_concept_method_dataset_or_design`: `r=0.536`
-  - `centroid_dist_loo` vs `new_theory_concept_method_dataset_or_design`: `r=0.506`
-- `span90_group` showed the strongest repeated positive pattern in the printed matrix:
-  - `new_question_topic_or_framing`: `r=0.511`
-  - `new_theory_concept_method_dataset_or_design`: `r=0.536`
-  - `unusual_combination_of_existing_ideas`: `r=0.510`
-  - `beyond_state_of_the_art`: `r=0.532`
-- Literature-relative novelty metrics were positively associated with novelty-theory criteria:
-  - `element_novel_1` vs `new_theory_concept_method_dataset_or_design`: `r=0.411`
-  - `element_novel_5` vs `new_theory_concept_method_dataset_or_design`: `r=0.407`
-  - `mean_knn_50` vs `new_theory_concept_method_dataset_or_design`: `r=0.391`
-- Grid-entropy metrics were negative for several novelty criteria in the printed matrix, for example `grid_entropy_group` vs `unusual_combination_of_existing_ideas`: `r=-0.308`.
+- Positive novelty-framework associations are present, but they are moderate rather than the stronger earlier audited values.
+- Top positive associations:
+  - `sparseness_group`, `span90_group`, `remote_clique_group`, and `mst_dispersion_group` vs `new_theory_concept_method_dataset_or_design`: `r=0.3779`, `p=0.0002`.
+  - `mean_pairwise_dist` vs `new_theory_concept_method_dataset_or_design`: `r=0.3646`, `p=0.0004`.
+  - `sparseness_group`, `span90_group`, `remote_clique_group`, and `mst_dispersion_group` vs `unique_knowledge_generation`: `r=0.3646`, `p=0.0004`.
+  - The same group-dispersion metrics vs `new_question_topic_or_framing`: `r=0.3433`, `p=0.0008`.
+  - `centroid_dist_loo` vs `new_theory_concept_method_dataset_or_design`: `r=0.3351`, `p=0.0011`.
+  - `centroid_dist_raw` vs `new_theory_concept_method_dataset_or_design`: `r=0.3321`, `p=0.0012`.
+- Negative novelty-framework associations were smaller in magnitude:
+  - `novelty_z` vs `unique_knowledge_generation`: `r=-0.2987`, `p=0.0038`.
+  - `grid_entropy_group` and `grid_entropy_group_norm` vs `unusual_combination_of_existing_ideas`: `r=-0.2605`, `p=0.0121`.
+  - `grid_entropy_group` and `grid_entropy_group_norm` vs `credible_high_risk_high_gain`: `r=-0.2561`, `p=0.0138`.
+- This replaces the older section that reported `mean_pairwise_dist` / `span90_group` novelty-framework correlations around `r=0.48-0.54`; those are not the current rendered outputs.
 
 Figure:
 
@@ -2230,54 +2063,112 @@ Step-by-step:
 2. Keep only semantic metrics with within-Y2 proposal variation.
 3. Compute Spearman correlations between per-proposal semantic metrics and Human-Y2 quantitative score means.
 4. Render semantic and style heatmaps.
-5. Print the top semantic-vs-Human-Y2 correlation table that was produced before notebook execution stopped.
+5. Compare AI-score correlations on the same Y2 human proposals against Human-Y2 correlations.
 
-Baseline-minimal result:
+Baseline-minimal rendered result:
 
 - Human-Y2 prepared score table used: `data/prepared/rephrased/minimal/human_y2_scores_wide.csv`.
 - Y2 human proposals used for Human-Y2 metric-score analysis: `11`.
-- Human-Y2 analysis dataframe shape: `(11, 59)`.
+- Human-Y2 analysis dataframe shape: `(11, 66)`.
 - Metrics with per-proposal variation: `17 / 24`.
-- Dropped group-level constant metrics:
-  - `remote_clique_group`
-  - `chamfer_group`
-  - `mst_dispersion_group`
-  - `span90_group`
-  - `sparseness_group`
-  - `grid_entropy_group`
-  - `grid_entropy_group_norm`
-- Top printed semantic-vs-Human-Y2 correlations:
-  - `nn_dist_global` vs `data_identification_human_y2`: `r=-0.8074`, `p=0.0027`
-  - `nn_dist_global` vs `synthesis_focus_human_y2`: `r=-0.8074`, `p=0.0027`
-  - `mean_knn_5` vs `data_identification_human_y2`: `r=-0.7707`, `p=0.0055`
-  - `mean_knn_5` vs `synthesis_focus_human_y2`: `r=-0.7707`, `p=0.0055`
-  - `mean_5nn_dist_global` vs `data_identification_human_y2`: `r=-0.7615`, `p=0.0065`
-  - `element_novel_0` vs `data_identification_human_y2`: `r=-0.7615`, `p=0.0065`
-  - `element_novel_0` vs `synthesis_focus_human_y2`: `r=-0.7615`, `p=0.0065`
-  - `mean_pairwise_dist` vs `scope_and_timeline_human_y2`: `r=0.6713`, `p=0.0237`
-  - `centroid_dist_raw` vs `scope_and_timeline_human_y2`: `r=0.6713`, `p=0.0237`
-  - `centroid_dist_loo` vs `scope_and_timeline_human_y2`: `r=0.6713`, `p=0.0237`
+- Dropped group-level constant metrics: `remote_clique_group`, `chamfer_group`, `mst_dispersion_group`, `span90_group`, `sparseness_group`, `grid_entropy_group`, `grid_entropy_group_norm`.
+- Top semantic-vs-Human-Y2 correlations are now trend-level only under the notebook's printed p-values:
+  - `novelty_z` vs `open_science_commitment_human_y2`: `r=-0.5968`, `p=0.0526`.
+  - `element_novel_0` vs `rigor_of_approach_human_y2`: `r=0.5807`, `p=0.0610`.
+  - `element_novel_0` vs `novelty_and_significance_human_y2`: `r=0.5807`, `p=0.0610`.
+  - `element_novel_0` vs `relevance_to_emergent_phenomena_human_y2`: `r=0.5807`, `p=0.0610`.
+  - `mean_knn_5` vs `relevance_to_emergent_phenomena_human_y2`, `novelty_and_significance_human_y2`, and `rigor_of_approach_human_y2`: `r=0.5623`, `p=0.0718`.
+- Style-vs-Human-Y2 table is empty because no style metrics are available in the merged dataframe.
+- On the same 11 Y2 human proposals, AI score correlations showed the strongest relationship for `mean_knn_5` vs AI-scored `synthesis_focus`: `r=0.7683`; the AI-minus-Human-Y2 difference table was largest for `mean_knn_5` vs `synthesis_focus`: `diff=0.6032`.
+- This replaces the older audited Human-Y2 block that reported significant `nn_dist_global` / `mean_knn_5` negative correlations around `r=-0.81` and `r=-0.77`; those values are not present in the current notebook outputs.
 
 Figures:
 
 - `results/figures/rephrased/minimal/metric-score/corr_semantic_human_y2.png`
 - `results/figures/rephrased/minimal/metric-score/corr_style_human_y2.png`
+- `results/figures/rephrased/minimal/metric-score/corr_semantic_ai_vs_humany2_on_y2.png`
 
-#### `## 3-7. Remaining Part V Sections`
+Tables:
 
-Baseline-minimal output status from the audited executed notebook:
+- `results/tables/rephrased/minimal/metric-score/spearman_corr_semantic_human_y2_scores.csv`
+- `results/tables/rephrased/minimal/metric-score/spearman_pval_semantic_human_y2_scores.csv`
+- `results/tables/rephrased/minimal/metric-score/spearman_corr_style_human_y2_scores.csv`
+- `results/tables/rephrased/minimal/metric-score/spearman_pval_style_human_y2_scores.csv`
+- `results/tables/rephrased/minimal/metric-score/spearman_corr_semantic_ai_scores_on_y2_human_proposals.csv`
+- `results/tables/rephrased/minimal/metric-score/spearman_corr_diff_semantic_ai_minus_humany2_on_y2.csv`
 
-- `## 3. Strongest Correlations Summary`: no saved baseline-minimal output captured for the NCEMS/novelty summary cells in this notebook run.
-- `## 4. Outlier Validation`: no saved baseline-minimal output captured in this notebook run.
-- `## 5. Scatter Plots`: no saved baseline-minimal output captured in this notebook run.
-- `## 6. Group-Level Analysis: Human vs AI`: no saved baseline-minimal output captured in this notebook run.
-- `## 7. Summary Statistics Table` and export cells: no saved baseline-minimal output captured in this notebook run.
+#### `## 3. Strongest Correlations Summary`
 
-Interpretation from the executed baseline-minimal outputs only:
+Baseline-minimal rendered result:
 
-- In the captured correlation outputs, semantic-distance/remoteness metrics were generally negative against NCEMS relevance-type criteria and positive against several novelty-oriented criteria.
-- In the captured Human-Y2 block, the strongest associations were concentrated on `data_identification_human_y2`, `synthesis_focus_human_y2`, and `scope_and_timeline_human_y2`.
-- Style-based Part V interpretation is not available in this run because no style metrics were present in the merged baseline-minimal dataframe.
+- Top NCEMS metric-score pairs were the same `relevance_to_emergent_phenomena` negative block, led by `grid_entropy_group`, `grid_entropy_group_norm`, `sparseness_group`, `span90_group`, `mst_dispersion_group`, `chamfer_group`, and `remote_clique_group` at `r=-0.7220`, `p<0.001`.
+- Top novelty-framework metric-score pairs were group-dispersion metrics vs `new_theory_concept_method_dataset_or_design` at `r=0.3779`, followed by group-dispersion metrics vs `unique_knowledge_generation` at `r=0.3646` and vs `new_question_topic_or_framing` at `r=0.3433`.
+
+#### `## 4. Outlier Validation: Do Semantically Unique Proposals Score Higher?`
+
+Baseline-minimal rendered result:
+
+- Missing legacy flag columns were skipped: `is_outlier`, `is_most_novel_raw`, `is_most_novel_z`, `is_most_novel_ratio`, `is_literature_outlier`.
+- Available literature outlier flags each marked `10` proposals and left `82` unflagged proposals.
+- NCEMS review scores were generally lower, not higher, for flagged literature outliers:
+  - `is_lit_outlier_mean10`: `relevance_to_emergent_phenomena` flagged mean `3.8000` vs not flagged `4.7967`, `diff=-0.9967`, `p=0.0002`; `review_score_mean` `3.6700` vs `3.9683`, `diff=-0.2983`, `p=0.0104`.
+  - `is_lit_outlier_element0`: `relevance_to_emergent_phenomena` `diff=-0.8846`, `p=0.0025`; `review_score_mean` `diff=-0.2946`, `p=0.0118`.
+  - `is_lit_outlier_z`: `review_score_mean` `diff=-0.4404`, `p=0.0016`; `data_identification` `diff=-0.4724`, `p=0.0098`; `open_science_commitment` `diff=-0.7317`, `p=0.0258`.
+- Novelty-framework review scores did not show broad outlier advantages:
+  - `is_lit_outlier_mean10`: no novelty-framework criterion reached `p<0.05`; `unusual_combination_of_existing_ideas` was near-threshold with `diff=-0.2033`, `p=0.0504`.
+  - `is_lit_outlier_element0`: `unique_knowledge_generation` was lower for flagged proposals, `diff=-0.2179`, `p=0.0344`.
+  - `is_lit_outlier_z`: `unique_knowledge_generation` was lower for flagged proposals, `diff=-0.2366`, `p=0.0374`.
+
+Figure:
+
+- `results/figures/rephrased/minimal/metric-score/outlier_boxplots.png`
+
+#### `## 5. Scatter Plots: Best Metric-Score Pairs`
+
+Baseline-minimal rendered result:
+
+- The top six metric-score scatter panels used the dominant NCEMS correlations, all `relevance_to_emergent_phenomena` vs group-level dispersion/entropy metrics at `r=-0.7220`.
+- Human-Y2 scatter panels were also rendered from the current Human-Y2 trend-level top pairs.
+
+Figures:
+
+- `results/figures/rephrased/minimal/metric-score/top_scatter_metric_score.png`
+- `results/figures/rephrased/minimal/metric-score/top_scatter_metric_score_human_y2.png`
+
+#### `## 6. Group-Level Analysis: Human vs AI`
+
+Baseline-minimal rendered result:
+
+- Mean score heatmap by group was rendered and saved.
+- Current group means:
+  - NCEMS `review_score_mean`: Human `3.586`, Claude `4.009`, Gemini `3.832`, GPT-5.2 `4.317`.
+  - NCEMS `novelty_and_significance`: Human `4.101`, Claude `4.333`, Gemini `4.333`, GPT-5.2 `4.362`.
+  - Novelty-framework `new_question_topic_or_framing`: Human `3.855`, Claude `3.348`, Gemini `3.594`, GPT-5.2 `3.942`.
+  - Novelty-framework `credible_high_risk_high_gain`: Human `3.536`, Claude `3.283`, Gemini `3.652`, GPT-5.2 `3.725`.
+  - Novelty-framework `novelty_score_mean`: Human `3.764`, Claude `3.403`, Gemini `3.657`, GPT-5.2 `3.993`.
+- AI-vs-Human correlation heatmaps were rendered for NCEMS and novelty-framework scores.
+
+Figures:
+
+- `results/figures/rephrased/minimal/metric-score/group_score_heatmap.png`
+- `results/figures/rephrased/minimal/metric-score/corr_ai_vs_human_ncems.png`
+- `results/figures/rephrased/minimal/metric-score/corr_ai_vs_human_novelty.png`
+- `results/figures/rephrased/minimal/metric-score/corr_diff_ai_human_novelty.png`
+
+#### `## 7. Summary Statistics Table`
+
+Baseline-minimal rendered result:
+
+- The notebook exported the merged metric-score dataframe and all available Spearman correlation tables.
+- Final output set is present under `results/tables/rephrased/minimal/metric-score/` and `results/figures/rephrased/minimal/metric-score/`.
+
+Interpretation from the executed baseline-minimal outputs:
+
+- Current metric-score results no longer support the older claim that novelty-framework correlations reach roughly `r=0.5`; the current strongest novelty-framework correlations are moderate, topping out at `r=0.3779`.
+- NCEMS relevance remains strongly inversely associated with semantic dispersion/remoteness metrics, suggesting that proposals farther from the common proposal/literature structure are scored as less relevant by NCEMS reviewers.
+- Literature-outlier flags do not validate as "higher-scoring novelty" signals in this run; flagged proposals usually score lower on NCEMS and do not gain broad novelty-framework advantages.
+- Human-Y2 validation is now weaker and small-sample-limited: the current top Human-Y2 correlations are trend-level (`p>=0.0526`) rather than significant.
+- Style-based metric-score interpretation is unavailable in this run because the merged metric-score dataframe contains no style metrics.
 
 ## Updated Overall Story
 

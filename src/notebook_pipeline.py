@@ -1334,6 +1334,7 @@ def _render_generate_reviews(notebook: Dict[str, Any], condition: ConditionConfi
                 '- `CONDITION`: condition name whose rephrased proposals should be reviewed.\n',
                 '- `SKIP_NCEMS_IF_EXISTS`: reuse the latest NCEMS review JSON if it already exists.\n',
                 '- `SKIP_NOVELTY_IF_EXISTS`: reuse the latest novelty review JSON if it already exists.\n',
+                '- `SKIP_REPHRASED_AI_REVIEWS_IF_EXISTS`: reuse the rephrased AI NCEMS review JSON when it matches the latest NCEMS review source.\n',
                 '- `REBUILD_REVIEW_SCORES`: rebuild `review_scores_wide.csv` from the latest NCEMS review file.\n',
             ],
         },
@@ -1346,6 +1347,7 @@ def _render_generate_reviews(notebook: Dict[str, Any], condition: ConditionConfi
                 CONDITION = '{condition.name}'
                 SKIP_NCEMS_IF_EXISTS = True
                 SKIP_NOVELTY_IF_EXISTS = True
+                SKIP_REPHRASED_AI_REVIEWS_IF_EXISTS = True
                 REBUILD_REVIEW_SCORES = True
             """).splitlines(keepends=True),
         },
@@ -1356,6 +1358,7 @@ def _render_generate_reviews(notebook: Dict[str, Any], condition: ConditionConfi
         CONDITION = '{condition.name}'
         SKIP_NCEMS_IF_EXISTS = True
         SKIP_NOVELTY_IF_EXISTS = True
+        SKIP_REPHRASED_AI_REVIEWS_IF_EXISTS = True
         REBUILD_REVIEW_SCORES = True
     """))
     ncems_idx = _find_code_cell_index(rendered, ["str(SCRIPTS_DIR / 'generate_reviews_ncems_criteria.py')", 'latest_ncems = sorted'])
