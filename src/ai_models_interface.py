@@ -4,8 +4,9 @@ Unified interface for multiple AI models to generate research ideas based on pro
 
 import os
 import json
+import time
 import asyncio
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
 from datetime import datetime
 import logging
@@ -27,6 +28,36 @@ from prompt_templates import PromptManager
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+STUDY_MODEL_REGISTRY: Dict[str, Dict[str, str]] = {
+    'gpt-5.5': {
+        'provider': 'openai',
+        'provider_model_id': 'gpt-5.5',
+    },
+    'gemini-3.1-pro-preview': {
+        'provider': 'google',
+        'provider_model_id': 'gemini-3.1-pro-preview',
+    },
+    'claude-sonnet-5': {
+        'provider': 'anthropic',
+        'provider_model_id': 'claude-sonnet-5',
+    },
+}
+
+MODEL_ALIASES: Dict[str, str] = {
+    'gpt-5.5': 'gpt-5.5',
+    'gpt-5': 'gpt-5.5',
+    'gpt': 'gpt-5.5',
+    'gpt-5.2': 'gpt-5.5',
+    'gemini-3.1-pro-preview': 'gemini-3.1-pro-preview',
+    'gemini-3-pro-preview': 'gemini-3.1-pro-preview',
+    'gemini': 'gemini-3.1-pro-preview',
+    'claude-sonnet-5': 'claude-sonnet-5',
+    'claude': 'claude-sonnet-5',
+    'claude-opus-4-5': 'claude-sonnet-5',
+}
+
+DEFAULT_RETRY_DELAYS = [2, 5, 10]
 
 @dataclass
 class AIResponse:
@@ -86,23 +117,24 @@ class AIModelsInterface:
     def setup_models(self):
         """Initialize AI model clients"""
         self.models = {}
+        self.model_registry = dict(STUDY_MODEL_REGISTRY)
         
         # OpenAI (GPT)
         if self.openai_key:
             openai.api_key = self.openai_key
-            self.models['gpt-5.2'] = self._call_openai
-            logger.info("OpenAI GPT-4 initialized")
+            self.models['gpt-5.5'] = self._call_openai
+            logger.info("OpenAI GPT-5.5 initialized")
         
         # Google Gemini
         if self.google_key:
             self.gemini_client = genai.Client(api_key=self.google_key)
-            self.models['gemini-3-pro-preview'] = self._call_gemini
+            self.models['gemini-3.1-pro-preview'] = self._call_gemini
             logger.info("Google Gemini initialized")
         
         # Anthropic Claude
         if self.anthropic_key:
             self.anthropic_client = anthropic.Anthropic(api_key=self.anthropic_key)
-            self.models['claude-opus-4-5'] = self._call_claude
+            self.models['claude-sonnet-5'] = self._call_claude
             logger.info("Anthropic Claude initialized")
         
         # X.AI Grok (uses xai_sdk)
@@ -143,7 +175,26 @@ class AIModelsInterface:
         #     self.models['deepseek-r1'] = self._call_deepseek
         #     logger.info("NCEMS DeepSeek-R1 initialized")
     
-    def _call_openai(self, prompt: str, **kwargs) -> str:
+    def resolve_model_name(self, model_name: str) -> str:
+        """Resolve aliases to the canonical study model name."""
+        normalized = str(model_name or '').strip().lower()
+        if model_name in self.models:
+            return model_name
+        if normalized in MODEL_ALIASES:
+            return MODEL_ALIASES[normalized]
+        raise ValueError(
+            f"Model '{model_name}' not available. Available canonical models: {list(self.models.keys())}"
+        )
+
+    def get_model_info(self, model_name: str) -> Dict[str, str]:
+        """Return canonical provider metadata for a model."""
+        canonical_name = self.resolve_model_name(model_name)
+        return {
+            'canonical_model_name': canonical_name,
+            **self.model_registry[canonical_name],
+        }
+
+    def _call_openai(self, prompt: str, provider_model_id: str, **kwargs) -> str:
         """Call OpenAI GPT.
 
         When use_web_search=True, uses the Responses API which supports the
@@ -156,7 +207,7 @@ class AIModelsInterface:
             if kwargs.get('use_web_search', False):
                 # Responses API — required for web search with gpt-5.2
                 response = client.responses.create(
-                    model="gpt-5.2",
+                    model=provider_model_id,
                     tools=[{"type": "web_search"}],
                     input=prompt,
                 )
@@ -165,7 +216,7 @@ class AIModelsInterface:
                 # Standard Chat Completions path (no web search)
                 # GPT-5.2 requires max_completion_tokens instead of max_tokens
                 response = client.chat.completions.create(
-                    model="gpt-5.2",
+                    model=provider_model_id,
                     messages=[{"role": "user", "content": prompt}],
                     temperature=kwargs.get('temperature', 0),
                     max_completion_tokens=kwargs.get('max_completion_tokens', kwargs.get('max_tokens', 16000))
@@ -175,7 +226,7 @@ class AIModelsInterface:
             logger.error(f"OpenAI error: {e}")
             return f"Error: {str(e)}"
     
-    def _call_gemini(self, prompt: str, **kwargs) -> str:
+    def _call_gemini(self, prompt: str, provider_model_id: str, **kwargs) -> str:
         """Call Google Gemini.
 
         When use_web_search=True, Google Search grounding is enabled via
@@ -197,7 +248,7 @@ class AIModelsInterface:
                 )
 
             response = self.gemini_client.models.generate_content(
-                model='gemini-3-pro-preview',
+                model=provider_model_id,
                 contents=[prompt],
                 config=config,
             )
@@ -206,7 +257,7 @@ class AIModelsInterface:
             logger.error(f"Gemini error: {e}")
             return f"Error: {str(e)}"
     
-    def _call_claude(self, prompt: str, **kwargs) -> str:
+    def _call_claude(self, prompt: str, provider_model_id: str, **kwargs) -> str:
         """Call Anthropic Claude.
 
         When use_web_search=True, the built-in server-side web_search tool is
@@ -217,7 +268,7 @@ class AIModelsInterface:
         """
         try:
             create_kwargs = dict(
-                model="claude-opus-4-5",
+                model=provider_model_id,
                 max_tokens=kwargs.get('max_tokens', 16000),
                 temperature=kwargs.get('temperature', 0),
                 messages=[{"role": "user", "content": prompt}],
@@ -325,7 +376,74 @@ class AIModelsInterface:
     #         logger.error(f"Qwen error: {e}")
     #         return f"Error: {str(e)}"
     
-    def generate_content(self, prompt: str, model_name: str = 'gemini-2.5-pro', **kwargs) -> str:
+    def _call_model_once(self, prompt: str, canonical_model_name: str, **kwargs) -> str:
+        call_fn = self.models[canonical_model_name]
+        provider_model_id = self.model_registry[canonical_model_name]['provider_model_id']
+        return call_fn(prompt, provider_model_id=provider_model_id, **kwargs)
+
+    def generate_content_with_metadata(self, prompt: str, model_name: str = 'gemini-3.1-pro-preview', **kwargs) -> Dict[str, Any]:
+        """
+        Generate content and return study-friendly metadata for logging.
+        """
+        canonical_model_name = self.resolve_model_name(model_name)
+        if canonical_model_name not in self.models:
+            available_models = list(self.models.keys())
+            raise ValueError(f"Model '{model_name}' not available. Available models: {available_models}")
+
+        retry_delays = list(kwargs.pop('retry_delays', DEFAULT_RETRY_DELAYS))
+        attempts = 1 + len(retry_delays)
+        last_error = None
+        raw_response = None
+
+        for attempt_idx in range(attempts):
+            started_at = datetime.now().isoformat()
+            try:
+                raw_response = self._call_model_once(prompt, canonical_model_name, **kwargs)
+                if isinstance(raw_response, str) and raw_response.startswith("Error: "):
+                    raise RuntimeError(raw_response[7:])
+
+                return {
+                    'requested_model_name': model_name,
+                    'canonical_model_name': canonical_model_name,
+                    'provider': self.model_registry[canonical_model_name]['provider'],
+                    'provider_model_id': self.model_registry[canonical_model_name]['provider_model_id'],
+                    'temperature': kwargs.get('temperature', 0),
+                    'max_tokens': kwargs.get('max_tokens', kwargs.get('max_completion_tokens', 16000)),
+                    'timestamp': started_at,
+                    'raw_response': raw_response,
+                    'attempt_count': attempt_idx + 1,
+                    'retry_delays_seconds': retry_delays,
+                    'error': None,
+                }
+            except Exception as exc:
+                last_error = str(exc)
+                if attempt_idx < len(retry_delays):
+                    delay = retry_delays[attempt_idx]
+                    logger.warning(
+                        "Retrying %s after error on attempt %s/%s in %ss: %s",
+                        canonical_model_name,
+                        attempt_idx + 1,
+                        attempts,
+                        delay,
+                        exc,
+                    )
+                    time.sleep(delay)
+
+        return {
+            'requested_model_name': model_name,
+            'canonical_model_name': canonical_model_name,
+            'provider': self.model_registry[canonical_model_name]['provider'],
+            'provider_model_id': self.model_registry[canonical_model_name]['provider_model_id'],
+            'temperature': kwargs.get('temperature', 0),
+            'max_tokens': kwargs.get('max_tokens', kwargs.get('max_completion_tokens', 16000)),
+            'timestamp': datetime.now().isoformat(),
+            'raw_response': raw_response or '',
+            'attempt_count': attempts,
+            'retry_delays_seconds': retry_delays,
+            'error': last_error or 'unknown error',
+        }
+
+    def generate_content(self, prompt: str, model_name: str = 'gemini-3.1-pro-preview', **kwargs) -> str:
         """
         Generate content using a specific model with a given prompt.
         This is a simpler method for direct prompt-to-response generation.
@@ -338,47 +456,42 @@ class AIModelsInterface:
         Returns:
             The generated text response
         """
-        if model_name not in self.models:
-            available_models = list(self.models.keys())
-            raise ValueError(f"Model '{model_name}' not available. Available models: {available_models}")
-        
-        # Call the model directly
-        response = self.models[model_name](prompt, **kwargs)
-        
-        return response
+        result = self.generate_content_with_metadata(prompt, model_name=model_name, **kwargs)
+        if result['error']:
+            raise RuntimeError(
+                f"Generation failed for {result['canonical_model_name']}: {result['error']}"
+            )
+        return result['raw_response']
     
     def generate_research_ideas(self, research_call: str, model_name: str, 
                                prompt_template: str = None, **kwargs) -> AIResponse:
         """Generate research ideas based on the research call using a specific model"""
-        if model_name not in self.models:
-            raise ValueError(f"Model {model_name} not available")
-        
-        # Idea generation uses generate_ideas_baseline (prompt_templates.py)
+        canonical_model_name = self.resolve_model_name(model_name)
         template_name = prompt_template or self.current_template
-        template_name_to_use = (
-            template_name if template_name == 'generate_ideas_baseline' else 'generate_ideas_baseline'
-        )
-        prompt = self.prompt_manager.format_prompt(template_name_to_use, {'research_call': research_call})
-        
-        # Call the model
-        raw_response = self.models[model_name](prompt, **kwargs)
+        prompt = self.prompt_manager.format_prompt(template_name, {'research_call': research_call})
+
+        result = self.generate_content_with_metadata(prompt, model_name=canonical_model_name, **kwargs)
+        raw_response = result['raw_response']
         
         # Try to parse JSON response
         parsed_ideas = self._parse_json_response(raw_response)
         
         # Create response object
         response = AIResponse(
-            model_name=model_name,
+            model_name=canonical_model_name,
             session_id='research_call_session',  # Since we're working with research call
             generated_ideas=parsed_ideas,
             timestamp=datetime.now().isoformat(),
             metadata={
-                'temperature': kwargs.get('temperature', 0.7),
+                'temperature': kwargs.get('temperature', 0),
                 'max_tokens': kwargs.get('max_tokens', 16000),
                 'prompt_template': template_name,
                 'research_call': research_call,
                 'raw_response': raw_response,
-                'parsed_successfully': parsed_ideas is not None
+                'parsed_successfully': parsed_ideas is not None,
+                'provider_model_id': result['provider_model_id'],
+                'attempt_count': result['attempt_count'],
+                'error': result['error'],
             }
         )
         
@@ -456,7 +569,7 @@ class AIModelsInterface:
     
     def get_available_models(self) -> List[str]:
         """Get list of available models"""
-        return list(self.models.keys())
+        return sorted(self.models.keys())
     
     def get_available_templates(self) -> List[Dict[str, str]]:
         """Get list of available prompt templates"""

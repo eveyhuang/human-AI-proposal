@@ -1,6 +1,5 @@
 """
-Prompt templates for research idea generation and proposal evaluation.
-Includes: Generate Research Ideas (baseline), generate full proposals, Human Criteria Evaluation.
+Prompt templates for study generation and evaluation workflows.
 """
 
 from typing import Dict, Any, List
@@ -13,6 +12,7 @@ class PromptTemplate:
     description: str
     template: str
     parameters: List[str] = None
+    version: str = "v1"
 
 class PromptManager:
     """Manager for different prompt templates"""
@@ -26,13 +26,14 @@ class PromptManager:
         templates = {}
 
 
-        # Generate Research Ideas (baseline)
-        templates['generate_ideas_minimal'] = PromptTemplate(
-            name="Generate Research Ideas (minimal)",
-            description="Generate innovative research ideas without any special prompting",
+        templates['generate_ideas_minimal_batch'] = PromptTemplate(
+            name="Generate Research Ideas (minimal batch)",
+            description="Generate a batch of diverse research ideas without persona grounding",
             
             template="""
-            You are generating research ideas that will most likely be accepted by the competitive funding call from NCEMS (National Synthesis Center for Emergence in Molecular and Cellular Sciences).
+            You are generating research ideas that will most likely be accepted by
+            the competitive funding call from NCEMS (National Synthesis Center for
+            Emergence in Molecular and Cellular Sciences).
 
             RESEARCH CALL:
             {research_call}
@@ -41,7 +42,8 @@ class PromptManager:
             {information_about_ncems}
 
             TASK:
-            Generate {num} research ideas that are aglined with the research call and are all different from each other. 
+            Generate exactly {num} research ideas that are aligned with the
+            research call and are clearly different from each other.
 
             For each idea, provide:
             - **Title**: Clear, specific, and scientifically precise
@@ -63,24 +65,69 @@ class PromptManager:
 
             Ensure the JSON is properly formatted and valid.
             """,
-            parameters=['research_call', 'information_about_ncems', 'num']
+            parameters=['research_call', 'information_about_ncems', 'num'],
+            version='v2'
         )
 
-        templates['generate_ideas_persona'] = PromptTemplate(
-            name="Generate Research Ideas (persona)",
-            description="Generate research ideas while drawing on the factual scientific perspectives of a human author team",
+        templates['generate_ideas_minimal_single'] = PromptTemplate(
+            name="Generate Research Ideas (minimal single)",
+            description="Generate exactly one research idea without persona grounding",
 
             template="""
-            You are generating research ideas that will most likely be accepted by the competitive funding call from NCEMS (National Synthesis Center for Emergence in Molecular and Cellular Sciences).
+            You are generating one research idea that will most likely be
+            accepted by the competitive funding call from NCEMS (National
+            Synthesis Center for Emergence in Molecular and Cellular Sciences).
 
-            For this task, adopt the scientific perspective of the human research team described below.
+            RESEARCH CALL:
+            {research_call}
+
+            INFORMATION ABOUT NCEMS:
+            {information_about_ncems}
+
+            TASK:
+            Generate exactly one research idea aligned with the research call.
+            This call should be treated as one independent draw, not as part of a
+            list that must be diversified relative to other unseen ideas.
+
+            Provide:
+            - **Title**: Clear, specific, and scientifically precise
+            - **Abstract**: 400-600 words
+
+            IMPORTANT: Format your response as a valid JSON object:
+            {{
+              "research_ideas": [
+                {{
+                  "title": "Specific Research Title Here",
+                  "abstract": "Detailed 400-600 word abstract addressing all requirements above..."
+                }}
+              ]
+            }}
+
+            Ensure the JSON is properly formatted and valid.
+            """,
+            parameters=['research_call', 'information_about_ncems'],
+            version='v1'
+        )
+
+        templates['generate_ideas_persona_single'] = PromptTemplate(
+            name="Generate Research Ideas (persona single)",
+            description="Generate exactly one research idea while drawing on the factual scientific perspective of a human author team",
+
+            template="""
+            You are generating one research idea that will most likely be
+            accepted by the competitive funding call from NCEMS (National
+            Synthesis Center for Emergence in Molecular and Cellular Sciences).
+
+            For this task, adopt the scientific perspective of the human
+            research team described below.
             This means you should let the team's publication record shape:
             - what problems seem important
             - what biological systems, scales, or phenomena stand out
             - what kinds of methods, data, and synthesis approaches feel natural
             - what kinds of cross-domain connections this team would be well positioned to notice
 
-            Adopt the team's scientific perspective, but NOT their writing style, tone, or personal biography.
+            Adopt the team's scientific perspective, but NOT their writing
+            style, tone, or personal biography.
 
             RESEARCH CALL:
             {research_call}
@@ -92,20 +139,31 @@ class PromptManager:
             {persona_card_json}
 
             TASK:
-            Generate {num} research ideas that are aligned with the research call and are all different from each other.
+            Generate exactly one new research idea aligned with the research
+            call.
 
             IMPORTANT INSTRUCTIONS:
-            - Use the persona card as factual scientific grounding for the team's domains, systems, methods, data types, and recurring research questions.
-            - Adopt only the scientific perspective implied by the publication record, not the authors' prose style or personal voice.
-            - Do not copy titles, phrases, hypotheses, or paper-specific claims from the persona card.
+            - Use the persona card as factual scientific grounding for the
+              team's domains, systems, methods, data types, and recurring
+              research questions.
+            - Adopt only the scientific perspective implied by the publication
+              record, not the authors' prose style or personal voice.
+            - Do not copy titles, phrases, hypotheses, or paper-specific claims
+              from the persona card.
             - Do not simply restate an existing paper topic.
-            - Generate a NEW idea that is plausible for a team with these scientific backgrounds.
-            - The idea should clearly reflect the perspective in the persona card.
-            - Whenever possible, integrate signals from multiple team members rather than defaulting to only one author.
-            - Ground the idea in at least two concrete elements from the persona card, such as domains, biological systems, methods, data types, or recurring scientific questions.
-            - Preserve the NCEMS requirement that the project must be synthesis research using existing publicly available data.
+            - Generate a NEW idea that is plausible for a team with these
+              scientific backgrounds.
+            - The idea should clearly reflect the perspective in the persona
+              card.
+            - Whenever possible, integrate signals from multiple team members
+              rather than defaulting to only one author.
+            - Ground the idea in at least two concrete elements from the
+              persona card, such as domains, biological systems, methods, data
+              types, or recurring scientific questions.
+            - Preserve the NCEMS requirement that the project must be synthesis
+              research using existing publicly available data.
 
-            For each idea, provide:
+            Provide:
             - **Title**: Clear, specific, and scientifically precise
             - **Abstract** (400-600 words)
 
@@ -121,111 +179,19 @@ class PromptManager:
 
             Ensure the JSON is properly formatted and valid.
             """,
-            parameters=['research_call', 'information_about_ncems', 'team_members', 'persona_card_json', 'num']
+            parameters=['research_call', 'information_about_ncems', 'team_members', 'persona_card_json'],
+            version='v1'
         )
 
+        templates['generate_ideas_minimal'] = templates['generate_ideas_minimal_batch']
+        templates['generate_ideas_persona'] = templates['generate_ideas_persona_single']
 
-        # generate full proposals from ideas
-        templates['generate_proposals'] = PromptTemplate(
-            name="Generate Research Proposals",
-            description="Generate comprehensive research proposals based on title and abstract",
-            template="""
-            Write a comprehensive research proposal based on the provided title and abstract, ensuring it aligns with NCEMS funding requirements.
-
-            RESEARCH CALL:
-            {research_call}
-
-            INFORMATION ABOUT NCEMS:
-            {information_about_ncems}
-
-            RESEARCH IDEA TO EXPAND:
-            Title: {title}
-            Abstract: {abstract}
-
-            CRITICAL CONSTRAINTS:
-            1. **NO NEW DATA GENERATION**: This must be synthesis research using ONLY existing publicly available data. Do not propose experiments, data collection, or generating new samples.
-            2. **MESOSCALE EMERGENT PHENOMENA**: Keep focus on emergent properties at the mesoscale (between molecules and organelles).
-            3. **COLLABORATIVE TEAM SCIENCE**: Emphasize how this requires multiple labs/disciplines.
-            4. **OPEN SCIENCE**: Detail plans for open code, data, and reproducible workflows.
-
-            Create a proposal meeting the highest standards for scientific rigor, clarity, and feasibility. Include these sections with specified word counts:
-
-            1. BACKGROUND AND SIGNIFICANCE (600-800 words)
-               - Current understanding of the mesoscale phenomenon
-               - Literature review showing what's known from existing data
-               - Specific gaps that synthesis research can address
-               - Why emergent phenomena at this scale are important
-               - How existing data sources enable new insights
-
-            2. RESEARCH QUESTIONS AND HYPOTHESES (600-800 words)
-               - Precise, testable research questions about emergent phenomena
-               - Clear hypotheses with measurable predictions
-               - How hypotheses will be validated using existing data
-               - Expected mechanistic insights about mesoscale organization
-
-            3. METHODS AND APPROACH (800-1000 words)
-               - **Specific data sources**: Name actual databases/repositories (e.g., "Protein Data Bank", "Human Cell Atlas scRNA-seq", "ENCODE ChIP-seq")
-               - Data integration/harmonization strategy
-               - Computational/analytical methods (algorithms, statistical approaches, AI/ML if applicable)
-               - **Synthesis approach**: How you'll integrate heterogeneous datasets
-               - Validation strategies (cross-dataset validation, known positive controls)
-               - Timeline with milestones (realistic for 2-3 year project)
-               - Team composition: what expertise is needed
-               - **NO experimental validation** - all validation must use existing data
-
-            4. EXPECTED OUTCOMES AND IMPACT (600-800 words)
-               - Specific deliverables (integrated datasets, computational tools, mechanistic models)
-               - Contribution to understanding mesoscale emergent phenomena
-               - Broader impacts on molecular/cellular biology
-               - How results enable future research
-               - Plans for dissemination (publications, workshops, databases)
-               - Long-term sustainability of data/tools
-
-            5. OPEN SCIENCE AND REPRODUCIBILITY (300-500 words)
-               - Code sharing plan (GitHub/GitLab with open license)
-               - Data sharing plan (which repositories, when)
-               - Reproducible workflows (Docker containers, Jupyter notebooks, workflow management)
-               - Documentation standards
-               - Community engagement and training plans
-
-            6. BUDGET AND RESOURCES (400-600 words)
-               - Personnel (postdocs, graduate students, programmer)
-               - Computing resources (cloud computing, HPC time)
-               - Travel for collaboration and dissemination
-               - Workshops/training events
-               - Open science infrastructure costs
-               - Justify each budget item relative to synthesis goals
-
-            RESPONSE FORMAT: Return ONLY valid JSON:
-            {{
-              "proposal": {{
-                "title": "{title}",
-                "abstract": "{abstract}",
-                "background_and_significance": "...",
-                "research_questions_and_hypotheses": "...",
-                "methods_and_approach": "...",
-                "expected_outcomes_and_impact": "...",
-                "open_science_and_reproducibility": "...",
-                "budget_and_resources": "..."
-              }}
-            }}
-
-            IMPORTANT:
-            - Each section must be substantive, detailed, and meet word counts
-            - Emphasize SYNTHESIS throughout - no new data generation
-            - Be specific about data sources (don't say "publicly available data", name them)
-            - Maintain focus on mesoscale emergent phenomena
-            - Ensure the JSON is properly formatted and valid
-            """,
-            parameters=['title', 'abstract', 'research_call', 'information_about_ncems']
-        )
-
-         # generate full proposals from ideas
         templates['generate_proposals_minimal'] = PromptTemplate(
             name="Generate Research Proposals Minimal",
             description="Generate comprehensive research proposals based on title and abstract",
             template="""
-            Write a comprehensive research proposal based on the provided title and abstract, ensuring it aligns with NCEMS funding requirements.
+            Write a comprehensive research proposal based on the provided title
+            and abstract, ensuring it aligns with NCEMS funding requirements.
 
             RESEARCH CALL:
             {research_call}
@@ -269,7 +235,288 @@ class PromptManager:
             - Each section must be substantive, detailed, and meet word counts
             - Ensure the JSON is properly formatted and valid
             """,
-            parameters=['title', 'abstract', 'research_call', 'information_about_ncems']
+            parameters=['title', 'abstract', 'research_call', 'information_about_ncems'],
+            version='v2'
+        )
+
+        templates['generate_proposals_persona_minimal'] = PromptTemplate(
+            name="Generate Research Proposals Persona Minimal",
+            description="Generate comprehensive research proposals while preserving persona-grounded scientific perspective",
+            template="""
+            Write a comprehensive research proposal based on the provided title
+            and abstract, ensuring it aligns with NCEMS funding requirements.
+
+            Preserve the scientific perspective implied by the human research
+            team described below, but do NOT imitate their personal prose style,
+            biography, or idiosyncratic phrasing.
+
+            RESEARCH CALL:
+            {research_call}
+
+            INFORMATION ABOUT NCEMS:
+            {information_about_ncems}
+
+            PERSONA CONTEXT:
+            {persona_card_json}
+
+            RESEARCH IDEA TO EXPAND:
+            Title: {title}
+            Abstract: {abstract}
+
+            Create a proposal meeting the highest standards for scientific
+            rigor, clarity, and feasibility. Include these sections with
+            specified word counts:
+
+            1. BACKGROUND AND SIGNIFICANCE (500 words)
+            2. RESEARCH QUESTIONS AND HYPOTHESES (500 words)
+            3. METHODS AND APPROACH (500 words)
+            4. EXPECTED OUTCOMES AND IMPACT (300 words)
+            5. OPEN SCIENCE AND REPRODUCIBILITY (300 words)
+            6. BUDGET AND RESOURCES (300 words)
+
+            IMPORTANT INSTRUCTIONS:
+            - Use the persona card only as factual scientific grounding for
+              domains, systems, methods, data types, and recurring research
+              questions.
+            - Do not copy language from the persona card.
+            - Keep the proposal clearly centered on synthesis research using
+              existing publicly available data.
+
+            RESPONSE FORMAT: Return ONLY valid JSON:
+            {{
+              "proposal": {{
+                "title": "{title}",
+                "abstract": "{abstract}",
+                "background_and_significance": "...",
+                "research_questions_and_hypotheses": "...",
+                "methods_and_approach": "...",
+                "expected_outcomes_and_impact": "...",
+                "open_science_and_reproducibility": "...",
+                "budget_and_resources": "..."
+              }}
+            }}
+
+            IMPORTANT:
+            - Each section must be substantive, detailed, and meet word counts
+            - Ensure the JSON is properly formatted and valid
+            """,
+            parameters=['title', 'abstract', 'research_call', 'information_about_ncems', 'persona_card_json'],
+            version='v1'
+        )
+
+        templates['eval_ncems_criteria_batch5'] = PromptTemplate(
+            name="NCEMS Criteria Evaluation Batch 5",
+            description="Generate five structured NCEMS reviews for one proposal in a single response",
+            template="""
+            You are an expert scientific reviewer evaluating a research proposal
+            for the following funding call:
+
+            {research_call}
+
+            PROPOSAL TO EVALUATE:
+            ID: {proposal_id}
+            Title: {proposal_title}
+            Abstract: {proposal_abstract}
+            Full Proposal: {proposal_full}
+
+            TASK:
+            Generate exactly 5 independent reviews of this proposal. Each review
+            should read like it was written by a distinct reviewer, but all five
+            must still be grounded in the proposal text and NCEMS evaluation
+            criteria.
+
+            For each review, provide:
+            - review_text
+            - strengths
+            - weakness
+            - overall_numeric_score (1-5)
+            - overall_summary
+            - relevance_to_emergent_phenomena_score and justification
+            - novelty_and_significance_score and justification
+            - rigor_of_approach_score and justification
+            - scope_and_timeline_score and justification
+            - synthesis_focus_score and justification
+            - data_identification_score and justification
+            - open_science_commitment_score and justification
+
+            IMPORTANT:
+            - Return valid JSON only.
+            - Return exactly 5 review objects.
+            - Do not wrap the response in markdown.
+
+            RESPONSE FORMAT:
+            {{
+              "reviews": [
+                {{
+                  "review_text": "...",
+                  "strengths": "...",
+                  "weakness": "...",
+                  "overall_numeric_score": 4,
+                  "overall_summary": "...",
+                  "relevance_to_emergent_phenomena_score": 4,
+                  "relevance_to_emergent_phenomena_justification": "...",
+                  "novelty_and_significance_score": 4,
+                  "novelty_and_significance_justification": "...",
+                  "rigor_of_approach_score": 4,
+                  "rigor_of_approach_justification": "...",
+                  "scope_and_timeline_score": 4,
+                  "scope_and_timeline_justification": "...",
+                  "synthesis_focus_score": 4,
+                  "synthesis_focus_justification": "...",
+                  "data_identification_score": 4,
+                  "data_identification_justification": "...",
+                  "open_science_commitment_score": 4,
+                  "open_science_commitment_justification": "..."
+                }}
+              ]
+            }}
+            """,
+            parameters=['research_call', 'proposal_id', 'proposal_title', 'proposal_abstract', 'proposal_full'],
+            version='v1'
+        )
+
+        templates['eval_ncems_criteria_single'] = PromptTemplate(
+            name="NCEMS Criteria Evaluation Single",
+            description="Generate one structured NCEMS review for one proposal",
+            template="""
+            You are an expert scientific reviewer evaluating a research proposal
+            for the following funding call:
+
+            {research_call}
+
+            PROPOSAL TO EVALUATE:
+            ID: {proposal_id}
+            Title: {proposal_title}
+            Abstract: {proposal_abstract}
+            Full Proposal: {proposal_full}
+
+            TASK:
+            Generate exactly 1 independent review of this proposal.
+
+            Provide:
+            - review_text
+            - strengths
+            - weakness
+            - overall_numeric_score (1-5)
+            - overall_summary
+            - relevance_to_emergent_phenomena_score and justification
+            - novelty_and_significance_score and justification
+            - rigor_of_approach_score and justification
+            - scope_and_timeline_score and justification
+            - synthesis_focus_score and justification
+            - data_identification_score and justification
+            - open_science_commitment_score and justification
+
+            IMPORTANT:
+            - Return valid JSON only.
+            - Return exactly 1 review object.
+            - Do not wrap the response in markdown.
+
+            RESPONSE FORMAT:
+            {{
+              "reviews": [
+                {{
+                  "review_text": "...",
+                  "strengths": "...",
+                  "weakness": "...",
+                  "overall_numeric_score": 4,
+                  "overall_summary": "...",
+                  "relevance_to_emergent_phenomena_score": 4,
+                  "relevance_to_emergent_phenomena_justification": "...",
+                  "novelty_and_significance_score": 4,
+                  "novelty_and_significance_justification": "...",
+                  "rigor_of_approach_score": 4,
+                  "rigor_of_approach_justification": "...",
+                  "scope_and_timeline_score": 4,
+                  "scope_and_timeline_justification": "...",
+                  "synthesis_focus_score": 4,
+                  "synthesis_focus_justification": "...",
+                  "data_identification_score": 4,
+                  "data_identification_justification": "...",
+                  "open_science_commitment_score": 4,
+                  "open_science_commitment_justification": "..."
+                }}
+              ]
+            }}
+            """,
+            parameters=['research_call', 'proposal_id', 'proposal_title', 'proposal_abstract', 'proposal_full'],
+            version='v1'
+        )
+
+        templates['eval_ncems_criteria_persona_single'] = PromptTemplate(
+            name="NCEMS Criteria Evaluation Persona Single",
+            description="Generate one structured NCEMS review while adopting a reviewer persona card",
+            template="""
+            You are an expert scientific reviewer evaluating a research proposal
+            for the following funding call:
+
+            {research_call}
+
+            Adopt the scientific review perspective implied by the reviewer
+            persona card below, but do not imitate a personal writing style or
+            biography.
+
+            REVIEWER PERSONA:
+            {reviewer_persona_card_json}
+
+            PROPOSAL TO EVALUATE:
+            ID: {proposal_id}
+            Title: {proposal_title}
+            Abstract: {proposal_abstract}
+            Full Proposal: {proposal_full}
+
+            TASK:
+            Generate exactly 1 independent review of this proposal from the
+            scientific perspective implied by the reviewer persona.
+
+            Provide:
+            - review_text
+            - strengths
+            - weakness
+            - overall_numeric_score (1-5)
+            - overall_summary
+            - relevance_to_emergent_phenomena_score and justification
+            - novelty_and_significance_score and justification
+            - rigor_of_approach_score and justification
+            - scope_and_timeline_score and justification
+            - synthesis_focus_score and justification
+            - data_identification_score and justification
+            - open_science_commitment_score and justification
+
+            IMPORTANT:
+            - Return valid JSON only.
+            - Return exactly 1 review object.
+            - Do not wrap the response in markdown.
+
+            RESPONSE FORMAT:
+            {{
+              "reviews": [
+                {{
+                  "review_text": "...",
+                  "strengths": "...",
+                  "weakness": "...",
+                  "overall_numeric_score": 4,
+                  "overall_summary": "...",
+                  "relevance_to_emergent_phenomena_score": 4,
+                  "relevance_to_emergent_phenomena_justification": "...",
+                  "novelty_and_significance_score": 4,
+                  "novelty_and_significance_justification": "...",
+                  "rigor_of_approach_score": 4,
+                  "rigor_of_approach_justification": "...",
+                  "scope_and_timeline_score": 4,
+                  "scope_and_timeline_justification": "...",
+                  "synthesis_focus_score": 4,
+                  "synthesis_focus_justification": "...",
+                  "data_identification_score": 4,
+                  "data_identification_justification": "...",
+                  "open_science_commitment_score": 4,
+                  "open_science_commitment_justification": "..."
+                }}
+              ]
+            }}
+            """,
+            parameters=['research_call', 'proposal_id', 'proposal_title', 'proposal_abstract', 'proposal_full', 'reviewer_persona_card_json'],
+            version='v1'
         )
         
 
@@ -558,7 +805,8 @@ Title: {proposal_title}
             {
                 'name': name,
                 'description': template.description,
-                'parameters': template.parameters
+                'parameters': template.parameters,
+                'version': template.version,
             }
             for name, template in self.templates.items()
         ]
