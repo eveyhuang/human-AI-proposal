@@ -86,9 +86,7 @@ class PromptManager:
 
             TASK:
             Generate exactly one research idea aligned with the research call.
-            This call should be treated as one independent draw, not as part of a
-            list that must be diversified relative to other unseen ideas.
-
+            
             Provide:
             - **Title**: Clear, specific, and scientifically precise
             - **Abstract**: 400-600 words
@@ -157,9 +155,6 @@ class PromptManager:
               card.
             - Whenever possible, integrate signals from multiple team members
               rather than defaulting to only one author.
-            - Ground the idea in at least two concrete elements from the
-              persona card, such as domains, biological systems, methods, data
-              types, or recurring scientific questions.
             - Preserve the NCEMS requirement that the project must be synthesis
               research using existing publicly available data.
 
@@ -379,8 +374,8 @@ class PromptManager:
             name="NCEMS Criteria Evaluation Single",
             description="Generate one structured NCEMS review for one proposal",
             template="""
-            You are an expert scientific reviewer evaluating a research proposal
-            for the following funding call:
+            You are an scientist with over 20 years of experience in the relevant domain of the research funding call,
+            and evaluating a research proposal for the call:
 
             {research_call}
 
@@ -391,7 +386,7 @@ class PromptManager:
             Full Proposal: {proposal_full}
 
             TASK:
-            Generate exactly 1 independent review of this proposal.
+            Generate a thorough and detailed review of this proposal.
 
             Provide:
             - review_text

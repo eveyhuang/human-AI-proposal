@@ -15,7 +15,9 @@ from proposal_generation import (
     append_failure_log,
     build_target_proposal_uid,
     ensure_failure_csv,
+    extract_run_id_from_path,
     find_project_root,
+    load_failures_csv,
     load_shared_call_context,
     now_run_id,
     save_generation_manifest,
@@ -40,6 +42,13 @@ REVIEW_SCORE_FIELDS = [
     'open_science_commitment_score',
     'open_science_commitment_justification',
 ]
+
+
+def _is_blank_value(value: Any) -> bool:
+    """Return True when a scalar should count as missing text/content."""
+    if value is None or pd.isna(value):
+        return True
+    return not str(value).strip()
 
 
 def load_human_proposal_roster(project_root: Path) -> pd.DataFrame:
@@ -371,10 +380,10 @@ def validate_review_row(row: Dict[str, Any]) -> List[str]:
         'weakness',
         'overall_summary',
     ]:
-        if not str(row.get(field, '')).strip():
+        if _is_blank_value(row.get(field, '')):
             issues.append(f'missing {field}')
     for field in REVIEW_SCORE_FIELDS:
-        if row.get(field) in (None, ''):
+        if _is_blank_value(row.get(field)):
             issues.append(f'missing {field}')
     return issues
 
@@ -402,6 +411,36 @@ def review_manifest_base(
     }
 
 
+def _review_call_is_complete(rows: pd.DataFrame, schedule_row: Dict[str, Any]) -> bool:
+    """Return whether one review-generation call is already complete in a partial CSV."""
+    subset = rows[rows['review_call_id'] == schedule_row['review_call_id']].copy()
+    expected = int(schedule_row['expected_review_count'])
+    if len(subset) != expected:
+        return False
+    required_cols = ['review_uid', 'review_text', 'strengths', 'weakness', 'overall_summary']
+    for col in required_cols:
+        if col not in subset.columns:
+            return False
+        if subset[col].fillna('').astype(str).str.strip().eq('').any():
+            return False
+    for field in REVIEW_SCORE_FIELDS:
+        if field not in subset.columns:
+            return False
+        if subset[field].isna().any() or subset[field].astype(str).str.strip().eq('').any():
+            return False
+    if schedule_row['review_generation_mode'] == 'batch5':
+        observed = sorted(pd.to_numeric(subset['review_draw_index'], errors='coerce').dropna().astype(int).tolist())
+        return observed == list(range(1, expected + 1))
+    return True
+
+
+def _deduplicate_review_rows(df: pd.DataFrame) -> pd.DataFrame:
+    """Keep one stable row per review_uid in resumed review outputs."""
+    if df.empty or 'review_uid' not in df.columns:
+        return df
+    return df.drop_duplicates(subset=['review_uid'], keep='last').copy()
+
+
 def run_review_generation_for_condition(
     *,
     project_root: Path,
@@ -423,21 +462,44 @@ def run_review_generation_for_condition(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     latest_complete = sorted(output_dir.glob(f'ai_reviews_{condition}_complete_*.csv'))
-    if resume_ok and latest_complete:
-        existing_df = pd.read_csv(latest_complete[-1])
+    latest_complete_path = latest_complete[-1] if latest_complete else None
+    latest_progress_path = sorted(output_dir.glob(f'ai_reviews_{condition}_progress_*.csv'))
+    latest_progress_path = latest_progress_path[-1] if latest_progress_path else None
+    latest_schedule_path = sorted(output_dir.glob(f'review_schedule_{condition}_*.csv'))
+    latest_schedule_path = latest_schedule_path[-1] if latest_schedule_path else None
+    latest_failures_path = sorted(output_dir.glob(f'ai_reviews_{condition}_*_failures.csv'))
+    latest_failures_path = latest_failures_path[-1] if latest_failures_path else None
+    latest_manifest_path = sorted(output_dir.glob(f'generation_manifest_{condition}_*.json'))
+    latest_manifest_path = latest_manifest_path[-1] if latest_manifest_path else None
+
+    if resume_ok and latest_complete_path:
+        existing_df = pd.read_csv(latest_complete_path)
         if len(existing_df) == 345:
             return {
                 'condition': condition,
-                'run_id': str(existing_df['run_id'].iloc[0]) if 'run_id' in existing_df.columns and not existing_df.empty else latest_complete[-1].stem.split('_')[-1],
+                'run_id': str(existing_df['run_id'].iloc[0]) if 'run_id' in existing_df.columns and not existing_df.empty else latest_complete_path.stem.split('_')[-1],
                 'reviews_df': existing_df,
-                'complete_path': latest_complete[-1],
-                'progress_path': sorted(output_dir.glob(f'ai_reviews_{condition}_progress_*.csv'))[-1] if sorted(output_dir.glob(f'ai_reviews_{condition}_progress_*.csv')) else None,
-                'schedule_path': sorted(output_dir.glob(f'review_schedule_{condition}_*.csv'))[-1] if sorted(output_dir.glob(f'review_schedule_{condition}_*.csv')) else None,
-                'failures_path': sorted(output_dir.glob(f'ai_reviews_{condition}_*_failures.csv'))[-1] if sorted(output_dir.glob(f'ai_reviews_{condition}_*_failures.csv')) else None,
-                'manifest_path': sorted(output_dir.glob(f'generation_manifest_{condition}_*.json'))[-1] if sorted(output_dir.glob(f'generation_manifest_{condition}_*.json')) else None,
+                'complete_path': latest_complete_path,
+                'progress_path': latest_progress_path,
+                'schedule_path': latest_schedule_path,
+                'failures_path': latest_failures_path,
+                'manifest_path': latest_manifest_path,
                 'qa_issues': [],
                 'reused_existing': True,
             }
+
+    existing_progress_df = pd.DataFrame()
+    resumed_from_partial = False
+    if resume_ok and latest_progress_path is not None:
+        existing_progress_df = _deduplicate_review_rows(pd.read_csv(latest_progress_path))
+        partial_run_id = (
+            str(existing_progress_df['run_id'].iloc[0])
+            if 'run_id' in existing_progress_df.columns and not existing_progress_df.empty
+            else extract_run_id_from_path(latest_progress_path, f'ai_reviews_{condition}_progress_')
+        )
+        if partial_run_id:
+            run_id = partial_run_id
+            resumed_from_partial = not existing_progress_df.empty
 
     run_id = run_id or now_run_id()
     schedule_path = output_dir / f'review_schedule_{condition}_{run_id}.csv'
@@ -458,11 +520,14 @@ def run_review_generation_for_condition(
         target_n=schedule_df['target_proposal_uid'].nunique(),
     )
 
-    rows: List[Dict[str, Any]] = []
-    failures: List[Dict[str, Any]] = []
+    rows: List[Dict[str, Any]] = existing_progress_df.to_dict('records') if not existing_progress_df.empty else []
+    failures: List[Dict[str, Any]] = load_failures_csv(failures_path if failures_path.exists() else latest_failures_path)
     calls_completed = 0
 
     for schedule_row in schedule_df.to_dict('records'):
+        current_df = _deduplicate_review_rows(pd.DataFrame(rows))
+        if not current_df.empty and _review_call_is_complete(current_df, schedule_row):
+            continue
         prompt, target_text_truncated = make_review_prompt(
             prompt_manager=prompt_manager,
             schedule_row=schedule_row,
@@ -530,10 +595,11 @@ def run_review_generation_for_condition(
                         rows.append(row)
 
         if calls_completed % save_progress_every_n_calls == 0 and rows:
-            pd.DataFrame(rows).sort_values(['target_proposal_uid', 'evaluator_model', 'review_draw_index']).to_csv(progress_path, index=False)
+            partial_df = _deduplicate_review_rows(pd.DataFrame(rows))
+            partial_df.sort_values(['target_proposal_uid', 'evaluator_model', 'review_draw_index']).to_csv(progress_path, index=False)
             ensure_failure_csv(failures_path, failures)
 
-    reviews_df = pd.DataFrame(rows)
+    reviews_df = _deduplicate_review_rows(pd.DataFrame(rows))
     if not reviews_df.empty:
         reviews_df = reviews_df.sort_values(['target_proposal_uid', 'evaluator_model', 'review_draw_index']).reset_index(drop=True)
         reviews_df.to_csv(progress_path, index=False)
@@ -548,6 +614,7 @@ def run_review_generation_for_condition(
             'total_completed_review_rows': len(reviews_df),
             'failed_calls': len(failures),
             'qa_issues': qa_issues,
+            'resumed_from_partial': resumed_from_partial,
             'completed_cleanly': not qa_issues and not failures,
             'ended_at': datetime.now().isoformat(),
         }

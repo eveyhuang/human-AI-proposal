@@ -22,6 +22,13 @@ PROPOSAL_SECTION_COLUMNS = [
 ]
 
 
+def _is_blank_value(value: Any) -> bool:
+    """Return True when a scalar should count as missing text/content."""
+    if value is None or pd.isna(value):
+        return True
+    return not str(value).strip()
+
+
 def find_project_root(start: Optional[Path] = None) -> Path:
     """Find the project root from a notebook or script working directory."""
     base = (start or Path.cwd()).resolve()
@@ -231,7 +238,7 @@ def validate_idea_records(df: pd.DataFrame, expected_rows_per_model: int, condit
         return ['ideas dataframe is empty']
 
     for col in ['title', 'abstract', 'model', 'idea_call_id']:
-        if df[col].fillna('').astype(str).str.strip().eq('').any():
+        if col not in df.columns or df[col].map(_is_blank_value).any():
             issues.append(f'missing values found in {col}')
 
     counts = df.groupby('model').size().to_dict()
@@ -262,7 +269,7 @@ def validate_proposal_record(row: Dict[str, Any]) -> List[str]:
     """Return missing proposal-section issues for one row."""
     issues: List[str] = []
     for col in PROPOSAL_SECTION_COLUMNS:
-        if not str(row.get(col, '')).strip():
+        if _is_blank_value(row.get(col, '')):
             issues.append(f'missing {col}')
     return issues
 
@@ -286,6 +293,60 @@ def latest_matching_file(directory: Path, pattern: str) -> Optional[Path]:
     """Return the latest file matching a glob pattern."""
     matches = sorted(directory.glob(pattern))
     return matches[-1] if matches else None
+
+
+def extract_run_id_from_path(path: Optional[Path], prefix: str) -> Optional[str]:
+    """Extract the run id suffix from a generated artifact path."""
+    if path is None:
+        return None
+    stem = path.stem
+    if stem.startswith(prefix):
+        return stem[len(prefix):]
+    return None
+
+
+def load_failures_csv(path: Optional[Path]) -> List[Dict[str, Any]]:
+    """Load a prior failures CSV if present."""
+    if path is None or not path.exists():
+        return []
+    df = pd.read_csv(path)
+    if df.empty:
+        return []
+    return df.to_dict('records')
+
+
+def _idea_call_is_complete(rows: pd.DataFrame, schedule_row: Dict[str, Any]) -> bool:
+    """Return whether one idea-generation call is already complete in a partial CSV."""
+    subset = rows[rows['idea_call_id'] == schedule_row['idea_call_id']].copy()
+    expected = int(schedule_row['expected_idea_count'])
+    if len(subset) != expected:
+        return False
+    required_cols = ['title', 'abstract', 'proposal_uid', 'idea_draw_index']
+    for col in required_cols:
+        if col not in subset.columns:
+            return False
+        if subset[col].fillna('').astype(str).str.strip().eq('').any():
+            return False
+    if subset['proposal_uid'].astype(str).duplicated().any():
+        return False
+    if condition := schedule_row.get('condition'):
+        if condition == 'baseline':
+            expected_draws = list(range(1, expected + 1))
+            observed = sorted(pd.to_numeric(subset['idea_draw_index'], errors='coerce').dropna().astype(int).tolist())
+            return observed == expected_draws
+    return True
+
+
+def _deduplicate_idea_rows(df: pd.DataFrame) -> pd.DataFrame:
+    """Keep one stable row per proposal_uid in resumed idea outputs."""
+    if df.empty or 'proposal_uid' not in df.columns:
+        return df
+    return df.drop_duplicates(subset=['proposal_uid'], keep='last').copy()
+
+
+def _proposal_row_is_complete(row: Dict[str, Any]) -> bool:
+    """Return whether one proposal row has all required expanded sections."""
+    return len(validate_proposal_record(row)) == 0
 
 
 def build_proposal_uid(condition: str, model_name: str, idea_draw_index: int) -> str:
@@ -475,6 +536,8 @@ def run_idea_generation_for_condition(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     latest_ideas = latest_matching_file(output_dir, f'ai_ideas_{condition}_*.csv')
+    latest_failures = latest_matching_file(output_dir, f'ai_ideas_{condition}_*_failures.csv')
+    latest_manifest = latest_matching_file(output_dir, f'generation_manifest_{condition}_*.json')
     if resume_ok and latest_ideas is not None:
         existing_df = pd.read_csv(latest_ideas)
         issues = validate_idea_records(existing_df, condition_config['expected_rows_per_model'], condition)
@@ -485,14 +548,26 @@ def run_idea_generation_for_condition(
                 'run_id': existing_run_id,
                 'ideas_df': existing_df,
                 'ideas_path': latest_ideas,
-                'failures_path': latest_matching_file(output_dir, f'ai_ideas_{condition}_*_failures.csv'),
-                'manifest_path': latest_matching_file(output_dir, f'generation_manifest_{condition}_*.json'),
+                'failures_path': latest_failures,
+                'manifest_path': latest_manifest,
                 'manifest': {'condition': condition, 'run_id': existing_run_id, 'reused_existing_ideas': True},
                 'qa_issues': [],
                 'reused_existing': True,
             }
 
     resolved_models = [ai_interface.resolve_model_name(model_name) for model_name in models_to_use]
+    existing_partial_df = pd.DataFrame()
+    resumed_from_partial = False
+    if resume_ok and latest_ideas is not None:
+        existing_partial_df = _deduplicate_idea_rows(pd.read_csv(latest_ideas))
+        partial_run_id = (
+            str(existing_partial_df['run_id'].iloc[0])
+            if 'run_id' in existing_partial_df.columns and not existing_partial_df.empty
+            else extract_run_id_from_path(latest_ideas, f'ai_ideas_{condition}_')
+        )
+        if partial_run_id:
+            run_id = partial_run_id
+            resumed_from_partial = not existing_partial_df.empty
     run_id = run_id or now_run_id()
     idea_template = prompt_manager.get_template(condition_config['idea_prompt_template'])
     proposal_template = prompt_manager.get_template(condition_config['proposal_prompt_template'])
@@ -512,8 +587,8 @@ def run_idea_generation_for_condition(
         temperature=generation_temperature,
     )
 
-    all_rows: List[Dict[str, Any]] = []
-    failures: List[Dict[str, Any]] = []
+    all_rows: List[Dict[str, Any]] = existing_partial_df.to_dict('records') if not existing_partial_df.empty else []
+    failures: List[Dict[str, Any]] = load_failures_csv(failures_path if failures_path.exists() else latest_failures)
     calls_completed = 0
 
     for model_name in resolved_models:
@@ -524,6 +599,9 @@ def run_idea_generation_for_condition(
             persona_roster=persona_roster,
         )
         for schedule_row in schedule:
+            current_df = _deduplicate_idea_rows(pd.DataFrame(all_rows))
+            if not current_df.empty and _idea_call_is_complete(current_df, schedule_row):
+                continue
             prompt_kwargs = build_idea_prompt_kwargs(
                 shared_call_context=shared_call_context,
                 condition_config=condition_config,
@@ -592,10 +670,11 @@ def run_idea_generation_for_condition(
                         )
 
             if calls_completed % save_progress_every_n_calls == 0 and all_rows:
-                pd.DataFrame(all_rows).sort_values(['model', 'idea_draw_index']).to_csv(ideas_path, index=False)
+                partial_df = _deduplicate_idea_rows(pd.DataFrame(all_rows))
+                partial_df.sort_values(['model', 'idea_draw_index']).to_csv(ideas_path, index=False)
                 ensure_failure_csv(failures_path, failures)
 
-    ideas_df = pd.DataFrame(all_rows)
+    ideas_df = _deduplicate_idea_rows(pd.DataFrame(all_rows))
     if not ideas_df.empty:
         ideas_df = ideas_df.sort_values(['model', 'idea_draw_index']).reset_index(drop=True)
         ideas_df.to_csv(ideas_path, index=False)
@@ -608,6 +687,7 @@ def run_idea_generation_for_condition(
             'idea_rows_completed': len(ideas_df),
             'idea_failures': len(failures),
             'idea_qa_issues': qa_issues,
+            'resumed_from_partial': resumed_from_partial,
             'completed_cleanly': not qa_issues and not failures,
             'ended_at': datetime.now().isoformat(),
         }
@@ -648,6 +728,8 @@ def run_proposal_expansion_for_condition(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     latest_complete = latest_matching_file(output_dir, f'ai_proposals_{condition}_complete_*.csv')
+    latest_progress = latest_matching_file(output_dir, f'ai_proposals_{condition}_progress_*.csv')
+    latest_failures = latest_matching_file(output_dir, f'ai_proposals_{condition}_*_failures.csv')
     if resume_ok and latest_complete is not None:
         existing_df = pd.read_csv(latest_complete)
         proposal_issues = []
@@ -658,13 +740,27 @@ def run_proposal_expansion_for_condition(
                 'condition': condition,
                 'run_id': str(existing_df['run_id'].iloc[0]) if 'run_id' in existing_df.columns and not existing_df.empty else run_id,
                 'proposals_df': existing_df,
-                'progress_path': latest_matching_file(output_dir, f'ai_proposals_{condition}_progress_*.csv'),
+                'progress_path': latest_progress,
                 'complete_path': latest_complete,
-                'failures_path': latest_matching_file(output_dir, f'ai_proposals_{condition}_*_failures.csv'),
+                'failures_path': latest_failures,
                 'qa_issues': [],
                 'reused_existing': True,
             }
 
+    existing_progress_df = pd.DataFrame()
+    resumed_from_partial = False
+    if resume_ok and latest_progress is not None:
+        existing_progress_df = pd.read_csv(latest_progress)
+        partial_run_id = (
+            str(existing_progress_df['run_id'].iloc[0])
+            if 'run_id' in existing_progress_df.columns and not existing_progress_df.empty
+            else extract_run_id_from_path(latest_progress, f'ai_proposals_{condition}_progress_')
+        )
+        if partial_run_id:
+            run_id = partial_run_id
+            resumed_from_partial = not existing_progress_df.empty
+
+    run_id = run_id or now_run_id()
     proposal_template = prompt_manager.get_template(condition_config['proposal_prompt_template'])
     progress_path = output_dir / f'ai_proposals_{condition}_progress_{run_id}.csv'
     complete_path = output_dir / f'ai_proposals_{condition}_complete_{run_id}.csv'
@@ -679,11 +775,20 @@ def run_proposal_expansion_for_condition(
     if 'proposal_provider_model_id' not in proposals_df.columns:
         proposals_df['proposal_provider_model_id'] = ''
 
-    failures: List[Dict[str, Any]] = []
+    if not existing_progress_df.empty and 'proposal_uid' in existing_progress_df.columns:
+        progress_lookup = existing_progress_df.drop_duplicates(subset=['proposal_uid'], keep='last').set_index('proposal_uid')
+        for idx, row in proposals_df.iterrows():
+            uid = row.get('proposal_uid')
+            if uid in progress_lookup.index:
+                for col in proposals_df.columns:
+                    if col in progress_lookup.columns:
+                        proposals_df.at[idx, col] = progress_lookup.at[uid, col]
+
+    failures: List[Dict[str, Any]] = load_failures_csv(failures_path if failures_path.exists() else latest_failures)
     calls_completed = 0
 
     for row_idx, row in proposals_df.iterrows():
-        if not validate_proposal_record(row.to_dict()):
+        if _proposal_row_is_complete(row.to_dict()):
             continue
 
         model_name = row['model']
@@ -757,6 +862,7 @@ def run_proposal_expansion_for_condition(
             'proposal_expansions_completed': calls_completed,
             'proposal_failures': len(failures),
             'proposal_qa_issues': qa_issues,
+            'resumed_from_partial': resumed_from_partial,
             'completed_cleanly': manifest.get('completed_cleanly', True) and not qa_issues and not failures,
             'ended_at': datetime.now().isoformat(),
         }
