@@ -315,10 +315,11 @@ class PromptManager:
             Full Proposal: {proposal_full}
 
             TASK:
-            Generate exactly 5 independent reviews of this proposal. Each review
-            should read like it was written by a distinct reviewer, but all five
-            must still be grounded in the proposal text and NCEMS evaluation
-            criteria.
+            Generate exactly 5 independent reviews of this proposal. 
+            First identify 5 distinct reviewers who are senior scientist from relevant and different domains in the research call.
+            Each review should be written with the perspective from one reviewer and cover different perspectives and opinions from their backgrounds.
+            Each reviewer may also give different scores on each criteria given different strengths and weakness they identify.
+            but all five must still be grounded in the proposal text and NCEMS evaluation criteria. 
 
             For each review, provide:
             - review_text
@@ -374,7 +375,7 @@ class PromptManager:
             name="NCEMS Criteria Evaluation Single",
             description="Generate one structured NCEMS review for one proposal",
             template="""
-            You are an scientist with over 20 years of experience in the relevant domain of the research funding call,
+            You are an scientist with over 20 years of experience in relevant domains of the research funding call,
             and evaluating a research proposal for the call:
 
             {research_call}

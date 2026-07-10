@@ -214,11 +214,12 @@ class AIModelsInterface:
                 return response.output_text
             else:
                 # Standard Chat Completions path (no web search)
-                # GPT-5.2 requires max_completion_tokens instead of max_tokens
+                # GPT-5.2 requires max_completion_tokens instead of max_tokens.
+                # gpt-5.5 only supports the default temperature (1) and rejects
+                # any explicit value, so we omit the parameter entirely.
                 response = client.chat.completions.create(
                     model=provider_model_id,
                     messages=[{"role": "user", "content": prompt}],
-                    temperature=kwargs.get('temperature', 0),
                     max_completion_tokens=kwargs.get('max_completion_tokens', kwargs.get('max_tokens', 16000))
                 )
                 return response.choices[0].message.content
@@ -236,15 +237,15 @@ class AIModelsInterface:
         """
         from google.genai import types as genai_types
         try:
+            # These models only support the default temperature and reject any
+            # explicit value, so we omit the parameter entirely.
             if kwargs.get('use_web_search', False):
                 config = genai_types.GenerateContentConfig(
                     tools=[genai_types.Tool(google_search=genai_types.GoogleSearch())],
-                    temperature=kwargs.get('temperature', 0),
                 )
             else:
                 config = genai_types.GenerateContentConfig(
                     response_mime_type='application/json',
-                    temperature=kwargs.get('temperature', 0),
                 )
 
             response = self.gemini_client.models.generate_content(
@@ -267,10 +268,11 @@ class AIModelsInterface:
         blocks and join them to form the final answer.
         """
         try:
+            # This model only supports the default temperature and rejects any
+            # explicit value, so we omit the parameter entirely.
             create_kwargs = dict(
                 model=provider_model_id,
                 max_tokens=kwargs.get('max_tokens', 16000),
-                temperature=kwargs.get('temperature', 0),
                 messages=[{"role": "user", "content": prompt}],
             )
 
@@ -407,7 +409,7 @@ class AIModelsInterface:
                     'canonical_model_name': canonical_model_name,
                     'provider': self.model_registry[canonical_model_name]['provider'],
                     'provider_model_id': self.model_registry[canonical_model_name]['provider_model_id'],
-                    'temperature': kwargs.get('temperature', 0),
+                    'temperature': 'provider_default',  # temperature is no longer sent; models use their default
                     'max_tokens': kwargs.get('max_tokens', kwargs.get('max_completion_tokens', 16000)),
                     'timestamp': started_at,
                     'raw_response': raw_response,
@@ -434,7 +436,7 @@ class AIModelsInterface:
             'canonical_model_name': canonical_model_name,
             'provider': self.model_registry[canonical_model_name]['provider'],
             'provider_model_id': self.model_registry[canonical_model_name]['provider_model_id'],
-            'temperature': kwargs.get('temperature', 0),
+            'temperature': 'provider_default',  # temperature is no longer sent; models use their default
             'max_tokens': kwargs.get('max_tokens', kwargs.get('max_completion_tokens', 16000)),
             'timestamp': datetime.now().isoformat(),
             'raw_response': raw_response or '',
@@ -483,7 +485,7 @@ class AIModelsInterface:
             generated_ideas=parsed_ideas,
             timestamp=datetime.now().isoformat(),
             metadata={
-                'temperature': kwargs.get('temperature', 0),
+                'temperature': 'provider_default',  # temperature is no longer sent; models use their default
                 'max_tokens': kwargs.get('max_tokens', 16000),
                 'prompt_template': template_name,
                 'research_call': research_call,

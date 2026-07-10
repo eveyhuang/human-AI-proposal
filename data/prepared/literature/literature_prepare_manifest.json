@@ -1,0 +1,19 @@
+{
+  "prepared_at": "2026-07-10T08:23:40.747637",
+  "source_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/literature/relevant-corpus-from-pubmed.json",
+  "prepared_corpus_json": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/prepared/literature/literature_corpus_prepared.json",
+  "prepared_article_index_csv": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/prepared/literature/literature_article_index.csv",
+  "embedding_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/embeddings/literature/relevant_literature_embeddings.pkl",
+  "embedding_model_name": "michiyasunaga/BioLinkBERT-large",
+  "corpus_hash": "01ab952ffce4f30064b4c4f11f561e7b43ccadb137a730e44af1a88e7ff1092a",
+  "article_count": 39538,
+  "bertopic_status": "failed",
+  "bertopic_model_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/embeddings/literature/lit_bertopic_model.pkl",
+  "bertopic_assignments_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/prepared/literature/lit_bertopic_assignments.csv",
+  "bertopic_topic_info_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/prepared/literature/lit_bertopic_topic_info.csv",
+  "bertopic_error": "max_df corresponds to < documents than min_df",
+  "literature_umap_status": "ready",
+  "literature_umap_reducer_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/embeddings/literature/lit_umap_reducer.pkl",
+  "literature_umap_coords_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/embeddings/literature/lit_umap2d.npy",
+  "literature_umap_error": ""
+}

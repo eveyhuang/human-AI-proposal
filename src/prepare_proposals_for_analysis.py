@@ -31,6 +31,20 @@ MODEL_DISPLAY_NAME_MAP = {
 }
 
 
+def _latest_non_failures_csv(directory: Path, pattern: str) -> Optional[Path]:
+    """Latest CSV matching pattern, excluding *_failures.csv.
+
+    The '*' in these rephrased-output globs also matches the sibling failures
+    CSV, and since '.' < '_' it sorts last, so a naive latest-match would pick
+    the failures file (which lacks the expected proposal columns).
+    """
+    matches = [
+        p for p in sorted(directory.glob(pattern))
+        if not p.name.endswith('_failures.csv')
+    ]
+    return matches[-1] if matches else None
+
+
 def normalize_title(title: Any) -> str:
     """Create a lightweight normalized title string for QA checks."""
     if pd.isna(title):
@@ -60,7 +74,7 @@ def locate_latest_proposal_files(project_root: Path, condition: str) -> Dict[str
     original_dir = project_root / 'data' / 'ai-proposals' / condition
     rephrased_dir = original_dir / 'rephrased'
     original = latest_matching_file(original_dir, f'ai_proposals_{condition}_complete_*.csv')
-    rephrased = latest_matching_file(rephrased_dir, f'ai_proposals_{condition}_rephrased_*.csv')
+    rephrased = _latest_non_failures_csv(rephrased_dir, f'ai_proposals_{condition}_rephrased_*.csv')
     if original is None:
         raise FileNotFoundError(f'Missing original AI proposal CSV for {condition} in {original_dir}')
     if rephrased is None:
@@ -146,7 +160,7 @@ def load_human_rephrased_proposals(project_root: Path) -> pd.DataFrame:
     base_dir = project_root / 'data' / 'human-proposals' / 'rephrased'
     for cohort in ['y1', 'y2']:
         latest_json = latest_matching_file(base_dir, f'human_proposals_rephrased_{cohort}_*.json')
-        latest_csv = latest_matching_file(base_dir, f'human_proposals_rephrased_{cohort}_*.csv')
+        latest_csv = _latest_non_failures_csv(base_dir, f'human_proposals_rephrased_{cohort}_*.csv')
         if latest_csv is not None:
             df = pd.read_csv(latest_csv)
         elif latest_json is not None:
@@ -194,7 +208,16 @@ def validate_proposal_alignment(original_df: pd.DataFrame, rephrased_df: pd.Data
             != merged['title_repr'].fillna('').map(normalize_title)
         )
         if mismatched.any():
-            issues.append(f'{scope}: title normalization drift found for {int(mismatched.sum())} matched proposals')
+            # Title drift is a warning, not a fatal error. Proposals are paired by
+            # proposal_uid (validated above via the uid-set and duplicate checks),
+            # so a rewritten title does not break the pairing. Legacy rephrase runs
+            # (e.g. the original baseline) rewrote titles wholesale; newer runs
+            # preserve them, so drift there would be 0.
+            print(
+                f'  WARNING {scope}: title normalization drift on '
+                f'{int(mismatched.sum())}/{len(merged)} matched proposals '
+                f'(pairing is by proposal_uid, not title).'
+            )
     return issues
 
 
@@ -523,7 +546,8 @@ def compute_or_load_proposal_to_literature_knn(
 
 def write_prepare_manifest(path: Path, payload: Dict[str, Any]) -> None:
     """Write the proposal-preparation manifest."""
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False))
+    # default=str keeps the writer robust to Path (and other non-JSON) values.
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False, default=str))
 
 
 __all__ = [

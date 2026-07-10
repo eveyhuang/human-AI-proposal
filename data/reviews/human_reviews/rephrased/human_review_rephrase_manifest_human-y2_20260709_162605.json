@@ -1,0 +1,16 @@
+{
+  "run_id": "20260709_162605",
+  "scope": "human-y2",
+  "source_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/human_reviews/human_reviews_human-y2.xlsx",
+  "output_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/human_reviews/rephrased/human_reviews_human-y2_rephrased_20260709_162605.csv",
+  "row_count": 38,
+  "success_count": 38,
+  "failure_count": 0,
+  "rephrase_model": "gemini-3.1-pro-preview",
+  "temperature": 0,
+  "prompt_version": "review_neutralization_v1",
+  "started_at": "2026-07-10T09:12:35.212827",
+  "ended_at": "2026-07-10T09:12:35.212838",
+  "qa_issues": [],
+  "completed_cleanly": true
+}

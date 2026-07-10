@@ -70,7 +70,7 @@ def load_human_proposal_roster(project_root: Path) -> pd.DataFrame:
             records.append(
                 {
                     'target_cohort': cohort,
-                    'target_proposal_id': proposal_id,
+                    'target_proposal_id': str(proposal_id),
                     'target_proposal_uid': build_target_proposal_uid(cohort, proposal_id),
                     'target_proposal_title': proposal.get('proposal_title', ''),
                     'target_proposal_status': proposal.get('proposal_status', ''),
@@ -101,6 +101,9 @@ def load_human_review_counts(project_root: Path) -> pd.DataFrame:
         .rename(columns={'year': 'target_cohort', 'id': 'target_proposal_id'})
     )
     counts['target_cohort'] = counts['target_cohort'].astype(str).str.lower()
+    # proposal_id comes from JSON as a string but from Excel as int64; normalize
+    # to str so the two frames merge on a matching key dtype.
+    counts['target_proposal_id'] = counts['target_proposal_id'].astype(str)
     counts['target_proposal_uid'] = counts.apply(
         lambda row: build_target_proposal_uid(row['target_cohort'], row['target_proposal_id']),
         axis=1,

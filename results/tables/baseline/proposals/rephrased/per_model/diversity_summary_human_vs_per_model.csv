@@ -1,0 +1,13 @@
+metric,effect_human_minus_group,permutation_p_value,inference_primary,condition,comparison_group
+mean_pairwise_distance,-0.09990253750043425,0.48535146485351466,permutation,baseline,Claude
+nearest_neighbor_distance,-0.005861601103907051,0.5525447455254474,permutation,baseline,Claude
+grid_entropy,1.1091206523620412,0.0014998500149985001,permutation,baseline,Claude
+mst_dispersion,-0.028930607167157257,0.48335166483351666,permutation,baseline,Claude
+mean_pairwise_distance,-0.04549180094903636,1.0,permutation,baseline,Gemini
+nearest_neighbor_distance,-0.023805019648178764,0.9926007399260074,permutation,baseline,Gemini
+grid_entropy,1.3201968685478391,9.999000099990002e-05,permutation,baseline,Gemini
+mst_dispersion,-0.02497336539355191,0.9922007799220078,permutation,baseline,Gemini
+mean_pairwise_distance,-0.14737268540227838,0.23717628237176283,permutation,baseline,GPT
+nearest_neighbor_distance,-0.00818146830019744,0.9943005699430058,permutation,baseline,GPT
+grid_entropy,1.3548373677708772,0.0018998100189981002,permutation,baseline,GPT
+mst_dispersion,-0.0333157940344377,0.23307669233076692,permutation,baseline,GPT

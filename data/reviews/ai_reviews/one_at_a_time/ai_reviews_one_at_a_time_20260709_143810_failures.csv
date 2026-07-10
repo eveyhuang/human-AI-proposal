@@ -1,0 +1,15 @@
+failed_at,condition,stage,model,call_id,error
+2026-07-09T16:07:53.785618,one_at_a_time,review_generation,gemini-3.1-pro-preview,one_at_a_time::y1::1::gemini-3.1-pro-preview::review_call_001,unclosed JSON object
+2026-07-09T16:26:17.335010,one_at_a_time,review_generation,gemini-3.1-pro-preview,one_at_a_time::y1::11::gemini-3.1-pro-preview::review_call_004,"Expecting ',' delimiter: line 25 column 1 (char 6125)"
+2026-07-09T16:28:03.692881,one_at_a_time,review_generation,claude-sonnet-5,one_at_a_time::y1::11::claude-sonnet-5::review_call_003,"Expecting ',' delimiter: line 4 column 2093 (char 2115)"
+2026-07-09T16:34:16.854329,one_at_a_time,review_generation,gemini-3.1-pro-preview,one_at_a_time::y1::12::gemini-3.1-pro-preview::review_call_004,unclosed JSON object
+2026-07-09T16:49:26.116008,one_at_a_time,review_generation,gemini-3.1-pro-preview,one_at_a_time::y1::3::gemini-3.1-pro-preview::review_call_001,unclosed JSON object
+2026-07-09T16:51:40.267291,one_at_a_time,review_generation,claude-sonnet-5,one_at_a_time::y1::3::claude-sonnet-5::review_call_001,"Expecting ',' delimiter: line 1 column 7125 (char 7124)"
+2026-07-09T16:59:15.847519,one_at_a_time,review_generation,gemini-3.1-pro-preview,one_at_a_time::y1::4::gemini-3.1-pro-preview::review_call_003,unclosed JSON object
+2026-07-09T17:23:56.454868,one_at_a_time,review_generation,gemini-3.1-pro-preview,one_at_a_time::y1::7::gemini-3.1-pro-preview::review_call_001,unclosed JSON object
+2026-07-09T17:24:21.850603,one_at_a_time,review_generation,gemini-3.1-pro-preview,one_at_a_time::y1::7::gemini-3.1-pro-preview::review_call_002,unclosed JSON object
+2026-07-09T17:24:48.519341,one_at_a_time,review_generation,gemini-3.1-pro-preview,one_at_a_time::y1::7::gemini-3.1-pro-preview::review_call_003,unclosed JSON object
+2026-07-09T17:39:53.528934,one_at_a_time,review_generation,gemini-3.1-pro-preview,one_at_a_time::y1::9::gemini-3.1-pro-preview::review_call_002,unclosed JSON object
+2026-07-09T18:22:30.135885,one_at_a_time,review_generation,gemini-3.1-pro-preview,one_at_a_time::y2::3::gemini-3.1-pro-preview::review_call_001,unclosed JSON object
+2026-07-09T18:24:15.784575,one_at_a_time,review_generation,gemini-3.1-pro-preview,one_at_a_time::y2::3::gemini-3.1-pro-preview::review_call_005,unclosed JSON object
+2026-07-09T18:50:53.599723,one_at_a_time,review_generation,gemini-3.1-pro-preview,one_at_a_time::y2::6::gemini-3.1-pro-preview::review_call_005,"Expecting ',' delimiter: line 25 column 1 (char 5899)"

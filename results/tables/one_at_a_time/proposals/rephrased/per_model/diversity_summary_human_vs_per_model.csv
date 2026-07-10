@@ -1,0 +1,13 @@
+metric,effect_human_minus_group,permutation_p_value,inference_primary,condition,comparison_group
+mean_pairwise_distance,0.03499358468376129,9.999000099990002e-05,permutation,one_at_a_time,Claude
+nearest_neighbor_distance,0.02052257112834764,9.999000099990002e-05,permutation,one_at_a_time,Claude
+grid_entropy,0.41346847844899726,0.35866413358664134,permutation,one_at_a_time,Claude
+mst_dispersion,0.0210191011428833,9.999000099990002e-05,permutation,one_at_a_time,Claude
+mean_pairwise_distance,0.037448868685560265,9.999000099990002e-05,permutation,one_at_a_time,Gemini
+nearest_neighbor_distance,0.021769207456837525,9.999000099990002e-05,permutation,one_at_a_time,Gemini
+grid_entropy,-0.3806472827027587,0.20177982201779823,permutation,one_at_a_time,Gemini
+mst_dispersion,0.02212271636182612,9.999000099990002e-05,permutation,one_at_a_time,Gemini
+mean_pairwise_distance,0.03348568541259163,9.999000099990002e-05,permutation,one_at_a_time,GPT
+nearest_neighbor_distance,0.020436064056728195,9.999000099990002e-05,permutation,one_at_a_time,GPT
+grid_entropy,-0.03282119574623721,0.93000699930007,permutation,one_at_a_time,GPT
+mst_dispersion,0.020654307170347736,9.999000099990002e-05,permutation,one_at_a_time,GPT

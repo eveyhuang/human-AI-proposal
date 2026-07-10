@@ -72,7 +72,27 @@ def build_or_load_literature_embeddings(
     ]
     if reuse_if_exists and output_path.exists():
         payload = load_pickle(output_path)
-        if payload.get('corpus_hash') == corpus_hash and payload.get('model_name') == model_name:
+        # Reuse the expensive embeddings when the model matches and the corpus is
+        # unchanged. Match on corpus_hash, or fall back to a direct text comparison
+        # (embeddings depend only on texts + model). The text fallback lets legacy
+        # caches and metadata-only corpus edits reuse instead of recomputing 39k+
+        # embeddings.
+        model_ok = payload.get('model_name') == model_name
+        corpus_ok = payload.get('corpus_hash') == corpus_hash or payload.get('texts') == texts
+        if model_ok and corpus_ok and payload.get('embeddings') is not None:
+            # Self-heal lightweight metadata (missing/stale) without recomputing.
+            changed = False
+            if 'article_index' not in payload:
+                payload['article_index'] = article_index.copy()
+                changed = True
+            if 'texts' not in payload:
+                payload['texts'] = texts
+                changed = True
+            if payload.get('corpus_hash') != corpus_hash:
+                payload['corpus_hash'] = corpus_hash
+                changed = True
+            if changed:
+                save_pickle(output_path, payload)
             return payload
     payload = {
         'embeddings': embed_texts(texts, model_name=model_name, pooling='cls'),
@@ -170,7 +190,8 @@ def fit_or_load_literature_umap(
 
 def write_literature_manifest(path: Path, payload: Dict[str, Any]) -> None:
     """Write the shared literature preparation manifest."""
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False))
+    # default=str keeps the writer robust to Path (and other non-JSON) values.
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False, default=str))
 
 
 __all__ = [

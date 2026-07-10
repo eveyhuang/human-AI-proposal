@@ -11,6 +11,14 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import pandas as pd
 
+try:
+    # Optional: repairs common LLM JSON malformations (unescaped inner quotes,
+    # etc.) that strict json.loads cannot handle. The module stays importable
+    # without it; parsing simply falls back to the strict-only behavior.
+    from json_repair import repair_json as _repair_json_str
+except ImportError:  # pragma: no cover
+    _repair_json_str = None
+
 
 PROPOSAL_SECTION_COLUMNS = [
     'background_and_significance',
@@ -159,16 +167,39 @@ def build_condition_registry(target_n: int) -> Dict[str, Dict[str, Any]]:
     }
 
 
+def _loads_lenient(candidate: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    """Parse a JSON object string, repairing common LLM malformations if needed.
+
+    First tries json.loads with strict=False (tolerates literal control
+    characters such as raw newlines/tabs inside string values). If that fails
+    and json_repair is available, attempts a repair pass that also handles
+    structural malformations like unescaped double-quotes inside string values
+    (the "Expecting ',' delimiter" class). Returns (obj, None) on success or
+    (None, error_message) on failure.
+    """
+    try:
+        return json.loads(candidate, strict=False), None
+    except json.JSONDecodeError as exc:
+        error = str(exc)
+    if _repair_json_str is not None:
+        try:
+            repaired = _repair_json_str(candidate, return_objects=True)
+            if isinstance(repaired, dict) and repaired:
+                return repaired, None
+        except Exception:  # pragma: no cover - repair is strictly best-effort
+            pass
+    return None, error
+
+
 def extract_first_json_object(text: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
     """Extract the first JSON object from a model response."""
     if not text or not text.strip():
         return None, 'empty response'
     s = text.strip()
     if s.startswith('{') and s.endswith('}'):
-        try:
-            return json.loads(s), None
-        except json.JSONDecodeError:
-            pass
+        obj, _ = _loads_lenient(s)
+        if obj is not None:
+            return obj, None
     start = s.find('{')
     if start == -1:
         return None, 'no JSON object found'
@@ -183,11 +214,10 @@ def extract_first_json_object(text: str) -> Tuple[Optional[Dict[str, Any]], Opti
                 end = idx
                 break
     if end == -1:
+        # Truncated/unclosed: don't fabricate data from a partial object; let
+        # the caller log it as a failure and re-draw.
         return None, 'unclosed JSON object'
-    try:
-        return json.loads(s[start:end + 1]), None
-    except json.JSONDecodeError as exc:
-        return None, str(exc)
+    return _loads_lenient(s[start:end + 1])
 
 
 def parse_generated_ideas_response(raw_text: str, expected_count: int, mode: str) -> Tuple[List[Dict[str, Any]], Optional[str]]:
@@ -313,6 +343,27 @@ def load_failures_csv(path: Optional[Path]) -> List[Dict[str, Any]]:
     if df.empty:
         return []
     return df.to_dict('records')
+
+
+def _dedupe_failures(failures: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Keep the most recent failure record per call_id."""
+    by_call: Dict[Any, Dict[str, Any]] = {}
+    for record in failures:
+        by_call[record.get('call_id')] = record
+    return list(by_call.values())
+
+
+def prune_resolved_failures(
+    failures: List[Dict[str, Any]], completed_call_ids: set
+) -> List[Dict[str, Any]]:
+    """Drop failure records whose call ultimately succeeded, then dedupe.
+
+    Prior-run failures that are resolved on a later retry would otherwise linger
+    in the failures CSV, misrepresenting the run and flipping the manifest's
+    completed_cleanly flag to False despite complete data.
+    """
+    kept = [f for f in failures if str(f.get('call_id')) not in completed_call_ids]
+    return _dedupe_failures(kept)
 
 
 def _idea_call_is_complete(rows: pd.DataFrame, schedule_row: Dict[str, Any]) -> bool:
@@ -535,7 +586,14 @@ def run_idea_generation_for_condition(
     output_dir = project_root / 'data' / 'ai-proposals' / condition
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    latest_ideas = latest_matching_file(output_dir, f'ai_ideas_{condition}_*.csv')
+    # NOTE: exclude *_failures.csv explicitly. The glob ai_ideas_{condition}_*.csv
+    # also matches the failures file, and since '.' < '_' it sorts last, so a naive
+    # latest_matching_file() would pick the failures CSV as the ideas partial.
+    _idea_candidates = [
+        path for path in sorted(output_dir.glob(f'ai_ideas_{condition}_*.csv'))
+        if not path.name.endswith('_failures.csv')
+    ]
+    latest_ideas = _idea_candidates[-1] if _idea_candidates else None
     latest_failures = latest_matching_file(output_dir, f'ai_ideas_{condition}_*_failures.csv')
     latest_manifest = latest_matching_file(output_dir, f'generation_manifest_{condition}_*.json')
     if resume_ok and latest_ideas is not None:
@@ -678,6 +736,8 @@ def run_idea_generation_for_condition(
     if not ideas_df.empty:
         ideas_df = ideas_df.sort_values(['model', 'idea_draw_index']).reset_index(drop=True)
         ideas_df.to_csv(ideas_path, index=False)
+    completed_call_ids = set(ideas_df['idea_call_id'].astype(str)) if not ideas_df.empty else set()
+    failures = prune_resolved_failures(failures, completed_call_ids)
     ensure_failure_csv(failures_path, failures)
 
     qa_issues = validate_idea_records(ideas_df, condition_config['expected_rows_per_model'], condition)
@@ -769,11 +829,20 @@ def run_proposal_expansion_for_condition(
     manifest = json.loads(manifest_path.read_text()) if manifest_path.exists() else {'condition': condition, 'run_id': run_id}
 
     proposals_df = ideas_df.copy()
-    for col in PROPOSAL_SECTION_COLUMNS + ['proposal_call_id', 'proposal_prompt_template', 'proposal_prompt_version', 'proposal_temperature', 'proposal_generated_at']:
+    # Text columns that receive string assignments during expansion. When Pass A
+    # reuses an ideas CSV, empty section columns round-trip as float64(NaN), and
+    # assigning strings into them triggers pandas' incompatible-dtype FutureWarning
+    # (slated to raise in a future version). Force object dtype with '' for NaN.
+    string_columns = PROPOSAL_SECTION_COLUMNS + [
+        'proposal_call_id', 'proposal_prompt_template', 'proposal_prompt_version',
+        'proposal_generated_at', 'proposal_provider_model_id',
+    ]
+    for col in string_columns:
         if col not in proposals_df.columns:
             proposals_df[col] = ''
-    if 'proposal_provider_model_id' not in proposals_df.columns:
-        proposals_df['proposal_provider_model_id'] = ''
+        proposals_df[col] = proposals_df[col].where(proposals_df[col].notna(), '').astype(object)
+    if 'proposal_temperature' not in proposals_df.columns:
+        proposals_df['proposal_temperature'] = ''
 
     if not existing_progress_df.empty and 'proposal_uid' in existing_progress_df.columns:
         progress_lookup = existing_progress_df.drop_duplicates(subset=['proposal_uid'], keep='last').set_index('proposal_uid')
@@ -847,6 +916,12 @@ def run_proposal_expansion_for_condition(
             ensure_failure_csv(failures_path, failures)
 
     proposals_df.to_csv(progress_path, index=False)
+    completed_call_ids = {
+        f"{condition}::{r['model']}::proposal_call_{int(r['idea_draw_index']):03d}"
+        for r in proposals_df.to_dict('records')
+        if _proposal_row_is_complete(r)
+    }
+    failures = prune_resolved_failures(failures, completed_call_ids)
     ensure_failure_csv(failures_path, failures)
 
     qa_issues: List[str] = []

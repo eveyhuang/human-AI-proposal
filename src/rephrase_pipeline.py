@@ -141,26 +141,43 @@ def build_human_full_text(proposal: Dict[str, Any]) -> str:
     return '\n\n'.join(parts)
 
 
-def locate_latest_ai_proposal_files(project_root: Path, conditions: List[str]) -> Dict[str, Path]:
-    """Locate the latest complete AI proposal file for each condition."""
+def locate_latest_ai_proposal_files(
+    project_root: Path, conditions: List[str], require_all: bool = True
+) -> Dict[str, Path]:
+    """Locate the latest complete AI proposal file for each condition.
+
+    With require_all=True (default) a missing complete file raises. With
+    require_all=False, conditions without a complete file are skipped, so a
+    stage can proceed on whatever is ready (e.g. rephrasing finished conditions
+    while others are still generating).
+    """
     files: Dict[str, Path] = {}
     for condition in conditions:
         directory = project_root / 'data' / 'ai-proposals' / condition
         path = latest_matching_file(directory, f'ai_proposals_{condition}_complete_*.csv')
         if path is None:
-            raise FileNotFoundError(f'No complete AI proposal CSV found for condition {condition} in {directory}')
+            if require_all:
+                raise FileNotFoundError(f'No complete AI proposal CSV found for condition {condition} in {directory}')
+            continue
         files[condition] = path
     return files
 
 
-def locate_latest_ai_review_files(project_root: Path, conditions: List[str]) -> Dict[str, Path]:
-    """Locate the latest complete AI review file for each condition."""
+def locate_latest_ai_review_files(
+    project_root: Path, conditions: List[str], require_all: bool = True
+) -> Dict[str, Path]:
+    """Locate the latest complete AI review file for each condition.
+
+    See locate_latest_ai_proposal_files for the require_all semantics.
+    """
     files: Dict[str, Path] = {}
     for condition in conditions:
         directory = project_root / 'data' / 'reviews' / 'ai_reviews' / condition
         path = latest_matching_file(directory, f'ai_reviews_{condition}_complete_*.csv')
         if path is None:
-            raise FileNotFoundError(f'No complete AI review CSV found for condition {condition} in {directory}')
+            if require_all:
+                raise FileNotFoundError(f'No complete AI review CSV found for condition {condition} in {directory}')
+            continue
         files[condition] = path
     return files
 
@@ -541,6 +558,48 @@ def _review_rephrase_complete(df: pd.DataFrame, source_df: pd.DataFrame) -> bool
     return df['review_rephrase_status'].fillna('').astype(str).eq('success').all()
 
 
+def _latest_completed_output(output_dir: Path, pattern: str) -> Optional[Path]:
+    """Latest file matching pattern, excluding *_failures.csv.
+
+    The '*' in these rephrase-output globs also matches the sibling failures CSV,
+    and since '.' < '_' it sorts last, so a naive latest-match would wrongly pick
+    the failures file as the prior output.
+    """
+    matches = [
+        p for p in sorted(output_dir.glob(pattern))
+        if not p.name.endswith('_failures.csv')
+    ]
+    return matches[-1] if matches else None
+
+
+def _carry_over_successful_rows(
+    out_df: pd.DataFrame,
+    partial_df: Optional[pd.DataFrame],
+    *,
+    key_col: str,
+    status_col: str,
+    columns: List[str],
+) -> None:
+    """Copy already-successful rows from a prior partial output into out_df.
+
+    Enables per-row resume: rows carried over here are skipped in the rephrase
+    loop, so only failed/missing rows are re-sent to the model. Matches on key_col.
+    """
+    if partial_df is None or key_col not in partial_df.columns or status_col not in partial_df.columns:
+        return
+    prior = (
+        partial_df[partial_df[status_col].fillna('').astype(str).eq('success')]
+        .drop_duplicates(subset=[key_col], keep='last')
+        .set_index(key_col)
+    )
+    for row_idx, row in out_df.iterrows():
+        key = row.get(key_col)
+        if key in prior.index:
+            for col in columns:
+                if col in prior.columns:
+                    out_df.at[row_idx, col] = prior.at[key, col]
+
+
 def rephrase_ai_proposals_for_condition(
     *,
     project_root: Path,
@@ -560,7 +619,8 @@ def rephrase_ai_proposals_for_condition(
     output_dir = project_root / 'data' / 'ai-proposals' / condition / 'rephrased'
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    latest_output = latest_matching_file(output_dir, f'ai_proposals_{condition}_rephrased_*.csv')
+    latest_output = _latest_completed_output(output_dir, f'ai_proposals_{condition}_rephrased_*.csv')
+    resume_partial_df = None
     if resume_ok and latest_output is not None:
         existing_df = pd.read_csv(latest_output)
         if _proposal_rephrase_complete(existing_df, source_df):
@@ -574,6 +634,9 @@ def rephrase_ai_proposals_for_condition(
                 'qa_issues': [],
                 'reused_existing': True,
             }
+        resume_partial_df = existing_df
+        if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
+            run_id = str(existing_df['run_id'].iloc[0])
 
     out_path = output_dir / f'ai_proposals_{condition}_rephrased_{run_id}.csv'
     tmp_path = out_path.with_suffix('.csv.tmp')
@@ -597,9 +660,15 @@ def rephrase_ai_proposals_for_condition(
     for col in new_columns:
         if col not in out_df.columns:
             out_df[col] = ''
+    _carry_over_successful_rows(
+        out_df, resume_partial_df,
+        key_col='proposal_uid', status_col='proposal_rephrase_status', columns=new_columns,
+    )
 
     failures: List[Dict[str, Any]] = []
     for row_idx, row in out_df.iterrows():
+        if str(out_df.at[row_idx, 'proposal_rephrase_status']).strip() == 'success':
+            continue  # carried over from a prior run; do not re-call the model
         full_text = build_ai_full_text(row)
         if not full_text.strip():
             append_rephrase_failure_log(
@@ -703,7 +772,8 @@ def rephrase_ai_reviews_for_condition(
     output_dir = project_root / 'data' / 'reviews' / 'ai_reviews' / condition / 'rephrased'
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    latest_output = latest_matching_file(output_dir, f'ai_reviews_{condition}_rephrased_*.csv')
+    latest_output = _latest_completed_output(output_dir, f'ai_reviews_{condition}_rephrased_*.csv')
+    resume_partial_df = None
     if resume_ok and latest_output is not None:
         existing_df = pd.read_csv(latest_output)
         if _review_rephrase_complete(existing_df, source_df):
@@ -717,6 +787,9 @@ def rephrase_ai_reviews_for_condition(
                 'qa_issues': [],
                 'reused_existing': True,
             }
+        resume_partial_df = existing_df
+        if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
+            run_id = str(existing_df['run_id'].iloc[0])
 
     out_path = output_dir / f'ai_reviews_{condition}_rephrased_{run_id}.csv'
     tmp_path = out_path.with_suffix('.csv.tmp')
@@ -741,9 +814,15 @@ def rephrase_ai_reviews_for_condition(
     for col in new_columns:
         if col not in out_df.columns:
             out_df[col] = ''
+    _carry_over_successful_rows(
+        out_df, resume_partial_df,
+        key_col='review_uid', status_col='review_rephrase_status', columns=new_columns,
+    )
 
     failures: List[Dict[str, Any]] = []
     for row_idx, row in out_df.iterrows():
+        if str(out_df.at[row_idx, 'review_rephrase_status']).strip() == 'success':
+            continue  # carried over from a prior run; do not re-call the model
         source_text = _extract_review_source_text(row.to_dict())
         if not source_text.strip():
             append_rephrase_failure_log(
@@ -866,7 +945,8 @@ def rephrase_shared_human_proposals(
     output_dir = project_root / 'data' / 'human-proposals' / 'rephrased'
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    latest_csv = latest_matching_file(output_dir, f'human_proposals_rephrased_{cohort}_*.csv')
+    latest_csv = _latest_completed_output(output_dir, f'human_proposals_rephrased_{cohort}_*.csv')
+    resume_partial_df = None
     if resume_ok and latest_csv is not None:
         existing_df = pd.read_csv(latest_csv)
         if _proposal_rephrase_complete(existing_df, source_df):
@@ -882,6 +962,9 @@ def rephrase_shared_human_proposals(
                 'qa_issues': [],
                 'reused_existing': True,
             }
+        resume_partial_df = existing_df
+        if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
+            run_id = str(existing_df['run_id'].iloc[0])
 
     csv_path = output_dir / f'human_proposals_rephrased_{cohort}_{run_id}.csv'
     json_path = output_dir / f'human_proposals_rephrased_{cohort}_{run_id}.json'
@@ -890,7 +973,7 @@ def rephrase_shared_human_proposals(
     manifest_path = output_dir / f'human_proposal_rephrase_manifest_{cohort}_{run_id}.json'
 
     out_df = source_df.copy()
-    for col in [
+    new_columns = [
         'run_id',
         'rephrase_source_file',
         'proposal_rephrase_model',
@@ -902,12 +985,19 @@ def rephrase_shared_human_proposals(
         'proposal_rephrase_error',
         'standardized_text',
         'rephrased_abstract',
-    ]:
+    ]
+    for col in new_columns:
         if col not in out_df.columns:
             out_df[col] = ''
+    _carry_over_successful_rows(
+        out_df, resume_partial_df,
+        key_col='proposal_uid', status_col='proposal_rephrase_status', columns=new_columns,
+    )
 
     failures: List[Dict[str, Any]] = []
     for row_idx, row in out_df.iterrows():
+        if str(out_df.at[row_idx, 'proposal_rephrase_status']).strip() == 'success':
+            continue  # carried over from a prior run; do not re-call the model
         full_text = build_human_full_text(row.to_dict())
         if not full_text.strip():
             append_rephrase_failure_log(
@@ -1040,7 +1130,8 @@ def rephrase_shared_human_reviews(
     output_dir = project_root / 'data' / 'reviews' / 'human_reviews' / 'rephrased'
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    latest_csv = latest_matching_file(output_dir, f'human_reviews_{cohort}_rephrased_*.csv')
+    latest_csv = _latest_completed_output(output_dir, f'human_reviews_{cohort}_rephrased_*.csv')
+    resume_partial_df = None
     if resume_ok and latest_csv is not None:
         existing_df = pd.read_csv(latest_csv)
         if _review_rephrase_complete(existing_df, source_df):
@@ -1054,14 +1145,17 @@ def rephrase_shared_human_reviews(
                 'qa_issues': [],
                 'reused_existing': True,
             }
+        # Not complete: keep already-successful rows and re-call only the rest.
+        resume_partial_df = existing_df
+        if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
+            run_id = str(existing_df['run_id'].iloc[0])
 
     csv_path = output_dir / f'human_reviews_{cohort}_rephrased_{run_id}.csv'
     tmp_path = csv_path.with_suffix('.csv.tmp')
     failures_path = output_dir / f'human_reviews_{cohort}_rephrased_{run_id}_failures.csv'
     manifest_path = output_dir / f'human_review_rephrase_manifest_{cohort}_{run_id}.json'
 
-    out_df = source_df.copy()
-    for col in [
+    rephrase_cols = [
         'run_id',
         'review_rephrase_model',
         'review_rephrase_temperature',
@@ -1073,12 +1167,20 @@ def rephrase_shared_human_reviews(
         'rephrased_review',
         'rephrased_strengths',
         'rephrased_weakness',
-    ]:
+    ]
+    out_df = source_df.copy()
+    for col in rephrase_cols:
         if col not in out_df.columns:
             out_df[col] = ''
+    _carry_over_successful_rows(
+        out_df, resume_partial_df,
+        key_col='review_uid', status_col='review_rephrase_status', columns=rephrase_cols,
+    )
 
     failures: List[Dict[str, Any]] = []
     for row_idx, row in out_df.iterrows():
+        if str(out_df.at[row_idx, 'review_rephrase_status']).strip() == 'success':
+            continue  # carried over from a prior run; do not re-call the model
         source_text = str(row.get('_raw_review_text', '') or '').strip()
         if not source_text:
             append_rephrase_failure_log(

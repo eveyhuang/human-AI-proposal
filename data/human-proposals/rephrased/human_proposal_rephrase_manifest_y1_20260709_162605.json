@@ -1,0 +1,17 @@
+{
+  "run_id": "20260709_162605",
+  "scope": "y1",
+  "source_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/human-proposals/human-proposals-y1.json",
+  "output_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/human-proposals/rephrased/human_proposals_rephrased_y1_20260709_162605.csv",
+  "row_count": 12,
+  "success_count": 12,
+  "failure_count": 0,
+  "rephrase_model": "gemini-3.1-pro-preview",
+  "temperature": 0,
+  "prompt_version": "proposal_semantic_standardization_v1",
+  "started_at": "2026-07-10T01:23:46.574165",
+  "json_output_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/human-proposals/rephrased/human_proposals_rephrased_y1_20260709_162605.json",
+  "ended_at": "2026-07-10T01:23:46.574176",
+  "qa_issues": [],
+  "completed_cleanly": true
+}

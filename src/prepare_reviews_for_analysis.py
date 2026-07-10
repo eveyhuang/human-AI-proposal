@@ -17,6 +17,7 @@ from sklearn.metrics.pairwise import cosine_distances
 from prepare_proposals_for_analysis import (
     MODEL_DISPLAY_NAME_MAP,
     PROPOSAL_EMBEDDING_MODEL,
+    _latest_non_failures_csv,
     embed_texts,
     fit_or_load_proposal_umap,
     load_pickle,
@@ -69,7 +70,7 @@ def locate_latest_ai_review_files(project_root: Path, condition: str) -> Dict[st
     original_dir = project_root / 'data' / 'reviews' / 'ai_reviews' / condition
     rephrased_dir = original_dir / 'rephrased'
     original = latest_matching_file(original_dir, f'ai_reviews_{condition}_complete_*.csv')
-    rephrased = latest_matching_file(rephrased_dir, f'ai_reviews_{condition}_rephrased_*.csv')
+    rephrased = _latest_non_failures_csv(rephrased_dir, f'ai_reviews_{condition}_rephrased_*.csv')
     if original is None:
         raise FileNotFoundError(f'Missing original AI review CSV for {condition} in {original_dir}')
     if rephrased is None:
@@ -170,7 +171,7 @@ def load_human_rephrased_reviews(project_root: Path) -> pd.DataFrame:
     frames: List[pd.DataFrame] = []
     base_dir = project_root / 'data' / 'reviews' / 'human_reviews' / 'rephrased'
     for cohort_label in ['human-y1', 'human-y2']:
-        latest = latest_matching_file(base_dir, f'human_reviews_{cohort_label}_rephrased_*.csv')
+        latest = _latest_non_failures_csv(base_dir, f'human_reviews_{cohort_label}_rephrased_*.csv')
         if latest is None:
             legacy = base_dir / f'human_reviews_{cohort_label}_rephrased.csv'
             if legacy.exists():
@@ -242,6 +243,11 @@ def load_ai_rephrased_reviews(path: Path, condition: str) -> pd.DataFrame:
         df['condition'] = condition
     if 'review_uid' not in df.columns:
         raise RuntimeError(f'Rephrased AI review file is missing review_uid: {path}')
+    if 'target_proposal_id' in df.columns:
+        # Match load_ai_original_reviews / the proposal lookup (str) so the
+        # downstream merge on target_proposal_id doesn't hit an int64-vs-object
+        # dtype mismatch.
+        df['target_proposal_id'] = df['target_proposal_id'].astype(str)
     for col in ['rephrased_review', 'rephrased_strengths', 'rephrased_weakness', 'review_rephrased_at', 'review_rephrase_status']:
         if col not in df.columns:
             df[col] = pd.NA
@@ -307,9 +313,7 @@ def build_review_master_table(
     )
     human_df = harmonize_ncems_review_schema(
         human_original_df.merge(
-            human_rephrased_df[['review_uid', 'rephrased_review', 'strengths', 'weakness', 'review_rephrased_at', 'review_rephrase_status']].rename(
-                columns={'strengths': 'rephrased_strengths', 'weakness': 'rephrased_weakness'}
-            ),
+            human_rephrased_df[['review_uid', 'rephrased_review', 'rephrased_strengths', 'rephrased_weakness', 'review_rephrased_at', 'review_rephrase_status']],
             on='review_uid',
             how='left',
             validate='one_to_one',
@@ -592,7 +596,9 @@ def build_review_panel_distance_cache(review_master_df: pd.DataFrame, distance_m
 
 def write_review_prepare_manifest(path: Path, payload: Dict[str, Any]) -> None:
     """Write the review-preparation manifest."""
-    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False))
+    # default=str keeps the writer robust to Path (and other non-JSON) values so
+    # a stray unstringified path in the manifest doesn't blow up the whole run.
+    path.write_text(json.dumps(payload, indent=2, ensure_ascii=False, default=str))
 
 
 __all__ = [

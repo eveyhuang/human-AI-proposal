@@ -1,0 +1,4 @@
+failed_at,condition,stage,model,call_id,error
+2026-07-09T14:41:09.521066,baseline,review_generation,gemini-3.1-pro-preview,baseline::y1::1::gemini-3.1-pro-preview::review_call_001,unclosed JSON object
+2026-07-09T15:38:52.982769,baseline,review_generation,gemini-3.1-pro-preview,baseline::y2::3::gemini-3.1-pro-preview::review_call_001,unclosed JSON object
+2026-07-09T15:56:25.672913,baseline,review_generation,gemini-3.1-pro-preview,baseline::y2::8::gemini-3.1-pro-preview::review_call_001,missing reviews list

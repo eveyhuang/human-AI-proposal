@@ -1,0 +1,31 @@
+{
+  "condition": "one_at_a_time",
+  "run_id": "20260709_095141",
+  "target_n": 23,
+  "models_run": [
+    "gpt-5.5",
+    "gemini-3.1-pro-preview",
+    "claude-sonnet-5"
+  ],
+  "idea_prompt_template": "generate_ideas_minimal_single",
+  "idea_prompt_version": "v1",
+  "proposal_prompt_template": "generate_proposals_minimal",
+  "proposal_prompt_version": "v2",
+  "temperature": 0.9,
+  "started_at": "2026-07-09T10:07:06.623696",
+  "idea_calls_completed": 69,
+  "idea_rows_completed": 66,
+  "idea_failures": 3,
+  "idea_qa_issues": [
+    "one_at_a_time: model claude-sonnet-5 has 21 ideas; expected 23",
+    "one_at_a_time: model gemini-3.1-pro-preview has 22 ideas; expected 23",
+    "one_at_a_time: model claude-sonnet-5 has 21 idea calls; expected 23",
+    "one_at_a_time: model gemini-3.1-pro-preview has 22 idea calls; expected 23"
+  ],
+  "resumed_from_partial": true,
+  "completed_cleanly": false,
+  "ended_at": "2026-07-09T14:48:07.290160",
+  "proposal_expansions_completed": 8,
+  "proposal_failures": 5,
+  "proposal_qa_issues": []
+}
