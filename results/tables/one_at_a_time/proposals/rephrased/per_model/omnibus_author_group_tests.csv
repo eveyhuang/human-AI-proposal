@@ -1,0 +1,14 @@
+condition,analysis_family,metric,test,statistic,p_value,permutation_p_value,n_groups,n_perm,p_adjustment,q_value_holm,significance
+one_at_a_time,proposal_level_diversity_and_nn,mean_pairwise_distance,label permutation range,0.2283105105161667,0.08559144085591441,0.08559144085591441,4,10000.0,Holm,0.6687645334756467,
+one_at_a_time,proposal_level_diversity_and_nn,nearest_neighbor_distance,label permutation range,0.051349512908769684,0.0005999400059994001,0.0005999400059994001,4,10000.0,Holm,0.007199280071992801,**
+one_at_a_time,proposal_level_diversity_and_nn,author_group_mean_pairwise_distance,label permutation range,0.2283105105161667,0.08559144085591441,0.08559144085591441,4,10000.0,Holm,0.6687645334756467,
+one_at_a_time,proposal_level_diversity_and_nn,author_group_nearest_neighbor_distance,label permutation range,0.051349512908769684,0.0005999400059994001,0.0005999400059994001,4,10000.0,Holm,0.007199280071992801,**
+one_at_a_time,proposal_level_diversity_and_nn,global_nn_distance,label permutation range,0.04561533616936725,0.00039996000399960006,0.00039996000399960006,4,10000.0,Holm,0.005199480051994801,**
+one_at_a_time,proposal_level_diversity_and_nn,global_mean_5nn_distance,label permutation range,0.0481693112331888,0.0013998600139986002,0.0013998600139986002,4,10000.0,Holm,0.013998600139986002,*
+one_at_a_time,literature_novelty,literature_element_novelty_k1,Kruskal-Wallis,6.911214098420601,0.07478217181643138,,4,,Holm,0.6687645334756467,
+one_at_a_time,literature_novelty,literature_mean_knn_novelty_k10,Kruskal-Wallis,6.925605219830459,0.07430717038618297,,4,,Holm,0.6687645334756467,
+one_at_a_time,literature_novelty,literature_local_density_normalized_novelty,Kruskal-Wallis,6.925605219830459,0.07430717038618297,,4,,Holm,0.6687645334756467,
+one_at_a_time,bertopic_region_coverage,bertopic_region_entropy,Kruskal-Wallis,3.291971055472562,0.34876168855827966,,4,,Holm,0.9149244648118733,
+one_at_a_time,bertopic_region_coverage,bertopic_max_region_weight,Kruskal-Wallis,3.624462992376755,0.3049748216039578,,4,,Holm,0.9149244648118733,
+one_at_a_time,bertopic_region_coverage,bertopic_unique_regions,Kruskal-Wallis,2.189816074799185,0.5339570715403179,,4,,Holm,0.9149244648118733,
+one_at_a_time,mesh_term_coverage,mesh_unique_terms_k20,Kruskal-Wallis,5.686496879273077,0.1278999283465136,,4,,Holm,0.6687645334756467,

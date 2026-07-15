@@ -1,0 +1,145 @@
+condition,comparison,comparison_label,metric_a,metric_b,spearman_rho,p_value,n_proposals,field_branch
+persona,all_ai,All AI,centroid_loo,global_centroid_dist,0.9861660079051384,7.084225362889057e-18,23,strengths
+persona,all_ai,All AI,centroid_loo,medoid_dist,0.974308300395257,4.473465094212444e-15,23,strengths
+persona,all_ai,All AI,centroid_loo,mst_dispersion,0.9693675889328063,2.7752536222287567e-14,23,strengths
+persona,all_ai,All AI,centroid_loo,remote_clique,0.9940711462450593,1.0034336129623743e-21,23,strengths
+persona,all_ai,All AI,centroid_loo,span90,0.9486166007905139,5.7844212032404675e-12,23,strengths
+persona,all_ai,All AI,centroid_loo,sparseness,0.9861660079051384,7.084225362889057e-18,23,strengths
+persona,all_ai,All AI,global_centroid_dist,medoid_dist,0.9723320158102767,9.656461912075791e-15,23,strengths
+persona,all_ai,All AI,global_centroid_dist,mst_dispersion,0.9515810276679842,3.140424967104547e-12,23,strengths
+persona,all_ai,All AI,global_centroid_dist,remote_clique,0.9960474308300397,1.433047731869931e-23,23,strengths
+persona,all_ai,All AI,global_centroid_dist,span90,0.9594861660079053,5.004227319259316e-13,23,strengths
+persona,all_ai,All AI,global_centroid_dist,sparseness,1.0,0.0,23,strengths
+persona,all_ai,All AI,mean_pairwise,centroid_loo,0.9940711462450593,1.0034336129623743e-21,23,strengths
+persona,all_ai,All AI,mean_pairwise,global_centroid_dist,0.9960474308300397,1.433047731869931e-23,23,strengths
+persona,all_ai,All AI,mean_pairwise,medoid_dist,0.974308300395257,4.473465094212444e-15,23,strengths
+persona,all_ai,All AI,mean_pairwise,mst_dispersion,0.9624505928853755,2.2830334775646334e-13,23,strengths
+persona,all_ai,All AI,mean_pairwise,nn,0.9347826086956521,6.648388758678471e-11,23,strengths
+persona,all_ai,All AI,mean_pairwise,remote_clique,1.0,0.0,23,strengths
+persona,all_ai,All AI,mean_pairwise,span90,0.9565217391304348,1.0367507751993613e-12,23,strengths
+persona,all_ai,All AI,mean_pairwise,sparseness,0.9960474308300397,1.433047731869931e-23,23,strengths
+persona,all_ai,All AI,medoid_dist,mst_dispersion,0.9762845849802372,1.947170275798853e-15,23,strengths
+persona,all_ai,All AI,medoid_dist,remote_clique,0.974308300395257,4.473465094212444e-15,23,strengths
+persona,all_ai,All AI,medoid_dist,span90,0.9011857707509882,4.48681122881196e-09,23,strengths
+persona,all_ai,All AI,medoid_dist,sparseness,0.9723320158102767,9.656461912075791e-15,23,strengths
+persona,all_ai,All AI,mst_dispersion,remote_clique,0.9624505928853755,2.2830334775646334e-13,23,strengths
+persona,all_ai,All AI,mst_dispersion,sparseness,0.9515810276679842,3.140424967104547e-12,23,strengths
+persona,all_ai,All AI,nn,centroid_loo,0.9436758893280633,1.4838379845626962e-11,23,strengths
+persona,all_ai,All AI,nn,global_centroid_dist,0.9249011857707511,2.7981010516231444e-10,23,strengths
+persona,all_ai,All AI,nn,medoid_dist,0.9673913043478262,5.304299500721495e-14,23,strengths
+persona,all_ai,All AI,nn,mst_dispersion,0.9822134387351777,9.745721849256444e-17,23,strengths
+persona,all_ai,All AI,nn,remote_clique,0.9347826086956521,6.648388758678471e-11,23,strengths
+persona,all_ai,All AI,nn,span90,0.8280632411067194,1.0754337738217021e-06,23,strengths
+persona,all_ai,All AI,nn,sparseness,0.9249011857707511,2.7981010516231444e-10,23,strengths
+persona,all_ai,All AI,span90,mst_dispersion,0.8784584980237155,3.5565910113438074e-08,23,strengths
+persona,all_ai,All AI,span90,remote_clique,0.9565217391304348,1.0367507751993613e-12,23,strengths
+persona,all_ai,All AI,span90,sparseness,0.9594861660079053,5.004227319259316e-13,23,strengths
+persona,all_ai,All AI,sparseness,remote_clique,0.9960474308300397,1.433047731869931e-23,23,strengths
+persona,claude,Claude,centroid_loo,global_centroid_dist,0.9703557312252965,1.9754383177126073e-14,23,strengths
+persona,claude,Claude,centroid_loo,medoid_dist,0.9426877470355731,1.7733200161440015e-11,23,strengths
+persona,claude,Claude,centroid_loo,mst_dispersion,0.9377470355731227,4.133520162074528e-11,23,strengths
+persona,claude,Claude,centroid_loo,remote_clique,0.9861660079051384,7.084225362889057e-18,23,strengths
+persona,claude,Claude,centroid_loo,span90,0.9090909090909092,1.937423986061789e-09,23,strengths
+persona,claude,Claude,centroid_loo,sparseness,0.9703557312252965,1.9754383177126073e-14,23,strengths
+persona,claude,Claude,global_centroid_dist,medoid_dist,0.9229249011857708,3.643067085466445e-10,23,strengths
+persona,claude,Claude,global_centroid_dist,mst_dispersion,0.8715415019762847,6.161378711880682e-08,23,strengths
+persona,claude,Claude,global_centroid_dist,remote_clique,0.9920948616600791,2.0399146317564257e-20,23,strengths
+persona,claude,Claude,global_centroid_dist,span90,0.9367588932806324,4.855363761083324e-11,23,strengths
+persona,claude,Claude,global_centroid_dist,sparseness,1.0,0.0,23,strengths
+persona,claude,Claude,mean_pairwise,centroid_loo,0.9861660079051384,7.084225362889057e-18,23,strengths
+persona,claude,Claude,mean_pairwise,global_centroid_dist,0.9920948616600791,2.0399146317564257e-20,23,strengths
+persona,claude,Claude,mean_pairwise,medoid_dist,0.9377470355731227,4.133520162074528e-11,23,strengths
+persona,claude,Claude,mean_pairwise,mst_dispersion,0.9061264822134387,2.677556594376649e-09,23,strengths
+persona,claude,Claude,mean_pairwise,nn,0.9011857707509882,4.48681122881196e-09,23,strengths
+persona,claude,Claude,mean_pairwise,remote_clique,1.0,0.0,23,strengths
+persona,claude,Claude,mean_pairwise,span90,0.9140316205533597,1.101726912534852e-09,23,strengths
+persona,claude,Claude,mean_pairwise,sparseness,0.9920948616600791,2.0399146317564257e-20,23,strengths
+persona,claude,Claude,medoid_dist,mst_dispersion,0.9476284584980237,7.034256602058228e-12,23,strengths
+persona,claude,Claude,medoid_dist,remote_clique,0.9377470355731227,4.133520162074528e-11,23,strengths
+persona,claude,Claude,medoid_dist,span90,0.8043478260869565,3.735695278060342e-06,23,strengths
+persona,claude,Claude,medoid_dist,sparseness,0.9229249011857708,3.643067085466445e-10,23,strengths
+persona,claude,Claude,mst_dispersion,remote_clique,0.9061264822134387,2.677556594376649e-09,23,strengths
+persona,claude,Claude,mst_dispersion,sparseness,0.8715415019762847,6.161378711880682e-08,23,strengths
+persona,claude,Claude,nn,centroid_loo,0.9120553359683794,1.3862822602287868e-09,23,strengths
+persona,claude,Claude,nn,global_centroid_dist,0.8764822134387351,4.1750240185926826e-08,23,strengths
+persona,claude,Claude,nn,medoid_dist,0.9644268774703558,1.3053953287267002e-13,23,strengths
+persona,claude,Claude,nn,mst_dispersion,0.9713438735177865,1.3898050327857093e-14,23,strengths
+persona,claude,Claude,nn,remote_clique,0.9011857707509882,4.48681122881196e-09,23,strengths
+persona,claude,Claude,nn,span90,0.7351778656126482,6.434557965572448e-05,23,strengths
+persona,claude,Claude,nn,sparseness,0.8764822134387351,4.1750240185926826e-08,23,strengths
+persona,claude,Claude,span90,mst_dispersion,0.7766798418972332,1.3132903217007575e-05,23,strengths
+persona,claude,Claude,span90,remote_clique,0.9140316205533597,1.101726912534852e-09,23,strengths
+persona,claude,Claude,span90,sparseness,0.9367588932806324,4.855363761083324e-11,23,strengths
+persona,claude,Claude,sparseness,remote_clique,0.9920948616600791,2.0399146317564257e-20,23,strengths
+persona,gemini,Gemini,centroid_loo,global_centroid_dist,0.9812252964426879,1.7119446104319924e-16,23,strengths
+persona,gemini,Gemini,centroid_loo,medoid_dist,0.9644268774703558,1.3053953287267002e-13,23,strengths
+persona,gemini,Gemini,centroid_loo,mst_dispersion,0.9614624505928853,2.9858709763379274e-13,23,strengths
+persona,gemini,Gemini,centroid_loo,remote_clique,0.9980237154150198,9.980970744570998e-27,23,strengths
+persona,gemini,Gemini,centroid_loo,span90,0.9634387351778656,1.7329804448776302e-13,23,strengths
+persona,gemini,Gemini,centroid_loo,sparseness,0.9812252964426879,1.7119446104319924e-16,23,strengths
+persona,gemini,Gemini,global_centroid_dist,medoid_dist,0.9713438735177865,1.3898050327857093e-14,23,strengths
+persona,gemini,Gemini,global_centroid_dist,mst_dispersion,0.9446640316205533,1.2376027906403914e-11,23,strengths
+persona,gemini,Gemini,global_centroid_dist,remote_clique,0.9851778656126482,1.4555716366082698e-17,23,strengths
+persona,gemini,Gemini,global_centroid_dist,span90,0.9792490118577075,4.854287395760623e-16,23,strengths
+persona,gemini,Gemini,global_centroid_dist,sparseness,1.0,0.0,23,strengths
+persona,gemini,Gemini,mean_pairwise,centroid_loo,0.9980237154150198,9.980970744570998e-27,23,strengths
+persona,gemini,Gemini,mean_pairwise,global_centroid_dist,0.9851778656126482,1.4555716366082698e-17,23,strengths
+persona,gemini,Gemini,mean_pairwise,medoid_dist,0.9664031620553359,7.225576101378271e-14,23,strengths
+persona,gemini,Gemini,mean_pairwise,mst_dispersion,0.9624505928853755,2.2830334775646334e-13,23,strengths
+persona,gemini,Gemini,mean_pairwise,nn,0.9347826086956521,6.648388758678471e-11,23,strengths
+persona,gemini,Gemini,mean_pairwise,remote_clique,1.0,0.0,23,strengths
+persona,gemini,Gemini,mean_pairwise,span90,0.9683794466403162,3.8565010642989665e-14,23,strengths
+persona,gemini,Gemini,mean_pairwise,sparseness,0.9851778656126482,1.4555716366082698e-17,23,strengths
+persona,gemini,Gemini,medoid_dist,mst_dispersion,0.9733201581027668,6.620049324533835e-15,23,strengths
+persona,gemini,Gemini,medoid_dist,remote_clique,0.9664031620553359,7.225576101378271e-14,23,strengths
+persona,gemini,Gemini,medoid_dist,span90,0.9466403162055337,8.522205691075868e-12,23,strengths
+persona,gemini,Gemini,medoid_dist,sparseness,0.9713438735177865,1.3898050327857093e-14,23,strengths
+persona,gemini,Gemini,mst_dispersion,remote_clique,0.9624505928853755,2.2830334775646334e-13,23,strengths
+persona,gemini,Gemini,mst_dispersion,sparseness,0.9446640316205533,1.2376027906403914e-11,23,strengths
+persona,gemini,Gemini,nn,centroid_loo,0.9347826086956521,6.648388758678471e-11,23,strengths
+persona,gemini,Gemini,nn,global_centroid_dist,0.9150197628458498,9.801372424338925e-10,23,strengths
+persona,gemini,Gemini,nn,medoid_dist,0.9466403162055337,8.522205691075868e-12,23,strengths
+persona,gemini,Gemini,nn,mst_dispersion,0.9901185770750988,2.1058652770074424e-19,23,strengths
+persona,gemini,Gemini,nn,remote_clique,0.9347826086956521,6.648388758678471e-11,23,strengths
+persona,gemini,Gemini,nn,span90,0.8735177865612648,5.2833871130814296e-08,23,strengths
+persona,gemini,Gemini,nn,sparseness,0.9150197628458498,9.801372424338925e-10,23,strengths
+persona,gemini,Gemini,span90,mst_dispersion,0.908102766798419,2.1606631230534575e-09,23,strengths
+persona,gemini,Gemini,span90,remote_clique,0.9683794466403162,3.8565010642989665e-14,23,strengths
+persona,gemini,Gemini,span90,sparseness,0.9792490118577075,4.854287395760623e-16,23,strengths
+persona,gemini,Gemini,sparseness,remote_clique,0.9851778656126482,1.4555716366082698e-17,23,strengths
+persona,gpt,GPT,centroid_loo,global_centroid_dist,0.9614624505928853,2.9858709763379274e-13,23,strengths
+persona,gpt,GPT,centroid_loo,medoid_dist,0.9130434782608695,1.2366809696599139e-09,23,strengths
+persona,gpt,GPT,centroid_loo,mst_dispersion,0.9179841897233202,6.841670339545262e-10,23,strengths
+persona,gpt,GPT,centroid_loo,remote_clique,0.9871541501976285,3.2675709718963424e-18,23,strengths
+persona,gpt,GPT,centroid_loo,span90,0.9486166007905139,5.7844212032404675e-12,23,strengths
+persona,gpt,GPT,centroid_loo,sparseness,0.9614624505928853,2.9858709763379274e-13,23,strengths
+persona,gpt,GPT,global_centroid_dist,medoid_dist,0.9535573122529646,2.045296157918174e-12,23,strengths
+persona,gpt,GPT,global_centroid_dist,mst_dispersion,0.9041501976284586,3.302671241557327e-09,23,strengths
+persona,gpt,GPT,global_centroid_dist,remote_clique,0.9881422924901186,1.4161001110682598e-18,23,strengths
+persona,gpt,GPT,global_centroid_dist,span90,0.9752964426877472,2.9762909743739418e-15,23,strengths
+persona,gpt,GPT,global_centroid_dist,sparseness,1.0,0.0,23,strengths
+persona,gpt,GPT,mean_pairwise,centroid_loo,0.9871541501976285,3.2675709718963424e-18,23,strengths
+persona,gpt,GPT,mean_pairwise,global_centroid_dist,0.9881422924901186,1.4161001110682598e-18,23,strengths
+persona,gpt,GPT,mean_pairwise,medoid_dist,0.9377470355731227,4.133520162074528e-11,23,strengths
+persona,gpt,GPT,mean_pairwise,mst_dispersion,0.9090909090909092,1.937423986061789e-09,23,strengths
+persona,gpt,GPT,mean_pairwise,nn,0.882411067193676,2.559268518021324e-08,23,strengths
+persona,gpt,GPT,mean_pairwise,remote_clique,1.0,0.0,23,strengths
+persona,gpt,GPT,mean_pairwise,span90,0.9752964426877472,2.9762909743739418e-15,23,strengths
+persona,gpt,GPT,mean_pairwise,sparseness,0.9881422924901186,1.4161001110682598e-18,23,strengths
+persona,gpt,GPT,medoid_dist,mst_dispersion,0.9535573122529646,2.045296157918174e-12,23,strengths
+persona,gpt,GPT,medoid_dist,remote_clique,0.9377470355731227,4.133520162074528e-11,23,strengths
+persona,gpt,GPT,medoid_dist,span90,0.9041501976284586,3.302671241557327e-09,23,strengths
+persona,gpt,GPT,medoid_dist,sparseness,0.9535573122529646,2.045296157918174e-12,23,strengths
+persona,gpt,GPT,mst_dispersion,remote_clique,0.9090909090909092,1.937423986061789e-09,23,strengths
+persona,gpt,GPT,mst_dispersion,sparseness,0.9041501976284586,3.302671241557327e-09,23,strengths
+persona,gpt,GPT,nn,centroid_loo,0.8863636363636364,1.819821756977433e-08,23,strengths
+persona,gpt,GPT,nn,global_centroid_dist,0.892292490118577,1.0651168391238102e-08,23,strengths
+persona,gpt,GPT,nn,medoid_dist,0.9367588932806324,4.855363761083324e-11,23,strengths
+persona,gpt,GPT,nn,mst_dispersion,0.9802371541501977,2.920890307948633e-16,23,strengths
+persona,gpt,GPT,nn,remote_clique,0.882411067193676,2.559268518021324e-08,23,strengths
+persona,gpt,GPT,nn,span90,0.8171936758893281,1.945303267052662e-06,23,strengths
+persona,gpt,GPT,nn,sparseness,0.892292490118577,1.0651168391238102e-08,23,strengths
+persona,gpt,GPT,span90,mst_dispersion,0.8448616600790515,3.951436137199726e-07,23,strengths
+persona,gpt,GPT,span90,remote_clique,0.9752964426877472,2.9762909743739418e-15,23,strengths
+persona,gpt,GPT,span90,sparseness,0.9752964426877472,2.9762909743739418e-15,23,strengths
+persona,gpt,GPT,sparseness,remote_clique,0.9881422924901186,1.4161001110682598e-18,23,strengths

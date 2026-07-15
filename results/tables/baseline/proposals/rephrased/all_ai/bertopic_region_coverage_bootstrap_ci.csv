@@ -1,0 +1,11 @@
+condition,bertopic_label,human_n,ai_subsample_n,ai_pool_n,n_boot,human_weight,ai_boot_mean_weight,ai_boot_ci_low,ai_boot_ci_high
+baseline,"details use execution, myosin motors, nascent chain, origin life",23,23,69,1000,0.45,0.3770760869565217,0.21521739130434783,0.55
+baseline,"related morbidity, stage diagnosis, combination strategies, clinical intervention",23,23,69,1000,0.35,0.3226717391304348,0.19119565217391302,0.45
+baseline,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",23,23,69,1000,0.07391304347826087,0.14183260869565217,0.07173913043478261,0.21956521739130433
+baseline,"transgene expression, metabolite production, study illustrates, precise genome",23,23,69,1000,0.05,0.09395,0.03695652173913044,0.15
+baseline,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",23,23,69,1000,0.04565217391304348,0.05006739130434783,0.0064673913043478285,0.10222826086956519
+baseline,"role intercellular communication, testicular torsion, nanoparticle tracking analysis, mir 21 5p",23,23,69,1000,0.006521739130434784,0.009899999999999999,0.0,0.026086956521739136
+baseline,"bla ctx, spectrum lactamase esbl, sequence types sts, coli isolates",23,23,69,1000,0.010869565217391304,0.003002173913043479,0.0,0.006521739130434784
+baseline,"web science core, mean sd age, research hotspots, 28 day mortality",23,23,69,1000,0.010869565217391304,0.0,0.0,0.0
+baseline,"recent findings recent, cell multi omics, complex microbial, crispr cas based",23,23,69,1000,0.002173913043478261,0.0,0.0,0.0
+baseline,"95 uncertainty, injuries risk factors, burden disease study, systematic analysis global",23,23,69,1000,0.0,0.0015,0.0,0.004347826086956522

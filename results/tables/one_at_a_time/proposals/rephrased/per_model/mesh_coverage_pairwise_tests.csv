@@ -1,0 +1,7 @@
+condition,analysis_family,metric,group_1,group_2,n_1,n_2,mean_1,mean_2,difference_1_minus_2,cliffs_delta_1_minus_2,mannwhitney_u,p_value,test,p_adjustment,q_value_holm,significance
+one_at_a_time,mesh_term_coverage,mesh_unique_terms_k20,Human,Claude,23,23,86.47826086956522,100.30434782608695,-13.826086956521735,-0.3780718336483932,164.5,0.02871203222076619,Mann-Whitney U,Holm,0.17227219332459714,
+one_at_a_time,mesh_term_coverage,mesh_unique_terms_k20,Human,Gemini,23,23,86.47826086956522,87.17391304347827,-0.6956521739130466,-0.024574669187145556,258.0,0.8950983908028415,Mann-Whitney U,Holm,1.0,
+one_at_a_time,mesh_term_coverage,mesh_unique_terms_k20,Human,GPT,23,23,86.47826086956522,86.1304347826087,0.3478260869565162,-0.003780718336483932,263.5,0.9912314142106305,Mann-Whitney U,Holm,1.0,
+one_at_a_time,mesh_term_coverage,mesh_unique_terms_k20,Claude,Gemini,23,23,100.30434782608695,87.17391304347827,13.130434782608688,0.3383742911153119,354.0,0.050467395883953284,Mann-Whitney U,Holm,0.2523369794197664,
+one_at_a_time,mesh_term_coverage,mesh_unique_terms_k20,Claude,GPT,23,23,100.30434782608695,86.1304347826087,14.173913043478251,0.27977315689981097,338.5,0.10593654964234146,Mann-Whitney U,Holm,0.42374619856936585,
+one_at_a_time,mesh_term_coverage,mesh_unique_terms_k20,Gemini,GPT,23,23,87.17391304347827,86.1304347826087,1.0434782608695627,0.005671077504725898,266.0,0.9824622636415822,Mann-Whitney U,Holm,1.0,

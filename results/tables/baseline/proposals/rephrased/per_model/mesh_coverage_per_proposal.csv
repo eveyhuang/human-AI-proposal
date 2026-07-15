@@ -1,0 +1,93 @@
+proposal_uid,mesh_unique_terms_k20,source_group,source_type,title
+y1::1,96,Human,human,CYTOKINETIC BOTTLENECKS OF HEAT WAVES
+y1::10,120,Human,human,Transposable elements and the emergence of genomic innovation
+y1::11,102,Human,human,Searching the crosslinking mass spectrometry universe for new protein-protein interactions
+y1::12,101,Human,human,Intelligent metadata compilation to enhance the reusability and discoverability of mass spectrometry-based proteomics data
+y1::2,130,Human,human,Elucidating genome structure-function relationships in human brain cells
+y1::3,68,Human,human,MaiTool - LLM-powered bioinformatics tools for microbiome analysis
+y1::4,83,Human,human,Synthesizing gene expression data to create an atlas of bacterial cell states
+y1::5,62,Human,human,Energetic Origins of Connectivity within Protein Interaction Networks
+y1::6,101,Human,human,Elucidating emergent structures in cellular RNA-protein interaction networks
+y1::7,118,Human,human,Oceans of Disorder: Elucidating the Role of Disordered Proteins in Cellular Adaptation
+y1::8,133,Human,human,Multimodel single-cell frameworks for cell lines with extensive multi-omics data
+y1::9,72,Human,human,From image data and biophysical simulations to principles of mesoscale organization through integrated transfer learning
+y2::1,69,Human,human,Emergent Order Parameters of Allostery: An AI Framework for Predicting and Engineering Protein Regulation
+y2::10,50,Human,human,Integrating AI and Molecular Dynamics Simulations for Quantitative Prediction of Enzyme Functions
+y2::11,68,Human,human,Discovery and functional analysis of bacterial organelles through mining and refinement of omics data
+y2::2,88,Human,human,From Protein Knots to Pierced Lassos: Unraveling the Evolutionary Origin of Complex Topologies
+y2::3,66,Human,human,Deciphering systemic biological networks through AI-driven multi-omic integration
+y2::4,54,Human,human,Conserved Disorder: Learning Sequence Conservation from Functional Constraints in Intrinsically Disordered Regions
+y2::5,104,Human,human,Integrative Multi-Omics Synthesis to Identify Shared Molecular Mechanisms of Mammalian Hibernation
+y2::6,63,Human,human,Revealing the Ontology of Allostery through Community-Scale Synthesis
+y2::7,97,Human,human,SynEvo: Discovering Evolutionary Principles of Molecular Organization through Cross-Species Data Synthesis
+y2::8,66,Human,human,A Unified Framework for Analyses of Proteome Turnover Dynamics
+y2::9,78,Human,human,Predictive Synthesis Framework for Elucidating Biophysical Cell State from Spatial Transcriptomics and Proteomics
+baseline::claude-opus-4-5::01,132,Claude,ai,Emergent Phase Separation Grammar: Decoding How Intrinsically Disordered Region Sequence Patterns Drive Mesoscale Condensate Properties
+baseline::claude-opus-4-5::02,84,Claude,ai,Temporal Dynamics of Ribosome Clustering: Synthesizing Cryo-ET and Ribosome Profiling Data to Understand Emergent Translation Factories
+baseline::claude-opus-4-5::03,110,Claude,ai,"Emergent Mechanics of the Nuclear Pore Complex: Integrating Structural, Biophysical, and Transport Data to Model Collective Gating Behavior"
+baseline::claude-opus-4-5::04,57,Claude,ai,"Chromatin Compartmentalization Dynamics: Synthesizing Hi-C, Imaging, and Epigenomic Data to Model Emergent Nuclear Organization"
+baseline::claude-opus-4-5::05,114,Claude,ai,Emergent Allostery in Protein Complexes: Mining Structural Databases to Discover Long-Range Communication Networks
+baseline::claude-opus-4-5::06,65,Claude,ai,Cytoskeletal Crosstalk at the Mesoscale: Integrating Structural and Live-Cell Data to Model Emergent Mechanical Properties
+baseline::claude-opus-4-5::07,127,Claude,ai,Emergent Specificity in Kinase-Substrate Networks: Synthesizing Phosphoproteomics and Structural Data to Decode Signaling Fidelity
+baseline::claude-opus-4-5::08,128,Claude,ai,"Metabolon Assembly and Emergent Metabolic Channeling: Integrating Structural, Metabolomic, and Interactome Data"
+baseline::claude-opus-4-5::09,69,Claude,ai,Emergent Selectivity of Autophagy Receptors: Synthesizing Structural and Proteomic Data to Decode Cargo Recognition Networks
+baseline::claude-opus-4-5::10,115,Claude,ai,Emergent Timing in Circadian Protein Networks: Integrating Structural Dynamics with Systems-Level Oscillations
+baseline::claude-opus-4-5::11,114,Claude,ai,Emergent Proton Gradients in Mitochondrial Cristae: Synthesizing Cryo-ET and Bioenergetic Data to Model Mesoscale Energy Transduction
+baseline::claude-opus-4-5::12,75,Claude,ai,Emergent Antigen Processing in the Immunoproteasome: Integrating Structural and Immunopeptidomic Data to Model Epitope Generation
+baseline::claude-opus-4-5::13,104,Claude,ai,Emergent Selectivity in Nuclear Export: Synthesizing Structural and Transport Data to Model CRM1-Mediated Cargo Recognition
+baseline::claude-opus-4-5::14,83,Claude,ai,"Emergent Cooperativity in Transcription Factor Clusters: Synthesizing ChIP-seq, Structural, and Imaging Data to Model Enhancer Activation"
+baseline::claude-opus-4-5::15,116,Claude,ai,Emergent Viral Assembly: Synthesizing Cryo-EM and Sequence Data to Model How Capsid Geometry Arises from Protein Interactions
+baseline::claude-opus-4-5::16,70,Claude,ai,Emergent Membrane Curvature Sensing: Integrating Structural and Lipidomic Data to Model BAR Domain Collective Behavior
+baseline::claude-opus-4-5::17,102,Claude,ai,Emergent Prion Strain Properties: Synthesizing Cryo-EM Structures with Clinical Data to Model How Fibril Architecture Determines Pathology
+baseline::claude-opus-4-5::18,92,Claude,ai,Emergent Cell Polarity from Protein Localization Networks: Synthesizing Imaging and Interactome Data to Model Symmetry Breaking
+baseline::claude-opus-4-5::19,140,Claude,ai,Emergent Specificity in Ubiquitin Chain Recognition: Synthesizing Structural and Proteomic Data to Decode the Ubiquitin Code
+baseline::claude-opus-4-5::20,73,Claude,ai,Emergent RNA Localization: Synthesizing Spatial Transcriptomics and RNA Structure Data to Model mRNA Targeting Networks
+baseline::claude-opus-4-5::21,104,Claude,ai,Emergent Mechanics of Bacterial Microcompartments: Synthesizing Structural and Metabolic Data to Model Encapsulated Pathway Efficiency
+baseline::claude-opus-4-5::22,132,Claude,ai,Emergent Receptor Clustering in Immune Synapses: Synthesizing Super-Resolution and Signaling Data to Model T Cell Activation Thresholds
+baseline::claude-opus-4-5::23,126,Claude,ai,Emergent DNA Repair Pathway Choice: Synthesizing Damage Proteomics and Chromatin Data to Model Repair Mechanism Selection
+baseline::gpt-5.2::01,87,GPT,ai,A Cross-Cell-Type Atlas of Biomolecular Condensate Material States and Their Emergent Control of Gene Expression Noise
+baseline::gpt-5.2::02,111,GPT,ai,"Emergent Membrane Curvature Codes: Synthesizing Cryo-ET, Proteomics, and Lipidomics to Predict Organelle Contact Site Morphologies"
+baseline::gpt-5.2::03,58,GPT,ai,Mesoscale Cytoskeletal Percolation: A Synthesis of Actin/Microtubule Network Architecture and Emergent Intracellular Transport Efficiency
+baseline::gpt-5.2::04,138,GPT,ai,"Emergent Chromatin Nanodomain Topology: Integrating Hi-C, Super-Resolution Imaging, and Epigenomics to Explain Cell-Type-Specific Gene Regulation"
+baseline::gpt-5.2::05,56,GPT,ai,"Protein Crowding as an Emergent Mesoscale Regulator: A Pan-Proteome Synthesis of Cytoplasmic Viscosity, Diffusion, and Reaction Rates"
+baseline::gpt-5.2::06,62,GPT,ai,"Emergent Ribosome Assembly Landscapes: Integrating Cryo-EM Intermediates, rRNA Processing Maps, and Proteomics to Explain Assembly Robustness"
+baseline::gpt-5.2::07,78,GPT,ai,"Mesoscale Signaling Microclusters as Emergent Computation: A Synthesis of Immune Receptor Imaging, Phosphoproteomics, and Single-Cell Responses"
+baseline::gpt-5.2::08,61,GPT,ai,"Emergent Mitochondrial Cristae Morphodynamics: Integrating Cryo-ET, Live Imaging, and Proteogenomics to Explain Bioenergetic Plasticity"
+baseline::gpt-5.2::09,63,GPT,ai,Mesoscale Assembly of Viral Replication Compartments: A Cross-Virus Synthesis of Host Factor Recruitment and Emergent Replication Efficiency
+baseline::gpt-5.2::10,122,GPT,ai,"Emergent Cell Wall Nanomechanics: Synthesizing Fungal and Plant Cell Wall Composition, Ultrastructure, and Growth Patterns"
+baseline::gpt-5.2::11,66,GPT,ai,"Mesoscale Proteasome and Autophagy Hub Organization: Integrating Spatial Proteomics, Imaging, and Ubiquitinome Data to Explain Proteostasis Emergence"
+baseline::gpt-5.2::12,98,GPT,ai,"Emergent Bacterial Microcompartment Design Rules: Synthesizing Genomes, Structures, and Metabolic Flux to Predict Organelle-Like Function"
+baseline::gpt-5.2::13,110,GPT,ai,Mesoscale Vesicle Coat Self-Organization: Integrating Structural Proteomics and Imaging to Explain Cargo Selectivity Emergence
+baseline::gpt-5.2::14,98,GPT,ai,"Emergent Nuclear Pore Selectivity at the Mesoscale: A Synthesis of FG-Nup Disorder, Transport Kinetics, and NPC Ultrastructure"
+baseline::gpt-5.2::15,64,GPT,ai,"Mesoscale Emergence in Bacterial Biofilm Matrix Nanostructure: Integrating Omics, Imaging, and Rheology to Predict Community Robustness"
+baseline::gpt-5.2::16,126,GPT,ai,"Emergent Spliceosome Nano-Organization: Integrating RNP Structural States, Proximity Proteomics, and Single-Cell Isoform Variability"
+baseline::gpt-5.2::17,105,GPT,ai,Mesoscale Organization of Metabolic Enzyme Filaments: A Cross-Species Synthesis of Cytoophidia and Emergent Metabolic Regulation
+baseline::gpt-5.2::18,93,GPT,ai,Emergent Endocytic Pit Nanoscale Heterogeneity: Integrating Single-Molecule Imaging and Proteomics to Explain Uptake Variability
+baseline::gpt-5.2::19,102,GPT,ai,"Mesoscale Emergence of Synaptic Active Zone Nanoclusters: A Synthesis of Proteomics, Super-Resolution Maps, and Functional Plasticity"
+baseline::gpt-5.2::20,114,GPT,ai,Emergent Organelle Size Control via Mesoscale Substructure: Integrating Imaging Atlases and Omics to Explain Scaling Laws
+baseline::gpt-5.2::21,87,GPT,ai,"Mesoscale Emergence in DNA Damage Repair Foci: Integrating Live Imaging, Proteomics, and 3D Genome Context"
+baseline::gpt-5.2::22,76,GPT,ai,"Emergent Mesoscale Patterning in Bacterial Division Machinery: A Synthesis of FtsZ Ring Architecture, Dynamics, and Cell Shape Outcomes"
+baseline::gpt-5.2::23,116,GPT,ai,"Mesoscale Emergence of Exosome Biogenesis Microdomains: Integrating Endosomal Proteomics, Lipidomics, and Imaging"
+baseline::gemini-3-pro-preview::01,109,Gemini,ai,Deciphering the Sequence Grammar of Mesoscale Viscoelasticity in Biomolecular Condensates
+baseline::gemini-3-pro-preview::02,59,Gemini,ai,Emergent Chromatin Rheology: Synthesizing 1D Sequence and 3D Topology to Predict Nuclear Stiffness
+baseline::gemini-3-pro-preview::03,96,Gemini,ai,The Emergence of Metabolic Channeling: Mapping Transient Metabolons via Integrated Interactomics
+baseline::gemini-3-pro-preview::04,70,Gemini,ai,Lipid Raft Dynamics and the Emergence of Signal Fidelity in T-Cell Activation
+baseline::gemini-3-pro-preview::05,63,Gemini,ai,Emergent Mechanics of the Cytoskeleton: From Molecular Motors to Cellular Tensegrity
+baseline::gemini-3-pro-preview::06,83,Gemini,ai,Viral Capsid Polymorphism: Emergent Geometry from Identical Subunits
+baseline::gemini-3-pro-preview::07,119,Gemini,ai,The Emergence of Synaptic Memory: Nanocolumns and PSD Stability
+baseline::gemini-3-pro-preview::08,125,Gemini,ai,Emergent Selectivity in the Nuclear Pore Complex: A Data-Driven Transport Model
+baseline::gemini-3-pro-preview::09,109,Gemini,ai,Mitochondrial Cristae Morphodynamics and the Emergence of Bioenergetic Efficiency
+baseline::gemini-3-pro-preview::10,67,Gemini,ai,Ribosome Collisions and the Emergence of Translational Quality Control
+baseline::gemini-3-pro-preview::11,93,Gemini,ai,Emergent Synchronization in Ciliary Arrays: Hydrodynamics and Coupling
+baseline::gemini-3-pro-preview::12,128,Gemini,ai,The Extracellular Matrix as a Mechanical Memory: Emergent Reciprocity in Tissue Homeostasis
+baseline::gemini-3-pro-preview::13,61,Gemini,ai,The Glycocalyx Code: Emergent Immune Evasion via Bulky Glycan Shields
+baseline::gemini-3-pro-preview::14,65,Gemini,ai,Symmetry Breaking in the Centrosome: Emergent Spindle Bipolarity
+baseline::gemini-3-pro-preview::15,127,Gemini,ai,Autophagosome Biogenesis: Emergent Membrane Remodeling from Protein Scaffolds
+baseline::gemini-3-pro-preview::16,105,Gemini,ai,Stress Granules vs. P-Bodies: Emergent Sorting in RNA Phase Separation
+baseline::gemini-3-pro-preview::17,127,Gemini,ai,Collapse of the Chaperone Network: Emergent Proteostasis Failure in Aging
+baseline::gemini-3-pro-preview::18,116,Gemini,ai,Emergent Antibiotic Resistance in Biofilms: The Role of Matrix Architecture
+baseline::gemini-3-pro-preview::19,68,Gemini,ai,GPCR Oligomerization Landscapes: Emergent Signaling Bias via Allostery
+baseline::gemini-3-pro-preview::20,75,Gemini,ai,Nuclear Speckles as Splicing Hubs: Emergent Amplification of Gene Expression
+baseline::gemini-3-pro-preview::21,105,Gemini,ai,Thylakoid Stacking and the Emergence of Photosynthetic Robustness
+baseline::gemini-3-pro-preview::22,42,Gemini,ai,Exosome Loading and Sorting: Emergent Communication Packets
+baseline::gemini-3-pro-preview::23,79,Gemini,ai,Synthetic Cell Assembly: Predicting Emergent Life-like Behaviors from Component Integration

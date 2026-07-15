@@ -1,0 +1,174 @@
+proposal_uid,bertopic_topic,bertopic_label,neighbor_count,neighbor_weight
+y1::1,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",17,0.85
+y1::1,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",1,0.05
+y1::1,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",2,0.1
+y1::10,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",16,0.8
+y1::10,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",3,0.15
+y1::10,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",1,0.05
+y1::11,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",11,0.55
+y1::11,7,"transgene expression, metabolite production, study illustrates, precise genome",7,0.35
+y1::11,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",2,0.1
+y1::12,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",16,0.8
+y1::12,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",1,0.05
+y1::12,7,"transgene expression, metabolite production, study illustrates, precise genome",3,0.15
+y1::2,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",20,1.0
+y1::3,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+y1::4,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",18,0.9
+y1::4,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",2,0.1
+y1::5,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+y1::6,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",14,0.7
+y1::6,7,"transgene expression, metabolite production, study illustrates, precise genome",4,0.2
+y1::6,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",1,0.05
+y1::6,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",1,0.05
+y1::7,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",10,0.5
+y1::7,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",10,0.5
+y1::8,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",10,0.5
+y1::8,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",6,0.3
+y1::8,7,"transgene expression, metabolite production, study illustrates, precise genome",4,0.2
+y1::9,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+y2::1,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+y2::10,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+y2::11,11,"web science core, mean sd age, research hotspots, 28 day mortality",5,0.25
+y2::11,1,"details use execution, myosin motors, nascent chain, origin life",11,0.55
+y2::11,8,"bla ctx, spectrum lactamase esbl, sequence types sts, coli isolates",2,0.1
+y2::11,2,"role intercellular communication, testicular torsion, nanoparticle tracking analysis, mir 21 5p",2,0.1
+y2::2,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+y2::3,1,"details use execution, myosin motors, nascent chain, origin life",19,0.95
+y2::3,2,"role intercellular communication, testicular torsion, nanoparticle tracking analysis, mir 21 5p",1,0.05
+y2::4,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+y2::5,1,"details use execution, myosin motors, nascent chain, origin life",17,0.85
+y2::5,8,"bla ctx, spectrum lactamase esbl, sequence types sts, coli isolates",3,0.15
+y2::6,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+y2::7,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",20,1.0
+y2::8,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",12,0.6
+y2::8,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",3,0.15
+y2::8,7,"transgene expression, metabolite production, study illustrates, precise genome",4,0.2
+y2::8,6,"recent findings recent, cell multi omics, complex microbial, crispr cas based",1,0.05
+y2::9,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",9,0.45
+y2::9,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",10,0.5
+y2::9,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::claude-sonnet-5::01,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",15,0.75
+one_at_a_time::claude-sonnet-5::01,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",5,0.25
+one_at_a_time::claude-sonnet-5::02,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",20,1.0
+one_at_a_time::claude-sonnet-5::03,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",19,0.95
+one_at_a_time::claude-sonnet-5::03,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::claude-sonnet-5::04,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::claude-sonnet-5::05,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",17,0.85
+one_at_a_time::claude-sonnet-5::05,7,"transgene expression, metabolite production, study illustrates, precise genome",2,0.1
+one_at_a_time::claude-sonnet-5::05,10,"editorial emerging, author correction, g2 phase, model pd",1,0.05
+one_at_a_time::claude-sonnet-5::06,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",18,0.9
+one_at_a_time::claude-sonnet-5::06,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::claude-sonnet-5::06,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",1,0.05
+one_at_a_time::claude-sonnet-5::07,7,"transgene expression, metabolite production, study illustrates, precise genome",6,0.3
+one_at_a_time::claude-sonnet-5::07,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",13,0.65
+one_at_a_time::claude-sonnet-5::07,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",1,0.05
+one_at_a_time::claude-sonnet-5::08,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",11,0.55
+one_at_a_time::claude-sonnet-5::08,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",9,0.45
+one_at_a_time::claude-sonnet-5::09,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",16,0.8
+one_at_a_time::claude-sonnet-5::09,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",4,0.2
+one_at_a_time::claude-sonnet-5::10,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",17,0.85
+one_at_a_time::claude-sonnet-5::10,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",2,0.1
+one_at_a_time::claude-sonnet-5::10,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::claude-sonnet-5::11,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",10,0.5
+one_at_a_time::claude-sonnet-5::11,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",10,0.5
+one_at_a_time::claude-sonnet-5::12,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",20,1.0
+one_at_a_time::claude-sonnet-5::13,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",20,1.0
+one_at_a_time::claude-sonnet-5::14,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::claude-sonnet-5::15,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",19,0.95
+one_at_a_time::claude-sonnet-5::15,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",1,0.05
+one_at_a_time::claude-sonnet-5::16,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",19,0.95
+one_at_a_time::claude-sonnet-5::16,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::claude-sonnet-5::17,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",20,1.0
+one_at_a_time::claude-sonnet-5::18,7,"transgene expression, metabolite production, study illustrates, precise genome",9,0.45
+one_at_a_time::claude-sonnet-5::18,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",11,0.55
+one_at_a_time::claude-sonnet-5::19,7,"transgene expression, metabolite production, study illustrates, precise genome",8,0.4
+one_at_a_time::claude-sonnet-5::19,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",8,0.4
+one_at_a_time::claude-sonnet-5::19,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",4,0.2
+one_at_a_time::claude-sonnet-5::20,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",12,0.6
+one_at_a_time::claude-sonnet-5::20,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",7,0.35
+one_at_a_time::claude-sonnet-5::20,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::claude-sonnet-5::21,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",16,0.8
+one_at_a_time::claude-sonnet-5::21,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",4,0.2
+one_at_a_time::claude-sonnet-5::22,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::claude-sonnet-5::23,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",18,0.9
+one_at_a_time::claude-sonnet-5::23,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",2,0.1
+one_at_a_time::gpt-5.5::01,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",15,0.75
+one_at_a_time::gpt-5.5::01,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",5,0.25
+one_at_a_time::gpt-5.5::02,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",2,0.1
+one_at_a_time::gpt-5.5::02,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",10,0.5
+one_at_a_time::gpt-5.5::02,7,"transgene expression, metabolite production, study illustrates, precise genome",8,0.4
+one_at_a_time::gpt-5.5::03,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",20,1.0
+one_at_a_time::gpt-5.5::04,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",17,0.85
+one_at_a_time::gpt-5.5::04,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",3,0.15
+one_at_a_time::gpt-5.5::05,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",16,0.8
+one_at_a_time::gpt-5.5::05,7,"transgene expression, metabolite production, study illustrates, precise genome",2,0.1
+one_at_a_time::gpt-5.5::05,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",2,0.1
+one_at_a_time::gpt-5.5::06,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gpt-5.5::07,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gpt-5.5::08,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gpt-5.5::09,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gpt-5.5::10,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",4,0.2
+one_at_a_time::gpt-5.5::10,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",16,0.8
+one_at_a_time::gpt-5.5::11,7,"transgene expression, metabolite production, study illustrates, precise genome",5,0.25
+one_at_a_time::gpt-5.5::11,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",9,0.45
+one_at_a_time::gpt-5.5::11,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",6,0.3
+one_at_a_time::gpt-5.5::12,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gpt-5.5::13,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",18,0.9
+one_at_a_time::gpt-5.5::13,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",1,0.05
+one_at_a_time::gpt-5.5::13,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::gpt-5.5::14,7,"transgene expression, metabolite production, study illustrates, precise genome",7,0.35
+one_at_a_time::gpt-5.5::14,10,"editorial emerging, author correction, g2 phase, model pd",9,0.45
+one_at_a_time::gpt-5.5::14,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",4,0.2
+one_at_a_time::gpt-5.5::15,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gpt-5.5::16,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gpt-5.5::17,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",12,0.6
+one_at_a_time::gpt-5.5::17,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",4,0.2
+one_at_a_time::gpt-5.5::17,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",3,0.15
+one_at_a_time::gpt-5.5::17,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::gpt-5.5::18,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",19,0.95
+one_at_a_time::gpt-5.5::18,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::gpt-5.5::19,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gpt-5.5::20,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gpt-5.5::21,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gpt-5.5::22,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",20,1.0
+one_at_a_time::gpt-5.5::23,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",18,0.9
+one_at_a_time::gpt-5.5::23,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",2,0.1
+one_at_a_time::gemini-3.1-pro-preview::01,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",4,0.2
+one_at_a_time::gemini-3.1-pro-preview::01,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",16,0.8
+one_at_a_time::gemini-3.1-pro-preview::02,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",19,0.95
+one_at_a_time::gemini-3.1-pro-preview::02,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",1,0.05
+one_at_a_time::gemini-3.1-pro-preview::03,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gemini-3.1-pro-preview::04,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gemini-3.1-pro-preview::05,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",17,0.85
+one_at_a_time::gemini-3.1-pro-preview::05,7,"transgene expression, metabolite production, study illustrates, precise genome",2,0.1
+one_at_a_time::gemini-3.1-pro-preview::05,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",1,0.05
+one_at_a_time::gemini-3.1-pro-preview::06,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",2,0.1
+one_at_a_time::gemini-3.1-pro-preview::06,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",16,0.8
+one_at_a_time::gemini-3.1-pro-preview::06,7,"transgene expression, metabolite production, study illustrates, precise genome",2,0.1
+one_at_a_time::gemini-3.1-pro-preview::07,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gemini-3.1-pro-preview::08,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gemini-3.1-pro-preview::09,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",19,0.95
+one_at_a_time::gemini-3.1-pro-preview::09,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::gemini-3.1-pro-preview::10,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",19,0.95
+one_at_a_time::gemini-3.1-pro-preview::10,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::gemini-3.1-pro-preview::11,7,"transgene expression, metabolite production, study illustrates, precise genome",10,0.5
+one_at_a_time::gemini-3.1-pro-preview::11,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",8,0.4
+one_at_a_time::gemini-3.1-pro-preview::11,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",2,0.1
+one_at_a_time::gemini-3.1-pro-preview::12,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gemini-3.1-pro-preview::13,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gemini-3.1-pro-preview::14,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",20,1.0
+one_at_a_time::gemini-3.1-pro-preview::15,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",15,0.75
+one_at_a_time::gemini-3.1-pro-preview::15,5,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",4,0.2
+one_at_a_time::gemini-3.1-pro-preview::15,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::gemini-3.1-pro-preview::16,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",19,0.95
+one_at_a_time::gemini-3.1-pro-preview::16,7,"transgene expression, metabolite production, study illustrates, precise genome",1,0.05
+one_at_a_time::gemini-3.1-pro-preview::17,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gemini-3.1-pro-preview::18,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gemini-3.1-pro-preview::19,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gemini-3.1-pro-preview::20,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",20,1.0
+one_at_a_time::gemini-3.1-pro-preview::21,1,"details use execution, myosin motors, nascent chain, origin life",20,1.0
+one_at_a_time::gemini-3.1-pro-preview::22,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",17,0.85
+one_at_a_time::gemini-3.1-pro-preview::22,7,"transgene expression, metabolite production, study illustrates, precise genome",2,0.1
+one_at_a_time::gemini-3.1-pro-preview::22,3,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",1,0.05
+one_at_a_time::gemini-3.1-pro-preview::23,0,"related morbidity, stage diagnosis, combination strategies, clinical intervention",17,0.85
+one_at_a_time::gemini-3.1-pro-preview::23,7,"transgene expression, metabolite production, study illustrates, precise genome",3,0.15

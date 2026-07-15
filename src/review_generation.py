@@ -5,6 +5,7 @@ Helpers for the redesigned multi-condition review generation stage.
 from __future__ import annotations
 
 import json
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -15,6 +16,7 @@ from proposal_generation import (
     append_failure_log,
     build_target_proposal_uid,
     ensure_failure_csv,
+    extract_first_json_object,
     extract_run_id_from_path,
     find_project_root,
     load_failures_csv,
@@ -269,37 +271,6 @@ def make_review_prompt(
     return prompt_manager.format_prompt(schedule_row['review_prompt_template'], payload), was_truncated
 
 
-def extract_first_json_object(text: str) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
-    """Extract the first JSON object from a model response."""
-    if not text or not str(text).strip():
-        return None, 'empty response'
-    s = str(text).strip()
-    if s.startswith('{') and s.endswith('}'):
-        try:
-            return json.loads(s), None
-        except json.JSONDecodeError:
-            pass
-    start = s.find('{')
-    if start == -1:
-        return None, 'no JSON object found'
-    depth = 0
-    end = -1
-    for idx, char in enumerate(s[start:], start):
-        if char == '{':
-            depth += 1
-        elif char == '}':
-            depth -= 1
-            if depth == 0:
-                end = idx
-                break
-    if end == -1:
-        return None, 'unclosed JSON object'
-    try:
-        return json.loads(s[start:end + 1]), None
-    except json.JSONDecodeError as exc:
-        return None, str(exc)
-
-
 def parse_review_response(raw_text: str, expected_count: int) -> Tuple[List[Dict[str, Any]], Optional[str]]:
     """Parse one model response into one or five review objects."""
     payload, parse_error = extract_first_json_object(raw_text)
@@ -536,14 +507,30 @@ def run_review_generation_for_condition(
             schedule_row=schedule_row,
             shared_review_context=shared_review_context,
         )
-        result = ai_interface.generate_content_with_metadata(
-            prompt,
-            model_name=schedule_row['evaluator_model'],
-            temperature=generation_temperature,
-            max_tokens=max_tokens,
-            retry_delays=retry_delays,
-        )
-        calls_completed += 1
+        # Retry the whole draw on parse failure too (not just API errors): a
+        # truncated/malformed batch response (e.g. gemini batch5) usually re-draws
+        # clean. generate_content_with_metadata already retries API errors, so we
+        # only re-draw on a parse failure. The last attempt stays in `result` for
+        # the existing error/parse handling below.
+        for parse_attempt in range(1 + len(retry_delays)):
+            result = ai_interface.generate_content_with_metadata(
+                prompt,
+                model_name=schedule_row['evaluator_model'],
+                temperature=generation_temperature,
+                max_tokens=max_tokens,
+                retry_delays=retry_delays,
+            )
+            calls_completed += 1
+            if result['error']:
+                break
+            _, _probe_parse_error = parse_review_response(
+                result['raw_response'],
+                expected_count=int(schedule_row['expected_review_count']),
+            )
+            if not _probe_parse_error:
+                break
+            if parse_attempt < len(retry_delays):
+                time.sleep(retry_delays[parse_attempt])
 
         if result['error']:
             append_failure_log(

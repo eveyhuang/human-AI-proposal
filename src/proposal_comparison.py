@@ -135,12 +135,36 @@ def chamfer_distance(D: np.ndarray, idx_a: np.ndarray, idx_b: np.ndarray) -> flo
     return float(0.5 * (np.mean(np.min(cross, axis=1)) + np.mean(np.min(cross, axis=0))))
 
 
-def grid_entropy(coords: np.ndarray, idx: np.ndarray, bins: int = 8) -> float:
-    """Discrete occupied-area metric on 2D coordinates."""
+def fixed_coordinate_range(coords: np.ndarray) -> Tuple[Tuple[float, float], Tuple[float, float]]:
+    """Return a stable 2D histogram range for comparable grid metrics."""
+    arr = np.asarray(coords, dtype=float)
+    x_min, x_max = float(np.nanmin(arr[:, 0])), float(np.nanmax(arr[:, 0]))
+    y_min, y_max = float(np.nanmin(arr[:, 1])), float(np.nanmax(arr[:, 1]))
+    if x_min == x_max:
+        x_min -= 0.5
+        x_max += 0.5
+    if y_min == y_max:
+        y_min -= 0.5
+        y_max += 0.5
+    return ((x_min, x_max), (y_min, y_max))
+
+
+def grid_entropy(
+    coords: np.ndarray,
+    idx: np.ndarray,
+    bins: int = 8,
+    coord_range: Tuple[Tuple[float, float], Tuple[float, float]] | None = None,
+) -> float:
+    """Discrete occupied-area metric on 2D coordinates.
+
+    Pass a fixed coord_range when comparing groups so each group is binned on
+    the same map rather than on its own local bounding box.
+    """
     pts = np.asarray(coords[idx], dtype=float)
     if pts.size == 0:
         return float('nan')
-    hist, _, _ = np.histogram2d(pts[:, 0], pts[:, 1], bins=bins)
+    hist_range = coord_range if coord_range is not None else fixed_coordinate_range(pts)
+    hist, _, _ = np.histogram2d(pts[:, 0], pts[:, 1], bins=bins, range=hist_range)
     p = hist.ravel()
     p = p[p > 0]
     p = p / p.sum()
@@ -178,13 +202,14 @@ def permutation_test_group_metric(
     n_perm: int = 10000,
     seed: int = 42,
     coords: np.ndarray | None = None,
+    coord_range: Tuple[Tuple[float, float], Tuple[float, float]] | None = None,
 ) -> Dict[str, Any]:
     """Permutation-primary inference for pooled Human vs All-AI matrix-derived metrics."""
     metric_fns = {
         'mean_pairwise_distance': lambda idx: mean_pairwise_distance(D[np.ix_(idx, idx)]),
         'nearest_neighbor_distance': lambda idx: nearest_neighbor_distance(D[np.ix_(idx, idx)]),
         'mst_dispersion': lambda idx: mst_dispersion(D[np.ix_(idx, idx)]),
-        'grid_entropy': lambda idx: grid_entropy(coords, idx) if coords is not None else np.nan,
+        'grid_entropy': lambda idx: grid_entropy(coords, idx, coord_range=coord_range) if coords is not None else np.nan,
     }
     if metric_name not in metric_fns:
         raise ValueError(f'Unsupported metric_name: {metric_name}')
@@ -213,13 +238,14 @@ def pooled_bootstrap_metric_distribution(
     *,
     metric_name: str,
     coords: np.ndarray | None = None,
+    coord_range: Tuple[Tuple[float, float], Tuple[float, float]] | None = None,
 ) -> pd.DataFrame:
     """Compute matched-size bootstrap distributions for Human vs pooled AI."""
     metric_fns = {
         'mean_pairwise_distance': lambda idx: mean_pairwise_distance(D[np.ix_(idx, idx)]),
         'nearest_neighbor_distance': lambda idx: nearest_neighbor_distance(D[np.ix_(idx, idx)]),
         'mst_dispersion': lambda idx: mst_dispersion(D[np.ix_(idx, idx)]),
-        'grid_entropy': lambda idx: grid_entropy(coords, idx) if coords is not None else np.nan,
+        'grid_entropy': lambda idx: grid_entropy(coords, idx, coord_range=coord_range) if coords is not None else np.nan,
     }
     metric_fn = metric_fns[metric_name]
     human_value = float(metric_fn(human_idx))
@@ -242,6 +268,7 @@ def compare_human_vs_group_metrics(
     comparison_idx: np.ndarray,
     *,
     coords: np.ndarray | None = None,
+    coord_range: Tuple[Tuple[float, float], Tuple[float, float]] | None = None,
     metric_names: List[str] | None = None,
     n_perm: int = 10000,
     seed: int = 42,
@@ -258,6 +285,7 @@ def compare_human_vs_group_metrics(
             n_perm=n_perm,
             seed=seed,
             coords=coords,
+            coord_range=coord_range,
         )
         rows.append(
             {

@@ -1,0 +1,2 @@
+condition,analysis_family,metric,test,human_n,ai_subsample_n,ai_pool_n,n_boot,human_value,ai_boot_mean,ai_boot_ci_low,ai_boot_ci_high,effect_human_minus_ai_boot_mean,effect_ci_low,effect_ci_high,bootstrap_p_value_directional
+baseline,pooled_human_vs_allai_mesh_union,mesh_group_union_terms,same-size AI bootstrap,23,23,69,1000,871.0,871.799,774.0,963.025,-0.799,-92.025,97.0,0.982

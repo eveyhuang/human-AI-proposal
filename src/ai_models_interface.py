@@ -237,16 +237,16 @@ class AIModelsInterface:
         """
         from google.genai import types as genai_types
         try:
-            # These models only support the default temperature and reject any
-            # explicit value, so we omit the parameter entirely.
             if kwargs.get('use_web_search', False):
                 config = genai_types.GenerateContentConfig(
                     tools=[genai_types.Tool(google_search=genai_types.GoogleSearch())],
                 )
-            else:
+            elif kwargs.get('force_json', True):
                 config = genai_types.GenerateContentConfig(
                     response_mime_type='application/json',
                 )
+            else:
+                config = genai_types.GenerateContentConfig()
 
             response = self.gemini_client.models.generate_content(
                 model=provider_model_id,

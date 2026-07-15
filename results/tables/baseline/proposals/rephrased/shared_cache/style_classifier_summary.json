@@ -1,5 +1,5 @@
 {
-  "observed_auc": 1.0,
-  "permutation_p_value": 0.000999000999000999,
+  "observed_auc": 0.653434152488973,
+  "permutation_p_value": 0.024975024975024976,
   "n_perm": 1000
 }

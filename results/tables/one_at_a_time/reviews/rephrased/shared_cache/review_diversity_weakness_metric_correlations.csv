@@ -1,0 +1,145 @@
+condition,comparison,comparison_label,metric_a,metric_b,spearman_rho,p_value,n_proposals,field_branch
+one_at_a_time,all_ai,All AI,centroid_loo,global_centroid_dist,0.9229249011857708,3.643067085466445e-10,23,weakness
+one_at_a_time,all_ai,All AI,centroid_loo,medoid_dist,0.816205533596838,2.0490504376239004e-06,23,weakness
+one_at_a_time,all_ai,All AI,centroid_loo,mst_dispersion,0.8053359683794467,3.5588577416662336e-06,23,weakness
+one_at_a_time,all_ai,All AI,centroid_loo,remote_clique,0.9772727272727272,1.2508578808177835e-15,23,weakness
+one_at_a_time,all_ai,All AI,centroid_loo,span90,0.9041501976284586,3.302671241557327e-09,23,weakness
+one_at_a_time,all_ai,All AI,centroid_loo,sparseness,0.9229249011857708,3.643067085466445e-10,23,weakness
+one_at_a_time,all_ai,All AI,global_centroid_dist,medoid_dist,0.8626482213438734,1.194476145665706e-07,23,weakness
+one_at_a_time,all_ai,All AI,global_centroid_dist,mst_dispersion,0.8201581027667983,1.6614245902534728e-06,23,weakness
+one_at_a_time,all_ai,All AI,global_centroid_dist,remote_clique,0.9733201581027668,6.620049324533835e-15,23,weakness
+one_at_a_time,all_ai,All AI,global_centroid_dist,span90,0.9466403162055337,8.522205691075868e-12,23,weakness
+one_at_a_time,all_ai,All AI,global_centroid_dist,sparseness,1.0,0.0,23,weakness
+one_at_a_time,all_ai,All AI,mean_pairwise,centroid_loo,0.9772727272727272,1.2508578808177835e-15,23,weakness
+one_at_a_time,all_ai,All AI,mean_pairwise,global_centroid_dist,0.9733201581027668,6.620049324533835e-15,23,weakness
+one_at_a_time,all_ai,All AI,mean_pairwise,medoid_dist,0.8379446640316206,6.049275856469085e-07,23,weakness
+one_at_a_time,all_ai,All AI,mean_pairwise,mst_dispersion,0.8211462450592886,1.5753241344652528e-06,23,weakness
+one_at_a_time,all_ai,All AI,mean_pairwise,nn,0.717391304347826,0.00011670655786167384,23,weakness
+one_at_a_time,all_ai,All AI,mean_pairwise,remote_clique,1.0,0.0,23,weakness
+one_at_a_time,all_ai,All AI,mean_pairwise,span90,0.9476284584980237,7.034256602058228e-12,23,weakness
+one_at_a_time,all_ai,All AI,mean_pairwise,sparseness,0.9733201581027668,6.620049324533835e-15,23,weakness
+one_at_a_time,all_ai,All AI,medoid_dist,mst_dispersion,0.9436758893280633,1.4838379845626962e-11,23,weakness
+one_at_a_time,all_ai,All AI,medoid_dist,remote_clique,0.8379446640316206,6.049275856469085e-07,23,weakness
+one_at_a_time,all_ai,All AI,medoid_dist,span90,0.7144268774703557,0.0001283335428713042,23,weakness
+one_at_a_time,all_ai,All AI,medoid_dist,sparseness,0.8626482213438734,1.194476145665706e-07,23,weakness
+one_at_a_time,all_ai,All AI,mst_dispersion,remote_clique,0.8211462450592886,1.5753241344652528e-06,23,weakness
+one_at_a_time,all_ai,All AI,mst_dispersion,sparseness,0.8201581027667983,1.6614245902534728e-06,23,weakness
+one_at_a_time,all_ai,All AI,nn,centroid_loo,0.6837944664031621,0.00032134167123842617,23,weakness
+one_at_a_time,all_ai,All AI,nn,global_centroid_dist,0.7203557312252966,0.00010600828698888351,23,weakness
+one_at_a_time,all_ai,All AI,nn,medoid_dist,0.8418972332015809,4.754320728782286e-07,23,weakness
+one_at_a_time,all_ai,All AI,nn,mst_dispersion,0.9436758893280633,1.4838379845626962e-11,23,weakness
+one_at_a_time,all_ai,All AI,nn,remote_clique,0.717391304347826,0.00011670655786167384,23,weakness
+one_at_a_time,all_ai,All AI,nn,span90,0.5849802371541503,0.0033682697642661713,23,weakness
+one_at_a_time,all_ai,All AI,nn,sparseness,0.7203557312252966,0.00010600828698888351,23,weakness
+one_at_a_time,all_ai,All AI,span90,mst_dispersion,0.6946640316205535,0.00023495864270621007,23,weakness
+one_at_a_time,all_ai,All AI,span90,remote_clique,0.9476284584980237,7.034256602058228e-12,23,weakness
+one_at_a_time,all_ai,All AI,span90,sparseness,0.9466403162055337,8.522205691075868e-12,23,weakness
+one_at_a_time,all_ai,All AI,sparseness,remote_clique,0.9733201581027668,6.620049324533835e-15,23,weakness
+one_at_a_time,claude,Claude,centroid_loo,global_centroid_dist,0.9466403162055337,8.522205691075868e-12,23,weakness
+one_at_a_time,claude,Claude,centroid_loo,medoid_dist,0.8774703557312253,3.8547407420742e-08,23,weakness
+one_at_a_time,claude,Claude,centroid_loo,mst_dispersion,0.8972332015810277,6.652888241485303e-09,23,weakness
+one_at_a_time,claude,Claude,centroid_loo,remote_clique,0.9851778656126482,1.4555716366082698e-17,23,weakness
+one_at_a_time,claude,Claude,centroid_loo,span90,0.8913043478260869,1.167055298446974e-08,23,weakness
+one_at_a_time,claude,Claude,centroid_loo,sparseness,0.9466403162055337,8.522205691075868e-12,23,weakness
+one_at_a_time,claude,Claude,global_centroid_dist,medoid_dist,0.9367588932806324,4.855363761083324e-11,23,weakness
+one_at_a_time,claude,Claude,global_centroid_dist,mst_dispersion,0.908102766798419,2.1606631230534575e-09,23,weakness
+one_at_a_time,claude,Claude,global_centroid_dist,remote_clique,0.9782608695652174,7.877398904732528e-16,23,weakness
+one_at_a_time,claude,Claude,global_centroid_dist,span90,0.9407114624505929,2.5093672174275708e-11,23,weakness
+one_at_a_time,claude,Claude,global_centroid_dist,sparseness,1.0,0.0,23,weakness
+one_at_a_time,claude,Claude,mean_pairwise,centroid_loo,0.9851778656126482,1.4555716366082698e-17,23,weakness
+one_at_a_time,claude,Claude,mean_pairwise,global_centroid_dist,0.9782608695652174,7.877398904732528e-16,23,weakness
+one_at_a_time,claude,Claude,mean_pairwise,medoid_dist,0.9258893280632412,2.4456038646979814e-10,23,weakness
+one_at_a_time,claude,Claude,mean_pairwise,mst_dispersion,0.9199604743083004,5.343059876817408e-10,23,weakness
+one_at_a_time,claude,Claude,mean_pairwise,nn,0.8913043478260869,1.167055298446974e-08,23,weakness
+one_at_a_time,claude,Claude,mean_pairwise,remote_clique,1.0,0.0,23,weakness
+one_at_a_time,claude,Claude,mean_pairwise,span90,0.9169960474308301,7.724063591873756e-10,23,weakness
+one_at_a_time,claude,Claude,mean_pairwise,sparseness,0.9782608695652174,7.877398904732528e-16,23,weakness
+one_at_a_time,claude,Claude,medoid_dist,mst_dispersion,0.9387351778656127,3.5096875332960365e-11,23,weakness
+one_at_a_time,claude,Claude,medoid_dist,remote_clique,0.9258893280632412,2.4456038646979814e-10,23,weakness
+one_at_a_time,claude,Claude,medoid_dist,span90,0.8132411067193677,2.3903305396676396e-06,23,weakness
+one_at_a_time,claude,Claude,medoid_dist,sparseness,0.9367588932806324,4.855363761083324e-11,23,weakness
+one_at_a_time,claude,Claude,mst_dispersion,remote_clique,0.9199604743083004,5.343059876817408e-10,23,weakness
+one_at_a_time,claude,Claude,mst_dispersion,sparseness,0.908102766798419,2.1606631230534575e-09,23,weakness
+one_at_a_time,claude,Claude,nn,centroid_loo,0.8646245059288538,1.0352344115447773e-07,23,weakness
+one_at_a_time,claude,Claude,nn,global_centroid_dist,0.8774703557312253,3.8547407420742e-08,23,weakness
+one_at_a_time,claude,Claude,nn,medoid_dist,0.908102766798419,2.1606631230534575e-09,23,weakness
+one_at_a_time,claude,Claude,nn,mst_dispersion,0.9841897233201581,2.854051190493887e-17,23,weakness
+one_at_a_time,claude,Claude,nn,remote_clique,0.8913043478260869,1.167055298446974e-08,23,weakness
+one_at_a_time,claude,Claude,nn,span90,0.7193675889328064,0.00010947518161304477,23,weakness
+one_at_a_time,claude,Claude,nn,sparseness,0.8774703557312253,3.8547407420742e-08,23,weakness
+one_at_a_time,claude,Claude,span90,mst_dispersion,0.7737154150197629,1.4870546470308588e-05,23,weakness
+one_at_a_time,claude,Claude,span90,remote_clique,0.9169960474308301,7.724063591873756e-10,23,weakness
+one_at_a_time,claude,Claude,span90,sparseness,0.9407114624505929,2.5093672174275708e-11,23,weakness
+one_at_a_time,claude,Claude,sparseness,remote_clique,0.9782608695652174,7.877398904732528e-16,23,weakness
+one_at_a_time,gemini,Gemini,centroid_loo,global_centroid_dist,0.9249011857707511,2.7981010516231444e-10,23,weakness
+one_at_a_time,gemini,Gemini,centroid_loo,medoid_dist,0.8972332015810277,6.652888241485303e-09,23,weakness
+one_at_a_time,gemini,Gemini,centroid_loo,mst_dispersion,0.9051383399209486,2.9754306887885376e-09,23,weakness
+one_at_a_time,gemini,Gemini,centroid_loo,remote_clique,0.9683794466403162,3.8565010642989665e-14,23,weakness
+one_at_a_time,gemini,Gemini,centroid_loo,span90,0.91600790513834,8.707277459697383e-10,23,weakness
+one_at_a_time,gemini,Gemini,centroid_loo,sparseness,0.9249011857707511,2.7981010516231444e-10,23,weakness
+one_at_a_time,gemini,Gemini,global_centroid_dist,medoid_dist,0.9446640316205533,1.2376027906403914e-11,23,weakness
+one_at_a_time,gemini,Gemini,global_centroid_dist,mst_dispersion,0.8774703557312253,3.8547407420742e-08,23,weakness
+one_at_a_time,gemini,Gemini,global_centroid_dist,remote_clique,0.9792490118577075,4.854287395760623e-16,23,weakness
+one_at_a_time,gemini,Gemini,global_centroid_dist,span90,0.9515810276679842,3.140424967104547e-12,23,weakness
+one_at_a_time,gemini,Gemini,global_centroid_dist,sparseness,1.0,0.0,23,weakness
+one_at_a_time,gemini,Gemini,mean_pairwise,centroid_loo,0.9683794466403162,3.8565010642989665e-14,23,weakness
+one_at_a_time,gemini,Gemini,mean_pairwise,global_centroid_dist,0.9792490118577075,4.854287395760623e-16,23,weakness
+one_at_a_time,gemini,Gemini,mean_pairwise,medoid_dist,0.9456521739130436,1.0287762126573295e-11,23,weakness
+one_at_a_time,gemini,Gemini,mean_pairwise,mst_dispersion,0.9150197628458498,9.801372424338925e-10,23,weakness
+one_at_a_time,gemini,Gemini,mean_pairwise,nn,0.8626482213438734,1.194476145665706e-07,23,weakness
+one_at_a_time,gemini,Gemini,mean_pairwise,remote_clique,1.0,0.0,23,weakness
+one_at_a_time,gemini,Gemini,mean_pairwise,span90,0.9515810276679842,3.140424967104547e-12,23,weakness
+one_at_a_time,gemini,Gemini,mean_pairwise,sparseness,0.9792490118577075,4.854287395760623e-16,23,weakness
+one_at_a_time,gemini,Gemini,medoid_dist,mst_dispersion,0.9525691699604744,2.5401685638882054e-12,23,weakness
+one_at_a_time,gemini,Gemini,medoid_dist,remote_clique,0.9456521739130436,1.0287762126573295e-11,23,weakness
+one_at_a_time,gemini,Gemini,medoid_dist,span90,0.8507905138339922,2.6977559195331056e-07,23,weakness
+one_at_a_time,gemini,Gemini,medoid_dist,sparseness,0.9446640316205533,1.2376027906403914e-11,23,weakness
+one_at_a_time,gemini,Gemini,mst_dispersion,remote_clique,0.9150197628458498,9.801372424338925e-10,23,weakness
+one_at_a_time,gemini,Gemini,mst_dispersion,sparseness,0.8774703557312253,3.8547407420742e-08,23,weakness
+one_at_a_time,gemini,Gemini,nn,centroid_loo,0.8586956521739131,1.57993302983442e-07,23,weakness
+one_at_a_time,gemini,Gemini,nn,global_centroid_dist,0.8191699604743082,1.7516719369175444e-06,23,weakness
+one_at_a_time,gemini,Gemini,nn,medoid_dist,0.9110671936758895,1.551919112141883e-09,23,weakness
+one_at_a_time,gemini,Gemini,nn,mst_dispersion,0.983201581027668,5.3708298825907296e-17,23,weakness
+one_at_a_time,gemini,Gemini,nn,remote_clique,0.8626482213438734,1.194476145665706e-07,23,weakness
+one_at_a_time,gemini,Gemini,nn,span90,0.7134387351778656,0.00013242709134158727,23,weakness
+one_at_a_time,gemini,Gemini,nn,sparseness,0.8191699604743082,1.7516719369175444e-06,23,weakness
+one_at_a_time,gemini,Gemini,span90,mst_dispersion,0.7964426877470356,5.454230127507419e-06,23,weakness
+one_at_a_time,gemini,Gemini,span90,remote_clique,0.9515810276679842,3.140424967104547e-12,23,weakness
+one_at_a_time,gemini,Gemini,span90,sparseness,0.9515810276679842,3.140424967104547e-12,23,weakness
+one_at_a_time,gemini,Gemini,sparseness,remote_clique,0.9792490118577075,4.854287395760623e-16,23,weakness
+one_at_a_time,gpt,GPT,centroid_loo,global_centroid_dist,0.9021739130434783,4.055548807322043e-09,23,weakness
+one_at_a_time,gpt,GPT,centroid_loo,medoid_dist,0.8873517786561266,1.6678520364260622e-08,23,weakness
+one_at_a_time,gpt,GPT,centroid_loo,mst_dispersion,0.9288537549407114,1.6143421649494893e-10,23,weakness
+one_at_a_time,gpt,GPT,centroid_loo,remote_clique,0.958498023715415,6.416966974193458e-13,23,weakness
+one_at_a_time,gpt,GPT,centroid_loo,span90,0.7638339920948617,2.221326619711372e-05,23,weakness
+one_at_a_time,gpt,GPT,centroid_loo,sparseness,0.9021739130434783,4.055548807322043e-09,23,weakness
+one_at_a_time,gpt,GPT,global_centroid_dist,medoid_dist,0.9575098814229249,8.179673134913354e-13,23,weakness
+one_at_a_time,gpt,GPT,global_centroid_dist,mst_dispersion,0.9179841897233202,6.841670339545262e-10,23,weakness
+one_at_a_time,gpt,GPT,global_centroid_dist,remote_clique,0.9812252964426879,1.7119446104319924e-16,23,weakness
+one_at_a_time,gpt,GPT,global_centroid_dist,span90,0.8705533596837944,6.647410329721665e-08,23,weakness
+one_at_a_time,gpt,GPT,global_centroid_dist,sparseness,1.0,0.0,23,weakness
+one_at_a_time,gpt,GPT,mean_pairwise,centroid_loo,0.958498023715415,6.416966974193458e-13,23,weakness
+one_at_a_time,gpt,GPT,mean_pairwise,global_centroid_dist,0.9812252964426879,1.7119446104319924e-16,23,weakness
+one_at_a_time,gpt,GPT,mean_pairwise,medoid_dist,0.9446640316205533,1.2376027906403914e-11,23,weakness
+one_at_a_time,gpt,GPT,mean_pairwise,mst_dispersion,0.9328063241106721,9.016093452521021e-11,23,weakness
+one_at_a_time,gpt,GPT,mean_pairwise,nn,0.8883399209486167,1.527335454283578e-08,23,weakness
+one_at_a_time,gpt,GPT,mean_pairwise,remote_clique,1.0,0.0,23,weakness
+one_at_a_time,gpt,GPT,mean_pairwise,span90,0.8527667984189724,2.3668578861607396e-07,23,weakness
+one_at_a_time,gpt,GPT,mean_pairwise,sparseness,0.9812252964426879,1.7119446104319924e-16,23,weakness
+one_at_a_time,gpt,GPT,medoid_dist,mst_dispersion,0.9525691699604744,2.5401685638882054e-12,23,weakness
+one_at_a_time,gpt,GPT,medoid_dist,remote_clique,0.9446640316205533,1.2376027906403914e-11,23,weakness
+one_at_a_time,gpt,GPT,medoid_dist,span90,0.7341897233201582,6.658979085184156e-05,23,weakness
+one_at_a_time,gpt,GPT,medoid_dist,sparseness,0.9575098814229249,8.179673134913354e-13,23,weakness
+one_at_a_time,gpt,GPT,mst_dispersion,remote_clique,0.9328063241106721,9.016093452521021e-11,23,weakness
+one_at_a_time,gpt,GPT,mst_dispersion,sparseness,0.9179841897233202,6.841670339545262e-10,23,weakness
+one_at_a_time,gpt,GPT,nn,centroid_loo,0.9071146245059288,2.4066965518574098e-09,23,weakness
+one_at_a_time,gpt,GPT,nn,global_centroid_dist,0.8675889328063242,8.317496044489223e-08,23,weakness
+one_at_a_time,gpt,GPT,nn,medoid_dist,0.9258893280632412,2.4456038646979814e-10,23,weakness
+one_at_a_time,gpt,GPT,nn,mst_dispersion,0.9891304347826088,5.704063065422532e-19,23,weakness
+one_at_a_time,gpt,GPT,nn,remote_clique,0.8883399209486167,1.527335454283578e-08,23,weakness
+one_at_a_time,gpt,GPT,nn,span90,0.6126482213438735,0.0018850711980784925,23,weakness
+one_at_a_time,gpt,GPT,nn,sparseness,0.8675889328063242,8.317496044489223e-08,23,weakness
+one_at_a_time,gpt,GPT,span90,mst_dispersion,0.6867588932806324,0.00029542354789082375,23,weakness
+one_at_a_time,gpt,GPT,span90,remote_clique,0.8527667984189724,2.3668578861607396e-07,23,weakness
+one_at_a_time,gpt,GPT,span90,sparseness,0.8705533596837944,6.647410329721665e-08,23,weakness
+one_at_a_time,gpt,GPT,sparseness,remote_clique,0.9812252964426879,1.7119446104319924e-16,23,weakness

@@ -1,0 +1,17 @@
+{
+  "run_id": "20260710_152136",
+  "scope": "one_at_a_time",
+  "source_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/ai-proposals/one_at_a_time/ai_proposals_one_at_a_time_complete_20260709_095141.csv",
+  "output_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/ai-proposals/one_at_a_time/rephrased/ai_proposals_one_at_a_time_rephrased_20260710_152136.csv",
+  "row_count": 69,
+  "success_count": 69,
+  "failure_count": 0,
+  "rephrase_model": "gemini-3.1-pro-preview",
+  "temperature": 0,
+  "prompt_version": "proposal_semantic_standardization_v2",
+  "started_at": "2026-07-10T17:39:56.659491",
+  "ended_at": "2026-07-10T17:39:56.659501",
+  "summary_output_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/ai-proposals/one_at_a_time/rephrased/proposal_rephrase_summaries_one_at_a_time_20260710_152136.json",
+  "qa_issues": [],
+  "completed_cleanly": true
+}

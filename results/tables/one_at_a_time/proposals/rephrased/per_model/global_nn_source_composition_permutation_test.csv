@@ -1,0 +1,2 @@
+condition,analysis_family,test,chi2,asymptotic_p_value_reference_only,permutation_p_value,p_value,dof,cramers_v,n_perm
+one_at_a_time,global_nearest_neighbor_source_composition,label permutation chi-square,83.04545454545455,4.004172810190319e-14,9.999000099990002e-05,9.999000099990002e-05,9,0.5485337984693752,10000

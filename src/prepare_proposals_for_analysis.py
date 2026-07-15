@@ -7,6 +7,7 @@ from __future__ import annotations
 import json
 import pickle
 import re
+import hashlib
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -29,6 +30,26 @@ MODEL_DISPLAY_NAME_MAP = {
     'gpt-5.2': 'GPT',
     'human': 'Human',
 }
+
+
+def _texts_digest(texts: List[str]) -> str:
+    """Stable digest for cache validation when proposal text changes."""
+    h = hashlib.sha256()
+    for text in texts:
+        encoded = str(text).encode('utf-8')
+        h.update(len(encoded).to_bytes(8, byteorder='big'))
+        h.update(encoded)
+    return h.hexdigest()
+
+
+def _array_digest(values: np.ndarray) -> str:
+    """Stable digest for numeric arrays used as cache inputs."""
+    arr = np.ascontiguousarray(np.asarray(values))
+    h = hashlib.sha256()
+    h.update(str(arr.shape).encode('utf-8'))
+    h.update(str(arr.dtype).encode('utf-8'))
+    h.update(arr.view(np.uint8))
+    return h.hexdigest()
 
 
 def _latest_non_failures_csv(directory: Path, pattern: str) -> Optional[Path]:
@@ -255,7 +276,7 @@ def _is_funded(status: Any) -> Optional[bool]:
     lowered = str(status).strip().lower()
     if lowered == '':
         return None
-    return any(token in lowered for token in ['fund', 'selected', 'awarded'])
+    return lowered in {'accepted', 'accept'} or any(token in lowered for token in ['fund', 'selected', 'awarded'])
 
 
 def _is_top5(rank: Any) -> Optional[bool]:
@@ -455,15 +476,22 @@ def build_embedding_bundle(
     """Build or load one aligned embedding bundle for a proposal master table."""
     proposal_uids = df['proposal_uid'].astype(str).tolist()
     texts = df[text_field].fillna('').astype(str).tolist()
+    text_digest = _texts_digest(texts)
     metadata = df[['proposal_uid', 'source_type', 'source_group', 'model', 'title', 'cohort', 'condition', 'text_version']].to_dict('records')
     if reuse_if_exists and output_path.exists():
         payload = load_pickle(output_path)
-        if payload.get('proposal_uids') == proposal_uids and payload.get('text_field') == text_field:
+        if (
+            payload.get('proposal_uids') == proposal_uids
+            and payload.get('text_field') == text_field
+            and payload.get('text_digest') == text_digest
+            and payload.get('texts') == texts
+        ):
             return payload
     payload = {
         'embeddings': embed_texts(texts, model_name=model_name, pooling=pooling),
         'proposal_uids': proposal_uids,
         'texts': texts,
+        'text_digest': text_digest,
         'metadata': metadata,
         'model_name': model_name,
         'text_field': text_field,
@@ -490,11 +518,24 @@ def fit_or_load_proposal_umap(
     reuse_if_exists: bool = True,
 ) -> Tuple[Any, np.ndarray]:
     """Fit or load a proposal-space UMAP reducer and coordinates."""
+    embeddings = np.asarray(embedding_bundle['embeddings'], dtype=np.float32)
+    # This helper is reused for review-space UMAP (fit_or_load_review_umap), whose
+    # bundle keys uids under 'review_uids' rather than 'proposal_uids'. The uid list
+    # is only a cache-identity field, so accept whichever the bundle provides.
+    bundle_uids = embedding_bundle.get('proposal_uids', embedding_bundle.get('review_uids', []))
+    proposal_uids = [str(uid) for uid in bundle_uids]
+    embedding_digest = _array_digest(embeddings)
+    meta_path = reducer_path.with_suffix('.meta.json')
     if reuse_if_exists and reducer_path.exists() and coords_path.exists():
-        return load_pickle(reducer_path), np.load(coords_path)
+        if meta_path.exists():
+            meta = json.loads(meta_path.read_text())
+            if (
+                meta.get('proposal_uids') == proposal_uids
+                and meta.get('embedding_digest') == embedding_digest
+            ):
+                return load_pickle(reducer_path), np.load(coords_path)
     import umap as umap_lib
 
-    embeddings = np.asarray(embedding_bundle['embeddings'], dtype=np.float32)
     reducer = umap_lib.UMAP(
         n_neighbors=15,
         min_dist=0.1,
@@ -506,6 +547,12 @@ def fit_or_load_proposal_umap(
     coords = reducer.fit_transform(embeddings)
     save_pickle(reducer_path, reducer)
     np.save(coords_path, coords)
+    meta_path.write_text(json.dumps({
+        'proposal_uids': proposal_uids,
+        'embedding_digest': embedding_digest,
+        'text_field': embedding_bundle.get('text_field'),
+        'timestamp': datetime.now().isoformat(),
+    }, indent=2, ensure_ascii=False))
     return reducer, coords
 
 
@@ -520,13 +567,28 @@ def compute_or_load_proposal_to_literature_knn(
     """Compute or load proposal-to-literature nearest-neighbor caches."""
     proposal_uids = proposal_embedding_bundle['proposal_uids']
     literature_indices = literature_embedding_bundle['article_index']['article_idx'].astype(int).tolist()
-    if reuse_if_exists and output_path.exists():
-        payload = np.load(output_path, allow_pickle=True)
-        if payload['proposal_uids'].tolist() == proposal_uids and payload['article_idx'].tolist() == literature_indices:
-            return {key: payload[key] for key in payload.files}
-
     prop = np.asarray(proposal_embedding_bundle['embeddings'], dtype=np.float32)
     lit = np.asarray(literature_embedding_bundle['embeddings'], dtype=np.float32)
+    proposal_embedding_digest = _array_digest(prop)
+    literature_embedding_digest = _array_digest(lit)
+    if reuse_if_exists and output_path.exists():
+        payload = np.load(output_path, allow_pickle=True)
+        proposal_digest_matches = (
+            'proposal_embedding_digest' in payload.files
+            and str(payload['proposal_embedding_digest'].item()) == proposal_embedding_digest
+        )
+        literature_digest_matches = (
+            'literature_embedding_digest' in payload.files
+            and str(payload['literature_embedding_digest'].item()) == literature_embedding_digest
+        )
+        if (
+            payload['proposal_uids'].tolist() == proposal_uids
+            and payload['article_idx'].tolist() == literature_indices
+            and proposal_digest_matches
+            and literature_digest_matches
+        ):
+            return {key: payload[key] for key in payload.files}
+
     distances = cosine_distances(prop, lit)
     nn_idx = np.argsort(distances, axis=1)[:, :k]
     nn_dist = np.take_along_axis(distances, nn_idx, axis=1)
@@ -538,6 +600,8 @@ def compute_or_load_proposal_to_literature_knn(
         'k': np.array(k, dtype=np.int32),
         'text_field': np.array(proposal_embedding_bundle['text_field'], dtype=object),
         'built_from': np.array('abstract_text', dtype=object),
+        'proposal_embedding_digest': np.array(proposal_embedding_digest, dtype=object),
+        'literature_embedding_digest': np.array(literature_embedding_digest, dtype=object),
         'timestamp': np.array(datetime.now().isoformat(), dtype=object),
     }
     np.savez(output_path, **payload)

@@ -94,11 +94,196 @@ def build_human_target_proposal_lookup(project_root: Path) -> pd.DataFrame:
                     'target_proposal_status': status,
                     'target_authors': '; '.join(proposal.get('authors', []) or []),
                     'target_ranking': proposal.get('ranking'),
-                    'target_funding': any(token in str(status).lower() for token in ['fund', 'selected', 'award']),
+                    'target_funding': is_accepted_or_funded(status),
                 }
             )
     df = pd.DataFrame(rows).sort_values(['target_cohort', 'target_proposal_id']).reset_index(drop=True)
     return df
+
+
+def is_accepted_or_funded(status: Any) -> Optional[bool]:
+    if pd.isna(status):
+        return None
+    lowered = str(status).strip().lower()
+    if lowered == '':
+        return None
+    return lowered in {'accepted', 'accept'} or any(token in lowered for token in ['fund', 'selected', 'awarded', 'award'])
+
+
+def add_review_score_ranks(summary_df: pd.DataFrame) -> pd.DataFrame:
+    """Add AI/human reviewer-derived ranks for the human target proposals.
+
+    Original target_ranking comes from the source human proposal JSON files
+    where lower is better. These derived ranks use reviewer mean scores, where
+    higher scores are treated as better.
+    """
+    if summary_df.empty:
+        return summary_df
+    out = summary_df.copy()
+    score_sources = ['human', 'ai_pooled', 'claude', 'gemini', 'gpt']
+    for source in score_sources:
+        score_col = f'{source}_mean_overall_score'
+        if score_col not in out.columns:
+            continue
+        values = pd.to_numeric(out[score_col], errors='coerce')
+        out[f'{source}_review_score_rank'] = (
+            values.groupby(out['condition']).rank(method='min', ascending=False, na_option='bottom')
+        )
+        out[f'{source}_review_score_rank_within_cohort'] = (
+            values.groupby([out['condition'], out['target_cohort']]).rank(method='min', ascending=False, na_option='bottom')
+        )
+    return out
+
+
+def _top_n_flag(values: pd.Series, *, n: int = 5) -> pd.Series:
+    """Return a strict top-n boolean flag with deterministic tie-breaking."""
+    proposal_uids = values.index.astype(str)
+    score_df = pd.DataFrame({
+        'proposal_uid': proposal_uids.to_numpy(),
+        'score': pd.to_numeric(values, errors='coerce').to_numpy(),
+    })
+    score_df = score_df.dropna(subset=['score']).sort_values(
+        ['score', 'proposal_uid'],
+        ascending=[False, True],
+        kind='mergesort',
+    )
+    selected = set(score_df.head(n)['proposal_uid'])
+    return pd.Series(proposal_uids.isin(selected), index=values.index)
+
+
+def build_ai_review_score_annotations(
+    proposal_scores_by_condition: Dict[str, pd.DataFrame],
+    *,
+    top_n: int = 5,
+) -> pd.DataFrame:
+    """Build proposal-level AI review score annotations across review conditions."""
+    annotation: pd.DataFrame | None = None
+    weighted_score_cols = []
+    weighted_count_cols = []
+
+    for condition, scores_df in proposal_scores_by_condition.items():
+        if scores_df is None or scores_df.empty:
+            continue
+        required = {'target_proposal_uid', 'ai_pooled_mean_overall_score'}
+        missing = required.difference(scores_df.columns)
+        if missing:
+            raise ValueError(f'{condition}: missing proposal score columns: {sorted(missing)}')
+
+        score_col = f'average_score_AI_{condition}'
+        count_col = f'_n_AI_reviews_{condition}'
+        cond = scores_df[['target_proposal_uid', 'ai_pooled_mean_overall_score']].copy()
+        cond = cond.rename(columns={'target_proposal_uid': 'proposal_uid', 'ai_pooled_mean_overall_score': score_col})
+        cond[score_col] = pd.to_numeric(cond[score_col], errors='coerce')
+        if 'ai_pooled_n_reviews' in scores_df.columns:
+            cond[count_col] = pd.to_numeric(scores_df['ai_pooled_n_reviews'], errors='coerce').fillna(0).to_numpy()
+        else:
+            cond[count_col] = 1
+
+        cond[f'is_top5_AI-ranked_{condition}'] = _top_n_flag(cond.set_index('proposal_uid')[score_col], n=top_n).to_numpy()
+        cond[f'average_score_AI_rank_{condition}'] = cond[score_col].rank(method='first', ascending=False, na_option='bottom')
+        cond[f'_weighted_score_AI_{condition}'] = cond[score_col] * cond[count_col]
+        weighted_score_cols.append(f'_weighted_score_AI_{condition}')
+        weighted_count_cols.append(count_col)
+
+        if annotation is None:
+            annotation = cond
+        else:
+            annotation = annotation.merge(cond, on='proposal_uid', how='outer', validate='one_to_one')
+
+    if annotation is None:
+        return pd.DataFrame()
+
+    weighted_scores = annotation[weighted_score_cols].sum(axis=1, min_count=1)
+    weighted_counts = annotation[weighted_count_cols].sum(axis=1, min_count=1).replace(0, np.nan)
+    annotation['average_score_AI'] = weighted_scores / weighted_counts
+    annotation['is_top5_AI-ranked'] = _top_n_flag(annotation.set_index('proposal_uid')['average_score_AI'], n=top_n).to_numpy()
+    annotation['average_score_AI_rank'] = annotation['average_score_AI'].rank(method='first', ascending=False, na_option='bottom')
+
+    drop_cols = [c for c in annotation.columns if c.startswith('_weighted_score_AI_') or c.startswith('_n_AI_reviews_')]
+    return annotation.drop(columns=drop_cols).sort_values('proposal_uid').reset_index(drop=True)
+
+
+def annotate_prepared_proposal_masters_with_ai_scores(
+    project_root: Path,
+    proposal_scores_by_condition: Dict[str, pd.DataFrame],
+    *,
+    proposal_conditions: List[str],
+    text_versions: List[str],
+    top_n: int = 5,
+    write_json_companions: bool = True,
+) -> pd.DataFrame:
+    """Append AI review-score annotations to prepared proposal_master files."""
+    annotations = build_ai_review_score_annotations(proposal_scores_by_condition, top_n=top_n)
+    if annotations.empty:
+        return pd.DataFrame()
+
+    written_rows: List[Dict[str, Any]] = []
+    annotation_cols = [c for c in annotations.columns if c != 'proposal_uid']
+    flag_cols = [c for c in annotation_cols if c.startswith('is_top5_AI-ranked')]
+
+    score_annotations = annotations.rename(columns={'proposal_uid': 'target_proposal_uid'})
+    for condition in proposal_conditions:
+        score_summary_path = project_root / 'data' / 'prepared' / condition / 'reviews' / 'proposal_review_scores_summary.csv'
+        if not score_summary_path.exists():
+            continue
+        score_summary = pd.read_csv(score_summary_path)
+        if 'target_proposal_uid' not in score_summary.columns:
+            continue
+        score_summary = score_summary.drop(columns=[c for c in annotation_cols if c in score_summary.columns], errors='ignore')
+        score_summary = score_summary.merge(score_annotations, on='target_proposal_uid', how='left', validate='one_to_one')
+        for col in flag_cols:
+            if col in score_summary.columns:
+                score_summary[col] = score_summary[col].fillna(False).astype(bool)
+        score_summary.to_csv(score_summary_path, index=False)
+        written_rows.append({
+            'condition': condition,
+            'text_version': 'reviews',
+            'proposal_master_path': str(score_summary_path),
+            'json_path': '',
+            'rows': int(len(score_summary)),
+            'human_rows': int(len(score_summary)),
+            'top_ai_ranked_rows': int(score_summary['is_top5_AI-ranked'].sum()) if 'is_top5_AI-ranked' in score_summary.columns else np.nan,
+        })
+
+    for condition in proposal_conditions:
+        for text_version in text_versions:
+            master_path = project_root / 'data' / 'prepared' / condition / 'proposals' / text_version / 'proposal_master.csv'
+            if not master_path.exists():
+                continue
+            master = pd.read_csv(master_path)
+            master = master.drop(columns=[c for c in annotation_cols if c in master.columns], errors='ignore')
+            master = master.merge(annotations, on='proposal_uid', how='left', validate='many_to_one')
+            if 'source_type' in master.columns:
+                non_human = master['source_type'] != 'human'
+                for col in annotation_cols:
+                    if col in flag_cols:
+                        master.loc[non_human, col] = False
+                    else:
+                        master.loc[non_human, col] = np.nan
+            for col in flag_cols:
+                master[col] = master[col].fillna(False).astype(bool)
+            master.to_csv(master_path, index=False)
+
+            json_path = master_path.with_suffix('.json')
+            if write_json_companions:
+                json_path.write_text(json.dumps(master.to_dict('records'), indent=2, ensure_ascii=False, default=str))
+
+            top_ai_ranked_rows = (
+                int(master.loc[master['source_type'] == 'human', 'is_top5_AI-ranked'].sum())
+                if 'is_top5_AI-ranked' in master.columns and 'source_type' in master.columns
+                else np.nan
+            )
+            written_rows.append({
+                'condition': condition,
+                'text_version': text_version,
+                'proposal_master_path': str(master_path),
+                'json_path': str(json_path) if write_json_companions else '',
+                'rows': int(len(master)),
+                'human_rows': int((master['source_type'] == 'human').sum()) if 'source_type' in master.columns else np.nan,
+                'top_ai_ranked_rows': top_ai_ranked_rows,
+            })
+
+    return pd.DataFrame(written_rows)
 
 
 def build_deterministic_human_review_uid(row: pd.Series) -> str:
@@ -516,7 +701,8 @@ def build_proposal_review_scores_summary(review_master_df: pd.DataFrame) -> pd.D
         rows.append(row)
     if not rows:
         return pd.DataFrame()
-    return pd.DataFrame(rows).sort_values(['condition', 'target_cohort', 'target_proposal_id']).reset_index(drop=True)
+    out = pd.DataFrame(rows).sort_values(['condition', 'target_cohort', 'target_proposal_id']).reset_index(drop=True)
+    return add_review_score_ranks(out)
 
 
 def build_review_embedding_bundle(
@@ -607,6 +793,9 @@ __all__ = [
     'AI_REVIEW_EXPECTED_ROWS',
     'CANONICAL_JUSTIFICATION_COLUMNS',
     'CANONICAL_SCORE_COLUMNS',
+    'add_review_score_ranks',
+    'annotate_prepared_proposal_masters_with_ai_scores',
+    'build_ai_review_score_annotations',
     'build_deterministic_human_review_uid',
     'build_human_target_proposal_lookup',
     'build_proposal_review_scores_summary',

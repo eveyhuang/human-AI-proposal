@@ -1,14 +1,14 @@
 {
-  "prepared_at": "2026-07-10T09:14:57.337849",
+  "prepared_at": "2026-07-13T13:26:14.611976",
   "condition": "one_at_a_time",
   "text_version": "rephrased",
   "input_original_ai_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews/one_at_a_time/ai_reviews_one_at_a_time_complete_20260709_143810.csv",
-  "input_rephrased_ai_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews/one_at_a_time/rephrased/ai_reviews_one_at_a_time_rephrased_20260709_162605.csv",
+  "input_rephrased_ai_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews/one_at_a_time/rephrased/ai_reviews_one_at_a_time_rephrased_20260710_152136.csv",
   "human_original_rows": 85,
   "human_rephrased_rows": 85,
-  "ai_original_rows": 331,
-  "ai_rephrased_rows": 331,
-  "review_master_rows": 416,
+  "ai_original_rows": 345,
+  "ai_rephrased_rows": 345,
+  "review_master_rows": 430,
   "review_uid_order": [
     "y1::1::1::01",
     "y1::1::2::01",
@@ -24,6 +24,7 @@
     "one_at_a_time::y1::1::gpt-5.5::003",
     "one_at_a_time::y1::1::gpt-5.5::004",
     "one_at_a_time::y1::1::gpt-5.5::005",
+    "one_at_a_time::y1::1::gemini-3.1-pro-preview::001",
     "one_at_a_time::y1::1::gemini-3.1-pro-preview::002",
     "one_at_a_time::y1::1::gemini-3.1-pro-preview::003",
     "one_at_a_time::y1::1::gemini-3.1-pro-preview::004",
@@ -53,6 +54,7 @@
     "y1::11::4::01",
     "one_at_a_time::y1::11::claude-sonnet-5::001",
     "one_at_a_time::y1::11::claude-sonnet-5::002",
+    "one_at_a_time::y1::11::claude-sonnet-5::003",
     "one_at_a_time::y1::11::claude-sonnet-5::004",
     "one_at_a_time::y1::11::claude-sonnet-5::005",
     "one_at_a_time::y1::11::gpt-5.5::001",
@@ -63,6 +65,7 @@
     "one_at_a_time::y1::11::gemini-3.1-pro-preview::001",
     "one_at_a_time::y1::11::gemini-3.1-pro-preview::002",
     "one_at_a_time::y1::11::gemini-3.1-pro-preview::003",
+    "one_at_a_time::y1::11::gemini-3.1-pro-preview::004",
     "one_at_a_time::y1::11::gemini-3.1-pro-preview::005",
     "y1::12::1::01",
     "y1::12::2::01",
@@ -81,6 +84,7 @@
     "one_at_a_time::y1::12::gemini-3.1-pro-preview::001",
     "one_at_a_time::y1::12::gemini-3.1-pro-preview::002",
     "one_at_a_time::y1::12::gemini-3.1-pro-preview::003",
+    "one_at_a_time::y1::12::gemini-3.1-pro-preview::004",
     "one_at_a_time::y1::12::gemini-3.1-pro-preview::005",
     "y1::2::1::01",
     "y1::2::2::01",
@@ -104,6 +108,7 @@
     "y1::3::2::01",
     "y1::3::3::01",
     "y1::3::4::01",
+    "one_at_a_time::y1::3::claude-sonnet-5::001",
     "one_at_a_time::y1::3::claude-sonnet-5::002",
     "one_at_a_time::y1::3::claude-sonnet-5::003",
     "one_at_a_time::y1::3::claude-sonnet-5::004",
@@ -113,6 +118,7 @@
     "one_at_a_time::y1::3::gpt-5.5::003",
     "one_at_a_time::y1::3::gpt-5.5::004",
     "one_at_a_time::y1::3::gpt-5.5::005",
+    "one_at_a_time::y1::3::gemini-3.1-pro-preview::001",
     "one_at_a_time::y1::3::gemini-3.1-pro-preview::002",
     "one_at_a_time::y1::3::gemini-3.1-pro-preview::003",
     "one_at_a_time::y1::3::gemini-3.1-pro-preview::004",
@@ -133,6 +139,7 @@
     "one_at_a_time::y1::4::gpt-5.5::005",
     "one_at_a_time::y1::4::gemini-3.1-pro-preview::001",
     "one_at_a_time::y1::4::gemini-3.1-pro-preview::002",
+    "one_at_a_time::y1::4::gemini-3.1-pro-preview::003",
     "one_at_a_time::y1::4::gemini-3.1-pro-preview::004",
     "one_at_a_time::y1::4::gemini-3.1-pro-preview::005",
     "y1::5::1::01",
@@ -187,6 +194,9 @@
     "one_at_a_time::y1::7::gpt-5.5::003",
     "one_at_a_time::y1::7::gpt-5.5::004",
     "one_at_a_time::y1::7::gpt-5.5::005",
+    "one_at_a_time::y1::7::gemini-3.1-pro-preview::001",
+    "one_at_a_time::y1::7::gemini-3.1-pro-preview::002",
+    "one_at_a_time::y1::7::gemini-3.1-pro-preview::003",
     "one_at_a_time::y1::7::gemini-3.1-pro-preview::004",
     "one_at_a_time::y1::7::gemini-3.1-pro-preview::005",
     "y1::8::1::01",
@@ -223,6 +233,7 @@
     "one_at_a_time::y1::9::gpt-5.5::004",
     "one_at_a_time::y1::9::gpt-5.5::005",
     "one_at_a_time::y1::9::gemini-3.1-pro-preview::001",
+    "one_at_a_time::y1::9::gemini-3.1-pro-preview::002",
     "one_at_a_time::y1::9::gemini-3.1-pro-preview::003",
     "one_at_a_time::y1::9::gemini-3.1-pro-preview::004",
     "one_at_a_time::y1::9::gemini-3.1-pro-preview::005",
@@ -313,9 +324,11 @@
     "one_at_a_time::y2::3::gpt-5.5::003",
     "one_at_a_time::y2::3::gpt-5.5::004",
     "one_at_a_time::y2::3::gpt-5.5::005",
+    "one_at_a_time::y2::3::gemini-3.1-pro-preview::001",
     "one_at_a_time::y2::3::gemini-3.1-pro-preview::002",
     "one_at_a_time::y2::3::gemini-3.1-pro-preview::003",
     "one_at_a_time::y2::3::gemini-3.1-pro-preview::004",
+    "one_at_a_time::y2::3::gemini-3.1-pro-preview::005",
     "y2::4::1::01",
     "y2::4::2::01",
     "one_at_a_time::y2::4::claude-sonnet-5::001",
@@ -370,6 +383,7 @@
     "one_at_a_time::y2::6::gemini-3.1-pro-preview::002",
     "one_at_a_time::y2::6::gemini-3.1-pro-preview::003",
     "one_at_a_time::y2::6::gemini-3.1-pro-preview::004",
+    "one_at_a_time::y2::6::gemini-3.1-pro-preview::005",
     "y2::7::1::01",
     "y2::7::2::01",
     "y2::7::3::01",
@@ -434,11 +448,11 @@
   "review_umap_coords_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/prepared/one_at_a_time/reviews/rephrased/review_umap2d.npy",
   "review_panel_distance_cache_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/prepared/one_at_a_time/reviews/rephrased/review_panel_distance_cache.pkl",
   "pairwise_text_shape": [
-    416,
-    416
+    430,
+    430
   ],
   "review_umap_shape": [
-    416,
+    430,
     2
   ],
   "panel_cache_targets": 23,
@@ -447,11 +461,11 @@
   "pairwise_strengths_path": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/prepared/one_at_a_time/reviews/rephrased/review_pairwise_cosine_strengths.npy",
   "pairwise_weakness_path": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/prepared/one_at_a_time/reviews/rephrased/review_pairwise_cosine_weakness.npy",
   "pairwise_strengths_shape": [
-    416,
-    416
+    430,
+    430
   ],
   "pairwise_weakness_shape": [
-    416,
-    416
+    430,
+    430
   ]
 }

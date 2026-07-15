@@ -13,6 +13,7 @@ one_at_a_time,one_at_a_time::y1::1::gpt-5.5::002,y1::1,ai,gpt,gpt-5.5,2,"origina
 one_at_a_time,one_at_a_time::y1::1::gpt-5.5::003,y1::1,ai,gpt,gpt-5.5,3,"original,rephrased",4,False,True,False,False,True
 one_at_a_time,one_at_a_time::y1::1::gpt-5.5::004,y1::1,ai,gpt,gpt-5.5,4,"original,rephrased",4,False,True,False,False,True
 one_at_a_time,one_at_a_time::y1::1::gpt-5.5::005,y1::1,ai,gpt,gpt-5.5,5,"original,rephrased",4,False,True,False,False,True
+one_at_a_time,one_at_a_time::y1::1::gemini-3.1-pro-preview::001,y1::1,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::1::gemini-3.1-pro-preview::002,y1::1,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::1::gemini-3.1-pro-preview::003,y1::1,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::1::gemini-3.1-pro-preview::004,y1::1,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
@@ -42,6 +43,7 @@ one_at_a_time,y1::11::3::01,y1::11,human,human,human-y1,,"original,rephrased",4,
 one_at_a_time,y1::11::4::01,y1::11,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
 one_at_a_time,one_at_a_time::y1::11::claude-sonnet-5::001,y1::11,ai,claude,claude-sonnet-5,1,"original,rephrased",4,False,True,True,False,False
 one_at_a_time,one_at_a_time::y1::11::claude-sonnet-5::002,y1::11,ai,claude,claude-sonnet-5,2,"original,rephrased",4,False,True,True,False,False
+one_at_a_time,one_at_a_time::y1::11::claude-sonnet-5::003,y1::11,ai,claude,claude-sonnet-5,3,"original,rephrased",4,False,True,True,False,False
 one_at_a_time,one_at_a_time::y1::11::claude-sonnet-5::004,y1::11,ai,claude,claude-sonnet-5,4,"original,rephrased",4,False,True,True,False,False
 one_at_a_time,one_at_a_time::y1::11::claude-sonnet-5::005,y1::11,ai,claude,claude-sonnet-5,5,"original,rephrased",4,False,True,True,False,False
 one_at_a_time,one_at_a_time::y1::11::gpt-5.5::001,y1::11,ai,gpt,gpt-5.5,1,"original,rephrased",4,False,True,False,False,True
@@ -52,6 +54,7 @@ one_at_a_time,one_at_a_time::y1::11::gpt-5.5::005,y1::11,ai,gpt,gpt-5.5,5,"origi
 one_at_a_time,one_at_a_time::y1::11::gemini-3.1-pro-preview::001,y1::11,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::11::gemini-3.1-pro-preview::002,y1::11,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::11::gemini-3.1-pro-preview::003,y1::11,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
+one_at_a_time,one_at_a_time::y1::11::gemini-3.1-pro-preview::004,y1::11,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::11::gemini-3.1-pro-preview::005,y1::11,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,y1::12::1::01,y1::12,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
 one_at_a_time,y1::12::2::01,y1::12,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
@@ -70,6 +73,7 @@ one_at_a_time,one_at_a_time::y1::12::gpt-5.5::005,y1::12,ai,gpt,gpt-5.5,5,"origi
 one_at_a_time,one_at_a_time::y1::12::gemini-3.1-pro-preview::001,y1::12,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::12::gemini-3.1-pro-preview::002,y1::12,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::12::gemini-3.1-pro-preview::003,y1::12,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
+one_at_a_time,one_at_a_time::y1::12::gemini-3.1-pro-preview::004,y1::12,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::12::gemini-3.1-pro-preview::005,y1::12,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,y1::2::1::01,y1::2,human,human,human-y1,,"original,rephrased",3,True,False,False,False,False
 one_at_a_time,y1::2::2::01,y1::2,human,human,human-y1,,"original,rephrased",3,True,False,False,False,False
@@ -93,6 +97,7 @@ one_at_a_time,y1::3::1::01,y1::3,human,human,human-y1,,"original,rephrased",4,Tr
 one_at_a_time,y1::3::2::01,y1::3,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
 one_at_a_time,y1::3::3::01,y1::3,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
 one_at_a_time,y1::3::4::01,y1::3,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
+one_at_a_time,one_at_a_time::y1::3::claude-sonnet-5::001,y1::3,ai,claude,claude-sonnet-5,1,"original,rephrased",4,False,True,True,False,False
 one_at_a_time,one_at_a_time::y1::3::claude-sonnet-5::002,y1::3,ai,claude,claude-sonnet-5,2,"original,rephrased",4,False,True,True,False,False
 one_at_a_time,one_at_a_time::y1::3::claude-sonnet-5::003,y1::3,ai,claude,claude-sonnet-5,3,"original,rephrased",4,False,True,True,False,False
 one_at_a_time,one_at_a_time::y1::3::claude-sonnet-5::004,y1::3,ai,claude,claude-sonnet-5,4,"original,rephrased",4,False,True,True,False,False
@@ -102,6 +107,7 @@ one_at_a_time,one_at_a_time::y1::3::gpt-5.5::002,y1::3,ai,gpt,gpt-5.5,2,"origina
 one_at_a_time,one_at_a_time::y1::3::gpt-5.5::003,y1::3,ai,gpt,gpt-5.5,3,"original,rephrased",4,False,True,False,False,True
 one_at_a_time,one_at_a_time::y1::3::gpt-5.5::004,y1::3,ai,gpt,gpt-5.5,4,"original,rephrased",4,False,True,False,False,True
 one_at_a_time,one_at_a_time::y1::3::gpt-5.5::005,y1::3,ai,gpt,gpt-5.5,5,"original,rephrased",4,False,True,False,False,True
+one_at_a_time,one_at_a_time::y1::3::gemini-3.1-pro-preview::001,y1::3,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::3::gemini-3.1-pro-preview::002,y1::3,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::3::gemini-3.1-pro-preview::003,y1::3,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::3::gemini-3.1-pro-preview::004,y1::3,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
@@ -122,6 +128,7 @@ one_at_a_time,one_at_a_time::y1::4::gpt-5.5::004,y1::4,ai,gpt,gpt-5.5,4,"origina
 one_at_a_time,one_at_a_time::y1::4::gpt-5.5::005,y1::4,ai,gpt,gpt-5.5,5,"original,rephrased",4,False,True,False,False,True
 one_at_a_time,one_at_a_time::y1::4::gemini-3.1-pro-preview::001,y1::4,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::4::gemini-3.1-pro-preview::002,y1::4,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
+one_at_a_time,one_at_a_time::y1::4::gemini-3.1-pro-preview::003,y1::4,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::4::gemini-3.1-pro-preview::004,y1::4,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::4::gemini-3.1-pro-preview::005,y1::4,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,y1::5::1::01,y1::5,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
@@ -176,6 +183,9 @@ one_at_a_time,one_at_a_time::y1::7::gpt-5.5::002,y1::7,ai,gpt,gpt-5.5,2,"origina
 one_at_a_time,one_at_a_time::y1::7::gpt-5.5::003,y1::7,ai,gpt,gpt-5.5,3,"original,rephrased",4,False,True,False,False,True
 one_at_a_time,one_at_a_time::y1::7::gpt-5.5::004,y1::7,ai,gpt,gpt-5.5,4,"original,rephrased",4,False,True,False,False,True
 one_at_a_time,one_at_a_time::y1::7::gpt-5.5::005,y1::7,ai,gpt,gpt-5.5,5,"original,rephrased",4,False,True,False,False,True
+one_at_a_time,one_at_a_time::y1::7::gemini-3.1-pro-preview::001,y1::7,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
+one_at_a_time,one_at_a_time::y1::7::gemini-3.1-pro-preview::002,y1::7,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
+one_at_a_time,one_at_a_time::y1::7::gemini-3.1-pro-preview::003,y1::7,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::7::gemini-3.1-pro-preview::004,y1::7,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::7::gemini-3.1-pro-preview::005,y1::7,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,y1::8::1::01,y1::8,human,human,human-y1,,"original,rephrased",5,True,False,False,False,False
@@ -212,6 +222,7 @@ one_at_a_time,one_at_a_time::y1::9::gpt-5.5::003,y1::9,ai,gpt,gpt-5.5,3,"origina
 one_at_a_time,one_at_a_time::y1::9::gpt-5.5::004,y1::9,ai,gpt,gpt-5.5,4,"original,rephrased",3,False,True,False,False,True
 one_at_a_time,one_at_a_time::y1::9::gpt-5.5::005,y1::9,ai,gpt,gpt-5.5,5,"original,rephrased",3,False,True,False,False,True
 one_at_a_time,one_at_a_time::y1::9::gemini-3.1-pro-preview::001,y1::9,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",3,False,True,False,True,False
+one_at_a_time,one_at_a_time::y1::9::gemini-3.1-pro-preview::002,y1::9,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",3,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::9::gemini-3.1-pro-preview::003,y1::9,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",3,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::9::gemini-3.1-pro-preview::004,y1::9,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",3,False,True,False,True,False
 one_at_a_time,one_at_a_time::y1::9::gemini-3.1-pro-preview::005,y1::9,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",3,False,True,False,True,False
@@ -302,9 +313,11 @@ one_at_a_time,one_at_a_time::y2::3::gpt-5.5::002,y2::3,ai,gpt,gpt-5.5,2,"origina
 one_at_a_time,one_at_a_time::y2::3::gpt-5.5::003,y2::3,ai,gpt,gpt-5.5,3,"original,rephrased",4,False,True,False,False,True
 one_at_a_time,one_at_a_time::y2::3::gpt-5.5::004,y2::3,ai,gpt,gpt-5.5,4,"original,rephrased",4,False,True,False,False,True
 one_at_a_time,one_at_a_time::y2::3::gpt-5.5::005,y2::3,ai,gpt,gpt-5.5,5,"original,rephrased",4,False,True,False,False,True
+one_at_a_time,one_at_a_time::y2::3::gemini-3.1-pro-preview::001,y2::3,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y2::3::gemini-3.1-pro-preview::002,y2::3,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y2::3::gemini-3.1-pro-preview::003,y2::3,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y2::3::gemini-3.1-pro-preview::004,y2::3,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
+one_at_a_time,one_at_a_time::y2::3::gemini-3.1-pro-preview::005,y2::3,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,y2::4::1::01,y2::4,human,human,human-y2,,"original,rephrased",2,True,False,False,False,False
 one_at_a_time,y2::4::2::01,y2::4,human,human,human-y2,,"original,rephrased",2,True,False,False,False,False
 one_at_a_time,one_at_a_time::y2::4::claude-sonnet-5::001,y2::4,ai,claude,claude-sonnet-5,1,"original,rephrased",2,False,True,True,False,False
@@ -359,6 +372,7 @@ one_at_a_time,one_at_a_time::y2::6::gemini-3.1-pro-preview::001,y2::6,ai,gemini,
 one_at_a_time,one_at_a_time::y2::6::gemini-3.1-pro-preview::002,y2::6,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y2::6::gemini-3.1-pro-preview::003,y2::6,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,one_at_a_time::y2::6::gemini-3.1-pro-preview::004,y2::6,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
+one_at_a_time,one_at_a_time::y2::6::gemini-3.1-pro-preview::005,y2::6,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 one_at_a_time,y2::7::1::01,y2::7,human,human,human-y2,,"original,rephrased",4,True,False,False,False,False
 one_at_a_time,y2::7::2::01,y2::7,human,human,human-y2,,"original,rephrased",4,True,False,False,False,False
 one_at_a_time,y2::7::3::01,y2::7,human,human,human-y2,,"original,rephrased",4,True,False,False,False,False

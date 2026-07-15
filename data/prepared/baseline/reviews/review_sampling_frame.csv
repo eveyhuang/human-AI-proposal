@@ -13,6 +13,11 @@ baseline,baseline::y1::1::gpt-5.5::002,y1::1,ai,gpt,gpt-5.5,2,"original,rephrase
 baseline,baseline::y1::1::gpt-5.5::003,y1::1,ai,gpt,gpt-5.5,3,"original,rephrased",4,False,True,False,False,True
 baseline,baseline::y1::1::gpt-5.5::004,y1::1,ai,gpt,gpt-5.5,4,"original,rephrased",4,False,True,False,False,True
 baseline,baseline::y1::1::gpt-5.5::005,y1::1,ai,gpt,gpt-5.5,5,"original,rephrased",4,False,True,False,False,True
+baseline,baseline::y1::1::gemini-3.1-pro-preview::001,y1::1,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
+baseline,baseline::y1::1::gemini-3.1-pro-preview::002,y1::1,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
+baseline,baseline::y1::1::gemini-3.1-pro-preview::003,y1::1,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
+baseline,baseline::y1::1::gemini-3.1-pro-preview::004,y1::1,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
+baseline,baseline::y1::1::gemini-3.1-pro-preview::005,y1::1,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 baseline,y1::10::1::01,y1::10,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
 baseline,y1::10::2::01,y1::10,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
 baseline,y1::10::3::01,y1::10,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
@@ -308,6 +313,11 @@ baseline,baseline::y2::3::gpt-5.5::002,y2::3,ai,gpt,gpt-5.5,2,"original,rephrase
 baseline,baseline::y2::3::gpt-5.5::003,y2::3,ai,gpt,gpt-5.5,3,"original,rephrased",4,False,True,False,False,True
 baseline,baseline::y2::3::gpt-5.5::004,y2::3,ai,gpt,gpt-5.5,4,"original,rephrased",4,False,True,False,False,True
 baseline,baseline::y2::3::gpt-5.5::005,y2::3,ai,gpt,gpt-5.5,5,"original,rephrased",4,False,True,False,False,True
+baseline,baseline::y2::3::gemini-3.1-pro-preview::001,y2::3,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
+baseline,baseline::y2::3::gemini-3.1-pro-preview::002,y2::3,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
+baseline,baseline::y2::3::gemini-3.1-pro-preview::003,y2::3,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
+baseline,baseline::y2::3::gemini-3.1-pro-preview::004,y2::3,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
+baseline,baseline::y2::3::gemini-3.1-pro-preview::005,y2::3,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 baseline,y2::4::1::01,y2::4,human,human,human-y2,,"original,rephrased",2,True,False,False,False,False
 baseline,y2::4::2::01,y2::4,human,human,human-y2,,"original,rephrased",2,True,False,False,False,False
 baseline,baseline::y2::4::claude-sonnet-5::001,y2::4,ai,claude,claude-sonnet-5,1,"original,rephrased",2,False,True,True,False,False
@@ -395,6 +405,11 @@ baseline,baseline::y2::8::gpt-5.5::002,y2::8,ai,gpt,gpt-5.5,2,"original,rephrase
 baseline,baseline::y2::8::gpt-5.5::003,y2::8,ai,gpt,gpt-5.5,3,"original,rephrased",3,False,True,False,False,True
 baseline,baseline::y2::8::gpt-5.5::004,y2::8,ai,gpt,gpt-5.5,4,"original,rephrased",3,False,True,False,False,True
 baseline,baseline::y2::8::gpt-5.5::005,y2::8,ai,gpt,gpt-5.5,5,"original,rephrased",3,False,True,False,False,True
+baseline,baseline::y2::8::gemini-3.1-pro-preview::001,y2::8,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",3,False,True,False,True,False
+baseline,baseline::y2::8::gemini-3.1-pro-preview::002,y2::8,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",3,False,True,False,True,False
+baseline,baseline::y2::8::gemini-3.1-pro-preview::003,y2::8,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",3,False,True,False,True,False
+baseline,baseline::y2::8::gemini-3.1-pro-preview::004,y2::8,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",3,False,True,False,True,False
+baseline,baseline::y2::8::gemini-3.1-pro-preview::005,y2::8,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",3,False,True,False,True,False
 baseline,y2::9::1::01,y2::9,human,human,human-y2,,"original,rephrased",4,True,False,False,False,False
 baseline,y2::9::2::01,y2::9,human,human,human-y2,,"original,rephrased",4,True,False,False,False,False
 baseline,y2::9::3::01,y2::9,human,human,human-y2,,"original,rephrased",4,True,False,False,False,False

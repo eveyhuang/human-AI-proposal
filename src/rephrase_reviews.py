@@ -25,6 +25,7 @@ import argparse
 import json
 import logging
 import os
+import re
 import requests
 import sys
 import time
@@ -51,9 +52,11 @@ GEMINI_MODEL = 'gemini-3.5-flash'
 RETRY_DELAYS = [5, 15, 30]
 REST_MODEL_FALLBACKS = ['gemini-2.5-flash-lite', 'gemini-2.5-flash', 'gemini-3-flash-preview']
 
-ONE_STEP_REVIEW_SYSTEM = """You are a scientific review editor.
+ONE_STEP_REVIEW_SYSTEM = """You are a scientific review editor. You will receive one proposal review text.
 
-You will receive one proposal review text. Rewrite it in neutral, consistent style and extract strengths and weaknesses.
+Your ONLY goal is to preserve the review's substantive evaluation while stripping every stylistic element: sentence rhythms, punctuation habits, vocabulary preferences, hedging patterns, rhetorical framing, politeness formulas, enthusiasm, and reviewer-specific tone.
+
+Extract the review's core evaluative content and rewrite it in a uniform neutral register. Preserve the direction and severity of judgments, but remove idiosyncratic wording and source phrasing.
 
 Return ONLY a valid JSON object with exactly these keys:
 {
@@ -62,15 +65,39 @@ Return ONLY a valid JSON object with exactly these keys:
   "weakness": "..."
 }
 
-Rules:
-- Keep scientific meaning unchanged.
-- Use concise, neutral language.
-- `rephrased_review`: 2-4 sentences summarizing the review's overall evaluation.
-- `strengths`: 1-3 sentences listing key positive points.
-- `weakness`: 1-3 sentences listing key concerns/limitations.
-- If strengths or weaknesses are missing, write "Not specified." for that field.
+CONTENT RULES:
+- Keep scientific meaning unchanged, including the review's balance of positive and negative evaluation.
+- Use only information present in the review text. Do not add new criteria, scores, claims, or interpretations.
+- `rephrased_review`: exactly 3 sentences summarizing the overall evaluation, major strengths, and major concerns.
+- `strengths`: 1-2 sentences summarizing the strongest positive points using neutral evaluative language.
+- `weakness`: 1-2 sentences summarizing the main concerns, limitations, or risks using neutral evaluative language.
+- If the source does not explicitly label strengths or weaknesses, infer them from the evaluative content. Do not write absence statements.
+
+STYLE RULES:
+- Third-person neutral register only. Do not use first person or address the applicant.
+- Declarative statements only. Avoid praise, rhetorical emphasis, apologetic language, and conversational transitions.
+- Compose fresh uniform prose. Do not quote or echo source phrasing.
+- Use consistent terms for the same concept. Do not introduce synonyms for technical terms.
+- Minimize commas. No serial/Oxford commas.
+- Avoid hyphenated compound modifiers except inside established acronyms or proper names.
+- Never write "not specified", "does not specify", "not addressed", "not provided", "not described", "not mentioned", "unclear", "unknown", or similar missing-information language.
 - Output JSON only. No markdown, no prose outside JSON.
 """
+
+REVIEW_ABSENCE_PHRASES = [
+    'not specified',
+    'does not specify',
+    'do not specify',
+    'does not address',
+    'do not address',
+    'not addressed',
+    'not provided',
+    'not described',
+    'not mentioned',
+    'is unclear',
+    'are unclear',
+    'unknown',
+]
 
 
 # ─── Shared helpers ───────────────────────────────────────────────────────────
@@ -191,6 +218,21 @@ def _clean(v: Any) -> str:
     return '' if _is_missing(v) else str(v).strip()
 
 
+def drop_review_absence_sentences(text: str) -> str:
+    """Drop review rewrite sentences that narrate missing source information."""
+    cleaned = str(text or '').strip()
+    if not cleaned:
+        return ''
+
+    chunks = re.split(r'(?<=[.!?])\s+', cleaned)
+    kept = [
+        chunk.strip()
+        for chunk in chunks
+        if chunk.strip() and not any(phrase in chunk.lower() for phrase in REVIEW_ABSENCE_PHRASES)
+    ]
+    return re.sub(r'\s+', ' ', ' '.join(kept)).strip()
+
+
 def rephrase_review(client: Any, review_text: str,
                     model: str, max_retries: int = 3) -> Dict[str, str]:
     out = {
@@ -222,9 +264,9 @@ def rephrase_review(client: Any, review_text: str,
         logger.warning(f"Failed to parse review JSON output: {err}")
         return out
 
-    out['rephrased_review'] = _clean(parsed.get('rephrased_review', ''))
-    out['strengths'] = _clean(parsed.get('strengths', ''))
-    out['weakness'] = _clean(parsed.get('weakness', ''))
+    out['rephrased_review'] = drop_review_absence_sentences(_clean(parsed.get('rephrased_review', '')))
+    out['strengths'] = drop_review_absence_sentences(_clean(parsed.get('strengths', '')))
+    out['weakness'] = drop_review_absence_sentences(_clean(parsed.get('weakness', '')))
     return out
 
 

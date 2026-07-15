@@ -1,0 +1,13 @@
+condition,analysis_family,metric,group_1,group_2,n_1,n_2,effect_1_minus_2,permutation_p_value,p_value,test,p_adjustment,n_perm,q_value_holm,significance
+baseline,global_nearest_neighbor,global_nn_distance,Human,Claude,23,23,0.030308132586271873,0.044295570442955706,0.044295570442955706,label permutation,Holm,10000,0.22147785221477853,
+baseline,global_nearest_neighbor,global_nn_distance,Human,Gemini,23,23,0.023333782735078232,0.10938906109389061,0.10938906109389061,label permutation,Holm,10000,0.43755624437556245,
+baseline,global_nearest_neighbor,global_nn_distance,Human,GPT,23,23,0.03071825400642727,0.030596940305969402,0.030596940305969402,label permutation,Holm,10000,0.1835816418358164,
+baseline,global_nearest_neighbor,global_nn_distance,Claude,Gemini,23,23,-0.006974349851193641,0.6058394160583942,0.6058394160583942,label permutation,Holm,10000,1.0,
+baseline,global_nearest_neighbor,global_nn_distance,Claude,GPT,23,23,0.000410121420155396,0.977002299770023,0.977002299770023,label permutation,Holm,10000,1.0,
+baseline,global_nearest_neighbor,global_nn_distance,Gemini,GPT,23,23,0.007384471271349037,0.5157484251574842,0.5157484251574842,label permutation,Holm,10000,1.0,
+baseline,global_nearest_neighbor,global_mean_5nn_distance,Human,Claude,23,23,0.032667396897855014,0.05579442055794421,0.05579442055794421,label permutation,Holm,10000,0.31616838316168383,
+baseline,global_nearest_neighbor,global_mean_5nn_distance,Human,Gemini,23,23,0.02415526638860288,0.1414858514148585,0.1414858514148585,label permutation,Holm,10000,0.565943405659434,
+baseline,global_nearest_neighbor,global_mean_5nn_distance,Human,GPT,23,23,0.031199290441430133,0.05269473052694731,0.05269473052694731,label permutation,Holm,10000,0.31616838316168383,
+baseline,global_nearest_neighbor,global_mean_5nn_distance,Claude,Gemini,23,23,-0.008512130509252133,0.5892410758924107,0.5892410758924107,label permutation,Holm,10000,1.0,
+baseline,global_nearest_neighbor,global_mean_5nn_distance,Claude,GPT,23,23,-0.0014681064564248808,0.9421057894210579,0.9421057894210579,label permutation,Holm,10000,1.0,
+baseline,global_nearest_neighbor,global_mean_5nn_distance,Gemini,GPT,23,23,0.007044024052827252,0.5943405659434057,0.5943405659434057,label permutation,Holm,10000,1.0,

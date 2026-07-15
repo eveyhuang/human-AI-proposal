@@ -1,0 +1,11 @@
+condition,bertopic_label,human_n,ai_subsample_n,ai_pool_n,n_boot,human_weight,ai_boot_mean_weight,ai_boot_ci_low,ai_boot_ci_high
+persona,"related morbidity, stage diagnosis, combination strategies, clinical intervention",23,23,69,1000,0.35,0.42095652173913045,0.2891304347826087,0.5630434782608695
+persona,"details use execution, myosin motors, nascent chain, origin life",23,23,69,1000,0.45,0.27535,0.1282608695652174,0.42608695652173906
+persona,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",23,23,69,1000,0.07391304347826087,0.09370652173913044,0.034782608695652174,0.15869565217391304
+persona,"transgene expression, metabolite production, study illustrates, precise genome",23,23,69,1000,0.05,0.11017826086956521,0.05217391304347826,0.17391304347826086
+persona,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",23,23,69,1000,0.04565217391304348,0.05048695652173913,0.006521739130434784,0.10217391304347824
+persona,"role intercellular communication, testicular torsion, nanoparticle tracking analysis, mir 21 5p",23,23,69,1000,0.006521739130434784,0.01534782608695652,0.0,0.04130434782608696
+persona,"bla ctx, spectrum lactamase esbl, sequence types sts, coli isolates",23,23,69,1000,0.010869565217391304,0.009467391304347827,0.0,0.021739130434782608
+persona,"editorial emerging, author correction, g2 phase, model pd",23,23,69,1000,0.0,0.019149999999999997,0.0,0.05652173913043478
+persona,"web science core, mean sd age, research hotspots, 28 day mortality",23,23,69,1000,0.010869565217391304,0.005356521739130434,0.0,0.015217391304347825
+persona,"recent findings recent, cell multi omics, complex microbial, crispr cas based",23,23,69,1000,0.002173913043478261,0.0,0.0,0.0

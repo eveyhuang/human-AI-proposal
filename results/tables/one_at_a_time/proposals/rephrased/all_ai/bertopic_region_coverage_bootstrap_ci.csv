@@ -1,0 +1,11 @@
+condition,bertopic_label,human_n,ai_subsample_n,ai_pool_n,n_boot,human_weight,ai_boot_mean_weight,ai_boot_ci_low,ai_boot_ci_high
+one_at_a_time,"related morbidity, stage diagnosis, combination strategies, clinical intervention",23,23,69,1000,0.35,0.48619565217391303,0.34347826086956523,0.6239130434782608
+one_at_a_time,"details use execution, myosin motors, nascent chain, origin life",23,23,69,1000,0.45,0.3313913043478261,0.17391304347826086,0.4782608695652174
+one_at_a_time,"fetal liver, stalled replication forks, pulmonary vascular, chromatin state",23,23,69,1000,0.07391304347826087,0.06994347826086957,0.02391304347826087,0.12391304347826085
+one_at_a_time,"transgene expression, metabolite production, study illustrates, precise genome",23,23,69,1000,0.05,0.05773260869565217,0.021684782608695653,0.1
+one_at_a_time,"therapeutic strategies including, exosomes emerging, epigenetic modulation, solid cancers",23,23,69,1000,0.04565217391304348,0.04742826086956522,0.008695652173913044,0.09788043478260866
+one_at_a_time,"bla ctx, spectrum lactamase esbl, sequence types sts, coli isolates",23,23,69,1000,0.010869565217391304,0.0,0.0,0.0
+one_at_a_time,"web science core, mean sd age, research hotspots, 28 day mortality",23,23,69,1000,0.010869565217391304,0.0,0.0,0.0
+one_at_a_time,"editorial emerging, author correction, g2 phase, model pd",23,23,69,1000,0.0,0.0073086956521739126,0.0,0.021739130434782608
+one_at_a_time,"role intercellular communication, testicular torsion, nanoparticle tracking analysis, mir 21 5p",23,23,69,1000,0.006521739130434784,0.0,0.0,0.0
+one_at_a_time,"recent findings recent, cell multi omics, complex microbial, crispr cas based",23,23,69,1000,0.002173913043478261,0.0,0.0,0.0

@@ -35,6 +35,7 @@ persona,persona::y1::10::gpt-5.5::005,y1::10,ai,gpt,gpt-5.5,5,"original,rephrase
 persona,persona::y1::10::gemini-3.1-pro-preview::001,y1::10,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::10::gemini-3.1-pro-preview::002,y1::10,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::10::gemini-3.1-pro-preview::003,y1::10,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
+persona,persona::y1::10::gemini-3.1-pro-preview::004,y1::10,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::10::gemini-3.1-pro-preview::005,y1::10,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 persona,y1::11::1::01,y1::11,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
 persona,y1::11::2::01,y1::11,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
@@ -44,6 +45,7 @@ persona,persona::y1::11::claude-sonnet-5::001,y1::11,ai,claude,claude-sonnet-5,1
 persona,persona::y1::11::claude-sonnet-5::002,y1::11,ai,claude,claude-sonnet-5,2,"original,rephrased",4,False,True,True,False,False
 persona,persona::y1::11::claude-sonnet-5::003,y1::11,ai,claude,claude-sonnet-5,3,"original,rephrased",4,False,True,True,False,False
 persona,persona::y1::11::claude-sonnet-5::004,y1::11,ai,claude,claude-sonnet-5,4,"original,rephrased",4,False,True,True,False,False
+persona,persona::y1::11::claude-sonnet-5::005,y1::11,ai,claude,claude-sonnet-5,5,"original,rephrased",4,False,True,True,False,False
 persona,persona::y1::11::gpt-5.5::001,y1::11,ai,gpt,gpt-5.5,1,"original,rephrased",4,False,True,False,False,True
 persona,persona::y1::11::gpt-5.5::002,y1::11,ai,gpt,gpt-5.5,2,"original,rephrased",4,False,True,False,False,True
 persona,persona::y1::11::gpt-5.5::003,y1::11,ai,gpt,gpt-5.5,3,"original,rephrased",4,False,True,False,False,True
@@ -61,6 +63,7 @@ persona,y1::12::4::01,y1::12,human,human,human-y1,,"original,rephrased",4,True,F
 persona,persona::y1::12::claude-sonnet-5::001,y1::12,ai,claude,claude-sonnet-5,1,"original,rephrased",4,False,True,True,False,False
 persona,persona::y1::12::claude-sonnet-5::002,y1::12,ai,claude,claude-sonnet-5,2,"original,rephrased",4,False,True,True,False,False
 persona,persona::y1::12::claude-sonnet-5::003,y1::12,ai,claude,claude-sonnet-5,3,"original,rephrased",4,False,True,True,False,False
+persona,persona::y1::12::claude-sonnet-5::004,y1::12,ai,claude,claude-sonnet-5,4,"original,rephrased",4,False,True,True,False,False
 persona,persona::y1::12::claude-sonnet-5::005,y1::12,ai,claude,claude-sonnet-5,5,"original,rephrased",4,False,True,True,False,False
 persona,persona::y1::12::gpt-5.5::001,y1::12,ai,gpt,gpt-5.5,1,"original,rephrased",4,False,True,False,False,True
 persona,persona::y1::12::gpt-5.5::002,y1::12,ai,gpt,gpt-5.5,2,"original,rephrased",4,False,True,False,False,True
@@ -68,7 +71,9 @@ persona,persona::y1::12::gpt-5.5::003,y1::12,ai,gpt,gpt-5.5,3,"original,rephrase
 persona,persona::y1::12::gpt-5.5::004,y1::12,ai,gpt,gpt-5.5,4,"original,rephrased",4,False,True,False,False,True
 persona,persona::y1::12::gpt-5.5::005,y1::12,ai,gpt,gpt-5.5,5,"original,rephrased",4,False,True,False,False,True
 persona,persona::y1::12::gemini-3.1-pro-preview::001,y1::12,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
+persona,persona::y1::12::gemini-3.1-pro-preview::002,y1::12,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::12::gemini-3.1-pro-preview::003,y1::12,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
+persona,persona::y1::12::gemini-3.1-pro-preview::004,y1::12,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::12::gemini-3.1-pro-preview::005,y1::12,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 persona,y1::2::1::01,y1::2,human,human,human-y1,,"original,rephrased",3,True,False,False,False,False
 persona,y1::2::2::01,y1::2,human,human,human-y1,,"original,rephrased",3,True,False,False,False,False
@@ -85,6 +90,7 @@ persona,persona::y1::2::gpt-5.5::004,y1::2,ai,gpt,gpt-5.5,4,"original,rephrased"
 persona,persona::y1::2::gpt-5.5::005,y1::2,ai,gpt,gpt-5.5,5,"original,rephrased",3,False,True,False,False,True
 persona,persona::y1::2::gemini-3.1-pro-preview::001,y1::2,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",3,False,True,False,True,False
 persona,persona::y1::2::gemini-3.1-pro-preview::002,y1::2,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",3,False,True,False,True,False
+persona,persona::y1::2::gemini-3.1-pro-preview::003,y1::2,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",3,False,True,False,True,False
 persona,persona::y1::2::gemini-3.1-pro-preview::004,y1::2,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",3,False,True,False,True,False
 persona,persona::y1::2::gemini-3.1-pro-preview::005,y1::2,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",3,False,True,False,True,False
 persona,y1::3::1::01,y1::3,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
@@ -122,6 +128,7 @@ persona,persona::y1::4::gpt-5.5::004,y1::4,ai,gpt,gpt-5.5,4,"original,rephrased"
 persona,persona::y1::4::gpt-5.5::005,y1::4,ai,gpt,gpt-5.5,5,"original,rephrased",4,False,True,False,False,True
 persona,persona::y1::4::gemini-3.1-pro-preview::001,y1::4,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::4::gemini-3.1-pro-preview::002,y1::4,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
+persona,persona::y1::4::gemini-3.1-pro-preview::003,y1::4,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::4::gemini-3.1-pro-preview::004,y1::4,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::4::gemini-3.1-pro-preview::005,y1::4,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 persona,y1::5::1::01,y1::5,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
@@ -138,8 +145,10 @@ persona,persona::y1::5::gpt-5.5::002,y1::5,ai,gpt,gpt-5.5,2,"original,rephrased"
 persona,persona::y1::5::gpt-5.5::003,y1::5,ai,gpt,gpt-5.5,3,"original,rephrased",4,False,True,False,False,True
 persona,persona::y1::5::gpt-5.5::004,y1::5,ai,gpt,gpt-5.5,4,"original,rephrased",4,False,True,False,False,True
 persona,persona::y1::5::gpt-5.5::005,y1::5,ai,gpt,gpt-5.5,5,"original,rephrased",4,False,True,False,False,True
+persona,persona::y1::5::gemini-3.1-pro-preview::001,y1::5,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::5::gemini-3.1-pro-preview::002,y1::5,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::5::gemini-3.1-pro-preview::003,y1::5,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
+persona,persona::y1::5::gemini-3.1-pro-preview::004,y1::5,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::5::gemini-3.1-pro-preview::005,y1::5,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 persona,y1::6::1::01,y1::6,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
 persona,y1::6::2::01,y1::6,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
@@ -166,6 +175,7 @@ persona,y1::7::3::01,y1::7,human,human,human-y1,,"original,rephrased",4,True,Fal
 persona,y1::7::4::01,y1::7,human,human,human-y1,,"original,rephrased",4,True,False,False,False,False
 persona,persona::y1::7::claude-sonnet-5::001,y1::7,ai,claude,claude-sonnet-5,1,"original,rephrased",4,False,True,True,False,False
 persona,persona::y1::7::claude-sonnet-5::002,y1::7,ai,claude,claude-sonnet-5,2,"original,rephrased",4,False,True,True,False,False
+persona,persona::y1::7::claude-sonnet-5::003,y1::7,ai,claude,claude-sonnet-5,3,"original,rephrased",4,False,True,True,False,False
 persona,persona::y1::7::claude-sonnet-5::004,y1::7,ai,claude,claude-sonnet-5,4,"original,rephrased",4,False,True,True,False,False
 persona,persona::y1::7::claude-sonnet-5::005,y1::7,ai,claude,claude-sonnet-5,5,"original,rephrased",4,False,True,True,False,False
 persona,persona::y1::7::gpt-5.5::001,y1::7,ai,gpt,gpt-5.5,1,"original,rephrased",4,False,True,False,False,True
@@ -177,6 +187,7 @@ persona,persona::y1::7::gemini-3.1-pro-preview::001,y1::7,ai,gemini,gemini-3.1-p
 persona,persona::y1::7::gemini-3.1-pro-preview::002,y1::7,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::7::gemini-3.1-pro-preview::003,y1::7,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
 persona,persona::y1::7::gemini-3.1-pro-preview::004,y1::7,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
+persona,persona::y1::7::gemini-3.1-pro-preview::005,y1::7,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 persona,y1::8::1::01,y1::8,human,human,human-y1,,"original,rephrased",5,True,False,False,False,False
 persona,y1::8::2::01,y1::8,human,human,human-y1,,"original,rephrased",5,True,False,False,False,False
 persona,y1::8::3::01,y1::8,human,human,human-y1,,"original,rephrased",5,True,False,False,False,False
@@ -196,6 +207,7 @@ persona,persona::y1::8::gemini-3.1-pro-preview::001,y1::8,ai,gemini,gemini-3.1-p
 persona,persona::y1::8::gemini-3.1-pro-preview::002,y1::8,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",5,False,True,False,True,False
 persona,persona::y1::8::gemini-3.1-pro-preview::003,y1::8,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",5,False,True,False,True,False
 persona,persona::y1::8::gemini-3.1-pro-preview::004,y1::8,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",5,False,True,False,True,False
+persona,persona::y1::8::gemini-3.1-pro-preview::005,y1::8,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",5,False,True,False,True,False
 persona,y1::9::1::01,y1::9,human,human,human-y1,,"original,rephrased",3,True,False,False,False,False
 persona,y1::9::2::01,y1::9,human,human,human-y1,,"original,rephrased",3,True,False,False,False,False
 persona,y1::9::3::01,y1::9,human,human,human-y1,,"original,rephrased",3,True,False,False,False,False
@@ -219,6 +231,7 @@ persona,y2::1::2::01,y2::1,human,human,human-y2,,"original,rephrased",3,True,Fal
 persona,y2::1::3::01,y2::1,human,human,human-y2,,"original,rephrased",3,True,False,False,False,False
 persona,persona::y2::1::claude-sonnet-5::001,y2::1,ai,claude,claude-sonnet-5,1,"original,rephrased",3,False,True,True,False,False
 persona,persona::y2::1::claude-sonnet-5::002,y2::1,ai,claude,claude-sonnet-5,2,"original,rephrased",3,False,True,True,False,False
+persona,persona::y2::1::claude-sonnet-5::003,y2::1,ai,claude,claude-sonnet-5,3,"original,rephrased",3,False,True,True,False,False
 persona,persona::y2::1::claude-sonnet-5::004,y2::1,ai,claude,claude-sonnet-5,4,"original,rephrased",3,False,True,True,False,False
 persona,persona::y2::1::claude-sonnet-5::005,y2::1,ai,claude,claude-sonnet-5,5,"original,rephrased",3,False,True,True,False,False
 persona,persona::y2::1::gpt-5.5::001,y2::1,ai,gpt,gpt-5.5,1,"original,rephrased",3,False,True,False,False,True
@@ -244,6 +257,7 @@ persona,persona::y2::10::gpt-5.5::002,y2::10,ai,gpt,gpt-5.5,2,"original,rephrase
 persona,persona::y2::10::gpt-5.5::003,y2::10,ai,gpt,gpt-5.5,3,"original,rephrased",3,False,True,False,False,True
 persona,persona::y2::10::gpt-5.5::004,y2::10,ai,gpt,gpt-5.5,4,"original,rephrased",3,False,True,False,False,True
 persona,persona::y2::10::gpt-5.5::005,y2::10,ai,gpt,gpt-5.5,5,"original,rephrased",3,False,True,False,False,True
+persona,persona::y2::10::gemini-3.1-pro-preview::001,y2::10,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",3,False,True,False,True,False
 persona,persona::y2::10::gemini-3.1-pro-preview::002,y2::10,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",3,False,True,False,True,False
 persona,persona::y2::10::gemini-3.1-pro-preview::003,y2::10,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",3,False,True,False,True,False
 persona,persona::y2::10::gemini-3.1-pro-preview::004,y2::10,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",3,False,True,False,True,False
@@ -262,6 +276,7 @@ persona,persona::y2::11::gpt-5.5::002,y2::11,ai,gpt,gpt-5.5,2,"original,rephrase
 persona,persona::y2::11::gpt-5.5::003,y2::11,ai,gpt,gpt-5.5,3,"original,rephrased",4,False,True,False,False,True
 persona,persona::y2::11::gpt-5.5::004,y2::11,ai,gpt,gpt-5.5,4,"original,rephrased",4,False,True,False,False,True
 persona,persona::y2::11::gpt-5.5::005,y2::11,ai,gpt,gpt-5.5,5,"original,rephrased",4,False,True,False,False,True
+persona,persona::y2::11::gemini-3.1-pro-preview::001,y2::11,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
 persona,persona::y2::11::gemini-3.1-pro-preview::002,y2::11,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
 persona,persona::y2::11::gemini-3.1-pro-preview::003,y2::11,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
 persona,persona::y2::11::gemini-3.1-pro-preview::004,y2::11,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
@@ -356,6 +371,7 @@ persona,persona::y2::6::gpt-5.5::005,y2::6,ai,gpt,gpt-5.5,5,"original,rephrased"
 persona,persona::y2::6::gemini-3.1-pro-preview::001,y2::6,ai,gemini,gemini-3.1-pro-preview,1,"original,rephrased",4,False,True,False,True,False
 persona,persona::y2::6::gemini-3.1-pro-preview::002,y2::6,ai,gemini,gemini-3.1-pro-preview,2,"original,rephrased",4,False,True,False,True,False
 persona,persona::y2::6::gemini-3.1-pro-preview::003,y2::6,ai,gemini,gemini-3.1-pro-preview,3,"original,rephrased",4,False,True,False,True,False
+persona,persona::y2::6::gemini-3.1-pro-preview::004,y2::6,ai,gemini,gemini-3.1-pro-preview,4,"original,rephrased",4,False,True,False,True,False
 persona,persona::y2::6::gemini-3.1-pro-preview::005,y2::6,ai,gemini,gemini-3.1-pro-preview,5,"original,rephrased",4,False,True,False,True,False
 persona,y2::7::1::01,y2::7,human,human,human-y2,,"original,rephrased",4,True,False,False,False,False
 persona,y2::7::2::01,y2::7,human,human,human-y2,,"original,rephrased",4,True,False,False,False,False

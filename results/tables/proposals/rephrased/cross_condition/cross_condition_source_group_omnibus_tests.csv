@@ -1,0 +1,14 @@
+condition,analysis_family,metric,test,statistic,p_value,permutation_p_value,n_groups,n_perm,p_adjustment,q_value_holm,significance
+cross_condition,cross_condition_source_groups_matrix,mean_pairwise_distance,label permutation range,0.14924463629722595,0.16098390160983903,0.16098390160983903,4,10000.0,Holm,1.0,
+cross_condition,cross_condition_source_groups_matrix,nearest_neighbor_distance,label permutation range,0.05152342716852824,0.0004999500049995,0.0004999500049995,4,10000.0,Holm,0.0059994000599940004,**
+cross_condition,cross_condition_source_groups_matrix,author_group_mean_pairwise_distance,label permutation range,0.14924463629722595,0.16098390160983903,0.16098390160983903,4,10000.0,Holm,1.0,
+cross_condition,cross_condition_source_groups_matrix,author_group_nearest_neighbor_distance,label permutation range,0.05152342716852824,0.0004999500049995,0.0004999500049995,4,10000.0,Holm,0.0059994000599940004,**
+cross_condition,cross_condition_source_groups_matrix,global_nn_distance,label permutation range,0.03845958001371744,0.00019998000199980003,0.00019998000199980003,4,10000.0,Holm,0.0025997400259974005,**
+cross_condition,cross_condition_source_groups_matrix,global_mean_5nn_distance,label permutation range,0.03996854916862819,0.0004999500049995,0.0004999500049995,4,10000.0,Holm,0.0059994000599940004,**
+cross_condition,cross_condition_source_groups,literature_element_novelty_k1,Kruskal-Wallis,2.489138208987015,0.47725725078169534,,4,,Holm,1.0,
+cross_condition,cross_condition_source_groups,literature_mean_knn_novelty_k10,Kruskal-Wallis,3.261714089313273,0.35300697636623407,,4,,Holm,1.0,
+cross_condition,cross_condition_source_groups,literature_local_density_normalized_novelty,Kruskal-Wallis,3.261714089313273,0.35300697636623407,,4,,Holm,1.0,
+cross_condition,cross_condition_source_groups,bertopic_region_entropy,Kruskal-Wallis,5.226602268153455,0.1559365923375916,,4,,Holm,1.0,
+cross_condition,cross_condition_source_groups,bertopic_max_region_weight,Kruskal-Wallis,5.157722061366869,0.16060562963300024,,4,,Holm,1.0,
+cross_condition,cross_condition_source_groups,bertopic_unique_regions,Kruskal-Wallis,4.65983764972906,0.1984686054739481,,4,,Holm,1.0,
+cross_condition,cross_condition_source_groups,mesh_unique_terms_k20,Kruskal-Wallis,3.7097422372580477,0.29456061383740656,,4,,Holm,1.0,

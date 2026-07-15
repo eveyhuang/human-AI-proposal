@@ -1,0 +1,93 @@
+proposal_uid,mesh_unique_terms_k20,source_group,source_type,title
+y1::1,96,Human,human,CYTOKINETIC BOTTLENECKS OF HEAT WAVES
+y1::10,120,Human,human,Transposable elements and the emergence of genomic innovation
+y1::11,102,Human,human,Searching the crosslinking mass spectrometry universe for new protein-protein interactions
+y1::12,101,Human,human,Intelligent metadata compilation to enhance the reusability and discoverability of mass spectrometry-based proteomics data
+y1::2,130,Human,human,Elucidating genome structure-function relationships in human brain cells
+y1::3,68,Human,human,MaiTool - LLM-powered bioinformatics tools for microbiome analysis
+y1::4,83,Human,human,Synthesizing gene expression data to create an atlas of bacterial cell states
+y1::5,62,Human,human,Energetic Origins of Connectivity within Protein Interaction Networks
+y1::6,101,Human,human,Elucidating emergent structures in cellular RNA-protein interaction networks
+y1::7,118,Human,human,Oceans of Disorder: Elucidating the Role of Disordered Proteins in Cellular Adaptation
+y1::8,133,Human,human,Multimodel single-cell frameworks for cell lines with extensive multi-omics data
+y1::9,72,Human,human,From image data and biophysical simulations to principles of mesoscale organization through integrated transfer learning
+y2::1,69,Human,human,Emergent Order Parameters of Allostery: An AI Framework for Predicting and Engineering Protein Regulation
+y2::10,50,Human,human,Integrating AI and Molecular Dynamics Simulations for Quantitative Prediction of Enzyme Functions
+y2::11,68,Human,human,Discovery and functional analysis of bacterial organelles through mining and refinement of omics data
+y2::2,88,Human,human,From Protein Knots to Pierced Lassos: Unraveling the Evolutionary Origin of Complex Topologies
+y2::3,66,Human,human,Deciphering systemic biological networks through AI-driven multi-omic integration
+y2::4,54,Human,human,Conserved Disorder: Learning Sequence Conservation from Functional Constraints in Intrinsically Disordered Regions
+y2::5,104,Human,human,Integrative Multi-Omics Synthesis to Identify Shared Molecular Mechanisms of Mammalian Hibernation
+y2::6,63,Human,human,Revealing the Ontology of Allostery through Community-Scale Synthesis
+y2::7,97,Human,human,SynEvo: Discovering Evolutionary Principles of Molecular Organization through Cross-Species Data Synthesis
+y2::8,66,Human,human,A Unified Framework for Analyses of Proteome Turnover Dynamics
+y2::9,78,Human,human,Predictive Synthesis Framework for Elucidating Biophysical Cell State from Spatial Transcriptomics and Proteomics
+persona::claude-sonnet-5::01,96,Claude,ai,A Cross-Crop Data Synthesis of Circadian-Gated Vesicle Trafficking Nodes That Constrain Cytokinesis Under Heat Stress
+persona::claude-sonnet-5::02,128,Claude,ai,"From Nucleosome Mechanics to Cell-Type Identity: A Multiscale Synthesis of Chromatin Polymer Physics, Condensate Biochemistry, and Single-Cell 3D Genomes to Explain Disease-Relevant Genome Folding in the Human Brain"
+persona::claude-sonnet-5::03,66,Claude,ai,Functional Redundancy as a Mesoscale Buffer: Synthesizing Ancient and Modern Metagenomes with Host Proteo-Genomic Atlases to Test the Stability of Microbiome-Host Molecular Modules
+persona::claude-sonnet-5::04,107,Claude,ai,Mapping the Coupling Between Regulatory Cell-State Transitions and Mesoscale Condensate Architecture Across the Bacterial Kingdom
+persona::claude-sonnet-5::05,103,Claude,ai,Nonlinear Collapse of Protein Interaction Networks at Stability Thresholds: A Cross-Kingdom Synthesis of Deep Mutational Scanning and Interactome Data
+persona::claude-sonnet-5::06,89,Claude,ai,Sequence-to-Structure-to-Condensate: A Multi-Scale Synthesis Framework Linking RNA Secondary Structure Ensembles to Protein-RNA Condensate Composition and Emergent Material Properties
+persona::claude-sonnet-5::07,99,Claude,ai,Decoding Environmental Selection Pressures on Condensate-Forming Sequence Grammars: A Multiscale Data Synthesis Across the Prokaryotic-to-Eukaryotic Thermal and Salinity Continuum
+persona::claude-sonnet-5::08,78,Claude,ai,"From Copy-Number Amplicons to Proteostatic Stress: A Multiscale Synthesis of 3D Genome Reorganization, Protein Complex Stoichiometry, and Cellular Fitness in Cancer Cell Lines"
+persona::claude-sonnet-5::09,70,Claude,ai,Cross-Scale Morphodynamic Grammar of Membrane-Bound Organelle Shape Change: Integrating Whole-Cell Volumetric Imaging with Cytoskeletal Agent-Based Simulations to Learn Generalizable Rules of Mesoscale Shape Transitions
+persona::claude-sonnet-5::10,81,Claude,ai,Transposon-Seeded Cooperativity: Synthesizing Cross-Species Epigenomic Atlases to Test Whether Transposable Elements Drive the Emergence of Mesoscale Chromatin Hubs
+persona::claude-sonnet-5::11,72,Claude,ai,Beyond Binary Interactions: Synthesizing Public Crosslinking Mass Spectrometry Data to Map Emergent Mesoscale Protein Assemblies Across Human Tissues
+persona::claude-sonnet-5::12,105,Claude,ai,Closing the Genotype–Metabolite Gap: A Cross-Repository Synthesis Linking Microbial Genomic Potential to Untargeted Mass Spectrometry Signatures of Chemical Novelty
+persona::claude-sonnet-5::13,103,Claude,ai,"A Cross-Family Atlas of Emergent Allosteric Order Parameters: Synthesizing Structural Ensembles, Deep Mutational Scans, and Ancestral Sequence Data to Discover Universal Rules of Protein Regulation"
+persona::claude-sonnet-5::14,116,Claude,ai,"Entanglement as an Emergent Design Constraint: Cross-Scale Synthesis of Protein Topology, Translation Kinetics, and Proteostasis Networks"
+persona::claude-sonnet-5::15,132,Claude,ai,"Nucleolar Condensate Scaling Laws as a Mesoscale Determinant of Ribosome Biogenesis Capacity and Skeletal Muscle Hypertrophy: A Multi-Omic, GPU-Accelerated Synthesis"
+persona::claude-sonnet-5::16,69,Claude,ai,"A Cross-Species Physical Grammar Atlas: Testing Whether Conserved Polymer Physics, Not Conserved Sequence, Governs Emergent Condensate Material Properties"
+persona::claude-sonnet-5::17,93,Claude,ai,Emergent Mesoscale Regulation of Torpor: A Cross-Species Synthesis of Biomolecular Condensates and Mitochondrial Reorganization in Independently Evolved Hibernators
+persona::claude-sonnet-5::18,66,Claude,ai,"From Residue Couplings to Circuit Memory: A Cross-Scale Synthesis Linking Coevolutionary Statistics, Allosteric Dynamics, and Phase-Separation Propensity to Regulatory Network Hysteresis"
+persona::claude-sonnet-5::19,85,Claude,ai,"Flux, Function, and Fitness: A Cross-Species Synthesis Linking Genome-Scale Metabolic Network Architecture to Signatures of Natural Selection"
+persona::claude-sonnet-5::20,119,Claude,ai,"Mesoscale Coordination of Proteome Turnover: Synthesizing Public Degradation Kinetics with Complex, Condensate, and Disorder Architecture to Discover Emergent Proteostasis Modules"
+persona::claude-sonnet-5::21,117,Claude,ai,From Transcript Counts to Molecular Choreography: A Bayesian Synthesis Framework Linking Spatial Expression Atlases to Single-Molecule Biophysical States of Trafficking Machinery
+persona::claude-sonnet-5::22,77,Claude,ai,From Chemical Marks to Mesoscale Machines: A Multi-Omics and Molecular Dynamics Synthesis of How tRNA Modification Loss Drives Ribosome Collision Condensates and Translational Stress Phenotypes
+persona::claude-sonnet-5::23,66,Claude,ai,Decoding the 'Organelle Signature' Landscape: A Genomic Deconvolution Framework for Discovering Novel Protein- and Lipid-Bounded Compartments Across Bacteria and Archaea
+persona::gpt-5.5::01,88,GPT,ai,Circadian Control of Heat-Sensitive Mesoscale Assembly During Plant Cell Division
+persona::gpt-5.5::02,77,GPT,ai,Cross-Scale Synthesis of Emergent Chromatin Microenvironments in Human Brain Cell Types
+persona::gpt-5.5::03,159,GPT,ai,Contamination-Aware Synthesis of Microbiome Functional Modules Linked to Emergent Human Proteome and Metabolome States
+persona::gpt-5.5::04,117,GPT,ai,"Predicting Emergent Mesoscale Organization in Bacteria from Public Multi-Omics, Sequence Features, and Cellular Phenotypes"
+persona::gpt-5.5::05,69,GPT,ai,Predicting Emergent Proteostasis Network Rewiring from the Energetic Landscapes of Human Membrane Protein Variants
+persona::gpt-5.5::06,127,GPT,ai,"A Multiscale Atlas Linking RNA-Protein Binding Grammar to Condensate Identity, Dynamics, and Cellular Routing"
+persona::gpt-5.5::07,75,GPT,ai,A Cross-Kingdom Atlas of Sequence-to-Mesoscale Rules for Stress-Responsive Biomolecular Condensates
+persona::gpt-5.5::08,89,GPT,ai,Mapping Emergent Drug-Tolerant Cell States from Extrachromosomal DNA and 3D Regulatory Architecture in Cancer Cell Lines
+persona::gpt-5.5::09,133,GPT,ai,A Public Multimodal Atlas for Predicting Cytoskeletal Control of Cellular Architecture and Ciliary State
+persona::gpt-5.5::10,86,GPT,ai,Emergent Regulatory Neighborhoods from Transposable-Element-Derived Transcription Factor Grammar Across Mammalian Cell States
+persona::gpt-5.5::11,89,GPT,ai,A Residue-Resolved Public Data Atlas of Emergent Human Protein Assemblies
+persona::gpt-5.5::12,79,GPT,ai,"Emergent Microbial Chemical Phenotypes from Public Metagenomic, Proteomic, and Untargeted Mass Spectrometry Data"
+persona::gpt-5.5::13,125,GPT,ai,A Public-Data Atlas of Collective Allosteric State Variables Linking Nuclear Receptor Ligands to Transcriptional Phenotypes
+persona::gpt-5.5::14,142,GPT,ai,From Entangled Proteins to Entangled Genomes: A Synthesis Framework Linking Molecular Topology of Chromatin Regulators to Emergent 3D Genome Organization
+persona::gpt-5.5::15,81,GPT,ai,"Emergent Translational Reserve as a Multiscale Determinant of Skeletal Muscle Growth, Repair, and Inflammatory Failure"
+persona::gpt-5.5::16,100,GPT,ai,A Public Data Atlas Linking Disordered-Region Sequence Grammar to Emergent Condensate Material States
+persona::gpt-5.5::17,70,GPT,ai,A Comparative Multi-Omics Atlas of Reversible Metabolic Suppression Across Mammalian Hibernators
+persona::gpt-5.5::18,86,GPT,ai,Predicting Condensate-Scale Emergence from Evolutionary and Structural Coupling Networks in Multivalent Proteins
+persona::gpt-5.5::19,110,GPT,ai,Evolutionary Discovery of Metabolic Network Modules that Generate Mesoscale Membrane and Organelle Organization
+persona::gpt-5.5::20,128,GPT,ai,Proteome Flux Codes for Emergent Mesoscale Remodeling During Cellular Stress and Disease
+persona::gpt-5.5::21,74,GPT,ai,Inferring Conserved Mesoscale Kinetic Programs from Public Spatial Omics and Fluorescence Microscopy Atlases
+persona::gpt-5.5::22,82,GPT,ai,Emergent Chromatin and Immune Cell States from tRNA Modification–Controlled Translation Dynamics
+persona::gpt-5.5::23,67,GPT,ai,A Public-Data Atlas of Emergent Metal-Redox Compartmentalization Across Bacteria and Archaea
+persona::gemini-3.1-pro-preview::01,80,Gemini,ai,Decoding Cytokinetic Resilience: Synthesizing Context-Specific Multi-Omic Networks to Understand Mesoscale Emergence Under Thermal Stress
+persona::gemini-3.1-pro-preview::02,96,Gemini,ai,Decoding Mesoscale Emergence in the 3D Genome: Synthesizing Multi-Omic and Polymer Physics Data to Uncover IDP-Driven Chromatin Reorganization in Neuro-Immune Phenotypes
+persona::gemini-3.1-pro-preview::03,108,Gemini,ai,Mapping Emergent Mesoscale Architectures at the Host-Microbiome Interface: A Deep-Time Proteogenomic Synthesis
+persona::gemini-3.1-pro-preview::04,108,Gemini,ai,Mapping the Emergent Bacterial Condensome: Synthesizing Transcriptomic and Biophysical Data to Predict Mesoscale Organization in Pathogenesis and Stress Adaptation
+persona::gemini-3.1-pro-preview::05,108,Gemini,ai,Emergent Mesoscale Dynamics from Molecular Thermodynamics: Synthesizing Protein Mutational Landscapes and Single-Cell Interactomes
+persona::gemini-3.1-pro-preview::06,129,Gemini,ai,Decoding the Structural and Network Grammar of RNA-Driven Emergence in Biomolecular Condensates
+persona::gemini-3.1-pro-preview::07,75,Gemini,ai,Decoding the Mesoscale Molecular Grammar: Synthesizing Physical Principles of Condensate Ultrastructure and Emulsion Stability
+persona::gemini-3.1-pro-preview::08,101,Gemini,ai,AI-Driven Synthesis of Mesoscale Chromatin and Protein Networks to Decode Emergent Cellular Plasticity and Immune Evasion
+persona::gemini-3.1-pro-preview::09,129,Gemini,ai,Uncovering Emergent Rules of Mesoscale Organelle Remodeling by Integrating Volumetric Imaging Atlases and Stochastic Biophysical Models via Optimal Transport
+persona::gemini-3.1-pro-preview::10,76,Gemini,ai,Decoding the Emergence of Mesoscale Regulatory Networks Driven by Transposable Elements through Cross-Species Epigenomic Data Synthesis
+persona::gemini-3.1-pro-preview::11,99,Gemini,ai,Mapping Emergent Mesoscale Architectures by Synthesizing the Global Crosslinking Mass Spectrometry and Genetic Interactome Archives
+persona::gemini-3.1-pro-preview::12,114,Gemini,ai,Uncovering Mesoscale Emergence in Microbial Dark Matter through AI-Driven Synthesis of Metagenomic and Mass Spectrometry Data
+persona::gemini-3.1-pro-preview::13,69,Gemini,ai,Evolutionary Origins of Mesoscale Signaling: An AI-Driven Synthesis of Exascale Dynamics and Ancestral Allosteric Networks
+persona::gemini-3.1-pro-preview::14,87,Gemini,ai,Emergent Topologies at the Mesoscale: Synthesizing Protein Entanglement and 3D Genome Architecture through AI and Polymer Physics
+persona::gemini-3.1-pro-preview::15,119,Gemini,ai,Deciphering the Mesoscale Emergence of Skeletal Muscle Adaptation: A GPU-Accelerated Multi-Omic and Mathematical Synthesis of Ribosome Dynamics under Competing Stresses
+persona::gemini-3.1-pro-preview::16,117,Gemini,ai,Deciphering the Grammar of Emergence: Predicting Mesoscale Condensate Properties from Evolutionary Constraints and Polymer Physics in Intrinsically Disordered Regions
+persona::gemini-3.1-pro-preview::17,120,Gemini,ai,Evolutionary Synthesis of Multi-Omics Data to Uncover Mesoscale Emergence in Mammalian Metabolic Suppression
+persona::gemini-3.1-pro-preview::18,71,Gemini,ai,Synthesizing Evolutionary and Biophysical Landscapes to Predict the Emergence of Mesoscale Biomolecular Condensates
+persona::gemini-3.1-pro-preview::19,89,Gemini,ai,Emergent Metabolic Landscapes: Synthesizing Deep Learning and Genome-Scale Modeling to Decode the Evolutionary Rewiring of Cellular Metabolism
+persona::gemini-3.1-pro-preview::20,59,Gemini,ai,Mapping the Emergent Collapse of Mesoscale Proteostasis Networks in Aging and Stress
+persona::gemini-3.1-pro-preview::21,115,Gemini,ai,A Bayesian Synthesis Framework for Predicting the Emergence of Mesoscale Ribonucleoprotein Compartmentalization from Public Spatial Transcriptomic and Single-Molecule Datasets
+persona::gemini-3.1-pro-preview::22,156,Gemini,ai,Synthesizing Multi-Omic and Structural Data to Decode the Emergent Mesoscale Organization of Epigenetic and Epitranscriptomic Networks
+persona::gemini-3.1-pro-preview::23,59,Gemini,ai,"Synthesizing the Global Repertoire of Microbial Mesoscale Compartments: Emergence, Pathogenesis, and Bioengineering Potential from Public Omics Data"

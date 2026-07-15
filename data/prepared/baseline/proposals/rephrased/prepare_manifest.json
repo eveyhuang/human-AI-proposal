@@ -1,9 +1,9 @@
 {
-  "prepared_at": "2026-07-10T08:24:18.558946",
+  "prepared_at": "2026-07-13T10:10:59.140542",
   "condition": "baseline",
   "text_version": "rephrased",
   "input_original_ai_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/ai-proposals/baseline/ai_proposals_baseline_complete_20260209_205423.csv",
-  "input_rephrased_ai_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/ai-proposals/baseline/rephrased/ai_proposals_baseline_rephrased_20260706_140640.csv",
+  "input_rephrased_ai_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/ai-proposals/baseline/rephrased/ai_proposals_baseline_rephrased_20260711_220305.csv",
   "human_original_rows": 23,
   "human_rephrased_rows": 23,
   "ai_original_rows": 69,

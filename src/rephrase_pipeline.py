@@ -5,6 +5,8 @@ Helpers for the redesigned proposal/review rephrasing stage.
 from __future__ import annotations
 
 import json
+import re
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -27,8 +29,8 @@ from rephrase_reviews import (
 )
 
 
-PROPOSAL_REPHRASE_PROMPT_VERSION = 'proposal_semantic_standardization_v1'
-REVIEW_REPHRASE_PROMPT_VERSION = 'review_neutralization_v1'
+PROPOSAL_REPHRASE_PROMPT_VERSION = 'proposal_semantic_standardization_v2'
+REVIEW_REPHRASE_PROMPT_VERSION = 'review_neutralization_v2'
 SECTION_HEADERS = [
     'SCIENTIFIC BACKGROUND AND RESEARCH QUESTION',
     'METHODOLOGY AND ANALYTICAL APPROACH',
@@ -39,93 +41,206 @@ SECTION_HEADERS = [
 
 SUMMARIZE_SYSTEM = """You are a scientific content extractor. Read the research proposal and extract its core semantic content as a compact, neutral summary.
 
-Your ONLY goal is to capture what the proposal says while stripping style, rhetoric, and phrasing.
+Your ONLY goal is to capture what the proposal says: its scientific facts, methods, data, and plans, while stripping every stylistic element: sentence rhythms, punctuation habits, vocabulary preferences, hedging patterns, rhetorical framing, promotional language, and evaluative language.
 
-Extract facts for each of the following categories. Write each as a plain declarative statement in neutral words. If a category is not addressed, write "Not specified."
+Extract facts for each of the following categories. Write each as a plain declarative statement in your own neutral words. Do not quote or echo the source phrasing. If a category is not addressed, write "Not specified."
 
-1. Research domain and specific phenomenon being studied
-2. Scientific gap or open question
-3. Current state of knowledge and what remains incomplete
+CATEGORIES:
+1. Research domain and the specific phenomenon or system being studied
+2. The scientific gap or open question being addressed
+3. Current state of knowledge: what is known and where understanding is incomplete
 4. Primary research question or objective
-5. Why the research question is significant or novel
+5. Why this research question is significant or novel for the field
 6. Overall study design and analytical strategy
-7. Key methods, models, tools, or algorithms
+7. Key methods, models, tools, or algorithms to be used
 8. How results will be validated or benchmarked
-9. Datasets or databases to be used
+9. Datasets or databases to be used, including names if mentioned
 10. How the datasets will be integrated or synthesized
 11. Known data limitations and how they will be addressed
-12. Project milestones and timeline
+12. Project milestones and overall timeline
 13. Why multi-lab or cross-disciplinary collaboration is needed
-14. Open science plans
-15. Team composition
+14. Plans for open science: sharing of data, code, and findings
+15. Team composition: disciplines, career stages, training opportunities
 
-Output ONLY the numbered fact statements."""
+Output ONLY the numbered fact statements. No preamble, no commentary, no section headers."""
 
 FILL_SYSTEM = """You are a scientific writer. You will be given a numbered list of semantic facts extracted from a research proposal. Use ONLY these facts to write the standardized template below.
 
+Your task is to compose fresh, uniform prose from the facts. Do not echo the wording of the facts themselves. The output style must follow the rules below exactly, regardless of how the facts are phrased.
+
+TEMPLATE:
+
 SCIENTIFIC BACKGROUND AND RESEARCH QUESTION
-Write exactly 3 sentences.
+(Write exactly 3 sentences.)
+Sentence 1: State the research domain, the specific phenomenon being studied, and the key scientific gap or open question. Draw from facts 1 and 2.
+Sentence 2: Describe current state of knowledge: what is known and where understanding is incomplete. Draw from fact 3.
+Sentence 3: State the primary research question and explain why it is significant or novel. Draw from facts 4 and 5.
 
 METHODOLOGY AND ANALYTICAL APPROACH
-Write exactly 3 sentences.
+(Write exactly 3 sentences.)
+Sentence 1: Describe the overall study design and core analytical strategy. Draw from fact 6.
+Sentence 2: Specify the key methods, models, tools, or algorithms to be applied. Draw from fact 7.
+Sentence 3: Explain how results will be validated or benchmarked. Draw from fact 8.
 
 DATA SOURCES AND SYNTHESIS PLAN
-Write exactly 3 sentences.
+(Write exactly 3 sentences.)
+Sentence 1: Identify the datasets or databases to be used, including names and sources where available. Draw from fact 9.
+Sentence 2: Describe how distinct datasets will be integrated to address the research question. Draw from fact 10.
+Sentence 3: Acknowledge known data limitations and explain how they will be mitigated. Draw from fact 11.
 
 FEASIBILITY AND TIMELINE
-Write exactly 2 sentences.
+(Write exactly 2 sentences.)
+Sentence 1: Summarize the proposed milestones and overall timeline. Draw from fact 12.
+Sentence 2: Explain why the project scope requires multi-lab or cross-disciplinary collaboration. Draw from fact 13.
 
 OPEN SCIENCE AND TEAM COMPOSITION
-Write exactly 2 sentences.
+(Write exactly 2 sentences.)
+Sentence 1: Describe plans for making findings, code, and data publicly available. Draw from fact 14.
+Sentence 2: Characterize the team composition, including disciplines, career stages, and training opportunities. Draw from fact 15.
 
-Rules:
-- Third-person neutral register only.
-- Declarative statements only.
-- Preserve scientific meaning.
-- If a fact is "Not specified", say the proposal does not specify that information.
-- Output ONLY the filled template with the five section headings and their sentences."""
+STYLE RULES - follow these exactly:
+- Third-person neutral register: "This project...", "The proposed study...", "The team...". No first person ("I", "we").
+- Declarative statements only. Do not add hedging ("may", "suggests", "is expected to") unless a fact explicitly states uncertainty.
+- Preserve scientific meaning while making the prose stylistically uniform.
+- Sentence length: target 18-20 words per sentence. Hard maximum is 22 words. If a draft sentence exceeds 22 words, split it or drop a qualifier.
+- Do not use hyphens to join compound modifiers. Write them as two separate words: "single cell" not "single-cell", "cross disciplinary" not "cross-disciplinary", "large scale" not "large-scale", "open source" not "open-source". Retain hyphens only inside established acronyms, such as "RNA-seq" or "cryo-ET", or proper names.
+- Use the same term for the same concept throughout. Do not introduce synonyms for technical terms.
+- Full prepositional phrases, not noun stacks: "analysis of protein dynamics" not "protein dynamics analysis". Include articles and prepositions naturally.
+- Minimize commas. No serial/Oxford commas. Restructure as prose with "and" or write separate sentences.
+- Use parentheses for acronym definitions on first use and brief examples where natural.
+- No bullet points, numbered lists, colons introducing items, or extra line breaks within a section. Flowing prose only.
+- Adhere strictly to the sentence count for each section.
+- If a fact is "Not specified", omit that detail and use the available facts for that section. Never write absence statements such as "not specified", "does not specify", "not addressed", "not provided", "not described", "not mentioned", "unclear", or "unknown".
+- Output ONLY the filled template with the five section headings and their sentences. No preamble, no commentary."""
 
-ABSTRACT_SYSTEM = """You will be given extracted scientific facts from a research proposal. Write exactly 5 sentences as a neutral structured abstract in biomedical article style.
+ABSTRACT_SYSTEM = """You are a scientific writer. You will be given a numbered list of semantic facts extracted from a research proposal. Write a structured abstract in the style of a PubMed biomedical research article.
 
-Sentence 1: background and domain.
-Sentence 2: the scientific gap.
-Sentence 3: objective and approach.
-Sentence 4: data and integration strategy.
-Sentence 5: expected contribution and significance.
+ABSTRACT STRUCTURE - write exactly 5 sentences in this order:
 
-Rules:
-- Use only the provided facts.
-- Third-person neutral register.
-- No team, timeline, budget, or open-science details.
-- Output only the 5-sentence paragraph."""
+Sentence 1 (Background, 25-35 words): State the research domain and the specific biological or computational phenomenon under study, and explain its importance for the field. Draw from facts 1 and 3.
+Sentence 2 (Gap, 20-30 words): Identify the specific scientific gap or open question that this project addresses, and state what is currently not understood or achievable. Draw from facts 2 and 3.
+Sentence 3 (Objective and approach, 30-40 words): State the primary research objective, then describe the overall analytical strategy and the key methods, models, or tools that will be applied. Draw from facts 4, 6, and 7.
+Sentence 4 (Data and integration, 25-35 words): Name the key datasets or databases to be used and describe how they will be integrated or synthesized to achieve the objective. Draw from facts 9 and 10.
+Sentence 5 (Contribution and significance, 20-30 words): State the primary expected output: the novel knowledge, resource, method, or framework, and explain its significance for the field or for downstream research. Draw from facts 4 and 5.
+
+STYLE RULES:
+- Third-person neutral register only. No first person ("I", "we", "our", "the authors").
+- Use present tense for established background and current limitations. Use future tense for what this project will do.
+- Declarative, concrete statements. No hedging ("may", "might", "could", "is expected to") unless a fact explicitly states uncertainty.
+- Word target: 120-200 words total.
+- Do not use hyphens to join compound modifiers: write "single cell" not "single-cell", "large scale" not "large-scale".
+- Do not mention team composition, funding, timeline, milestones, budget, or open science plans.
+- If a fact is "Not specified", omit that detail and use the available facts. Never write absence statements such as "not specified", "does not specify", "not addressed", "not provided", "not described", "not mentioned", "unclear", or "unknown".
+- No bullet points, numbered lists, or line breaks between sentences.
+- Output ONLY the 5 sentences as a single uninterrupted paragraph. No section labels, no preamble, no commentary."""
 
 
 def strip_section_headers(text: str) -> str:
     """Remove the standardized section headers from generated proposal text."""
-    import re
-
     cleaned = str(text or '')
     for header in SECTION_HEADERS:
         cleaned = re.sub(rf'^\s*{re.escape(header)}\s*$', '', cleaned, flags=re.MULTILINE | re.IGNORECASE)
     return re.sub(r'\n{3,}', '\n\n', cleaned).strip()
 
 
-def build_ai_full_text(row: pd.Series) -> str:
-    """Concatenate AI proposal sections into a single extraction source text."""
-    parts: List[str] = []
-    field_labels = [
-        ('abstract', 'Abstract'),
-        ('background_and_significance', 'Background and Significance'),
-        ('research_questions_and_hypotheses', 'Research Questions and Hypotheses'),
-        ('methods_and_approach', 'Methods and Approach'),
-        ('expected_outcomes_and_impact', 'Expected Outcomes and Impact'),
-        ('open_science_and_reproducibility', 'Open Science and Reproducibility'),
-        ('budget_and_resources', 'Budget and Resources'),
+ABSENCE_PHRASES = [
+    'not specified',
+    'does not specify',
+    'do not specify',
+    'does not address',
+    'do not address',
+    'not addressed',
+    'not provided',
+    'not described',
+    'not mentioned',
+    'is unclear',
+    'are unclear',
+    'unknown',
+]
+
+
+def _drop_absence_sentences(text: str) -> str:
+    """Drop model fallback sentences that narrate missing source information."""
+    cleaned = str(text or '').strip()
+    if not cleaned:
+        return ''
+
+    chunks = re.split(r'(?<=[.!?])\s+', cleaned)
+    kept = [
+        chunk.strip()
+        for chunk in chunks
+        if chunk.strip() and not any(phrase in chunk.lower() for phrase in ABSENCE_PHRASES)
     ]
-    for field, label in field_labels:
+    return re.sub(r'\s+', ' ', ' '.join(kept)).strip()
+
+
+def _coerce_text_response(raw_response: Any) -> str:
+    """Normalize plain-text model responses, including accidental JSON wrappers."""
+    def stringify(value: Any) -> str:
+        if value is None:
+            return ''
+        if isinstance(value, str):
+            return value.strip()
+        if isinstance(value, list):
+            return '\n'.join(stringify(item) for item in value if stringify(item))
+        if isinstance(value, dict):
+            return '\n'.join(
+                f'{key}. {stringify(val)}' for key, val in value.items() if stringify(val)
+            )
+        return str(value).strip()
+
+    text = str(raw_response or '').strip()
+    if not text:
+        return ''
+    if not text.startswith(('{', '[')):
+        return text
+
+    try:
+        payload = json.loads(text)
+    except json.JSONDecodeError:
+        return text
+
+    if isinstance(payload, str):
+        return stringify(payload)
+    if isinstance(payload, list):
+        return stringify(payload)
+    if isinstance(payload, dict):
+        preferred_keys = [
+            'text',
+            'content',
+            'response',
+            'summary',
+            'facts',
+            'extracted_facts',
+            'standardized_text',
+            'rephrased_abstract',
+            'abstract',
+        ]
+        for key in preferred_keys:
+            value = payload.get(key)
+            coerced = stringify(value)
+            if coerced:
+                return coerced
+        return stringify(payload)
+    return text
+
+
+def build_ai_full_text(row: pd.Series) -> str:
+    """Merge AI proposal sections into one draft-like extraction source text."""
+    parts: List[str] = []
+    section_fields = [
+        'abstract',
+        'background_and_significance',
+        'research_questions_and_hypotheses',
+        'methods_and_approach',
+        'expected_outcomes_and_impact',
+        'open_science_and_reproducibility',
+        'budget_and_resources',
+    ]
+    for field in section_fields:
         text = str(row.get(field, '') or '').strip()
         if text and text.lower() not in {'nan', 'none'}:
-            parts.append(f'[{label}]\n{text}')
+            parts.append(text)
     return '\n\n'.join(parts)
 
 
@@ -135,9 +250,9 @@ def build_human_full_text(proposal: Dict[str, Any]) -> str:
     abstract = str(proposal.get('abstract', '') or '').strip()
     full_draft = str(proposal.get('full_draft', '') or '').strip()
     if abstract and abstract.lower() not in {'nan', 'none'}:
-        parts.append(f'[Abstract]\n{abstract}')
+        parts.append(abstract)
     if full_draft and full_draft.lower() not in {'nan', 'none'}:
-        parts.append(f'[Full Proposal]\n{full_draft}')
+        parts.append(full_draft)
     return '\n\n'.join(parts)
 
 
@@ -287,6 +402,7 @@ def _call_model(
     temperature: float,
     max_tokens: int,
     retry_delays: List[int],
+    force_json: bool,
 ) -> Dict[str, Any]:
     return ai_interface.generate_content_with_metadata(
         prompt,
@@ -294,6 +410,7 @@ def _call_model(
         temperature=temperature,
         max_tokens=max_tokens,
         retry_delays=retry_delays,
+        force_json=force_json,
     )
 
 
@@ -360,6 +477,7 @@ def _rephrase_proposal_text(
         'proposal_rephrase_retry_count': 0,
         'proposal_rephrase_status': 'failed',
         'proposal_rephrase_error': '',
+        'extracted_facts': '',
     }
     prompts = _proposal_prompts(full_text)
     summary_call = _call_model(
@@ -369,6 +487,7 @@ def _rephrase_proposal_text(
         temperature=temperature,
         max_tokens=max_tokens,
         retry_delays=retry_delays,
+        force_json=False,
     )
     result['proposal_rephrase_retry_count'] += max(summary_call['attempt_count'] - 1, 0)
     if summary_call['error']:
@@ -376,7 +495,8 @@ def _rephrase_proposal_text(
         result['proposal_rephrased_at'] = summary_call['timestamp']
         return result
 
-    summary_text = str(summary_call['raw_response'] or '').strip()
+    summary_text = _coerce_text_response(summary_call['raw_response'])
+    result['extracted_facts'] = summary_text
     fill_prompt = f"{FILL_SYSTEM}\n\n---\nEXTRACTED FACTS:\n{summary_text}\n---\nFILLED TEMPLATE:"
     fill_call = _call_model(
         ai_interface=ai_interface,
@@ -385,6 +505,7 @@ def _rephrase_proposal_text(
         temperature=temperature,
         max_tokens=max_tokens,
         retry_delays=retry_delays,
+        force_json=False,
     )
     result['proposal_rephrase_retry_count'] += max(fill_call['attempt_count'] - 1, 0)
     if fill_call['error']:
@@ -400,6 +521,7 @@ def _rephrase_proposal_text(
         temperature=temperature,
         max_tokens=max_tokens,
         retry_delays=retry_delays,
+        force_json=False,
     )
     result['proposal_rephrase_retry_count'] += max(abstract_call['attempt_count'] - 1, 0)
     result['proposal_rephrased_at'] = abstract_call['timestamp']
@@ -407,8 +529,8 @@ def _rephrase_proposal_text(
         result['proposal_rephrase_error'] = f"abstract: {abstract_call['error']}"
         return result
 
-    standardized_text = strip_section_headers(str(fill_call['raw_response'] or '').strip())
-    rephrased_abstract = str(abstract_call['raw_response'] or '').strip()
+    standardized_text = _drop_absence_sentences(strip_section_headers(_coerce_text_response(fill_call['raw_response'])))
+    rephrased_abstract = _drop_absence_sentences(_coerce_text_response(abstract_call['raw_response']))
     result['standardized_text'] = standardized_text
     result['rephrased_abstract'] = rephrased_abstract
     if standardized_text and rephrased_abstract:
@@ -451,32 +573,42 @@ def _rephrase_review_text(
         'review_rephrase_status': 'failed',
         'review_rephrase_error': '',
     }
-    call = _call_model(
-        ai_interface=ai_interface,
-        prompt=_review_prompt(review_text),
-        model_name=model_name,
-        temperature=temperature,
-        max_tokens=max_tokens,
-        retry_delays=retry_delays,
-    )
-    result['review_rephrase_retry_count'] = max(call['attempt_count'] - 1, 0)
-    result['review_rephrased_at'] = call['timestamp']
-    if call['error']:
-        result['review_rephrase_error'] = call['error']
-        return result
-
-    payload, parse_error = extract_first_json_object(str(call['raw_response'] or ''))
-    if parse_error or not isinstance(payload, dict):
-        result['review_rephrase_error'] = parse_error or 'invalid JSON response'
-        return result
-
-    result['rephrased_review'] = str(payload.get('rephrased_review', '') or '').strip()
-    result['rephrased_strengths'] = str(payload.get('strengths', '') or '').strip()
-    result['rephrased_weakness'] = str(payload.get('weakness', '') or '').strip()
-    if result['rephrased_review'] and result['rephrased_strengths'] and result['rephrased_weakness']:
-        result['review_rephrase_status'] = 'success'
-    else:
-        result['review_rephrase_error'] = 'missing one or more rephrased review fields'
+    # Retry the whole draw on parse/empty-field failure too (not just API errors):
+    # a transient malformed/truncated response usually re-draws clean, so a fresh
+    # re-rephrase lands complete instead of leaving stray empty rows. Every attempt
+    # re-issues the same (v2) _review_prompt.
+    for parse_attempt in range(1 + len(retry_delays)):
+        call = _call_model(
+            ai_interface=ai_interface,
+            prompt=_review_prompt(review_text),
+            model_name=model_name,
+            temperature=temperature,
+            max_tokens=max_tokens,
+            retry_delays=retry_delays,
+            force_json=True,
+        )
+        result['review_rephrase_retry_count'] += max(call['attempt_count'] - 1, 0)
+        result['review_rephrased_at'] = call['timestamp']
+        if call['error']:
+            result['review_rephrase_error'] = call['error']
+        else:
+            payload, parse_error = extract_first_json_object(str(call['raw_response'] or ''))
+            if parse_error or not isinstance(payload, dict):
+                result['review_rephrase_error'] = parse_error or 'invalid JSON response'
+            else:
+                rephrased_review = _drop_absence_sentences(str(payload.get('rephrased_review', '') or '').strip())
+                rephrased_strengths = _drop_absence_sentences(str(payload.get('strengths', '') or '').strip())
+                rephrased_weakness = _drop_absence_sentences(str(payload.get('weakness', '') or '').strip())
+                if rephrased_review and rephrased_strengths and rephrased_weakness:
+                    result['rephrased_review'] = rephrased_review
+                    result['rephrased_strengths'] = rephrased_strengths
+                    result['rephrased_weakness'] = rephrased_weakness
+                    result['review_rephrase_status'] = 'success'
+                    result['review_rephrase_error'] = ''
+                    return result
+                result['review_rephrase_error'] = 'missing one or more rephrased review fields'
+        if parse_attempt < len(retry_delays):
+            time.sleep(retry_delays[parse_attempt])
     return result
 
 
@@ -536,11 +668,20 @@ def _review_rephrase_manifest(
     }
 
 
-def _proposal_rephrase_complete(df: pd.DataFrame, source_df: pd.DataFrame) -> bool:
+def _proposal_rephrase_prompt_matches(df: pd.DataFrame, prompt_version: str) -> bool:
+    if 'proposal_rephrase_prompt_version' not in df.columns:
+        return False
+    versions = df['proposal_rephrase_prompt_version'].fillna('').astype(str).str.strip()
+    return versions.eq(prompt_version).all()
+
+
+def _proposal_rephrase_complete(df: pd.DataFrame, source_df: pd.DataFrame, prompt_version: str) -> bool:
     if len(df) != len(source_df):
         return False
     required = ['proposal_uid', 'standardized_text', 'rephrased_abstract', 'proposal_rephrase_status']
     if any(col not in df.columns for col in required):
+        return False
+    if not _proposal_rephrase_prompt_matches(df, prompt_version):
         return False
     if df['proposal_uid'].fillna('').astype(str).str.strip().eq('').any():
         return False
@@ -548,10 +689,23 @@ def _proposal_rephrase_complete(df: pd.DataFrame, source_df: pd.DataFrame) -> bo
 
 
 def _review_rephrase_complete(df: pd.DataFrame, source_df: pd.DataFrame) -> bool:
+    return _review_rephrase_complete_for_prompt(df, source_df, REVIEW_REPHRASE_PROMPT_VERSION)
+
+
+def _review_rephrase_prompt_matches(df: pd.DataFrame, prompt_version: str) -> bool:
+    if 'review_rephrase_prompt_version' not in df.columns:
+        return False
+    versions = df['review_rephrase_prompt_version'].fillna('').astype(str).str.strip()
+    return versions.eq(prompt_version).all()
+
+
+def _review_rephrase_complete_for_prompt(df: pd.DataFrame, source_df: pd.DataFrame, prompt_version: str) -> bool:
     if len(df) != len(source_df):
         return False
     required = ['review_uid', 'rephrased_review', 'rephrased_strengths', 'rephrased_weakness', 'review_rephrase_status']
     if any(col not in df.columns for col in required):
+        return False
+    if not _review_rephrase_prompt_matches(df, prompt_version):
         return False
     if df['review_uid'].fillna('').astype(str).str.strip().eq('').any():
         return False
@@ -570,6 +724,13 @@ def _latest_completed_output(output_dir: Path, pattern: str) -> Optional[Path]:
         if not p.name.endswith('_failures.csv')
     ]
     return matches[-1] if matches else None
+
+
+def _print_resume_plan(scope: str, prior_path: Optional[Path], out_df: pd.DataFrame, status_col: str) -> None:
+    """Log which prior output (if any) is reused and how many rows will be (re)generated."""
+    carried = int((out_df[status_col].fillna('').astype(str) == 'success').sum()) if status_col in out_df.columns else 0
+    source = prior_path.name if prior_path is not None else '(fresh run - no prior output)'
+    print(f'  [{scope}] resume source: {source} | carried over: {carried} | to (re)generate: {len(out_df) - carried}')
 
 
 def _carry_over_successful_rows(
@@ -600,6 +761,44 @@ def _carry_over_successful_rows(
                     out_df.at[row_idx, col] = prior.at[key, col]
 
 
+def _write_proposal_summary_json(
+    *,
+    summary_path: Path,
+    out_df: pd.DataFrame,
+    scope: str,
+    artifact_family: str,
+    source_path: Path,
+    run_id: str,
+) -> None:
+    """Persist Step 1 extracted facts separately for audit and comparison."""
+    summary_records: List[Dict[str, Any]] = []
+    for _, row in out_df.iterrows():
+        record = {
+            'proposal_uid': row.get('proposal_uid', ''),
+            'artifact_family': artifact_family,
+            'scope': scope,
+            'run_id': run_id,
+            'source_file': str(source_path),
+            'proposal_rephrase_status': row.get('proposal_rephrase_status', ''),
+            'proposal_rephrase_error': row.get('proposal_rephrase_error', ''),
+            'extracted_facts': row.get('extracted_facts', ''),
+        }
+        for optional_col in ['condition', 'cohort', 'model', 'author', 'proposal_id', 'title', 'proposal_title']:
+            if optional_col in out_df.columns:
+                record[optional_col] = row.get(optional_col, '')
+        summary_records.append(record)
+
+    payload = {
+        'run_id': run_id,
+        'scope': scope,
+        'artifact_family': artifact_family,
+        'source_file': str(source_path),
+        'prompt_version': PROPOSAL_REPHRASE_PROMPT_VERSION,
+        'summaries': summary_records,
+    }
+    summary_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False))
+
+
 def rephrase_ai_proposals_for_condition(
     *,
     project_root: Path,
@@ -623,7 +822,7 @@ def rephrase_ai_proposals_for_condition(
     resume_partial_df = None
     if resume_ok and latest_output is not None:
         existing_df = pd.read_csv(latest_output)
-        if _proposal_rephrase_complete(existing_df, source_df):
+        if _proposal_rephrase_complete(existing_df, source_df, PROPOSAL_REPHRASE_PROMPT_VERSION):
             return {
                 'condition': condition,
                 'run_id': str(existing_df['run_id'].iloc[0]) if 'run_id' in existing_df.columns and not existing_df.empty else run_id,
@@ -631,17 +830,20 @@ def rephrase_ai_proposals_for_condition(
                 'output_path': latest_output,
                 'failures_path': latest_matching_file(output_dir, f'ai_proposals_{condition}_rephrased_*_failures.csv'),
                 'manifest_path': latest_matching_file(output_dir, f'proposal_rephrase_manifest_{condition}_*.json'),
+                'summary_path': latest_matching_file(output_dir, f'proposal_rephrase_summaries_{condition}_*.json'),
                 'qa_issues': [],
                 'reused_existing': True,
             }
-        resume_partial_df = existing_df
-        if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
-            run_id = str(existing_df['run_id'].iloc[0])
+        if _proposal_rephrase_prompt_matches(existing_df, PROPOSAL_REPHRASE_PROMPT_VERSION):
+            resume_partial_df = existing_df
+            if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
+                run_id = str(existing_df['run_id'].iloc[0])
 
     out_path = output_dir / f'ai_proposals_{condition}_rephrased_{run_id}.csv'
     tmp_path = out_path.with_suffix('.csv.tmp')
     failures_path = output_dir / f'ai_proposals_{condition}_rephrased_{run_id}_failures.csv'
     manifest_path = output_dir / f'proposal_rephrase_manifest_{condition}_{run_id}.json'
+    summary_path = output_dir / f'proposal_rephrase_summaries_{condition}_{run_id}.json'
 
     out_df = source_df.copy()
     new_columns = [
@@ -654,6 +856,7 @@ def rephrase_ai_proposals_for_condition(
         'proposal_rephrase_retry_count',
         'proposal_rephrase_status',
         'proposal_rephrase_error',
+        'extracted_facts',
         'standardized_text',
         'rephrased_abstract',
     ]
@@ -664,6 +867,7 @@ def rephrase_ai_proposals_for_condition(
         out_df, resume_partial_df,
         key_col='proposal_uid', status_col='proposal_rephrase_status', columns=new_columns,
     )
+    _print_resume_plan(condition, latest_output, out_df, 'proposal_rephrase_status')
 
     failures: List[Dict[str, Any]] = []
     for row_idx, row in out_df.iterrows():
@@ -711,6 +915,14 @@ def rephrase_ai_proposals_for_condition(
     ensure_failure_csv(failures_path, failures)
     if tmp_path.exists():
         tmp_path.unlink()
+    _write_proposal_summary_json(
+        summary_path=summary_path,
+        out_df=out_df,
+        scope=condition,
+        artifact_family='ai_proposals',
+        source_path=source_path,
+        run_id=run_id,
+    )
 
     qa_issues: List[str] = []
     if len(out_df) != len(source_df):
@@ -736,6 +948,7 @@ def rephrase_ai_proposals_for_condition(
         prompt_version=PROPOSAL_REPHRASE_PROMPT_VERSION,
     )
     manifest['ended_at'] = datetime.now().isoformat()
+    manifest['summary_output_file'] = str(summary_path)
     manifest['qa_issues'] = qa_issues
     manifest['completed_cleanly'] = not qa_issues and success_count == len(out_df)
     save_generation_manifest(manifest_path, manifest)
@@ -747,6 +960,7 @@ def rephrase_ai_proposals_for_condition(
         'output_path': out_path,
         'failures_path': failures_path,
         'manifest_path': manifest_path,
+        'summary_path': summary_path,
         'manifest': manifest,
         'qa_issues': qa_issues,
         'reused_existing': False,
@@ -787,9 +1001,10 @@ def rephrase_ai_reviews_for_condition(
                 'qa_issues': [],
                 'reused_existing': True,
             }
-        resume_partial_df = existing_df
-        if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
-            run_id = str(existing_df['run_id'].iloc[0])
+        if _review_rephrase_prompt_matches(existing_df, REVIEW_REPHRASE_PROMPT_VERSION):
+            resume_partial_df = existing_df
+            if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
+                run_id = str(existing_df['run_id'].iloc[0])
 
     out_path = output_dir / f'ai_reviews_{condition}_rephrased_{run_id}.csv'
     tmp_path = out_path.with_suffix('.csv.tmp')
@@ -818,6 +1033,7 @@ def rephrase_ai_reviews_for_condition(
         out_df, resume_partial_df,
         key_col='review_uid', status_col='review_rephrase_status', columns=new_columns,
     )
+    _print_resume_plan(condition, latest_output, out_df, 'review_rephrase_status')
 
     failures: List[Dict[str, Any]] = []
     for row_idx, row in out_df.iterrows():
@@ -949,7 +1165,7 @@ def rephrase_shared_human_proposals(
     resume_partial_df = None
     if resume_ok and latest_csv is not None:
         existing_df = pd.read_csv(latest_csv)
-        if _proposal_rephrase_complete(existing_df, source_df):
+        if _proposal_rephrase_complete(existing_df, source_df, PROPOSAL_REPHRASE_PROMPT_VERSION):
             latest_json = latest_matching_file(output_dir, f'human_proposals_rephrased_{cohort}_*.json')
             return {
                 'cohort': cohort,
@@ -959,18 +1175,21 @@ def rephrase_shared_human_proposals(
                 'json_path': latest_json,
                 'failures_path': latest_matching_file(output_dir, f'human_proposals_rephrased_{cohort}_*_failures.csv'),
                 'manifest_path': latest_matching_file(output_dir, f'human_proposal_rephrase_manifest_{cohort}_*.json'),
+                'summary_path': latest_matching_file(output_dir, f'human_proposal_rephrase_summaries_{cohort}_*.json'),
                 'qa_issues': [],
                 'reused_existing': True,
             }
-        resume_partial_df = existing_df
-        if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
-            run_id = str(existing_df['run_id'].iloc[0])
+        if _proposal_rephrase_prompt_matches(existing_df, PROPOSAL_REPHRASE_PROMPT_VERSION):
+            resume_partial_df = existing_df
+            if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
+                run_id = str(existing_df['run_id'].iloc[0])
 
     csv_path = output_dir / f'human_proposals_rephrased_{cohort}_{run_id}.csv'
     json_path = output_dir / f'human_proposals_rephrased_{cohort}_{run_id}.json'
     tmp_path = csv_path.with_suffix('.csv.tmp')
     failures_path = output_dir / f'human_proposals_rephrased_{cohort}_{run_id}_failures.csv'
     manifest_path = output_dir / f'human_proposal_rephrase_manifest_{cohort}_{run_id}.json'
+    summary_path = output_dir / f'human_proposal_rephrase_summaries_{cohort}_{run_id}.json'
 
     out_df = source_df.copy()
     new_columns = [
@@ -983,6 +1202,7 @@ def rephrase_shared_human_proposals(
         'proposal_rephrase_retry_count',
         'proposal_rephrase_status',
         'proposal_rephrase_error',
+        'extracted_facts',
         'standardized_text',
         'rephrased_abstract',
     ]
@@ -993,6 +1213,7 @@ def rephrase_shared_human_proposals(
         out_df, resume_partial_df,
         key_col='proposal_uid', status_col='proposal_rephrase_status', columns=new_columns,
     )
+    _print_resume_plan(cohort, latest_csv, out_df, 'proposal_rephrase_status')
 
     failures: List[Dict[str, Any]] = []
     for row_idx, row in out_df.iterrows():
@@ -1042,6 +1263,14 @@ def rephrase_shared_human_proposals(
     ensure_failure_csv(failures_path, failures)
     json_payload = {'cohort': cohort, 'source_file': str(source_path), 'proposals': out_df.to_dict('records')}
     json_path.write_text(json.dumps(json_payload, indent=2, ensure_ascii=False))
+    _write_proposal_summary_json(
+        summary_path=summary_path,
+        out_df=out_df,
+        scope=cohort,
+        artifact_family='human_proposals',
+        source_path=source_path,
+        run_id=run_id,
+    )
 
     qa_issues: List[str] = []
     if len(out_df) != len(source_df):
@@ -1067,6 +1296,7 @@ def rephrase_shared_human_proposals(
         prompt_version=PROPOSAL_REPHRASE_PROMPT_VERSION,
     )
     manifest['json_output_file'] = str(json_path)
+    manifest['summary_output_file'] = str(summary_path)
     manifest['ended_at'] = datetime.now().isoformat()
     manifest['qa_issues'] = qa_issues
     manifest['completed_cleanly'] = not qa_issues and success_count == len(out_df)
@@ -1080,6 +1310,7 @@ def rephrase_shared_human_proposals(
         'json_path': json_path,
         'failures_path': failures_path,
         'manifest_path': manifest_path,
+        'summary_path': summary_path,
         'manifest': manifest,
         'qa_issues': qa_issues,
         'reused_existing': False,
@@ -1145,10 +1376,11 @@ def rephrase_shared_human_reviews(
                 'qa_issues': [],
                 'reused_existing': True,
             }
-        # Not complete: keep already-successful rows and re-call only the rest.
-        resume_partial_df = existing_df
-        if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
-            run_id = str(existing_df['run_id'].iloc[0])
+        # Not complete: keep already-successful rows only for the same prompt version.
+        if _review_rephrase_prompt_matches(existing_df, REVIEW_REPHRASE_PROMPT_VERSION):
+            resume_partial_df = existing_df
+            if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
+                run_id = str(existing_df['run_id'].iloc[0])
 
     csv_path = output_dir / f'human_reviews_{cohort}_rephrased_{run_id}.csv'
     tmp_path = csv_path.with_suffix('.csv.tmp')
@@ -1176,6 +1408,7 @@ def rephrase_shared_human_reviews(
         out_df, resume_partial_df,
         key_col='review_uid', status_col='review_rephrase_status', columns=rephrase_cols,
     )
+    _print_resume_plan(cohort, latest_csv, out_df, 'review_rephrase_status')
 
     failures: List[Dict[str, Any]] = []
     for row_idx, row in out_df.iterrows():

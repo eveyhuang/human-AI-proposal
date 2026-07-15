@@ -1,0 +1,145 @@
+condition,comparison,comparison_label,metric_a,metric_b,spearman_rho,p_value,n_proposals,field_branch
+one_at_a_time,all_ai,All AI,centroid_loo,global_centroid_dist,0.983201581027668,5.3708298825907296e-17,23,strengths
+one_at_a_time,all_ai,All AI,centroid_loo,medoid_dist,0.9535573122529646,2.045296157918174e-12,23,strengths
+one_at_a_time,all_ai,All AI,centroid_loo,mst_dispersion,0.9367588932806324,4.855363761083324e-11,23,strengths
+one_at_a_time,all_ai,All AI,centroid_loo,remote_clique,0.9940711462450593,1.0034336129623743e-21,23,strengths
+one_at_a_time,all_ai,All AI,centroid_loo,span90,0.9644268774703558,1.3053953287267002e-13,23,strengths
+one_at_a_time,all_ai,All AI,centroid_loo,sparseness,0.983201581027668,5.3708298825907296e-17,23,strengths
+one_at_a_time,all_ai,All AI,global_centroid_dist,medoid_dist,0.9525691699604744,2.5401685638882054e-12,23,strengths
+one_at_a_time,all_ai,All AI,global_centroid_dist,mst_dispersion,0.9041501976284586,3.302671241557327e-09,23,strengths
+one_at_a_time,all_ai,All AI,global_centroid_dist,remote_clique,0.9930830039525691,5.041544879133055e-21,23,strengths
+one_at_a_time,all_ai,All AI,global_centroid_dist,span90,0.9693675889328063,2.7752536222287567e-14,23,strengths
+one_at_a_time,all_ai,All AI,global_centroid_dist,sparseness,1.0,0.0,23,strengths
+one_at_a_time,all_ai,All AI,mean_pairwise,centroid_loo,0.9940711462450593,1.0034336129623743e-21,23,strengths
+one_at_a_time,all_ai,All AI,mean_pairwise,global_centroid_dist,0.9930830039525691,5.041544879133055e-21,23,strengths
+one_at_a_time,all_ai,All AI,mean_pairwise,medoid_dist,0.9555335968379446,1.3069408987223545e-12,23,strengths
+one_at_a_time,all_ai,All AI,mean_pairwise,mst_dispersion,0.9268774703557312,2.133522580785247e-10,23,strengths
+one_at_a_time,all_ai,All AI,mean_pairwise,nn,0.8903162055335968,1.277638185271966e-08,23,strengths
+one_at_a_time,all_ai,All AI,mean_pairwise,remote_clique,1.0,0.0,23,strengths
+one_at_a_time,all_ai,All AI,mean_pairwise,span90,0.9713438735177865,1.3898050327857093e-14,23,strengths
+one_at_a_time,all_ai,All AI,mean_pairwise,sparseness,0.9930830039525691,5.041544879133055e-21,23,strengths
+one_at_a_time,all_ai,All AI,medoid_dist,mst_dispersion,0.9545454545454547,1.63902003817655e-12,23,strengths
+one_at_a_time,all_ai,All AI,medoid_dist,remote_clique,0.9555335968379446,1.3069408987223545e-12,23,strengths
+one_at_a_time,all_ai,All AI,medoid_dist,span90,0.8883399209486167,1.527335454283578e-08,23,strengths
+one_at_a_time,all_ai,All AI,medoid_dist,sparseness,0.9525691699604744,2.5401685638882054e-12,23,strengths
+one_at_a_time,all_ai,All AI,mst_dispersion,remote_clique,0.9268774703557312,2.133522580785247e-10,23,strengths
+one_at_a_time,all_ai,All AI,mst_dispersion,sparseness,0.9041501976284586,3.302671241557327e-09,23,strengths
+one_at_a_time,all_ai,All AI,nn,centroid_loo,0.8942687747035574,8.84805261881931e-09,23,strengths
+one_at_a_time,all_ai,All AI,nn,global_centroid_dist,0.8814229249011858,2.7817398148580042e-08,23,strengths
+one_at_a_time,all_ai,All AI,nn,medoid_dist,0.9397233201581027,2.971868444999934e-11,23,strengths
+one_at_a_time,all_ai,All AI,nn,mst_dispersion,0.9693675889328063,2.7752536222287567e-14,23,strengths
+one_at_a_time,all_ai,All AI,nn,remote_clique,0.8903162055335968,1.277638185271966e-08,23,strengths
+one_at_a_time,all_ai,All AI,nn,span90,0.8023715415019764,4.112846982131555e-06,23,strengths
+one_at_a_time,all_ai,All AI,nn,sparseness,0.8814229249011858,2.7817398148580042e-08,23,strengths
+one_at_a_time,all_ai,All AI,span90,mst_dispersion,0.8567193675889329,1.811395026205741e-07,23,strengths
+one_at_a_time,all_ai,All AI,span90,remote_clique,0.9713438735177865,1.3898050327857093e-14,23,strengths
+one_at_a_time,all_ai,All AI,span90,sparseness,0.9693675889328063,2.7752536222287567e-14,23,strengths
+one_at_a_time,all_ai,All AI,sparseness,remote_clique,0.9930830039525691,5.041544879133055e-21,23,strengths
+one_at_a_time,claude,Claude,centroid_loo,global_centroid_dist,0.9703557312252965,1.9754383177126073e-14,23,strengths
+one_at_a_time,claude,Claude,centroid_loo,medoid_dist,0.9308300395256918,1.2116318314691535e-10,23,strengths
+one_at_a_time,claude,Claude,centroid_loo,mst_dispersion,0.9476284584980237,7.034256602058228e-12,23,strengths
+one_at_a_time,claude,Claude,centroid_loo,remote_clique,0.9960474308300397,1.433047731869931e-23,23,strengths
+one_at_a_time,claude,Claude,centroid_loo,span90,0.9545454545454547,1.63902003817655e-12,23,strengths
+one_at_a_time,claude,Claude,centroid_loo,sparseness,0.9703557312252965,1.9754383177126073e-14,23,strengths
+one_at_a_time,claude,Claude,global_centroid_dist,medoid_dist,0.9169960474308301,7.724063591873756e-10,23,strengths
+one_at_a_time,claude,Claude,global_centroid_dist,mst_dispersion,0.9090909090909092,1.937423986061789e-09,23,strengths
+one_at_a_time,claude,Claude,global_centroid_dist,remote_clique,0.9782608695652174,7.877398904732528e-16,23,strengths
+one_at_a_time,claude,Claude,global_centroid_dist,span90,0.9802371541501977,2.920890307948633e-16,23,strengths
+one_at_a_time,claude,Claude,global_centroid_dist,sparseness,1.0,0.0,23,strengths
+one_at_a_time,claude,Claude,mean_pairwise,centroid_loo,0.9960474308300397,1.433047731869931e-23,23,strengths
+one_at_a_time,claude,Claude,mean_pairwise,global_centroid_dist,0.9782608695652174,7.877398904732528e-16,23,strengths
+one_at_a_time,claude,Claude,mean_pairwise,medoid_dist,0.933794466403162,7.751322266758986e-11,23,strengths
+one_at_a_time,claude,Claude,mean_pairwise,mst_dispersion,0.9377470355731227,4.133520162074528e-11,23,strengths
+one_at_a_time,claude,Claude,mean_pairwise,nn,0.9288537549407114,1.6143421649494893e-10,23,strengths
+one_at_a_time,claude,Claude,mean_pairwise,remote_clique,1.0,0.0,23,strengths
+one_at_a_time,claude,Claude,mean_pairwise,span90,0.9634387351778656,1.7329804448776302e-13,23,strengths
+one_at_a_time,claude,Claude,mean_pairwise,sparseness,0.9782608695652174,7.877398904732528e-16,23,strengths
+one_at_a_time,claude,Claude,medoid_dist,mst_dispersion,0.9525691699604744,2.5401685638882054e-12,23,strengths
+one_at_a_time,claude,Claude,medoid_dist,remote_clique,0.933794466403162,7.751322266758986e-11,23,strengths
+one_at_a_time,claude,Claude,medoid_dist,span90,0.8705533596837944,6.647410329721665e-08,23,strengths
+one_at_a_time,claude,Claude,medoid_dist,sparseness,0.9169960474308301,7.724063591873756e-10,23,strengths
+one_at_a_time,claude,Claude,mst_dispersion,remote_clique,0.9377470355731227,4.133520162074528e-11,23,strengths
+one_at_a_time,claude,Claude,mst_dispersion,sparseness,0.9090909090909092,1.937423986061789e-09,23,strengths
+one_at_a_time,claude,Claude,nn,centroid_loo,0.9308300395256918,1.2116318314691535e-10,23,strengths
+one_at_a_time,claude,Claude,nn,global_centroid_dist,0.9071146245059288,2.4066965518574098e-09,23,strengths
+one_at_a_time,claude,Claude,nn,medoid_dist,0.9624505928853755,2.2830334775646334e-13,23,strengths
+one_at_a_time,claude,Claude,nn,mst_dispersion,0.983201581027668,5.3708298825907296e-17,23,strengths
+one_at_a_time,claude,Claude,nn,remote_clique,0.9288537549407114,1.6143421649494893e-10,23,strengths
+one_at_a_time,claude,Claude,nn,span90,0.8507905138339922,2.6977559195331056e-07,23,strengths
+one_at_a_time,claude,Claude,nn,sparseness,0.9071146245059288,2.4066965518574098e-09,23,strengths
+one_at_a_time,claude,Claude,span90,mst_dispersion,0.8606719367588934,1.3752086959489192e-07,23,strengths
+one_at_a_time,claude,Claude,span90,remote_clique,0.9634387351778656,1.7329804448776302e-13,23,strengths
+one_at_a_time,claude,Claude,span90,sparseness,0.9802371541501977,2.920890307948633e-16,23,strengths
+one_at_a_time,claude,Claude,sparseness,remote_clique,0.9782608695652174,7.877398904732528e-16,23,strengths
+one_at_a_time,gemini,Gemini,centroid_loo,global_centroid_dist,0.9960474308300397,1.433047731869931e-23,23,strengths
+one_at_a_time,gemini,Gemini,centroid_loo,medoid_dist,0.9496047430830039,4.738207317241129e-12,23,strengths
+one_at_a_time,gemini,Gemini,centroid_loo,mst_dispersion,0.9555335968379446,1.3069408987223545e-12,23,strengths
+one_at_a_time,gemini,Gemini,centroid_loo,remote_clique,0.9980237154150198,9.980970744570998e-27,23,strengths
+one_at_a_time,gemini,Gemini,centroid_loo,span90,0.9031620553359685,3.66180597763012e-09,23,strengths
+one_at_a_time,gemini,Gemini,centroid_loo,sparseness,0.9960474308300397,1.433047731869931e-23,23,strengths
+one_at_a_time,gemini,Gemini,global_centroid_dist,medoid_dist,0.9476284584980237,7.034256602058228e-12,23,strengths
+one_at_a_time,gemini,Gemini,global_centroid_dist,mst_dispersion,0.9426877470355731,1.7733200161440015e-11,23,strengths
+one_at_a_time,gemini,Gemini,global_centroid_dist,remote_clique,0.9980237154150198,9.980970744570998e-27,23,strengths
+one_at_a_time,gemini,Gemini,global_centroid_dist,span90,0.9110671936758895,1.551919112141883e-09,23,strengths
+one_at_a_time,gemini,Gemini,global_centroid_dist,sparseness,1.0,0.0,23,strengths
+one_at_a_time,gemini,Gemini,mean_pairwise,centroid_loo,0.9980237154150198,9.980970744570998e-27,23,strengths
+one_at_a_time,gemini,Gemini,mean_pairwise,global_centroid_dist,0.9980237154150198,9.980970744570998e-27,23,strengths
+one_at_a_time,gemini,Gemini,mean_pairwise,medoid_dist,0.9486166007905139,5.7844212032404675e-12,23,strengths
+one_at_a_time,gemini,Gemini,mean_pairwise,mst_dispersion,0.9476284584980237,7.034256602058228e-12,23,strengths
+one_at_a_time,gemini,Gemini,mean_pairwise,nn,0.9100790513833993,1.7350925633305456e-09,23,strengths
+one_at_a_time,gemini,Gemini,mean_pairwise,remote_clique,1.0,0.0,23,strengths
+one_at_a_time,gemini,Gemini,mean_pairwise,span90,0.9110671936758895,1.551919112141883e-09,23,strengths
+one_at_a_time,gemini,Gemini,mean_pairwise,sparseness,0.9980237154150198,9.980970744570998e-27,23,strengths
+one_at_a_time,gemini,Gemini,medoid_dist,mst_dispersion,0.9614624505928853,2.9858709763379274e-13,23,strengths
+one_at_a_time,gemini,Gemini,medoid_dist,remote_clique,0.9486166007905139,5.7844212032404675e-12,23,strengths
+one_at_a_time,gemini,Gemini,medoid_dist,span90,0.824110671936759,1.3402660398674293e-06,23,strengths
+one_at_a_time,gemini,Gemini,medoid_dist,sparseness,0.9476284584980237,7.034256602058228e-12,23,strengths
+one_at_a_time,gemini,Gemini,mst_dispersion,remote_clique,0.9476284584980237,7.034256602058228e-12,23,strengths
+one_at_a_time,gemini,Gemini,mst_dispersion,sparseness,0.9426877470355731,1.7733200161440015e-11,23,strengths
+one_at_a_time,gemini,Gemini,nn,centroid_loo,0.9169960474308301,7.724063591873756e-10,23,strengths
+one_at_a_time,gemini,Gemini,nn,global_centroid_dist,0.9051383399209486,2.9754306887885376e-09,23,strengths
+one_at_a_time,gemini,Gemini,nn,medoid_dist,0.9407114624505929,2.5093672174275708e-11,23,strengths
+one_at_a_time,gemini,Gemini,nn,mst_dispersion,0.9792490118577075,4.854287395760623e-16,23,strengths
+one_at_a_time,gemini,Gemini,nn,remote_clique,0.9100790513833993,1.7350925633305456e-09,23,strengths
+one_at_a_time,gemini,Gemini,nn,span90,0.7480237154150197,4.0636749396339785e-05,23,strengths
+one_at_a_time,gemini,Gemini,nn,sparseness,0.9051383399209486,2.9754306887885376e-09,23,strengths
+one_at_a_time,gemini,Gemini,span90,mst_dispersion,0.8033596837944664,3.920261428213202e-06,23,strengths
+one_at_a_time,gemini,Gemini,span90,remote_clique,0.9110671936758895,1.551919112141883e-09,23,strengths
+one_at_a_time,gemini,Gemini,span90,sparseness,0.9110671936758895,1.551919112141883e-09,23,strengths
+one_at_a_time,gemini,Gemini,sparseness,remote_clique,0.9980237154150198,9.980970744570998e-27,23,strengths
+one_at_a_time,gpt,GPT,centroid_loo,global_centroid_dist,0.9673913043478262,5.304299500721495e-14,23,strengths
+one_at_a_time,gpt,GPT,centroid_loo,medoid_dist,0.9357707509881423,5.688650095028583e-11,23,strengths
+one_at_a_time,gpt,GPT,centroid_loo,mst_dispersion,0.950592885375494,3.865572728527236e-12,23,strengths
+one_at_a_time,gpt,GPT,centroid_loo,remote_clique,0.983201581027668,5.3708298825907296e-17,23,strengths
+one_at_a_time,gpt,GPT,centroid_loo,span90,0.9575098814229249,8.179673134913354e-13,23,strengths
+one_at_a_time,gpt,GPT,centroid_loo,sparseness,0.9673913043478262,5.304299500721495e-14,23,strengths
+one_at_a_time,gpt,GPT,global_centroid_dist,medoid_dist,0.9713438735177865,1.3898050327857093e-14,23,strengths
+one_at_a_time,gpt,GPT,global_centroid_dist,mst_dispersion,0.9545454545454547,1.63902003817655e-12,23,strengths
+one_at_a_time,gpt,GPT,global_centroid_dist,remote_clique,0.9930830039525691,5.041544879133055e-21,23,strengths
+one_at_a_time,gpt,GPT,global_centroid_dist,span90,0.9693675889328063,2.7752536222287567e-14,23,strengths
+one_at_a_time,gpt,GPT,global_centroid_dist,sparseness,1.0,0.0,23,strengths
+one_at_a_time,gpt,GPT,mean_pairwise,centroid_loo,0.983201581027668,5.3708298825907296e-17,23,strengths
+one_at_a_time,gpt,GPT,mean_pairwise,global_centroid_dist,0.9930830039525691,5.041544879133055e-21,23,strengths
+one_at_a_time,gpt,GPT,mean_pairwise,medoid_dist,0.9604743083003953,3.8781974119233065e-13,23,strengths
+one_at_a_time,gpt,GPT,mean_pairwise,mst_dispersion,0.9545454545454547,1.63902003817655e-12,23,strengths
+one_at_a_time,gpt,GPT,mean_pairwise,nn,0.8992094861660079,5.474601098561781e-09,23,strengths
+one_at_a_time,gpt,GPT,mean_pairwise,remote_clique,1.0,0.0,23,strengths
+one_at_a_time,gpt,GPT,mean_pairwise,span90,0.974308300395257,4.473465094212444e-15,23,strengths
+one_at_a_time,gpt,GPT,mean_pairwise,sparseness,0.9930830039525691,5.041544879133055e-21,23,strengths
+one_at_a_time,gpt,GPT,medoid_dist,mst_dispersion,0.9614624505928853,2.9858709763379274e-13,23,strengths
+one_at_a_time,gpt,GPT,medoid_dist,remote_clique,0.9604743083003953,3.8781974119233065e-13,23,strengths
+one_at_a_time,gpt,GPT,medoid_dist,span90,0.9110671936758895,1.551919112141883e-09,23,strengths
+one_at_a_time,gpt,GPT,medoid_dist,sparseness,0.9713438735177865,1.3898050327857093e-14,23,strengths
+one_at_a_time,gpt,GPT,mst_dispersion,remote_clique,0.9545454545454547,1.63902003817655e-12,23,strengths
+one_at_a_time,gpt,GPT,mst_dispersion,sparseness,0.9545454545454547,1.63902003817655e-12,23,strengths
+one_at_a_time,gpt,GPT,nn,centroid_loo,0.884387351778656,2.1614261774823373e-08,23,strengths
+one_at_a_time,gpt,GPT,nn,global_centroid_dist,0.9041501976284586,3.302671241557327e-09,23,strengths
+one_at_a_time,gpt,GPT,nn,medoid_dist,0.9367588932806324,4.855363761083324e-11,23,strengths
+one_at_a_time,gpt,GPT,nn,mst_dispersion,0.9752964426877472,2.9762909743739418e-15,23,strengths
+one_at_a_time,gpt,GPT,nn,remote_clique,0.8992094861660079,5.474601098561781e-09,23,strengths
+one_at_a_time,gpt,GPT,nn,span90,0.8171936758893281,1.945303267052662e-06,23,strengths
+one_at_a_time,gpt,GPT,nn,sparseness,0.9041501976284586,3.302671241557327e-09,23,strengths
+one_at_a_time,gpt,GPT,span90,mst_dispersion,0.8962450592885376,7.32320644170389e-09,23,strengths
+one_at_a_time,gpt,GPT,span90,remote_clique,0.974308300395257,4.473465094212444e-15,23,strengths
+one_at_a_time,gpt,GPT,span90,sparseness,0.9693675889328063,2.7752536222287567e-14,23,strengths
+one_at_a_time,gpt,GPT,sparseness,remote_clique,0.9930830039525691,5.041544879133055e-21,23,strengths
