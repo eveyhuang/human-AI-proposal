@@ -1,7 +1,7 @@
-condition,analysis_family,metric,group_1,group_2,n_1,n_2,mean_1,mean_2,difference_1_minus_2,cliffs_delta_1_minus_2,mannwhitney_u,p_value,test,p_adjustment,q_value_holm,significance
-persona,mesh_term_coverage,mesh_unique_terms_k20,Human,Claude,23,23,86.47826086956522,92.91304347826087,-6.434782608695656,-0.19092627599243855,214.0,0.2716046585154611,Mann-Whitney U,Holm,1.0,
-persona,mesh_term_coverage,mesh_unique_terms_k20,Human,Gemini,23,23,86.47826086956522,99.30434782608695,-12.826086956521735,-0.29111531190926276,187.5,0.09268132325230813,Mann-Whitney U,Holm,0.5560879395138487,
-persona,mesh_term_coverage,mesh_unique_terms_k20,Human,GPT,23,23,86.47826086956522,97.95652173913044,-11.478260869565219,-0.2608695652173913,195.5,0.13225718335120515,Mann-Whitney U,Holm,0.6612859167560258,
-persona,mesh_term_coverage,mesh_unique_terms_k20,Claude,Gemini,23,23,92.91304347826087,99.30434782608695,-6.391304347826079,-0.16068052930056712,222.0,0.35590838078912823,Mann-Whitney U,Holm,1.0,
-persona,mesh_term_coverage,mesh_unique_terms_k20,Claude,GPT,23,23,92.91304347826087,97.95652173913044,-5.043478260869563,-0.09640831758034027,239.0,0.5826618925634558,Mann-Whitney U,Holm,1.0,
-persona,mesh_term_coverage,mesh_unique_terms_k20,Gemini,GPT,23,23,99.30434782608695,97.95652173913044,1.3478260869565162,0.04914933837429111,277.5,0.7835210804996425,Mann-Whitney U,Holm,1.0,
+condition,analysis_family,metric,group_1,group_2,n_1,n_2,mean_1,mean_2,difference_1_minus_2,cliffs_delta_1_minus_2,mannwhitney_u,p_value,test,p_adjustment,q_value_holm,significance,facet,coverage_metric_family
+persona,mesh_term_coverage,mesh_unique_terms_k20,Human,Claude,23,23,86.47826086956522,92.91304347826087,-6.434782608695656,-0.19092627599243855,214.0,0.2716046585154611,Mann-Whitney U,Holm,1.0,,coverage,coverage_mesh_terms
+persona,mesh_term_coverage,mesh_unique_terms_k20,Human,Gemini,23,23,86.47826086956522,99.30434782608695,-12.826086956521735,-0.29111531190926276,187.5,0.09268132325230813,Mann-Whitney U,Holm,0.5560879395138487,,coverage,coverage_mesh_terms
+persona,mesh_term_coverage,mesh_unique_terms_k20,Human,GPT,23,23,86.47826086956522,97.95652173913044,-11.478260869565219,-0.2608695652173913,195.5,0.13225718335120515,Mann-Whitney U,Holm,0.6612859167560258,,coverage,coverage_mesh_terms
+persona,mesh_term_coverage,mesh_unique_terms_k20,Claude,Gemini,23,23,92.91304347826087,99.30434782608695,-6.391304347826079,-0.16068052930056712,222.0,0.35590838078912823,Mann-Whitney U,Holm,1.0,,coverage,coverage_mesh_terms
+persona,mesh_term_coverage,mesh_unique_terms_k20,Claude,GPT,23,23,92.91304347826087,97.95652173913044,-5.043478260869563,-0.09640831758034027,239.0,0.5826618925634558,Mann-Whitney U,Holm,1.0,,coverage,coverage_mesh_terms
+persona,mesh_term_coverage,mesh_unique_terms_k20,Gemini,GPT,23,23,99.30434782608695,97.95652173913044,1.3478260869565162,0.04914933837429111,277.5,0.7835210804996425,Mann-Whitney U,Holm,1.0,,coverage,coverage_mesh_terms

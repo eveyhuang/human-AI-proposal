@@ -1,5 +1,5 @@
 {
-  "prepared_at": "2026-07-13T10:10:59.621931",
+  "prepared_at": "2026-07-15T13:56:46.139103",
   "condition": "persona",
   "text_version": "rephrased",
   "input_original_ai_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/ai-proposals/persona/ai_proposals_persona_complete_20260709_095141.csv",
@@ -104,6 +104,9 @@
     "persona::gemini-3.1-pro-preview::23"
   ],
   "embedding_model_name": "michiyasunaga/BioLinkBERT-large",
+  "embeddings_l2_normalized": true,
+  "full_embedding_pooling": "cls",
+  "abstract_embedding_pooling": "cls",
   "full_embedding_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/prepared/persona/proposals/rephrased/proposal_embeddings_full.pkl",
   "abstract_embedding_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/prepared/persona/proposals/rephrased/proposal_embeddings_abstract.pkl",
   "pairwise_full_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/prepared/persona/proposals/rephrased/proposal_pairwise_cosine_full.npy",
@@ -127,5 +130,10 @@
     2
   ],
   "knn_rows": 92,
-  "persona_nonnull_count": 69
+  "persona_nonnull_count": 69,
+  "subsample_idx_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/prepared/persona/proposals/rephrased/subsample_idx_ai_n23_seed42.npy",
+  "subsample_B": 1000,
+  "subsample_seed": 42,
+  "subsample_n": 23,
+  "subsample_replace": false
 }

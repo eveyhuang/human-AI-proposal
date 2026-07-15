@@ -1,0 +1,5 @@
+condition,task,text_version,field,facet,metric,param,order,JT,p_raw,p_fdr,direction_ok,notes
+persona,proposals,original,whole,richness,vendi,q=1,claude<gemini<gpt<human,2116.0,0.00011175629979978511,0.00022351259959957023,False,facet=richness
+persona,proposals,original,whole,dimensionality,participation_ratio,,claude<gemini<gpt<human,1327.0,0.9651630321460347,0.9651630321460347,False,facet=dimensionality
+persona,proposals,original,whole,coverage,coverage_geometric,k=3,claude<gemini<gpt<human,4.0,0.24845292378238398,0.33127056504317864,False,facet=coverage
+persona,proposals,original,whole,evenness,ripley_excess,r=pooled_q01_q50,claude<gemini<gpt<human,2116.0,0.00011175629979978511,0.00022351259959957023,False,facet=evenness

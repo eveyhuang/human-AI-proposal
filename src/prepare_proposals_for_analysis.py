@@ -502,6 +502,21 @@ def build_embedding_bundle(
     return payload
 
 
+def finalize_embedding_bundle(bundle: Dict[str, Any], atol: float = 1e-5) -> Dict[str, Any]:
+    """Ensure bundle['embeddings'] is L2-normalized. Idempotent."""
+    X = np.asarray(bundle['embeddings'], dtype=np.float64)
+    norms = np.linalg.norm(X, axis=1, keepdims=True)
+    if np.allclose(norms, 1.0, atol=atol):
+        bundle['l2_normalized'] = True
+        return bundle
+    if (norms == 0).any():
+        raise ValueError('zero-norm embedding row - cannot normalize')
+    bundle['embeddings'] = X / norms
+    bundle['l2_normalized'] = True
+    bundle['normalization'] = 'l2_post_hoc'
+    return bundle
+
+
 def compute_pairwise_cosine_matrix(embedding_bundle: Dict[str, Any], output_path: Path) -> np.ndarray:
     """Compute and save one square pairwise cosine-distance matrix."""
     embeddings = np.asarray(embedding_bundle['embeddings'], dtype=np.float32)
@@ -623,6 +638,7 @@ __all__ = [
     'compute_or_load_proposal_to_literature_knn',
     'compute_pairwise_cosine_matrix',
     'find_project_root',
+    'finalize_embedding_bundle',
     'fit_or_load_proposal_umap',
     'load_ai_original_proposals',
     'load_ai_rephrased_proposals',

@@ -93,7 +93,7 @@
     "one_at_a_time::gemini-3.1-pro-preview::22",
     "one_at_a_time::gemini-3.1-pro-preview::23"
   ],
-  "embedding_digest": "052cea3d50c9de6ee8bd757278b562a58b983d419c9f3ba6a2a0fea57ff86ab7",
+  "embedding_digest": "71e7904f49f30752524223f2b26656ebcd77bcae03039927677e2f2c5d676490",
   "text_field": "full_text",
-  "timestamp": "2026-07-11T11:49:01.015241"
+  "timestamp": "2026-07-15T12:44:43.601642"
 }

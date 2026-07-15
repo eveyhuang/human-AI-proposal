@@ -1,0 +1,13 @@
+condition,task,text_version,field,facet,metric,param,order,JT,p_raw,p_fdr,direction_ok,notes
+baseline,proposals,original,whole,richness,vendi,q=1,claude<gemini<gpt<human,1610.0,0.43625487120506834,0.5816731616067577,False,facet=richness
+baseline,proposals,original,whole,dimensionality,participation_ratio,,claude<gemini<gpt<human,1098.0,0.9996772774244873,0.9996772774244873,False,facet=dimensionality
+baseline,proposals,original,whole,coverage,coverage_geometric,k=3,claude<gemini<gpt<human,4.0,0.24845292378238398,0.49690584756476797,False,facet=coverage
+baseline,proposals,original,whole,evenness,ripley_excess,r=pooled_q01_q50,claude<gemini<gpt<human,2116.0,0.00011175629979978511,0.00044702519919914046,False,facet=evenness
+one_at_a_time,proposals,original,whole,richness,vendi,q=1,claude<gemini<gpt<human,2156.0,3.594791506239134e-05,7.189583012478268e-05,False,facet=richness
+one_at_a_time,proposals,original,whole,dimensionality,participation_ratio,,claude<gemini<gpt<human,384.0,1.0,1.0,False,facet=dimensionality
+one_at_a_time,proposals,original,whole,coverage,coverage_geometric,k=3,claude<gemini<gpt<human,5.0,0.08711569412401254,0.11615425883201673,False,facet=coverage
+one_at_a_time,proposals,original,whole,evenness,ripley_excess,r=pooled_q01_q50,claude<gemini<gpt<human,2332.0,1.0078804707362925e-07,4.03152188294517e-07,False,facet=evenness
+persona,proposals,original,whole,richness,vendi,q=1,claude<gemini<gpt<human,2116.0,0.00011175629979978511,0.00022351259959957023,False,facet=richness
+persona,proposals,original,whole,dimensionality,participation_ratio,,claude<gemini<gpt<human,1327.0,0.9651630321460347,0.9651630321460347,False,facet=dimensionality
+persona,proposals,original,whole,coverage,coverage_geometric,k=3,claude<gemini<gpt<human,4.0,0.24845292378238398,0.33127056504317864,False,facet=coverage
+persona,proposals,original,whole,evenness,ripley_excess,r=pooled_q01_q50,claude<gemini<gpt<human,2116.0,0.00011175629979978511,0.00022351259959957023,False,facet=evenness

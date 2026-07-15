@@ -1,0 +1,13 @@
+condition,task,text_version,field,facet,metric,param,order,JT,p_raw,p_fdr,direction_ok,notes
+baseline,reviews,original,whole,,vendi,q=1,claude<gemini<gpt<human,1064.0,0.001444700015316171,0.005778800061264684,True,JT over paired Human-AI differences by model
+baseline,reviews,original,whole,,participation_ratio,,claude<gemini<gpt<human,890.5,0.1426812403146565,0.285362480629313,False,JT over paired Human-AI differences by model
+baseline,reviews,original,whole,,coverage_geometric,k=panel_adaptive,claude<gemini<gpt<human,722.5,0.7828893160422462,0.9955491492668639,False,JT over paired Human-AI differences by model
+baseline,reviews,original,whole,,ripley_excess,r=panel_q01_q50,claude<gemini<gpt<human,556.0,0.9955491492668639,0.9955491492668639,False,JT over paired Human-AI differences by model
+one_at_a_time,reviews,original,whole,,vendi,q=1,claude<gemini<gpt<human,890.0,0.14392647764271665,0.5757059105708666,False,JT over paired Human-AI differences by model
+one_at_a_time,reviews,original,whole,,participation_ratio,,claude<gemini<gpt<human,730.5,0.7561203462760255,0.7971688094746721,False,JT over paired Human-AI differences by model
+one_at_a_time,reviews,original,whole,,coverage_geometric,k=panel_adaptive,claude<gemini<gpt<human,815.5,0.4042714252162815,0.7971688094746721,False,JT over paired Human-AI differences by model
+one_at_a_time,reviews,original,whole,,ripley_excess,r=panel_q01_q50,claude<gemini<gpt<human,718.0,0.7971688094746721,0.7971688094746721,False,JT over paired Human-AI differences by model
+persona,reviews,original,whole,,vendi,q=1,claude<gemini<gpt<human,956.0,0.03674606833668741,0.14698427334674963,False,JT over paired Human-AI differences by model
+persona,reviews,original,whole,,participation_ratio,,claude<gemini<gpt<human,810.5,0.42573753794433544,0.656160982608069,False,JT over paired Human-AI differences by model
+persona,reviews,original,whole,,coverage_geometric,k=panel_adaptive,claude<gemini<gpt<human,773.0,0.5893158313101883,0.656160982608069,False,JT over paired Human-AI differences by model
+persona,reviews,original,whole,,ripley_excess,r=panel_q01_q50,claude<gemini<gpt<human,757.0,0.656160982608069,0.656160982608069,False,JT over paired Human-AI differences by model

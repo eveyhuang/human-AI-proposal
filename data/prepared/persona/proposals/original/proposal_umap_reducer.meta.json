@@ -93,7 +93,7 @@
     "persona::gemini-3.1-pro-preview::22",
     "persona::gemini-3.1-pro-preview::23"
   ],
-  "embedding_digest": "157d970a1937c854120c2fab29e33ff1c4164af1f14d1ea495e1ec976ce4c27b",
+  "embedding_digest": "095a9c9508ce979ace26676097efe74f5fdac3b9754259265dfd30e553d5b637",
   "text_field": "full_text",
-  "timestamp": "2026-07-11T11:49:47.895730"
+  "timestamp": "2026-07-15T12:45:26.606060"
 }

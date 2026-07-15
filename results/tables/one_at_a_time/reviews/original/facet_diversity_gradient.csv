@@ -1,0 +1,5 @@
+condition,task,text_version,field,facet,metric,param,order,JT,p_raw,p_fdr,direction_ok,notes
+one_at_a_time,reviews,original,whole,,vendi,q=1,claude<gemini<gpt<human,890.0,0.14392647764271665,0.5757059105708666,False,JT over paired Human-AI differences by model
+one_at_a_time,reviews,original,whole,,participation_ratio,,claude<gemini<gpt<human,730.5,0.7561203462760255,0.7971688094746721,False,JT over paired Human-AI differences by model
+one_at_a_time,reviews,original,whole,,coverage_geometric,k=panel_adaptive,claude<gemini<gpt<human,815.5,0.4042714252162815,0.7971688094746721,False,JT over paired Human-AI differences by model
+one_at_a_time,reviews,original,whole,,ripley_excess,r=panel_q01_q50,claude<gemini<gpt<human,718.0,0.7971688094746721,0.7971688094746721,False,JT over paired Human-AI differences by model

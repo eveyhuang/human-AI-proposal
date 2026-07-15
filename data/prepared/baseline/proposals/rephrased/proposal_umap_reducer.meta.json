@@ -93,7 +93,7 @@
     "baseline::gemini-3-pro-preview::22",
     "baseline::gemini-3-pro-preview::23"
   ],
-  "embedding_digest": "9b9a5633e5f2e95cf39ce55495d27f93c2659d7070aa63c58d918021fae36b12",
+  "embedding_digest": "386a8b03c4c7e540be6e34d00506b5074c6b2a7db1a04735bddc20dd9c80979d",
   "text_field": "full_text",
-  "timestamp": "2026-07-13T10:10:58.839704"
+  "timestamp": "2026-07-15T12:44:16.291823"
 }

@@ -136,7 +136,10 @@ def fit_or_load_literature_bertopic(
         low_memory=True,
     )
     cluster_model = MiniBatchKMeans(n_clusters=12, random_state=42, batch_size=1024)
-    vectorizer_model = CountVectorizer(stop_words='english', min_df=8, max_df=0.60, ngram_range=(1, 2), max_features=50000)
+    # BERTopic's representation vectorizer runs on one c-TF-IDF document per
+    # topic, not on all 39k abstracts. With 12 clusters, min_df=8 and
+    # max_df=0.60 are incompatible because max_df allows fewer than 8 documents.
+    vectorizer_model = CountVectorizer(stop_words='english', min_df=2, max_df=1.0, ngram_range=(1, 2), max_features=50000)
     topic_model = BERTopic(
         embedding_model=None,
         umap_model=umap_model,
