@@ -2,6 +2,20 @@
 
 Version: 2.0 (clean rebuild)
 Date: 2026-07-15
+Status: **supersedes v1.** v1 was written to patch metrics onto an existing notebook set
+(`4a/4b`, `5a/5b`, `6a/6b`). Those notebooks are being retired. This document specifies a
+**brand-new, ground-up notebook architecture** — nothing here reuses, imports from, or slots into
+the previous pipeline. Where v1 said "reuse the existing cache / attach to the existing block,"
+this version specifies how to build that thing fresh.
+
+Companion: `prep_layer_4a_4b.md` — the prep layer. `00_prepare.ipynb` and `01_literature_map.ipynb`
+specified in earlier drafts of this document are **NOT to be created**; the existing `4a`/`4b`
+notebooks already perform their function and are retained with targeted modifications. That document
+is authoritative for everything upstream of `02`.
+
+Project: `human-AI-proposal-comparison`
+Manuscript spine: **double compression** — AI narrows both *generation* (proposals) and *filtering*
+(reviews); narrowing persists under the persona condition.
 
 ---
 
@@ -189,7 +203,7 @@ here**, and it deflates them most for exactly the groups that are already tight.
 "bootstrap 95% CI". If a figure says "bootstrap" for a set-level facet metric, it is either mislabeled
 or computed wrong; both are bugs.
 
-### 1A.2 Standard boxplot grammar 
+### 1A.2 Standard boxplot grammar (retained)
 
 For group-comparison distributions. Use one shared helper — never hand-roll per notebook.
 - **Box:** median line, IQR box, whiskers, outlier points. Fill with the group color at 70% opacity;
@@ -326,7 +340,7 @@ same quantity across facets — use this mapping:
   `p_raw` for the three pre-registered primaries (M0 `mean_pairwise`, M1 `VS_1`, M2 `coverage`) and
   `p_fdr` for everything else (§1.7). Never mix the two in one panel without saying so.
 
-### 1A.10 Titles, labels, legends 
+### 1A.10 Titles, labels, legends (retained, with the facet requirement)
 
 - **Every title names the facet and the metric.** Format:
   `{Facet} — {metric} · {condition} · {task}/{text_version}`
@@ -470,7 +484,15 @@ changes what "diversity" means.
 | **Reviews, field-specific** | `review_embeddings_strengths.pkl` / `review_embeddings_weakness.pkl` | **`rephrased` only** — gate on `manifest['fields_available']` |
 | **Robustness (secondary)** | `proposal_embeddings_abstract.pkl` for M0–M3 | reported as a robustness pass, never as the headline |
 
-
+> **[DECISION — confirm before the first full run]** `full_text` vs `abstract_text` for M0–M5 is a
+> substantive choice, not a technical one. `full_text` embeds the whole proposal (including methods,
+> feasibility, and budget prose), so some of the measured "diversity" is diversity of *execution
+> detail*. `abstract_text` isolates the *idea*, which is closer to what the manuscript claims to
+> measure — but it discards most of the document and shrinks the text the encoder sees. The spec
+> defaults to **`full_text`** because that is the project's established primary and it keeps M0–M5
+> consistent with the existing pairwise caches and UMAP. Running M0–M3 on `abstract_text` as a
+> robustness pass (§1.9) is what settles it: if the narrowing holds on both, the choice stops
+> mattering and the paper is stronger for saying so.
 
 #### 2.5.2 Per-metric input table
 
