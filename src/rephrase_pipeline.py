@@ -675,6 +675,21 @@ def _proposal_rephrase_prompt_matches(df: pd.DataFrame, prompt_version: str) -> 
     return versions.eq(prompt_version).all()
 
 
+def _proposal_rephrase_prompt_compatible(df: pd.DataFrame, prompt_version: str) -> bool:
+    """True if every ALREADY-PROCESSED row used this prompt version.
+
+    Unlike the strict `_matches` check (used for the fully-complete short-circuit),
+    this ignores untouched rows whose prompt version is still blank, so an
+    interrupted per-row run can resume and carry over its successful rows.
+    Requires at least one processed row, and rejects any stale prompt version.
+    """
+    if 'proposal_rephrase_prompt_version' not in df.columns:
+        return False
+    versions = df['proposal_rephrase_prompt_version'].fillna('').astype(str).str.strip()
+    populated = versions[versions.ne('')]
+    return not populated.empty and populated.eq(prompt_version).all()
+
+
 def _proposal_rephrase_complete(df: pd.DataFrame, source_df: pd.DataFrame, prompt_version: str) -> bool:
     if len(df) != len(source_df):
         return False
@@ -697,6 +712,21 @@ def _review_rephrase_prompt_matches(df: pd.DataFrame, prompt_version: str) -> bo
         return False
     versions = df['review_rephrase_prompt_version'].fillna('').astype(str).str.strip()
     return versions.eq(prompt_version).all()
+
+
+def _review_rephrase_prompt_compatible(df: pd.DataFrame, prompt_version: str) -> bool:
+    """True if every ALREADY-PROCESSED row used this prompt version.
+
+    Unlike the strict `_matches` check (used for the fully-complete short-circuit),
+    this ignores untouched rows whose prompt version is still blank, so an
+    interrupted per-row run can resume and carry over its successful rows.
+    Requires at least one processed row, and rejects any stale prompt version.
+    """
+    if 'review_rephrase_prompt_version' not in df.columns:
+        return False
+    versions = df['review_rephrase_prompt_version'].fillna('').astype(str).str.strip()
+    populated = versions[versions.ne('')]
+    return not populated.empty and populated.eq(prompt_version).all()
 
 
 def _review_rephrase_complete_for_prompt(df: pd.DataFrame, source_df: pd.DataFrame, prompt_version: str) -> bool:
@@ -726,10 +756,21 @@ def _latest_completed_output(output_dir: Path, pattern: str) -> Optional[Path]:
     return matches[-1] if matches else None
 
 
-def _print_resume_plan(scope: str, prior_path: Optional[Path], out_df: pd.DataFrame, status_col: str) -> None:
+def _print_resume_plan(
+    scope: str,
+    prior_path: Optional[Path],
+    out_df: pd.DataFrame,
+    status_col: str,
+    reused: bool = True,
+) -> None:
     """Log which prior output (if any) is reused and how many rows will be (re)generated."""
     carried = int((out_df[status_col].fillna('').astype(str) == 'success').sum()) if status_col in out_df.columns else 0
-    source = prior_path.name if prior_path is not None else '(fresh run - no prior output)'
+    if prior_path is None:
+        source = '(fresh run - no prior output)'
+    elif not reused:
+        source = f'{prior_path.name} (NOT reused - prompt version mismatch, regenerating all)'
+    else:
+        source = prior_path.name
     print(f'  [{scope}] resume source: {source} | carried over: {carried} | to (re)generate: {len(out_df) - carried}')
 
 
@@ -834,7 +875,7 @@ def rephrase_ai_proposals_for_condition(
                 'qa_issues': [],
                 'reused_existing': True,
             }
-        if _proposal_rephrase_prompt_matches(existing_df, PROPOSAL_REPHRASE_PROMPT_VERSION):
+        if _proposal_rephrase_prompt_compatible(existing_df, PROPOSAL_REPHRASE_PROMPT_VERSION):
             resume_partial_df = existing_df
             if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
                 run_id = str(existing_df['run_id'].iloc[0])
@@ -867,7 +908,7 @@ def rephrase_ai_proposals_for_condition(
         out_df, resume_partial_df,
         key_col='proposal_uid', status_col='proposal_rephrase_status', columns=new_columns,
     )
-    _print_resume_plan(condition, latest_output, out_df, 'proposal_rephrase_status')
+    _print_resume_plan(condition, latest_output, out_df, 'proposal_rephrase_status', reused=resume_partial_df is not None)
 
     failures: List[Dict[str, Any]] = []
     for row_idx, row in out_df.iterrows():
@@ -1001,7 +1042,7 @@ def rephrase_ai_reviews_for_condition(
                 'qa_issues': [],
                 'reused_existing': True,
             }
-        if _review_rephrase_prompt_matches(existing_df, REVIEW_REPHRASE_PROMPT_VERSION):
+        if _review_rephrase_prompt_compatible(existing_df, REVIEW_REPHRASE_PROMPT_VERSION):
             resume_partial_df = existing_df
             if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
                 run_id = str(existing_df['run_id'].iloc[0])
@@ -1033,7 +1074,7 @@ def rephrase_ai_reviews_for_condition(
         out_df, resume_partial_df,
         key_col='review_uid', status_col='review_rephrase_status', columns=new_columns,
     )
-    _print_resume_plan(condition, latest_output, out_df, 'review_rephrase_status')
+    _print_resume_plan(condition, latest_output, out_df, 'review_rephrase_status', reused=resume_partial_df is not None)
 
     failures: List[Dict[str, Any]] = []
     for row_idx, row in out_df.iterrows():
@@ -1179,7 +1220,7 @@ def rephrase_shared_human_proposals(
                 'qa_issues': [],
                 'reused_existing': True,
             }
-        if _proposal_rephrase_prompt_matches(existing_df, PROPOSAL_REPHRASE_PROMPT_VERSION):
+        if _proposal_rephrase_prompt_compatible(existing_df, PROPOSAL_REPHRASE_PROMPT_VERSION):
             resume_partial_df = existing_df
             if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
                 run_id = str(existing_df['run_id'].iloc[0])
@@ -1213,7 +1254,7 @@ def rephrase_shared_human_proposals(
         out_df, resume_partial_df,
         key_col='proposal_uid', status_col='proposal_rephrase_status', columns=new_columns,
     )
-    _print_resume_plan(cohort, latest_csv, out_df, 'proposal_rephrase_status')
+    _print_resume_plan(cohort, latest_csv, out_df, 'proposal_rephrase_status', reused=resume_partial_df is not None)
 
     failures: List[Dict[str, Any]] = []
     for row_idx, row in out_df.iterrows():
@@ -1377,7 +1418,7 @@ def rephrase_shared_human_reviews(
                 'reused_existing': True,
             }
         # Not complete: keep already-successful rows only for the same prompt version.
-        if _review_rephrase_prompt_matches(existing_df, REVIEW_REPHRASE_PROMPT_VERSION):
+        if _review_rephrase_prompt_compatible(existing_df, REVIEW_REPHRASE_PROMPT_VERSION):
             resume_partial_df = existing_df
             if 'run_id' in existing_df.columns and not existing_df.empty and str(existing_df['run_id'].iloc[0]).strip():
                 run_id = str(existing_df['run_id'].iloc[0])
@@ -1408,7 +1449,7 @@ def rephrase_shared_human_reviews(
         out_df, resume_partial_df,
         key_col='review_uid', status_col='review_rephrase_status', columns=rephrase_cols,
     )
-    _print_resume_plan(cohort, latest_csv, out_df, 'review_rephrase_status')
+    _print_resume_plan(cohort, latest_csv, out_df, 'review_rephrase_status', reused=resume_partial_df is not None)
 
     failures: List[Dict[str, Any]] = []
     for row_idx, row in out_df.iterrows():

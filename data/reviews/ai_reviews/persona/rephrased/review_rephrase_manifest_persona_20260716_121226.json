@@ -1,0 +1,16 @@
+{
+  "run_id": "20260716_121226",
+  "scope": "persona",
+  "source_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews/persona/ai_reviews_persona_complete_20260715_212424.csv",
+  "output_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews/persona/rephrased/ai_reviews_persona_rephrased_20260716_121226.csv",
+  "row_count": 345,
+  "success_count": 345,
+  "failure_count": 0,
+  "rephrase_model": "gemini-3.1-pro-preview",
+  "temperature": 0,
+  "prompt_version": "review_neutralization_v2",
+  "started_at": "2026-07-16T15:36:13.343957",
+  "ended_at": "2026-07-16T15:36:13.343966",
+  "qa_issues": [],
+  "completed_cleanly": true
+}

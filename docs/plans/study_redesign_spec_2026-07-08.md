@@ -741,21 +741,21 @@ The notebook should support exactly these review-generation conditions:
   - each AI model generates `5` reviews per human proposal
   - one API call returns a structured batch of `5` reviews
   - prompt family: NCEMS criteria only
-  - temperature `0.9`
+
 
 - `one_at_a_time`
   - review target set: all human proposals only
   - each AI model generates `5` reviews per human proposal
   - each review is one independent API call
   - prompt family: NCEMS criteria only
-  - temperature `0.9`
+
 
 - `persona`
   - review target set: all human proposals only
   - each AI model generates `5` reviews per human proposal
   - each review is one independent API call
   - prompt family: NCEMS criteria plus reviewer persona card
-  - temperature `0.9`
+
 
 ### 4.3 Non-Negotiable Scientific Design Rules
 

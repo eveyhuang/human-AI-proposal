@@ -1,9 +1,9 @@
 {
-  "prepared_at": "2026-07-15T14:05:15.890727",
+  "prepared_at": "2026-07-16T18:28:20.849067",
   "condition": "persona",
   "text_version": "rephrased",
-  "input_original_ai_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews/persona/ai_reviews_persona_complete_20260709_143810.csv",
-  "input_rephrased_ai_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews/persona/rephrased/ai_reviews_persona_rephrased_20260710_152136.csv",
+  "input_original_ai_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews/persona/ai_reviews_persona_complete_20260715_212424.csv",
+  "input_rephrased_ai_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews/persona/rephrased/ai_reviews_persona_rephrased_20260716_121226.csv",
   "human_original_rows": 85,
   "human_rephrased_rows": 85,
   "ai_original_rows": 345,

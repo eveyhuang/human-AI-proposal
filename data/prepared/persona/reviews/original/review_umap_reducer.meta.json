@@ -431,7 +431,7 @@
     "persona::y2::9::gemini-3.1-pro-preview::004",
     "persona::y2::9::gemini-3.1-pro-preview::005"
   ],
-  "embedding_digest": "d8ea451f56aa0ef4b0f4c96273a1684a28f68ecf0ebd8afeee94571b7abf7d82",
+  "embedding_digest": "6561f91d47a2989edbce7066d523407b0cde26bcac837aa082b2e1fd900e6a3c",
   "text_field": "review_text",
-  "timestamp": "2026-07-15T14:04:36.743128"
+  "timestamp": "2026-07-16T18:27:41.619145"
 }

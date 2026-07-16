@@ -1,0 +1,31 @@
+condition,task,text_version,field,facet,metric,param,group,value,z,z_ci_lo,z_ci_hi,sign_aligned,stars,mode
+persona,proposals,original,whole,spread,mean_pairwise,,Human,0.09208054812251726,3.629555207601723,3.1194634800188275,3.9169870336967785,1,,z
+persona,proposals,original,whole,spread,mean_pairwise,,Claude,0.06620506075346892,-1.5311034700731918,-1.9537312103393782,-1.3475439532333702,1,***,z
+persona,proposals,original,whole,spread,mean_pairwise,,Gemini,0.04445276730847073,-5.869424148838041,-6.082197821508253,-5.716668361880477,1,***,z
+persona,proposals,original,whole,spread,mean_pairwise,,GPT,0.06183742219805538,-2.4021939925614415,-2.685117217359706,-2.1305112065477996,1,***,z
+persona,proposals,original,whole,spread,mean_pairwise,,All AI,0.06341789816487249,-2.086980721534603,-3.312020532136137,-0.9669227936769281,1,***,z
+persona,proposals,original,whole,richness,vendi,q=1,Human,1.7279295553100062,4.042552339080313,3.3051149527810875,4.15717800090095,1,,z
+persona,proposals,original,whole,richness,vendi,q=1,Claude,1.517739893097734,-1.2750359881873674,-1.808512589195876,-1.2107803545482214,1,***,z
+persona,proposals,original,whole,richness,vendi,q=1,Gemini,1.342792249160973,-5.701036484546628,-5.973062563543779,-5.629150284474023,1,***,z
+persona,proposals,original,whole,richness,vendi,q=1,GPT,1.476461575897233,-2.319336147407188,-2.6894569156170247,-2.160497660591631,1,***,z
+persona,proposals,original,whole,richness,vendi,q=1,All AI,1.4841257301544089,-2.125440706559206,-3.2673342096311866,-1.0234625522125878,1,***,z
+persona,proposals,original,whole,evenness,ripley_excess,r=pooled_q01_q50,Human,-0.13550255362212058,3.093695357661947,,,-1,,z
+persona,proposals,original,whole,evenness,ripley_excess,r=pooled_q01_q50,Claude,0.04157000473867954,-0.9490959929558366,,,-1,,z
+persona,proposals,original,whole,evenness,ripley_excess,r=pooled_q01_q50,Gemini,0.4296625425732024,-9.809741423964926,,,-1,**,z
+persona,proposals,original,whole,evenness,ripley_excess,r=pooled_q01_q50,GPT,0.10900483685975863,-2.488718837699316,,,-1,**,z
+persona,proposals,original,whole,evenness,ripley_excess,r=pooled_q01_q50,All AI,0.08891548085965377,-2.0300533311490643,-4.130967531574798,-0.22643279048386936,-1,***,z
+persona,proposals,original,whole,dimensionality,participation_ratio,,Human,13.531231771987528,1.3507927315253005,0.47306474627640593,1.819796315201182,1,,z
+persona,proposals,original,whole,dimensionality,participation_ratio,,Claude,14.63137972634521,2.7791314254927593,1.914309713213002,2.6377182835123816,1,,z
+persona,proposals,original,whole,dimensionality,participation_ratio,,Gemini,12.768568908339937,0.36061602457874187,-0.4644665939162784,0.44901267347126866,1,,z
+persona,proposals,original,whole,dimensionality,participation_ratio,,GPT,12.792112453487894,0.3911829645933062,-0.45306636468041195,0.42446098762321577,1,,z
+persona,proposals,original,whole,dimensionality,participation_ratio,,All AI,12.085314498402234,-0.5264634883834146,-2.4889592678126378,1.3573355936795426,1,*,z
+persona,proposals,original,whole,coverage,coverage_geometric,k=3,Human,1.0,0.7281035305809187,,,1,,z
+persona,proposals,original,whole,coverage,coverage_geometric,k=3,Claude,0.9130434782608695,0.03991493834942591,-2.8692459288109737,0.7281035305809187,1,,z
+persona,proposals,original,whole,coverage,coverage_geometric,k=3,Gemini,0.9565217391304348,0.38400923446517277,-2.8692459288109737,0.7281035305809187,1,,z
+persona,proposals,original,whole,coverage,coverage_geometric,k=3,GPT,0.8260869565217391,-0.648273653882066,-2.8692459288109737,0.7281035305809187,1,,z
+persona,proposals,original,whole,coverage,coverage_geometric,k=3,All AI,0.8899565217391304,-0.14279913288803497,-0.992367949997812,0.7281035305809187,1,*,z
+persona,proposals,original,whole,coverage,coverage_bertopic_region,k_lit=10,Human,7.0,-0.38869842790463854,-0.7988847618589348,-0.38869842790463854,1,,z
+persona,proposals,original,whole,coverage,coverage_bertopic_region,k_lit=10,Claude,5.0,-2.211748801034843,-3.0321214689434353,-2.211748801034843,1,,z
+persona,proposals,original,whole,coverage,coverage_bertopic_region,k_lit=10,Gemini,4.0,-3.123273987599945,-3.5334603215542413,-3.123273987599945,1,,z
+persona,proposals,original,whole,coverage,coverage_bertopic_region,k_lit=10,GPT,5.0,-2.211748801034843,-2.211748801034843,-2.211748801034843,1,,z
+persona,proposals,original,whole,coverage,coverage_bertopic_region,k_lit=10,All AI,4.528,-2.6419886890935715,-4.034799174165047,-2.211748801034843,1,**,z

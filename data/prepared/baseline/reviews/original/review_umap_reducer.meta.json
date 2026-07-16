@@ -431,7 +431,7 @@
     "baseline::y2::9::gemini-3.1-pro-preview::004",
     "baseline::y2::9::gemini-3.1-pro-preview::005"
   ],
-  "embedding_digest": "3bc8f152b7774d4e026cf942a5266714812b5431542c3b29a28f42994d8ddfd9",
+  "embedding_digest": "1986c6f12d28edcefd630b7f87b2eb64202dde164ee00b2d7d068e952162369d",
   "text_field": "review_text",
-  "timestamp": "2026-07-15T14:01:07.507150"
+  "timestamp": "2026-07-16T18:24:21.048761"
 }

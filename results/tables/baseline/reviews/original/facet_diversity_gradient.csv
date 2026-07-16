@@ -1,5 +1,6 @@
 condition,task,text_version,field,facet,metric,param,order,JT,p_raw,p_fdr,direction_ok,notes
-baseline,reviews,original,whole,,vendi,q=1,claude<gemini<gpt<human,1064.0,0.001444700015316171,0.005778800061264684,True,JT over paired Human-AI differences by model
-baseline,reviews,original,whole,,participation_ratio,,claude<gemini<gpt<human,890.5,0.1426812403146565,0.285362480629313,False,JT over paired Human-AI differences by model
-baseline,reviews,original,whole,,coverage_geometric,k=panel_adaptive,claude<gemini<gpt<human,722.5,0.7828893160422462,0.9955491492668639,False,JT over paired Human-AI differences by model
-baseline,reviews,original,whole,,ripley_excess,r=panel_q01_q50,claude<gemini<gpt<human,556.0,0.9955491492668639,0.9955491492668639,False,JT over paired Human-AI differences by model
+baseline,reviews,original,whole,richness,vendi,q=1,claude<gemini<gpt<human (diversity); paired diffs predicted decreasing,1064.0,0.9985552999846838,0.9985552999846838,False,"JT over paired Human-AI differences by model, alternative = decreasing"
+baseline,reviews,original,whole,spread,mean_pairwise,,claude<gemini<gpt<human (diversity); paired diffs predicted decreasing,1057.0,0.99814705343568,0.9985552999846838,False,"JT over paired Human-AI differences by model, alternative = decreasing"
+baseline,reviews,original,whole,dimensionality,participation_ratio,,claude<gemini<gpt<human (diversity); paired diffs predicted decreasing,890.5,0.8573187596853435,0.9985552999846838,False,"JT over paired Human-AI differences by model, alternative = decreasing"
+baseline,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,claude<gemini<gpt<human (diversity); paired diffs predicted decreasing,667.0,0.24372385355808063,0.9985552999846838,True,"JT over paired Human-AI differences by model, alternative = decreasing"
+baseline,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,claude<gemini<gpt<human (diversity); paired diffs predicted decreasing,539.0,0.0025311454489947705,0.03796718173492156,True,"JT over paired Human-AI differences by model, alternative = decreasing"

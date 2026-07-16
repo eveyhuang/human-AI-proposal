@@ -315,25 +315,74 @@ class PromptManager:
             Full Proposal: {proposal_full}
 
             TASK:
-            Generate exactly 5 independent reviews of this proposal. 
-            First identify 5 distinct reviewers who are senior scientist from relevant and different domains in the research call.
-            Each review should be written with the perspective from one reviewer and cover different perspectives and opinions from their backgrounds.
-            Each reviewer may also give different scores on each criteria given different strengths and weakness they identify.
-            but all five must still be grounded in the proposal text and NCEMS evaluation criteria. 
+            Generate exactly 5 independent and different reviews of this proposal based on the evaluation criteria: 
 
-            For each review, provide:
-            - review_text
-            - strengths
-            - weakness
-            - overall_numeric_score (1-5)
-            - overall_summary
-            - relevance_to_emergent_phenomena_score and justification
-            - novelty_and_significance_score and justification
-            - rigor_of_approach_score and justification
-            - scope_and_timeline_score and justification
-            - synthesis_focus_score and justification
-            - data_identification_score and justification
-            - open_science_commitment_score and justification
+            **EVALUATION CRITERIA:**
+
+            **1. Scientific Merit and Innovation**
+
+            **1a. Relevance to Emergent Phenomena**
+            Does the research explicitly address emergent phenomena at the mesoscale in molecular/cellular biosciences?
+            - 1 = Not relevant; does not address emergent phenomena
+            - 2 = Minimally relevant; tangential connection to emergent phenomena
+            - 3 = Moderately relevant; addresses emergent phenomena but not as central focus
+            - 4 = Highly relevant; emergent phenomena is a key focus
+            - 5 = Exceptionally relevant; directly and explicitly addresses mesoscale emergent phenomena
+
+            **1b. Novelty & Significance**
+            Are the questions and approaches innovative? Do they have potential to advance knowledge?
+            - 1 = Not novel; incremental work with limited significance
+            - 2 = Somewhat novel; modest advancement expected
+            - 3 = Novel; clear advancement in the field
+            - 4 = Highly novel; significant potential to advance knowledge
+            - 5 = Groundbreaking; transformative potential for the field
+
+            **1c. Rigor of Approach**
+            Is the proposed methodology clear, logical, and grounded in established or emerging research practices?
+            - 1 = Poor; unclear or illogical methodology
+            - 2 = Fair; methodology has significant gaps or concerns
+            - 3 = Good; solid methodology with minor concerns
+            - 4 = Very good; clear, logical, and well-grounded methodology
+            - 5 = Excellent; exceptionally rigorous and well-justified approach
+
+            **2. Feasibility**
+
+            **2a. Scope & Timeline**
+            Are the goals and milestones realistic for the proposed time frame and planned approach?
+            - 1 = Unrealistic; goals are unattainable within proposed timeline
+            - 2 = Questionable; significant concerns about feasibility
+            - 3 = Reasonable; achievable with noted challenges
+            - 4 = Realistic; well-planned scope and timeline
+            - 5 = Highly feasible; excellent planning with contingencies
+
+            **3. Data Sources and Limitations**
+
+            **3a. Synthesis Focus**
+            Does the proposal clearly demonstrate a synthesis project?
+            - 1 = No synthesis; appears to be primarily generating new data
+            - 2 = Minimal synthesis; mostly new data generation with some integration
+            - 3 = Moderate synthesis; balanced between existing and new data
+            - 4 = Strong synthesis; primarily uses existing data with clear integration plan
+            - 5 = Exemplary synthesis; exclusively uses existing data with comprehensive integration
+
+            **3b. Data Identification**
+            Are the data sources explicitly identified, and are limitations appropriately acknowledged?
+            - 1 = Poor; data sources vague and limitations not addressed
+            - 2 = Fair; some data sources identified but incomplete or limitations ignored
+            - 3 = Good; data sources identified and basic limitations acknowledged
+            - 4 = Very good; clear data sources with thoughtful discussion of limitations
+            - 5 = Excellent; comprehensive data source specification with thorough limitation analysis
+
+            **4. Open Science Compliance**
+
+            **4a. Open Science Commitment**
+            Does the proposal demonstrate a commitment to open, team, and reproducible science principles?
+            - 1 = No commitment; does not address open science
+            - 2 = Minimal commitment; vague statements without concrete plans
+            - 3 = Moderate commitment; some open science practices mentioned
+            - 4 = Strong commitment; clear plans for open and reproducible science
+            - 5 = Exemplary commitment; comprehensive open science framework with detailed implementation 
+        
 
             IMPORTANT:
             - Return valid JSON only.
@@ -375,7 +424,7 @@ class PromptManager:
             name="NCEMS Criteria Evaluation Single",
             description="Generate one structured NCEMS review for one proposal",
             template="""
-            You are an scientist with over 20 years of experience in relevant domains of the research funding call,
+            You are an scientist with over 20 years of experience in a relevant domain of the research funding call,
             and evaluating a research proposal for the call:
 
             {research_call}
@@ -387,22 +436,74 @@ class PromptManager:
             Full Proposal: {proposal_full}
 
             TASK:
-            Generate a thorough and detailed review of this proposal.
+            Generate a thorough and detailed review of this proposal based on the evaluation criteria below:
+            **EVALUATION CRITERIA:**
 
-            Provide:
-            - review_text
-            - strengths
-            - weakness
-            - overall_numeric_score (1-5)
-            - overall_summary
-            - relevance_to_emergent_phenomena_score and justification
-            - novelty_and_significance_score and justification
-            - rigor_of_approach_score and justification
-            - scope_and_timeline_score and justification
-            - synthesis_focus_score and justification
-            - data_identification_score and justification
-            - open_science_commitment_score and justification
+            **1. Scientific Merit and Innovation**
 
+            **1a. Relevance to Emergent Phenomena**
+            Does the research explicitly address emergent phenomena at the mesoscale in molecular/cellular biosciences?
+            - 1 = Not relevant; does not address emergent phenomena
+            - 2 = Minimally relevant; tangential connection to emergent phenomena
+            - 3 = Moderately relevant; addresses emergent phenomena but not as central focus
+            - 4 = Highly relevant; emergent phenomena is a key focus
+            - 5 = Exceptionally relevant; directly and explicitly addresses mesoscale emergent phenomena
+
+            **1b. Novelty & Significance**
+            Are the questions and approaches innovative? Do they have potential to advance knowledge?
+            - 1 = Not novel; incremental work with limited significance
+            - 2 = Somewhat novel; modest advancement expected
+            - 3 = Novel; clear advancement in the field
+            - 4 = Highly novel; significant potential to advance knowledge
+            - 5 = Groundbreaking; transformative potential for the field
+
+            **1c. Rigor of Approach**
+            Is the proposed methodology clear, logical, and grounded in established or emerging research practices?
+            - 1 = Poor; unclear or illogical methodology
+            - 2 = Fair; methodology has significant gaps or concerns
+            - 3 = Good; solid methodology with minor concerns
+            - 4 = Very good; clear, logical, and well-grounded methodology
+            - 5 = Excellent; exceptionally rigorous and well-justified approach
+
+            **2. Feasibility**
+
+            **2a. Scope & Timeline**
+            Are the goals and milestones realistic for the proposed time frame and planned approach?
+            - 1 = Unrealistic; goals are unattainable within proposed timeline
+            - 2 = Questionable; significant concerns about feasibility
+            - 3 = Reasonable; achievable with noted challenges
+            - 4 = Realistic; well-planned scope and timeline
+            - 5 = Highly feasible; excellent planning with contingencies
+
+            **3. Data Sources and Limitations**
+
+            **3a. Synthesis Focus**
+            Does the proposal clearly demonstrate a synthesis project?
+            - 1 = No synthesis; appears to be primarily generating new data
+            - 2 = Minimal synthesis; mostly new data generation with some integration
+            - 3 = Moderate synthesis; balanced between existing and new data
+            - 4 = Strong synthesis; primarily uses existing data with clear integration plan
+            - 5 = Exemplary synthesis; exclusively uses existing data with comprehensive integration
+
+            **3b. Data Identification**
+            Are the data sources explicitly identified, and are limitations appropriately acknowledged?
+            - 1 = Poor; data sources vague and limitations not addressed
+            - 2 = Fair; some data sources identified but incomplete or limitations ignored
+            - 3 = Good; data sources identified and basic limitations acknowledged
+            - 4 = Very good; clear data sources with thoughtful discussion of limitations
+            - 5 = Excellent; comprehensive data source specification with thorough limitation analysis
+
+            **4. Open Science Compliance**
+
+            **4a. Open Science Commitment**
+            Does the proposal demonstrate a commitment to open, team, and reproducible science principles?
+            - 1 = No commitment; does not address open science
+            - 2 = Minimal commitment; vague statements without concrete plans
+            - 3 = Moderate commitment; some open science practices mentioned
+            - 4 = Strong commitment; clear plans for open and reproducible science
+            - 5 = Exemplary commitment; comprehensive open science framework with detailed implementation 
+
+      
             IMPORTANT:
             - Return valid JSON only.
             - Return exactly 1 review object.
@@ -448,9 +549,13 @@ class PromptManager:
 
             {research_call}
 
-            Adopt the scientific review perspective implied by the reviewer
-            persona card below, but do not imitate a personal writing style or
-            biography.
+            Take on the scientific perspective implied by the reviewer persona card described below
+            to evaluate the proposal based on below described evaluation criteria.
+            but do NOT imitate their personal prose style, biography, or idiosyncratic phrasing.
+            Use the persona card only as factual scientific grounding for
+              domains, systems, methods, data types, and recurring research
+              questions.
+            Do not copy language from the persona card.
 
             REVIEWER PERSONA:
             {reviewer_persona_card_json}
@@ -462,22 +567,75 @@ class PromptManager:
             Full Proposal: {proposal_full}
 
             TASK:
-            Generate exactly 1 independent review of this proposal from the
-            scientific perspective implied by the reviewer persona.
+            Generate exactly 1  review of this proposal from the
+            scientific perspective implied by the reviewer persona, based on the 
+            evaluation criteria below: 
 
-            Provide:
-            - review_text
-            - strengths
-            - weakness
-            - overall_numeric_score (1-5)
-            - overall_summary
-            - relevance_to_emergent_phenomena_score and justification
-            - novelty_and_significance_score and justification
-            - rigor_of_approach_score and justification
-            - scope_and_timeline_score and justification
-            - synthesis_focus_score and justification
-            - data_identification_score and justification
-            - open_science_commitment_score and justification
+            **EVALUATION CRITERIA:**
+
+            **1. Scientific Merit and Innovation**
+
+            **1a. Relevance to Emergent Phenomena**
+            Does the research explicitly address emergent phenomena at the mesoscale in molecular/cellular biosciences?
+            - 1 = Not relevant; does not address emergent phenomena
+            - 2 = Minimally relevant; tangential connection to emergent phenomena
+            - 3 = Moderately relevant; addresses emergent phenomena but not as central focus
+            - 4 = Highly relevant; emergent phenomena is a key focus
+            - 5 = Exceptionally relevant; directly and explicitly addresses mesoscale emergent phenomena
+
+            **1b. Novelty & Significance**
+            Are the questions and approaches innovative? Do they have potential to advance knowledge?
+            - 1 = Not novel; incremental work with limited significance
+            - 2 = Somewhat novel; modest advancement expected
+            - 3 = Novel; clear advancement in the field
+            - 4 = Highly novel; significant potential to advance knowledge
+            - 5 = Groundbreaking; transformative potential for the field
+
+            **1c. Rigor of Approach**
+            Is the proposed methodology clear, logical, and grounded in established or emerging research practices?
+            - 1 = Poor; unclear or illogical methodology
+            - 2 = Fair; methodology has significant gaps or concerns
+            - 3 = Good; solid methodology with minor concerns
+            - 4 = Very good; clear, logical, and well-grounded methodology
+            - 5 = Excellent; exceptionally rigorous and well-justified approach
+
+            **2. Feasibility**
+
+            **2a. Scope & Timeline**
+            Are the goals and milestones realistic for the proposed time frame and planned approach?
+            - 1 = Unrealistic; goals are unattainable within proposed timeline
+            - 2 = Questionable; significant concerns about feasibility
+            - 3 = Reasonable; achievable with noted challenges
+            - 4 = Realistic; well-planned scope and timeline
+            - 5 = Highly feasible; excellent planning with contingencies
+
+            **3. Data Sources and Limitations**
+
+            **3a. Synthesis Focus**
+            Does the proposal clearly demonstrate a synthesis project?
+            - 1 = No synthesis; appears to be primarily generating new data
+            - 2 = Minimal synthesis; mostly new data generation with some integration
+            - 3 = Moderate synthesis; balanced between existing and new data
+            - 4 = Strong synthesis; primarily uses existing data with clear integration plan
+            - 5 = Exemplary synthesis; exclusively uses existing data with comprehensive integration
+
+            **3b. Data Identification**
+            Are the data sources explicitly identified, and are limitations appropriately acknowledged?
+            - 1 = Poor; data sources vague and limitations not addressed
+            - 2 = Fair; some data sources identified but incomplete or limitations ignored
+            - 3 = Good; data sources identified and basic limitations acknowledged
+            - 4 = Very good; clear data sources with thoughtful discussion of limitations
+            - 5 = Excellent; comprehensive data source specification with thorough limitation analysis
+
+            **4. Open Science Compliance**
+
+            **4a. Open Science Commitment**
+            Does the proposal demonstrate a commitment to open, team, and reproducible science principles?
+            - 1 = No commitment; does not address open science
+            - 2 = Minimal commitment; vague statements without concrete plans
+            - 3 = Moderate commitment; some open science practices mentioned
+            - 4 = Strong commitment; clear plans for open and reproducible science
+            - 5 = Exemplary commitment; comprehensive open science framework with detailed implementation
 
             IMPORTANT:
             - Return valid JSON only.

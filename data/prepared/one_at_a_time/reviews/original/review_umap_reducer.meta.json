@@ -431,7 +431,7 @@
     "one_at_a_time::y2::9::gemini-3.1-pro-preview::004",
     "one_at_a_time::y2::9::gemini-3.1-pro-preview::005"
   ],
-  "embedding_digest": "4027264656f65ad311b6986127a48e252ee621780c0a1a9b75c39436da84da86",
+  "embedding_digest": "90fb89f01d1a4ad3baf6dc2c51dfe737601caefb18adca4e6439d86a069f50d8",
   "text_field": "review_text",
-  "timestamp": "2026-07-15T14:02:51.632492"
+  "timestamp": "2026-07-16T18:26:01.754854"
 }

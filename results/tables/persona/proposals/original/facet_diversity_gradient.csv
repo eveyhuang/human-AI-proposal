@@ -1,5 +1,13 @@
 condition,task,text_version,field,facet,metric,param,order,JT,p_raw,p_fdr,direction_ok,notes
-persona,proposals,original,whole,richness,vendi,q=1,claude<gemini<gpt<human,2116.0,0.00011175629979978511,0.00022351259959957023,False,facet=richness
-persona,proposals,original,whole,dimensionality,participation_ratio,,claude<gemini<gpt<human,1327.0,0.9651630321460347,0.9651630321460347,False,facet=dimensionality
-persona,proposals,original,whole,coverage,coverage_geometric,k=3,claude<gemini<gpt<human,4.0,0.24845292378238398,0.33127056504317864,False,facet=coverage
-persona,proposals,original,whole,evenness,ripley_excess,r=pooled_q01_q50,claude<gemini<gpt<human,2116.0,0.00011175629979978511,0.00022351259959957023,False,facet=evenness
+persona,proposals,original,whole,spread,mean_pairwise,,claude<gemini<gpt<human,2116.0,0.00011175629979978511,0.00018287394512692107,False,JT over leave-one-out jackknife replicates
+persona,proposals,original,whole,richness,vendi,q=1,claude<gemini<gpt<human,2116.0,0.00011175629979978511,0.00018287394512692107,False,JT over leave-one-out jackknife replicates
+persona,proposals,original,whole,dimensionality,participation_ratio,,claude<gemini<gpt<human,1327.0,0.9651630321460347,1.0,False,JT over leave-one-out jackknife replicates
+persona,proposals,original,whole,coverage,coverage_geometric,k=3,claude<gemini<gpt<human,4.0,0.24845292378238398,0.3194394734344937,False,single coverage values per group; human = split-half median
+persona,proposals,original,whole,evenness,ripley_excess,r=pooled_q01_q50,claude<gemini<gpt<human,2116.0,0.00011175629979978511,0.00018287394512692107,False,JT over leave-one-out jackknife replicates
+persona,proposals,original,whole,displacement,mmd2,,claude>gemini>gpt (M5 flip: larger = more displaced),639.0,0.04441041497863166,0.06395099756922959,False,JT over LOO replicates of Human<->model MMD2; predicted DECREASING (spec 8.2 direction flip)
+persona,proposals,original,whole,coverage,coverage_bertopic_region,k_lit=5,claude<gemini<gpt<human,2392.5,9.548546749887365e-09,4.910681185656359e-08,False,JT over LOO jackknife replicates of the union count at matched n
+persona,proposals,original,whole,coverage,coverage_mesh_terms,k_lit=5,claude<gemini<gpt<human,2116.0,0.00011175629979978511,0.00018287394512692107,False,JT over LOO jackknife replicates of the union count at matched n
+persona,proposals,original,whole,coverage,coverage_bertopic_region,k_lit=10,claude<gemini<gpt<human,2414.5,3.882490659297475e-09,2.7953932746941818e-08,False,JT over LOO jackknife replicates of the union count at matched n
+persona,proposals,original,whole,coverage,coverage_mesh_terms,k_lit=10,claude<gemini<gpt<human,2123.5,9.085658920627246e-05,0.00018287394512692107,False,JT over LOO jackknife replicates of the union count at matched n
+persona,proposals,original,whole,coverage,coverage_bertopic_region,k_lit=20,claude<gemini<gpt<human,2404.5,5.8613032015835366e-09,3.5167819209501224e-08,True,JT over LOO jackknife replicates of the union count at matched n
+persona,proposals,original,whole,coverage,coverage_mesh_terms,k_lit=20,claude<gemini<gpt<human,2125.0,8.714410506758547e-05,0.00018287394512692107,False,JT over LOO jackknife replicates of the union count at matched n

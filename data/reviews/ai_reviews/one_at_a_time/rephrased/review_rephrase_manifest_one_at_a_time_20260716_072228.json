@@ -1,0 +1,16 @@
+{
+  "run_id": "20260716_072228",
+  "scope": "one_at_a_time",
+  "source_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews/one_at_a_time/ai_reviews_one_at_a_time_complete_20260715_212424.csv",
+  "output_file": "/Users/eveyhuang/Documents/NICO/human-AI-proposal/data/reviews/ai_reviews/one_at_a_time/rephrased/ai_reviews_one_at_a_time_rephrased_20260716_072228.csv",
+  "row_count": 345,
+  "success_count": 345,
+  "failure_count": 0,
+  "rephrase_model": "gemini-3.1-pro-preview",
+  "temperature": 0,
+  "prompt_version": "review_neutralization_v2",
+  "started_at": "2026-07-16T12:58:41.052117",
+  "ended_at": "2026-07-16T12:58:41.052125",
+  "qa_issues": [],
+  "completed_cleanly": true
+}

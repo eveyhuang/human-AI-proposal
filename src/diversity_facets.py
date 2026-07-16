@@ -205,6 +205,29 @@ def coverage_density(X_ref: np.ndarray, X_gen: np.ndarray, k: int = 3) -> Dict[s
     return {"coverage": coverage, "density": density, "k": float(k_eff)}
 
 
+def loo_self_coverage(X: np.ndarray, k: int = 3) -> float:
+    """Leave-one-out self-coverage of a small panel.
+
+    Finite-sample human reference for review-panel coverage (spec 11.2): each point
+    is held out and counted as covered iff it falls within the k'-NN radius of any
+    remaining point, with k' = min(k, m - 2). Undefined (NaN) for m < 3.
+    """
+    Xn = l2_normalize(X)
+    m = Xn.shape[0]
+    if m < 3:
+        return np.nan
+    k_eff = int(max(1, min(k, m - 2)))
+    covered = []
+    for i in range(m):
+        ref = np.delete(Xn, i, axis=0)
+        Dref = cosine_dist(ref)
+        np.fill_diagonal(Dref, np.inf)
+        radius = np.sort(Dref, axis=1)[:, k_eff - 1]
+        d_i = cosine_dist(ref, Xn[i : i + 1]).ravel()
+        covered.append(bool(np.any(d_i < radius)))
+    return float(np.mean(covered))
+
+
 def nn_distances(X: np.ndarray, metric: str = "cosine") -> np.ndarray:
     """Per-point nearest-neighbor distance."""
     if metric != "cosine":

@@ -163,6 +163,14 @@ notebook under `papermill` with different parameters — still one source file.
 Authoritative for every plotting cell in `02`, `03`, `04`. Built on the project's existing figure
 conventions, with corrections where the facet design changes what a panel can honestly show.
 
+> **[AMENDED 2026-07-16]** Panel orientation, the Direction Rule (up/right = more diverse on every
+> quantitative panel), the fingerprint panels, and the `04` figure numbering are now governed by
+> **`facet_visualization_redesign_spec.md`**. Where a view described below names a canonical
+> orientation (G-function, Ripley K, cumulative variance, NN similarities), the shipped panel uses
+> the direction-aligned complement defined there (1 − G, null − K, residual variance, NN
+> distances). The per-metric **Interpretation** sections (§3.5, §4.5, §5.5, §6.4, §7.5, §8.3, §9.5)
+> have been updated to match the shipped orientations.
+
 ### 1A.0 Two kinds of panel — read this before anything else
 
 Every figure in this pipeline is one of two types, and confusing them produces a figure that lies:
@@ -676,6 +684,13 @@ critique that the old draft invited.
 Low `mean_pairwise` = ideas sit closer together = less diverse in the plainest sense. The ratio is
 directly quotable ("human proposals are 1.4× more separated on average").
 
+**How the shipped figures read (direction-aligned):** every spread panel already points the right
+way — in the box/jitter panels and the fingerprint's `spread` row, **up/right = more separated =
+more diverse**, so the narrowing hypothesis predicts the Human marker on top/rightmost. The ridge
+shows the raw pairwise-distance distributions (right-shifted mass = more separated ideas); its
+job is exposing bimodality, not a group ranking. The effect panel's axis is `Human ÷ AI`, so bars
+**beyond the parity line = humans more diverse**.
+
 **The essential caveat — state it in the manuscript, don't let a reviewer find it:** spread is
 *necessary but not sufficient*. A set can have **high** mean pairwise distance while being clumpy,
 repetitive, and low-dimensional — the classic "two tight blobs far apart" pathology, which averages
@@ -757,6 +772,13 @@ Facet 2 alongside M4.
 is the payload: steep q=0→2 drop ⇒ few dominant modes ⇒ low evenness ⇒ repetition. Flat profile ⇒
 genuinely distinct items. This is exactly the clumping M0 averages away.
 
+**How the shipped figures read (direction-aligned):** the Vendi profile is already oriented —
+**the higher, flatter curve is the more diverse group**; AI signatures drop faster as q rises.
+The box/effect panels and the fingerprint's `richness` row read up/right = more effectively
+distinct items. The **eigenvalue scree is the one deliberately canonical diagnostic** (SI only,
+badged): there a *cliff after few eigenvalues = few dominant modes = LESS diverse* — the axis
+label and badge state this inversion explicitly, per the Direction Rule's escape clause.
+
 ---
 
 ## 5. M2 — Coverage / density vs human reference · facet: COVERAGE (geometric)
@@ -811,6 +833,14 @@ observed model coverage.
 human-plausible subregion (competent, on-manifold) but fails to reach the periphery humans explore
 (narrow). Low coverage = idea-space regions AI never proposes at all.
 
+**How the shipped figures read (direction-aligned):** coverage is natively oriented — **up/right =
+more of the human space reached**. The parity mark is never 1.0: it is the median human split-half
+coverage (proposals) or the leave-one-out self-coverage (review panels), i.e. "as well as humans
+cover themselves." In the fingerprint's `coverage` row, z is computed against that same
+split-half/LOO null, so 0 = human-typical self-coverage and negative = narrower than humans are
+among themselves. In the density–coverage scatter the hypothesis signature is markers pulled
+**left** of the parity line while staying high on density.
+
 ---
 
 ## 6. M3 — Participation ratio · facet: DIMENSIONALITY
@@ -845,6 +875,12 @@ Human gradual) + a PR bar chart with CIs.
 Low PR = variation is essentially 1–2 dimensional. A *different* collapse from M1:
 high-Vendi/low-PR = many distinct points strung along one axis; low-Vendi/high-PR = few points across
 many axes. Reporting both says *which kind* of narrowing AI shows — a mechanistic claim.
+
+**How the shipped figures read (direction-aligned):** the curve panel is shown as **residual
+variation (1 − cumulative variance)**, not cumulative variance — so the group whose curve **stays
+higher still varies along more independent axes**, and the dotted markers are the 10%-remaining
+crossings (same x as the canonical 90% crossings; a *later* crossing = higher-dimensional). PR
+box/effect panels and the fingerprint's `dimensionality` row read up/right = more dimensions.
 
 ---
 
@@ -889,9 +925,22 @@ curve. This null preserves the real intrinsic geometry of the embedding space, s
 - **(c)** histogram of nearest-neighbor cosine *similarities* per group.
 
 ### 7.5 Interpretation
-Excess neighbors at small r / left-shifted NN distances = local repetition and near-duplication — the
+Excess neighbors at small r / short NN distances = local repetition and near-duplication — the
 UMAP clumps, measured in real space with a significance envelope. Distinguishes "spread out but
 locally clumpy" (AI) from "spread out and evenly filled."
+
+**How the shipped figures read (direction-aligned — this facet flipped the most):**
+- The Ripley panel plots **evenness vs. chance = null_mean − K(r)**: curves **above 0 / above the
+  ±k95 band = more evenly spread than a random same-n draw**; below the band = excess clumping.
+  The narrowing hypothesis therefore predicts Human on top and AI below — no inversion to hold in
+  mind. The global-envelope p is unchanged by the re-orientation.
+- The G panel plots the **twin-free fraction 1 − G(r)**: the curve that **stays high keeps its
+  items mutually distinct**; dropping early = near-duplication ("only 17% of this group's items
+  lack a near-twin at r").
+- The NN histogram plots **distances** (not similarities): mass near **zero** = near-duplicates;
+  a right-shifted distribution = every idea keeps its distance from its closest sibling.
+- In the fingerprint, `ripley_excess` (and `vendi_slope` where shown) enter **negated**, so the
+  `evenness` row also reads right = more even; the caption names the flipped rows.
 
 ---
 
@@ -937,6 +986,12 @@ def wasserstein_ot(X, Y, metric="cosine"):
   distance. State the predicted direction before running JT.
 
 ### 8.3 Interpretation — the crucial disambiguation
+**How the shipped figures read (quarantined, deliberately NOT direction-aligned):** M5 is a
+directional check, not a diversity facet, so the Direction Rule does not apply and its panels are
+styled apart (tinted background, boxed title) with the axis spelling out
+`larger = more shifted (NOT less diverse)`. It never appears in a fingerprint or on any shared
+diversity axis; the human split-half floor line is the same-distribution reference.
+
 Displacement must be read **jointly with M2 coverage**:
 - **Low coverage + low displacement** = AI sits *inside* the human region but fills less of it →
   "narrowed toward a shared central zone." **This is the manuscript's claim.**
@@ -1050,6 +1105,14 @@ This makes them the most sample-size-sensitive metrics in the spec.
   them — narrowing is intra-topic, not topical. A more specific and more interesting claim.
 - The region-occupancy heatmap converts an abstract geometric claim into "AI never proposes anything
   in region X" — which is what makes the result land for a biomedical audience.
+
+**How the shipped figures read (direction-aligned):** rarefaction is natively oriented — **the
+higher curve touches more literature regions / MeSH descriptors at every sample size**, and a
+curve still climbing at m=23 means the group's breadth is not yet exhausted (the caption prints
+the still-climbing check). In the occupancy heatmap the payload is the **light-grey exact-zero
+cells** — regions a group never touches; darker ≠ worse, zero does. In the fingerprint's
+`coverage, domain` row, z is against same-n pooled-cloud union draws, so right of 0 = touching
+more regions than a chance draw of the pooled proposals.
 
 ---
 

@@ -1,0 +1,21 @@
+condition,task,text_version,field,facet,metric,param,group,value,z,z_ci_lo,z_ci_hi,sign_aligned,stars,mode
+one_at_a_time,reviews,rephrased,whole,spread,mean_pairwise,,Claude,-0.6521739130434783,-0.6521739130434783,-0.9130434782608695,-0.30434782608695654,1,***,delta
+one_at_a_time,reviews,rephrased,whole,spread,mean_pairwise,,Gemini,-0.9130434782608695,-0.9130434782608695,-1.0,-0.7391304347826086,1,***,delta
+one_at_a_time,reviews,rephrased,whole,spread,mean_pairwise,,GPT,-1.0,-1.0,-1.0,-1.0,1,***,delta
+one_at_a_time,reviews,rephrased,whole,spread,mean_pairwise,,All AI,-0.6521739130434783,-0.6521739130434783,-0.9130434782608695,-0.30434782608695654,1,***,delta
+one_at_a_time,reviews,rephrased,whole,richness,vendi,q=1,Claude,-0.6521739130434783,-0.6521739130434783,-0.9130434782608695,-0.30434782608695654,1,***,delta
+one_at_a_time,reviews,rephrased,whole,richness,vendi,q=1,Gemini,-0.9130434782608695,-0.9130434782608695,-1.0,-0.7391304347826086,1,***,delta
+one_at_a_time,reviews,rephrased,whole,richness,vendi,q=1,GPT,-1.0,-1.0,-1.0,-1.0,1,***,delta
+one_at_a_time,reviews,rephrased,whole,richness,vendi,q=1,All AI,-0.6521739130434783,-0.6521739130434783,-0.9130434782608695,-0.30434782608695654,1,***,delta
+one_at_a_time,reviews,rephrased,whole,evenness,ripley_excess,r=pooled_q01_q50,Claude,0.6521739130434783,-0.6521739130434783,-0.9130434782608695,-0.30434782608695654,-1,***,delta
+one_at_a_time,reviews,rephrased,whole,evenness,ripley_excess,r=pooled_q01_q50,Gemini,0.8260869565217391,-0.8260869565217391,-1.0,-0.5652173913043478,-1,***,delta
+one_at_a_time,reviews,rephrased,whole,evenness,ripley_excess,r=pooled_q01_q50,GPT,0.9130434782608695,-0.9130434782608695,-1.0,-0.7391304347826086,-1,***,delta
+one_at_a_time,reviews,rephrased,whole,evenness,ripley_excess,r=pooled_q01_q50,All AI,0.6521739130434783,-0.6521739130434783,-0.9130434782608695,-0.30434782608695654,-1,***,delta
+one_at_a_time,reviews,rephrased,whole,dimensionality,participation_ratio,,Claude,-0.36363636363636365,-0.36363636363636365,-0.7272727272727273,0.043478260869565216,1,*,delta
+one_at_a_time,reviews,rephrased,whole,dimensionality,participation_ratio,,Gemini,-0.18181818181818182,-0.18181818181818182,-0.5652173913043478,0.23872180451127814,1,,delta
+one_at_a_time,reviews,rephrased,whole,dimensionality,participation_ratio,,GPT,-0.0,-0.0,-0.4,0.391304347826087,1,,delta
+one_at_a_time,reviews,rephrased,whole,dimensionality,participation_ratio,,All AI,-0.2727272727272727,-0.2727272727272727,-0.6521739130434783,0.14285714285714285,1,,delta
+one_at_a_time,reviews,rephrased,whole,coverage,coverage_geometric,k=panel_adaptive,Claude,0.7142857142857143,0.7142857142857143,0.2857142857142857,1.0,1,**,delta
+one_at_a_time,reviews,rephrased,whole,coverage,coverage_geometric,k=panel_adaptive,Gemini,0.5,0.5,-0.0,0.8823529411764706,1,*,delta
+one_at_a_time,reviews,rephrased,whole,coverage,coverage_geometric,k=panel_adaptive,GPT,1.0,1.0,1.0,1.0,1,**,delta
+one_at_a_time,reviews,rephrased,whole,coverage,coverage_geometric,k=panel_adaptive,All AI,0.3684210526315789,0.3684210526315789,-0.06727272727272396,0.7894736842105263,1,**,delta

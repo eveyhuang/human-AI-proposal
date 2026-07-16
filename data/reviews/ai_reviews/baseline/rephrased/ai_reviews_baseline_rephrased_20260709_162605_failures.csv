@@ -1,4 +1,0 @@
-failed_at,scope,artifact_family,row_id,error
-2026-07-10T08:08:19.548007,baseline,ai_reviews,baseline::y1::10::gpt-5.5::004,unclosed JSON object
-2026-07-10T08:09:20.174199,baseline,ai_reviews,baseline::y1::3::claude-sonnet-5::004,unclosed JSON object
-2026-07-10T08:09:32.857894,baseline,ai_reviews,baseline::y1::3::gemini-3.1-pro-preview::001,unclosed JSON object
