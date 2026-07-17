@@ -1,21 +1,21 @@
 condition,task,text_version,field,facet,metric,param,group,value,z,z_ci_lo,z_ci_hi,sign_aligned,stars,mode
-baseline,reviews,original,whole,spread,mean_pairwise,,Claude,0.8260869565217391,0.8260869565217391,0.5652173913043478,1.0,1,***,delta
-baseline,reviews,original,whole,spread,mean_pairwise,,Gemini,0.7391304347826086,0.7391304347826086,0.476086956521751,1.0,1,***,delta
-baseline,reviews,original,whole,spread,mean_pairwise,,GPT,0.4782608695652174,0.4782608695652174,0.13043478260869565,0.8260869565217391,1,**,delta
-baseline,reviews,original,whole,spread,mean_pairwise,,All AI,0.8260869565217391,0.8260869565217391,0.5652173913043478,1.0,1,***,delta
-baseline,reviews,original,whole,richness,vendi,q=1,Claude,0.8260869565217391,0.8260869565217391,0.5652173913043478,1.0,1,***,delta
-baseline,reviews,original,whole,richness,vendi,q=1,Gemini,0.7391304347826086,0.7391304347826086,0.476086956521751,1.0,1,***,delta
-baseline,reviews,original,whole,richness,vendi,q=1,GPT,0.4782608695652174,0.4782608695652174,0.13043478260869565,0.8260869565217391,1,**,delta
-baseline,reviews,original,whole,richness,vendi,q=1,All AI,0.8260869565217391,0.8260869565217391,0.5652173913043478,1.0,1,***,delta
-baseline,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,Claude,-0.8260869565217391,0.8260869565217391,0.5652173913043478,1.0,-1,***,delta
-baseline,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,Gemini,-0.7391304347826086,0.7391304347826086,0.47608695652173927,1.0,-1,***,delta
-baseline,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,GPT,-0.4782608695652174,0.4782608695652174,0.13043478260869565,0.8260869565217391,-1,**,delta
-baseline,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,All AI,-0.8260869565217391,0.8260869565217391,0.5652173913043478,1.0,-1,***,delta
-baseline,reviews,original,whole,dimensionality,participation_ratio,,Claude,0.2727272727272727,0.2727272727272727,-0.14285714285714285,0.6521739130434783,1,,delta
-baseline,reviews,original,whole,dimensionality,participation_ratio,,Gemini,0.18181818181818182,0.18181818181818182,-0.23809523809523808,0.5652173913043478,1,,delta
-baseline,reviews,original,whole,dimensionality,participation_ratio,,GPT,0.09090909090909091,0.09090909090909091,-0.30434782608695654,0.5243506493506493,1,,delta
-baseline,reviews,original,whole,dimensionality,participation_ratio,,All AI,-0.0,-0.0,-0.42857142857142855,0.3915217391304348,1,,delta
-baseline,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,Claude,-0.9047619047619048,-0.9047619047619048,-1.0,-0.7,1,***,delta
-baseline,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,Gemini,-0.9047619047619048,-0.9047619047619048,-1.0,-0.7,1,***,delta
-baseline,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,GPT,-0.8095238095238095,-0.8095238095238095,-1.0,-0.5238095238095238,1,***,delta
-baseline,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,All AI,-0.8181818181818182,-0.8181818181818182,-1.0,-0.5454545454545454,1,***,delta
+baseline,reviews,original,whole,spread,mean_pairwise,,Claude,-0.5652173913043478,-0.5652173913043478,-0.9130434782608695,-0.21739130434782608,1,**,delta
+baseline,reviews,original,whole,spread,mean_pairwise,,Gemini,-0.21739130434782608,-0.21739130434782608,-0.5652173913043478,0.21739130434782608,1,,delta
+baseline,reviews,original,whole,spread,mean_pairwise,,GPT,-0.7391304347826086,-0.7391304347826086,-1.0,-0.4782608695652174,1,***,delta
+baseline,reviews,original,whole,spread,mean_pairwise,,All AI,0.043478260869565216,0.043478260869565216,-0.391304347826087,0.391304347826087,1,,delta
+baseline,reviews,original,whole,richness,vendi,q=1,Claude,-0.5652173913043478,-0.5652173913043478,-0.9130434782608695,-0.21739130434782608,1,**,delta
+baseline,reviews,original,whole,richness,vendi,q=1,Gemini,-0.13043478260869565,-0.13043478260869565,-0.4782608695652174,0.30434782608695654,1,,delta
+baseline,reviews,original,whole,richness,vendi,q=1,GPT,-0.7391304347826086,-0.7391304347826086,-1.0,-0.4782608695652174,1,***,delta
+baseline,reviews,original,whole,richness,vendi,q=1,All AI,0.043478260869565216,0.043478260869565216,-0.391304347826087,0.391304347826087,1,,delta
+baseline,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,Claude,0.5652173913043478,-0.5652173913043478,-0.9130434782608695,-0.21739130434782608,-1,**,delta
+baseline,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,Gemini,0.13043478260869565,-0.13043478260869565,-0.4782608695652174,0.30434782608695654,-1,,delta
+baseline,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,GPT,0.7391304347826086,-0.7391304347826086,-1.0,-0.4782608695652174,-1,***,delta
+baseline,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,All AI,0.043478260869565216,-0.043478260869565216,-0.4782608695652174,0.391304347826087,-1,,delta
+baseline,reviews,original,whole,dimensionality,participation_ratio,,Claude,0.6363636363636364,0.6363636363636364,0.2727272727272727,0.9130434782608695,1,**,delta
+baseline,reviews,original,whole,dimensionality,participation_ratio,,Gemini,0.36363636363636365,0.36363636363636365,-0.0,0.7391304347826086,1,*,delta
+baseline,reviews,original,whole,dimensionality,participation_ratio,,GPT,0.6363636363636364,0.6363636363636364,0.30434782608695654,0.9130434782608695,1,***,delta
+baseline,reviews,original,whole,dimensionality,participation_ratio,,All AI,0.36363636363636365,0.36363636363636365,-0.043478260869565216,0.7272727272727273,1,,delta
+baseline,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,Claude,-1.0,-1.0,-1.0,-1.0,1,***,delta
+baseline,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,Gemini,-1.0,-1.0,-1.0,-1.0,1,***,delta
+baseline,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,GPT,-0.7272727272727273,-0.7272727272727273,-1.0,-0.45454545454545453,1,***,delta
+baseline,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,All AI,-0.9090909090909091,-0.9090909090909091,-1.0,-0.7272727272727273,1,***,delta

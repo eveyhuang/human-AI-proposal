@@ -1,21 +1,21 @@
 condition,task,text_version,field,facet,metric,param,group,value,z,z_ci_lo,z_ci_hi,sign_aligned,stars,mode
 one_at_a_time,reviews,original,whole,spread,mean_pairwise,,Claude,-1.0,-1.0,-1.0,-1.0,1,***,delta
-one_at_a_time,reviews,original,whole,spread,mean_pairwise,,Gemini,-1.0,-1.0,-1.0,-1.0,1,***,delta
+one_at_a_time,reviews,original,whole,spread,mean_pairwise,,Gemini,-0.9130434782608695,-0.9130434782608695,-1.0,-0.7391304347826086,1,***,delta
 one_at_a_time,reviews,original,whole,spread,mean_pairwise,,GPT,-1.0,-1.0,-1.0,-1.0,1,***,delta
-one_at_a_time,reviews,original,whole,spread,mean_pairwise,,All AI,-1.0,-1.0,-1.0,-1.0,1,***,delta
+one_at_a_time,reviews,original,whole,spread,mean_pairwise,,All AI,-0.9130434782608695,-0.9130434782608695,-1.0,-0.7391304347826086,1,***,delta
 one_at_a_time,reviews,original,whole,richness,vendi,q=1,Claude,-1.0,-1.0,-1.0,-1.0,1,***,delta
-one_at_a_time,reviews,original,whole,richness,vendi,q=1,Gemini,-1.0,-1.0,-1.0,-1.0,1,***,delta
+one_at_a_time,reviews,original,whole,richness,vendi,q=1,Gemini,-0.9130434782608695,-0.9130434782608695,-1.0,-0.7391304347826086,1,***,delta
 one_at_a_time,reviews,original,whole,richness,vendi,q=1,GPT,-1.0,-1.0,-1.0,-1.0,1,***,delta
-one_at_a_time,reviews,original,whole,richness,vendi,q=1,All AI,-1.0,-1.0,-1.0,-1.0,1,***,delta
+one_at_a_time,reviews,original,whole,richness,vendi,q=1,All AI,-0.9130434782608695,-0.9130434782608695,-1.0,-0.7391304347826086,1,***,delta
 one_at_a_time,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,Claude,1.0,-1.0,-1.0,-1.0,-1,***,delta
-one_at_a_time,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,Gemini,1.0,-1.0,-1.0,-1.0,-1,***,delta
+one_at_a_time,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,Gemini,0.9130434782608695,-0.9130434782608695,-1.0,-0.7391304347826086,-1,***,delta
 one_at_a_time,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,GPT,1.0,-1.0,-1.0,-1.0,-1,***,delta
 one_at_a_time,reviews,original,whole,evenness,ripley_excess,r=pooled_q01_q50,All AI,0.9130434782608695,-0.9130434782608695,-1.0,-0.7391304347826086,-1,***,delta
-one_at_a_time,reviews,original,whole,dimensionality,participation_ratio,,Claude,0.5454545454545454,0.5454545454545454,0.18181818181818182,0.8260869565217391,1,*,delta
-one_at_a_time,reviews,original,whole,dimensionality,participation_ratio,,Gemini,0.7272727272727273,0.7272727272727273,0.42857142857142855,1.0,1,*,delta
-one_at_a_time,reviews,original,whole,dimensionality,participation_ratio,,GPT,0.5454545454545454,0.5454545454545454,0.18181818181818182,0.8260869565217391,1,**,delta
-one_at_a_time,reviews,original,whole,dimensionality,participation_ratio,,All AI,-0.5454545454545454,-0.5454545454545454,-0.8947368421052632,-0.18181818181818182,1,**,delta
-one_at_a_time,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,Claude,-0.625,-0.625,-1.0,-0.2,1,**,delta
-one_at_a_time,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,Gemini,-0.6363636363636364,-0.6363636363636364,-0.9090909090909091,-0.2727272727272727,1,***,delta
-one_at_a_time,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,GPT,-0.6842105263157895,-0.6842105263157895,-1.0,-0.3333333333333333,1,***,delta
-one_at_a_time,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,All AI,-0.7272727272727273,-0.7272727272727273,-1.0,-0.45454545454545453,1,**,delta
+one_at_a_time,reviews,original,whole,dimensionality,participation_ratio,,Claude,0.45454545454545453,0.45454545454545453,0.047619047619047616,0.8181818181818182,1,*,delta
+one_at_a_time,reviews,original,whole,dimensionality,participation_ratio,,Gemini,-0.0,-0.0,-0.4,0.45454545454545453,1,,delta
+one_at_a_time,reviews,original,whole,dimensionality,participation_ratio,,GPT,0.36363636363636365,0.36363636363636365,-0.047619047619047616,0.7391304347826086,1,*,delta
+one_at_a_time,reviews,original,whole,dimensionality,participation_ratio,,All AI,-0.2727272727272727,-0.2727272727272727,-0.6521739130434783,0.14285714285714285,1,,delta
+one_at_a_time,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,Claude,-0.8888888888888888,-0.8888888888888888,-1.0,-0.6470588235294118,1,***,delta
+one_at_a_time,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,Gemini,-0.9047619047619048,-0.9047619047619048,-1.0,-0.7,1,***,delta
+one_at_a_time,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,GPT,-0.5,-0.5,-0.8825163398692801,-0.1,1,**,delta
+one_at_a_time,reviews,original,whole,coverage,coverage_geometric,k=panel_adaptive,All AI,-0.7272727272727273,-0.7272727272727273,-1.0,-0.45454545454545453,1,***,delta
