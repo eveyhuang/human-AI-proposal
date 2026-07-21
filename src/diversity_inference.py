@@ -1234,6 +1234,52 @@ def build_review_facet_outputs(
 
 
 # ---------------------------------------------------------------------------
+# Interleaving statistics (descriptive; SI panel). Answers "does either group
+# occupy territory the other never touches?" via cross-group nearest-neighbor
+# distances, benchmarked against human-to-human spacing. No inference is run.
+# ---------------------------------------------------------------------------
+
+def interleaving_distances(X_human: np.ndarray, X_ai: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Cross-group NN distances: (AI->nearest human, human->nearest other human, human->nearest AI)."""
+    Xh = l2_normalize(X_human)
+    Xa = l2_normalize(X_ai)
+    D_ah = cosine_dist(Xa, Xh)
+    d_ah = D_ah.min(axis=1)
+    d_ha = D_ah.min(axis=0)
+    D_hh = cosine_dist(Xh)
+    np.fill_diagonal(D_hh, np.inf)
+    d_hh = D_hh.min(axis=1)
+    return d_ah, d_hh, d_ha
+
+
+def interleaving_summary(d_ah: np.ndarray, d_hh: np.ndarray, d_ha: np.ndarray) -> Dict[str, float]:
+    """Summary rows for the interleaving CSV.
+
+    The yardstick is q90 of human-to-human NN spacing: 'human-only fringe' = share of
+    human items whose nearest AI item is farther than that yardstick; 'AI-only pocket'
+    = share of AI items whose nearest human item is farther. By construction ~10% of
+    human items exceed the yardstick against their own group - that is the reference
+    rate against which the two shares are read.
+    """
+    d_ah = np.asarray(d_ah, dtype=float)
+    d_hh = np.asarray(d_hh, dtype=float)
+    d_ha = np.asarray(d_ha, dtype=float)
+    q90 = float(np.percentile(d_hh, 90))
+    return {
+        "ai_to_nearest_human_median": float(np.median(d_ah)),
+        "ai_to_nearest_human_q90": float(np.percentile(d_ah, 90)),
+        "human_to_nearest_human_median": float(np.median(d_hh)),
+        "human_to_nearest_human_q90": q90,
+        "human_to_nearest_ai_median": float(np.median(d_ha)),
+        "human_to_nearest_ai_q90": float(np.percentile(d_ha, 90)),
+        "share_human_fringe": float(np.mean(d_ha > q90)),
+        "share_ai_pocket": float(np.mean(d_ah > q90)),
+        "n_ai": float(len(d_ah)),
+        "n_human": float(len(d_hh)),
+    }
+
+
+# ---------------------------------------------------------------------------
 # M6 domain-coverage helpers (union metrics; used by notebook 02).
 # ---------------------------------------------------------------------------
 

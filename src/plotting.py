@@ -1080,6 +1080,91 @@ def plot_fingerprint(fp: pd.DataFrame, out_base: Path, *, mode: str, title: str)
 
 
 # ---------------------------------------------------------------------------
+# SI panel: interleaving statistics (descriptive - "unique territory" check)
+# ---------------------------------------------------------------------------
+
+def plot_interleaving_si(inter: pd.DataFrame, out_base: Path, *, task: str, title: str,
+                         comparison: str = "human_vs_pooled_ai") -> None:
+    """Two-panel SI figure from facet_interleaving.csv rows (long form: stat, value).
+
+    Panel A: medians (dot) + q90 (cap) of the three NN distances per condition.
+    Panel B: human-only fringe % and AI-only pocket % vs the ~10% by-construction
+    reference. Descriptive geography - deliberately NOT on a diversity axis.
+    """
+    sub = inter[inter["task"].eq(task) & inter["comparison"].eq(comparison)]
+    conditions = ["baseline", "one_at_a_time", "persona"]
+    fig, (axA, axB) = plt.subplots(1, 2, figsize=(12.5, 4.8))
+    if sub.empty:
+        axA.text(0.5, 0.5, "No interleaving rows", ha="center", va="center")
+        axA.set_axis_off()
+        axB.set_axis_off()
+        save_fig(fig, out_base)
+        return
+
+    def val(cond, stat):
+        r = sub[sub["condition"].eq(cond) & sub["stat"].eq(stat)]
+        return float(r["value"].iloc[0]) if not r.empty else np.nan
+
+    # Panel A - the three NN distances.
+    series = [
+        ("AI → nearest human", "ai_to_nearest_human", PALETTE["All AI"], "P", "full"),
+        ("human → nearest other human\n(the yardstick)", "human_to_nearest_human", PALETTE["Human"], "o", "full"),
+        ("human → nearest AI", "human_to_nearest_ai", PALETTE["Human"], "o", "none"),
+    ]
+    for si, (label, stem, color, marker, fill) in enumerate(series):
+        xs = np.arange(len(conditions)) + (si - 1) * 0.18
+        med = [val(c, f"{stem}_median") for c in conditions]
+        q90 = [val(c, f"{stem}_q90") for c in conditions]
+        yerr = [[0.0] * len(conditions), [max(0.0, q - m) for m, q in zip(med, q90)]]
+        axA.errorbar(xs, med, yerr=yerr, fmt=marker, color=color, markersize=9, capsize=4,
+                     linewidth=1.4, markeredgecolor="black", markeredgewidth=0.5,
+                     markerfacecolor="none" if fill == "none" else color, label=label)
+    axA.set_xticks(range(len(conditions)), conditions)
+    axA.set_ylabel("cosine distance to nearest neighbor\n(same proposal's panel)" if task == "reviews"
+                   else "cosine distance to nearest neighbor")
+    axA.set_title("A · Cross-group nearest-neighbor distances", fontsize=10, loc="left")
+    axA.legend(fontsize=7.5, loc="best")
+    _grid(axA)
+
+    # Panel B - exclusive-territory shares vs the by-construction reference.
+    width = 0.32
+    xs = np.arange(len(conditions))
+    fringe = [100 * val(c, "share_human_fringe") for c in conditions]
+    pocket = [100 * val(c, "share_ai_pocket") for c in conditions]
+    axB.bar(xs - width / 2, fringe, width, color=PALETTE["Human"], alpha=0.85, edgecolor="black",
+            linewidth=0.6, label="human-only fringe\n(humans no AI reaches)")
+    axB.bar(xs + width / 2, pocket, width, color=PALETTE["All AI"], alpha=0.7, hatch="//",
+            edgecolor="black", linewidth=0.6, label="AI-only pocket\n(AI no human reaches)")
+    for x, v in zip(xs - width / 2, fringe):
+        axB.annotate(f"{v:.0f}%", (x, v), textcoords="offset points", xytext=(0, 3), ha="center", fontsize=8)
+    for x, v in zip(xs + width / 2, pocket):
+        axB.annotate(f"{v:.0f}%", (x, v), textcoords="offset points", xytext=(0, 3), ha="center", fontsize=8)
+    top = max([v for v in fringe + pocket if np.isfinite(v)] + [12.0])
+    axB.set_ylim(0, top * 1.35)
+    axB.axhline(10.0, color=PARITY_COLOR, linestyle="--", linewidth=1.2)
+    axB.annotate("~10% = rate for humans against their own\ngroup, by construction of the yardstick",
+                 (len(conditions) - 0.5, 10.0), textcoords="offset points", xytext=(0, 6),
+                 fontsize=7, color=PARITY_COLOR, ha="right")
+    axB.set_xticks(xs, conditions)
+    axB.set_ylabel("% beyond the human-spacing yardstick")
+    axB.set_title("B · Exclusive-territory shares", fontsize=10, loc="left")
+    axB.legend(fontsize=7.5, loc="upper right")
+    _grid(axB)
+
+    fig.suptitle(title, fontsize=11.5)
+    fig.tight_layout()
+    unit = ("distances computed within each proposal's review panel, pooled across the 23 proposals"
+            if task == "reviews" else "distances computed across the full proposal groups")
+    _caption(fig, f"Descriptive interleaving statistics (no diversity direction; no inference): {unit}. "
+                  "Yardstick = 90th percentile of human-to-nearest-other-human spacing; 'fringe'/'pocket' = share "
+                  "of items whose nearest cross-group neighbor exceeds it. Values near or below the ~10% reference "
+                  "mean the two groups are interleaved rather than occupying exclusive territory. Pooled AI shown "
+                  f"({'all AI reviews of each proposal' if task == 'reviews' else 'subsampled to n=23'}); per-model "
+                  "rows live in facet_interleaving.csv.")
+    save_fig(fig, out_base)
+
+
+# ---------------------------------------------------------------------------
 # Convergence heatmap (spec 3.4) + cross-condition ratios
 # ---------------------------------------------------------------------------
 
