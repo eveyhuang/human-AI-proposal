@@ -156,7 +156,7 @@ All generation analyses operate on the full text of each proposal, represented i
 ### 2.8 Controls and robustness
 
 - **Lexical control.** Human proposals are also more diverse in raw wording (distinct 2-gram ratios 1.04–1.24, significant almost everywhere), and AI text repeats its own phrasing more (self-BLEU 0.21–0.35 vs 0.19). Semantic narrowing therefore cannot be an artifact of the text encoder. Notably, **persona nearly closes the wording gap (ratios drop to ~1.04–1.07) while the idea-level gaps of §2.1–2.3 persist** — personas diversify *how* models write more than *what* they propose.
-- **Style sensitivity (text branch).** On the unrephrased `original` text, the baseline spread/richness contrasts disappear (ratios 1.02/0.96, ns) while one_at_a_time and persona replicate, and geometric coverage narrows on *both* branches (baseline original 0.60, p < .001). Interpretation: at baseline, AI's varied prose masks idea-level repetition; style normalization reveals it. The pre-registered primary branch is `rephrased`, but manuscripts should state this dependence plainly.
+- **Style sensitivity (text branch).** On the unrephrased `original` text, the pooled baseline spread/richness contrasts disappear (ratios 1.02/0.96, ns) — but not because the models agree with humans: Claude and GPT are significantly *narrower* on raw text (0.58–0.87, \*\*\*) while Gemini's raw prose is *wider* than human (spread ratio 1.52), and the opposing style effects cancel in the pool. One_at_a_time and persona replicate on both branches, and geometric coverage narrows on *both* branches (baseline original 0.60, p < .001). The pre-registered primary branch is `rephrased`; the full original-branch results, and what the rephrased-vs-original contrast reveals about style versus ideas, are reported in **SI-2**.
 - **Kernel sensitivity.** The richness result's direction is preserved under an alternative (RBF) similarity kernel across bandwidths; individual per-model significances vary (4–6 of 9 cells), consistent with per-model tests being underpowered rather than direction-unstable.
 - **Ordering across models.** Trend tests for the pre-specified ordering Claude < Gemini < GPT < Human are dominated entirely by the human–AI gap; the internal AI ordering is not supported (Gemini, not Claude, is typically the narrowest). We report "humans above every model" and decline the model-ranking claim.
 
@@ -190,7 +190,7 @@ Two reference conventions matter and are stated on every figure: the human self-
 
 ### 3.5 Displacement and ordering checks
 
-The pooled AI review cloud is significantly displaced from the human cloud in every condition (whole-cloud, exploratory: MMD² = 0.0073 → 0.0116 → 0.0155 from baseline to persona, all p ≤ 2×10⁻⁴) — AI reviews have a systematic stylistic/positional signature that *grows* under structured elicitation even as panel diversity shrinks. Trend tests across models are uniformly non-significant on the filtering side: no model ordering, again.
+The pooled AI review cloud is significantly displaced from the human cloud in every condition (whole-cloud, exploratory: MMD² = 0.0073 → 0.0116 → 0.0155 from baseline to persona, all p ≤ 2×10⁻⁴) — AI reviews have a systematic stylistic/positional signature that *grows* under structured elicitation even as panel diversity shrinks. (The branch comparison in SI-2 shows this signature is overwhelmingly stylistic: on raw text the displacement is ~20× larger and rephrasing removes almost all of it.) Trend tests across models are uniformly non-significant on the filtering side: no model ordering, again.
 
 ### 3.6 One flagged cell
 
@@ -210,13 +210,13 @@ Gemini-at-baseline is the only AI cell at parity across spread/richness/evenness
 
 **5. Which AI matters — but not in the predicted order.** The pre-specified capability ordering (Claude < Gemini < GPT < Human) fails on both stages; the defensible statement is "humans above every model." The texture that survives: **Claude** covers the human idea-space fully but with clumped, repetitive proposals; **Gemini** is the narrowest and the only displaced model on the generation side, yet the least compressed reviewer at baseline; **GPT** is unremarkably in between and geometrically the most human-like in position. Model choice shifts *which* facet of diversity you lose, not *whether* you lose one.
 
-**Limitations to state.** Samples are small (23 per group; per-model generation contrasts are underpowered and the pooled contrasts carry the inference). The baseline generation effect on spread/richness requires style normalization to detect (it is absent on raw text — reported transparently as a robustness boundary, with coverage narrowing robust on both branches). Review-panel effects, while extraordinarily consistent, are small in absolute units, and review-cloud displacement is exploratory. Human evenness reference values are condition-specific by construction (the chance benchmark includes each condition's AI reviews) and are never compared across conditions. All results concern one scientific domain, one proposal format, and three models at one point in time.
+**Limitations to state.** Samples are small (23 per group; per-model generation contrasts are underpowered and the pooled contrasts carry the inference). The pooled baseline generation effect on spread/richness requires style normalization to detect — on raw text it is hidden by *opposing* per-model style artifacts that cancel in the pool (SI-2, pattern B) — while coverage and evenness narrowing are robust on both text branches. Review-panel effects, while extraordinarily consistent, are small in absolute units, and review-cloud displacement is exploratory. Human evenness reference values are condition-specific by construction (the chance benchmark includes each condition's AI reviews) and are never compared across conditions. All results concern one scientific domain, one proposal format, and three models at one point in time.
 
 **The one-sentence version.** *Across five statistically independent facets, three elicitation strategies, and three frontier models, AI systems reproduce the competent center of human scientific search while thinning its edges — proposing fewer genuinely distinct ideas within the same topical territory, and reviewing them with less independent judgment than the smallest human panel — and no prompting strategy tested restores either loss.*
 
 ---
 
-## SI. Interleaving: does either group hold territory the other never touches?
+## SI-1. Interleaving: does either group hold territory the other never touches?
 
 A natural question about all of the above: do the coverage and displacement results mean humans and AI occupy *separate regions* — ideas or judgments the other side simply never produces? This supplementary analysis answers it directly and descriptively (no significance testing; the point is geography, not inference). For every proposal (or every review, within its own proposal's panel), we measure the distance to its nearest neighbor **from the other group**, and benchmark against human-to-human spacing. The yardstick is the 90th percentile of human→nearest-other-human distance; by construction, ~10% of human items exceed it against their own group, so shares near 10% mean "no more exclusive than humans are from each other."
 
@@ -242,6 +242,81 @@ A natural question about all of the above: do the coverage and displacement resu
 **Reading, reviews — complete interleaving; no territory lost on either side.** *Every* human review has an AI review within normal human spacing (fringe = 0% in all conditions) — indeed the closest other opinion to any given human review is usually an AI review (0.030), closer than the nearest fellow human (0.036). AI-only pockets are at or below reference. So the significant review displacement (§3.5) is not territorial: it is a subtle, systematic *accent* — a small shared component carried by every AI review — detectable only because the whole-cloud test runs on 430 reviews. (Note that review MMD², 0.007–0.016, is *smaller* than the non-significant proposal-side MMD², 0.03–0.06; the review result owes its stars to statistical power, not to a large shift.)
 
 **Together, the sharpest one-line contrast in the study:** *on the generation side, AI loses territory — a fifth of the human idea-space goes unvisited; on the filtering side, AI loses no territory at all — only independence.* This is also why the two stages need different remedies: generation narrowing calls for sources of genuinely peripheral ideas, filtering narrowing calls for genuinely independent judges.
+
+---
+
+## SI-2. The original-text branch: full results, and what the style contrast measures
+
+All main-text results use the `rephrased` branch, in which every proposal and review is rewritten into one neutral house style before embedding, so that differences in *wording habits* cannot masquerade as differences in *ideas*. The `original` branch repeats the entire battery on the raw, unrephrased text. It is reported here in full — not merely as a robustness check, but because the *difference* between the two branches is itself a measurement: any effect present on both branches lives in the ideas; any effect present only on raw text lives in the prose.
+
+### Table SI-2a — Generation, original text: AI ÷ Human diversity retained
+
+| Facet (metric) | Condition | Claude | Gemini | GPT | **Pooled AI** |
+|---|---|---|---|---|---|
+| **Spread** | baseline | 0.70 \*\*\* | 1.52 ns | 0.58 \*\*\* | **1.02 ns** |
+| | one_at_a_time | 0.17 \*\*\* | 0.14 \*\*\* | 0.17 \*\*\* | **0.28 \*\*\*** |
+| | persona | 0.72 \*\*\* | 0.48 \*\*\* | 0.67 \*\*\* | **0.69 \*\*\*** |
+| **Richness** | baseline | 0.87 \*\*\* | 1.08 ns | 0.82 \*\*\* | **0.96 ns** |
+| | one_at_a_time | 0.65 \*\*\* | 0.64 \*\*\* | 0.65 \*\*\* | **0.69 \*\*\*** |
+| | persona | 0.88 \*\*\* | 0.78 \*\*\* | 0.85 \*\*\* | **0.86 \*\*\*** |
+| **Evenness**† | baseline | AI clumped \*\* | ≈ chance ns | AI clumped \*\* | **AI clumped \*\*\*** |
+| | one_at_a_time | AI clumped \*\* | AI clumped \*\* | AI clumped \*\* | **AI clumped \*\*\*** |
+| | persona | AI clumped ns | AI clumped \*\* | AI clumped \*\* | **AI clumped \*\*\*** |
+| **Dimensionality** | baseline | 1.14 ns | 0.31 ns | 1.12 ns | **0.79 ns** |
+| | one_at_a_time | 1.28 \* | 1.23 ns | 0.98 ns | **0.49 \*\*\*** |
+| | persona | 1.08 ns | 0.94 ns | 0.95 ns | **0.89 \*** |
+| **Coverage, geometric** | baseline | 0.74 ns | 0.39 \*\* | 0.52 \* | **0.60 \*\*\*** |
+| | one_at_a_time | 0.43 \*\* | 0.39 \*\* | 0.61 \* | **0.64 \*\*\*** |
+| | persona | 0.91 ns | 0.96 ns | 0.83 ns | **0.89 \*** |
+| **Coverage, domain** (regions) | baseline | 1.14 ns | 1.14 ns | 0.57 \* | **0.99 ns** |
+| | one_at_a_time | 0.29 \*\*\* | 0.29 \*\*\* | 0.29 \*\*\* | **0.29 \*\*** |
+| | persona | 0.71 ns | 0.57 ns | 0.71 ns | **0.65 \*\*** |
+
+† Human excess −0.08 to −0.14 (more even than chance) vs. pooled AI +0.07 to +0.11, as on the rephrased branch.
+
+### Table SI-2b — Filtering, original text: Cliff's δ (AI panel − human panel)
+
+| Facet | Condition | Claude | Gemini | GPT | **Pooled AI** |
+|---|---|---|---|---|---|
+| **Spread** | baseline | −0.57 \*\* | −0.22 ns | −0.74 \*\*\* | **+0.04 ns** |
+| | one_at_a_time | −1.00 \*\*\* | −0.91 \*\*\* | −1.00 \*\*\* | **−0.91 \*\*\*** |
+| | persona | −1.00 \*\*\* | −1.00 \*\*\* | −1.00 \*\*\* | **−0.91 \*\*\*** |
+| **Richness** | baseline | −0.57 \*\* | −0.13 ns | −0.74 \*\*\* | **+0.04 ns** |
+| | one_at_a_time | −1.00 \*\*\* | −0.91 \*\*\* | −1.00 \*\*\* | **−0.91 \*\*\*** |
+| | persona | −1.00 \*\*\* | −1.00 \*\*\* | −1.00 \*\*\* | **−0.91 \*\*\*** |
+| **Evenness** (δ > 0 = AI clumpier) | baseline | +0.57 \*\* | +0.13 ns | +0.74 \*\*\* | **+0.04 ns** |
+| | one_at_a_time | +1.00 \*\*\* | +0.91 \*\*\* | +1.00 \*\*\* | **+0.91 \*\*\*** |
+| | persona | +1.00 \*\*\* | +1.00 \*\*\* | +1.00 \*\*\* | **+0.83 \*\*\*** |
+| **Dimensionality** | baseline | +0.64 \*\* | +0.36 \* | +0.64 \*\*\* | **+0.36 ns** |
+| | one_at_a_time | +0.45 \* | −0.00 ns | +0.36 \* | **−0.27 ns** |
+| | persona | +0.73 \*\* | +0.18 ns | +0.64 \*\* | **−0.36 ns** |
+| **Coverage** | baseline | −1.00 \*\*\* | −1.00 \*\*\* | −0.73 \*\*\* | **−0.91 \*\*\*** |
+| | one_at_a_time | −0.89 \*\*\* | −0.90 \*\*\* | −0.50 \*\* | **−0.73 \*\*\*** |
+| | persona | −0.90 \*\*\* | −1.00 \*\*\* | −0.91 \*\*\* | **−0.82 \*\*\*** |
+
+### Table SI-2c — Where the two branches diverge tells you what is style
+
+| Quantity | rephrased (ideas only) | original (ideas + prose) |
+|---|---|---|
+| Proposal displacement (MMD², pooled) | 0.032–0.062, all ns | 0.069–0.204, all \*\* (every model \*\*\*) |
+| Review displacement (MMD², pooled clouds) | 0.007–0.016 | 0.247–0.273 (~20× larger) |
+| Review coverage of the human span (pooled δ) | **+0.37 to +0.44 \*\*** (AI blankets the span) | **−0.73 to −0.91 \*\*\*** (AI misses the span) |
+| Review interleaving: human-only fringe / AI-only pocket | 0% / 4–12% | 51–69% / 33–80% |
+| Proposal interleaving: human-only fringe | 18–26% | 13–31% |
+| Lexical distinct-2 (Human vs pooled models) | 0.741 vs 0.60–0.72 | 0.681 vs 0.43–0.63 |
+
+### Reading: three patterns
+
+**A. Style-robust conclusions (present on both branches — these are about ideas).**
+Geometric coverage narrowing (original is *stronger*: pooled 0.60–0.89, significant in all conditions); evenness — human sets more even than chance, AI sets clumped, pooled \*\*\* in all six branch×condition cells; filtering compression under one_at_a_time and persona (δ ≈ −0.9 to −1.0 on both branches) and for Claude/GPT at baseline; the Gemini-at-baseline parity anomaly (replicates exactly on raw text: δ = −0.13 to −0.22, ns); and the human-only proposal fringe (13–31% across branches). Everything the synthesis (§4) leans on hardest survives the branch change.
+
+**B. Style-dependent magnitudes (direction survives; size is distorted by prose).**
+Raw text distorts the spread/richness facets in *both* directions, and the pooled baseline null (1.02/0.96 ns) is a cancellation, not an agreement: on raw text Claude and GPT are significantly narrower (0.58–0.87 \*\*\*) while Gemini's verbose, varied prose makes it appear *wider than human* (spread 1.52) — opposing style artifacts that sum to zero in the pool. In the other direction, one_at_a_time's raw ratios (0.14–0.28) wildly *overstate* narrowing because each model answers repeated single requests in a near-template voice; rephrasing brings those cells back to 0.45–0.81. The rephrased branch sits between the two distortions, which is precisely why it is the primary: **raw prose can hide idea-level narrowing (varied wording, repeated ideas) or manufacture it (templated wording, distinct ideas).**
+
+**C. Style-only effects (vanish after rephrasing — these are about prose, not ideas).**
+On raw text, every AI model's proposal cloud is significantly displaced from the human cloud (MMD² up to 0.28, all \*\*\*), AI review panels *fail to cover* the human review span (δ ≈ −0.9), and the interleaving statistics show outright segregation (up to 80% of AI reviews in "AI-only pockets," up to 69% of human reviews in a "human-only fringe"). After style normalization, all of this collapses: displacement falls ~20-fold, review coverage flips to *exceeding* the human self-benchmark, and the clouds interleave completely (SI-1). The inference is clean and quotable: **AI text is strongly segregated from human text by style; AI *ideas* are not segregated from human ideas — they are an interleaved, thinned subset.** This also settles the interpretation of the small residual review displacement in §3.5: the "accent" is overwhelmingly stylistic, and what remains after rephrasing is its faint semantic residue.
+
+*Sources: same table paths with `text_version = original`; SI figures for the original branch under `results/figures/synthesis/original/`.*
 
 ---
 
