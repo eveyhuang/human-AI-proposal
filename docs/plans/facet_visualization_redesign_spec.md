@@ -204,3 +204,9 @@ every panel passes the Direction Rule (up/right = diverse or SI+badge+label); hu
 in fingerprints wherever the tables say humans are more diverse; envelope p-values identical
 before/after the K re-orientation; fig1 renders at 17.8 cm with legible fonts; 04 still imports
 no metric code and recomputes nothing; all previous §14 sanity checks still pass.
+
+> **[AMENDED 2026-07-22]** §4.1 figure set extended: `fig2b_human_ai_slopegraph` (+
+> `fig2b_supplement_{facet}_{metric}`) — the Human → AI orientation of the slopegraph
+> (left anchor = shared human value, natural units, downward slope = narrowing; evenness
+> plotted as −excess per the Direction Rule; stages as rows). Complements fig2, which
+> keeps the gen → filter orientation answering the compounding question.

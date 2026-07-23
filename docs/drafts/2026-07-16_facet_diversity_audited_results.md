@@ -172,7 +172,7 @@ Two reference conventions matter and are stated on every figure: the human self-
 
 *Result.* AI panels are tighter and less rich than the matched human panels, with near-ceiling consistency under structured elicitation: at one_at_a_time, pooled δ = −0.91 (spread) and −0.83 (richness), with several model-level cells at δ = −1.00 — lower for *every one* of the 23 proposals (p ≈ 10⁻⁶–10⁻⁷). Persona is similar (pooled δ = −0.74). At baseline, Claude and GPT show the same strong pattern (δ = −0.74 to −0.91, \*\*\*), while **Gemini sits exactly at parity (δ = +0.04, ns)**, which dilutes the pooled baseline contrast to marginal (δ ≈ −0.3 to −0.4, p = .07–.09).
 
-*Magnitude vs consistency — an essential distinction.* In absolute units the effect is small: human panels average 0.044 mutual distance, AI panels 0.028–0.040 (a 8–36% tightening; effective richness 1.13–1.19 vs 1.18 — review panels are highly homogeneous for everyone). What is remarkable is the *consistency*: the tightening recurs proposal after proposal, which is exactly what a funding process should care about, because systematic small biases — unlike noisy large ones — do not average out across a portfolio.
+*Magnitude vs consistency — an essential distinction.* In absolute units the effect is small: human panels average 0.044 mutual distance, AI panels 0.028–0.040 (a 8–36% tightening; effective richness 1.13–1.19 vs 1.18 — review panels are highly homogeneous for everyone). What is remarkable is the *consistency*: the tightening recurs proposal after proposal, which is exactly what a funding process should care about, because systematic small biases — unlike noisy large ones — do not average out across a portfolio. The same collapse appears in the numeric scores committees actually consume — and, at this sample size, without demonstrable divergence in the resulting rankings — see **SI-3**.
 
 ### 3.2 Evenness — AI reviews clump; mirror image of generation
 
@@ -320,6 +320,41 @@ On raw text, every AI model's proposal cloud is significantly displaced from the
 
 ---
 
+## SI-3. Score-level decision analysis: does the lost disagreement matter for decisions?
+
+A fair challenge to the filtering results runs: *if each AI review covers everything the human reviewers say (SI-1), does the loss of panel diversity matter at all — could review simply be automated?* The facet metrics measure review *text*; funding decisions consume review *scores*. This analysis therefore asks three questions of the numeric `overall_score` data (1–5 scale; never previously used by the diversity pipeline): **(i)** do AI panels disagree less in their scores, proposal by proposal? **(ii)** does human score disagreement predict where human and AI mean scores diverge — i.e., is disagreement carrying information? **(iii)** would AI panels *rank* the proposals differently than the human panels did?
+
+**Method in brief.** For each proposal, the human panel's score spread (standard deviation) is compared with AI panel spreads computed at *matched panel size* (averaging over all same-sized subsets of each model's five reviews), combined across proposals with the same paired test as the facet battery. Rankings compare each panel's mean score across proposals (Spearman correlation). Crucially, the rank comparison is read against a **human-vs-human reliability ceiling**: how well half of the human panel's ranking predicts the other half's, estimated over 500 random splits.
+
+**Data caveats, stated first.** Only 13 of 23 proposals have ≥ 2 numerically scored human reviews (9 have none); variance analyses use that subset, mean/rank analyses the 14 with ≥ 1. Human scores are shared across conditions and text branches (they predate the pipeline). AI reviewers never award a 1 (AI range 2–5 vs human 1–5) — a range restriction that itself depresses AI spreads. Small n makes the correlational results exploratory.
+
+### Table SI-3 — Score disagreement and rank agreement (rephrased masters; scores branch-invariant)
+
+Human panel score SD = **0.74** in every condition (shared reviews). δ = Cliff's paired effect (AI − Human); negative = AI panels less variable.
+
+| Condition | | Claude | Gemini | GPT | **Pooled AI** |
+|---|---|---|---|---|---|
+| baseline | panel score SD | 0.31 (δ −0.54 \*) | 0.58 (δ −0.08 ns) | 0.41 (δ −0.54 \*) | **0.51 (δ −0.23, p=.09)** |
+| | rank agreement ρ | +0.08 ns | +0.45 ns | +0.73 \*\* | **+0.46 (p=.10)** |
+| one_at_a_time | panel score SD | **0.08 (δ −1.00 \*\*\*)** | 0.32 (δ −0.69 \*\*) | **0.10 (δ −1.00 \*\*\*)** | **0.34 (δ −0.85 \*\*)** |
+| | rank agreement ρ | +0.28 ns | +0.34 ns | +0.52 (p=.06) | **+0.44 ns** |
+| persona | panel score SD | 0.25 (δ −0.85 \*\*) | 0.17 (δ −0.83 \*\*) | 0.21 (δ −0.69 \*\*) | **0.29 (δ −0.85 \*\*)** |
+| | rank agreement ρ | +0.37 ns | +0.33 ns | +0.39 ns | **+0.43 ns** |
+
+*Reference for the rank rows: the human split-half reliability ceiling is **ρ ≈ +0.40** — half the human panel predicts the other half's ranking no better than this, so values near 0.40 are at the measurable maximum. Disagreement-predicts-divergence correlations (question ii): ρ between −0.40 and +0.43, all ns at n = 13 — inconclusive. Full rows: `results/tables/cross_condition/reviews/score_decision_analysis.csv`; code and printed output: notebook `03_facets_reviews`, section "Score-level Decision Analysis (SI)".*
+
+### Findings
+
+**(i) The disagreement collapse replicates in the scores — the channel a committee actually consumes.** Human panels disagree substantially (SD 0.74 on a 5-point scale: think a 2 and a 4 on the same proposal). AI panels compress this two- to ten-fold, near-deterministically under structured elicitation — Claude under one_at_a_time scores with near-total unanimity (SD 0.075, lower for *every* scoreable proposal). The condition ordering mirrors the semantic facets exactly (baseline mildest, one_at_a_time strongest), and **Gemini-at-baseline is again the lone exception** (δ = −0.08, ns) — that anomaly now replicates across review semantics, both text branches, and numeric scores, arguing strongly that it is a real elicitation effect rather than a processing artifact.
+
+**(ii–iii) But no demonstrable decision divergence — and the honest reason why.** Pooled AI rankings correlate with the human ranking at ρ = 0.43–0.46, which would look like substantial disagreement — except the human panel's *own* split-half ceiling is ρ ≈ 0.40. AI panels track the human ranking as well as half the human panel tracks the other half; with 13–14 scoreable proposals and 1–4 scores each, "AI ranks differently" and "the human ranking is too noisy to rank against" are indistinguishable. GPT at baseline even exceeds the ceiling (ρ = 0.73). The disagreement-predicts-divergence test is likewise inconclusive at this n.
+
+### Interpretation
+
+This analysis strengthens one half of the filtering claim and honestly bounds the other. **Strengthened:** the variance channel — flagged divisiveness, triggered discussion, confidence calibration — is measurably empty in AI panels, in the numeric currency committees actually use, and no elicitation strategy tested restores it. **Bounded:** we cannot show, from this sample, that the resulting *rankings* differ from human ones; on point estimates, AI panels are as human-like as the human panels are self-consistent. The automation question therefore turns on what a panel is *for*: if it is a scoring machine, this data offers no evidence of harm; if it is a deliberation input — where disagreement selects which proposals get argued about — the input is gone. Resolving whether the lost disagreement changes *outcomes* requires either the claim-level uniqueness analysis (do humans catch load-bearing points AI misses?) or a larger corpus of numerically scored human reviews; both are natural next studies.
+
+---
+
 ## 5. Statistical notes for the general reader
 
 - **Permutation test.** To ask whether two groups differ more than chance allows, we repeatedly shuffle the group labels (10,000 times) and recompute the difference. The p-value is the fraction of shuffles producing a gap as large as the real one. No distributional assumptions.
@@ -336,4 +371,4 @@ On raw text, every AI model's proposal cloud is significantly displaced from the
 
 - **Audit trail.** The statistical pipeline was audited line-by-line against the design specification (2026-07-15/16): the review-side coverage and evenness pairings, the trend-test direction, domain-coverage inference, FDR family structure, and the evenness-slope metric were corrected; presentation was subsequently re-oriented so that every panel reads "up/right = more diverse" (Direction Rule), with statistics verified byte-identical before and after the visual redesign. AI reviews were regenerated with the corrected prompt on 2026-07-16 and notebooks 03–04 recomputed; proposal-side inputs (embeddings, group structure) were verified unchanged, so generation results carry over exactly.
 - **Superseded result.** An earlier run (incorrect review prompt) showed baseline AI review panels as *more* diverse than human panels; that finding did not survive the prompt correction and should not be cited.
-- **Sources.** Tables: `results/tables/{condition}/{task}/{text_version}/facet_diversity_tests.csv` (+ `facet_fingerprint.csv`, `facet_interleaving.csv`, `facet_diversity_gradient.csv`, curve/null parquets). Figures: `results/figures/.../facet_fingerprint.png`, per-facet panels, `results/figures/synthesis/{text_version}/fig1–fig6`, and the SI interleaving panels `si_interleaving_{proposals,reviews}.png`. Specs: `docs/plans/diversity_facets_design_spec_v2.md`, `docs/plans/facet_visualization_redesign_spec.md`.
+- **Sources.** Tables: `results/tables/{condition}/{task}/{text_version}/facet_diversity_tests.csv` (+ `facet_fingerprint.csv`, `facet_interleaving.csv`, `facet_diversity_gradient.csv`, curve/null parquets) and `results/tables/cross_condition/reviews/score_decision_analysis.csv` (SI-3). Figures: `results/figures/.../facet_fingerprint.png`, per-facet panels, `results/figures/synthesis/{text_version}/fig1–fig6` + `fig2b_human_ai_slopegraph` (+ supplements), and the SI interleaving panels `si_interleaving_{proposals,reviews}.png`. Specs: `docs/plans/diversity_facets_design_spec_v2.md`, `docs/plans/facet_visualization_redesign_spec.md`.

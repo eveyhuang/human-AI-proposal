@@ -1,6 +1,21 @@
 # Revised sections — Introduction, Data, Variables/Methods
 
-Venue target: PNAS / Nature Machine Intelligence
+Venue target: PNAS Nexus
+Call for papers: PNAS Nexus invites research papers that examine how Artificial Intelligence (AI) systems are shaped by, embedded in, and influencing cultural practices across diverse contexts. Original research, theoretical integrations or synthesis, or methodological submissions are welcomed. Papers that meet the PNAS Nexus acceptance criteria will be published when ready and subsequently compiled into an online collection.
+
+Topics of Interest
+
+- Cultural biases in AI systems
+- Human-AI interaction around the globe
+- Humanities, digital humanities, and AI
+- AI ethics from a global perspective
+- AI and language diversity
+- Historically informed approaches to AI
+Of particular interest are articles with broad, interdisciplinary appeal at the intersection of two or more fields. PNAS Nexus welcomes transdisciplinary research that contributes to new or emerging scientific domains by integrating methods or insights from multiple disciplines. For this Call for Papers, we are especially interested in research that spans several of the areas listed above.
+
+The collection will be co-edited by Editor Mohammad Atari (UMass, Amherst), PNAS Nexus Deputy Editor Michele Gelfand (Stanford), and Guest Editor Diyi Yang (Stanford).
+
+
 Revision spine: **double compression** (generation → filtering); **persona condition as the punchline**.
 `[CITE]` = citation needed. `[NUM: ...]` = a number/figure from your results you still need to fill in.
 `[CHECK: ...]` = a claim I inferred that you should confirm against your data.
