@@ -1165,6 +1165,119 @@ def plot_interleaving_si(inter: pd.DataFrame, out_base: Path, *, task: str, titl
 
 
 # ---------------------------------------------------------------------------
+# SI panel: wording (lexical control) vs idea diversity across conditions
+# ---------------------------------------------------------------------------
+
+# Okabe-Ito colorblind-safe pair; deliberately NOT the model palette, because the two
+# series are concepts (wording vs ideas), not groups.
+_WORD_COLOR = "#0072B2"
+_IDEA_COLOR = "#D55E00"
+
+
+def plot_wording_vs_idea_gap(tests: pd.DataFrame, out_base: Path, *, conditions: Sequence[str],
+                             title: str, text_version: str = "rephrased") -> None:
+    """SI panel (spec 1.9 lexical control vs facets): does persona close the wording gap
+    but not the idea gap?
+
+    All series are on one 'AI diversity / human' axis (parity = 1.0). Wording is the
+    distinct-2gram lexical CONTROL (per-model dots + mean; permutation-only, no CI band).
+    Ideas are the pooled semantic facets richness (Vendi VS1) and spread, each with its
+    subsample CI. Reads the tidy tests table only; recomputes nothing.
+    """
+    df = tests[tests["task"].eq("proposals")].copy() if "task" in tests.columns else tests.copy()
+    df["param"] = df["param"].fillna("")
+    order = [c for c in ["baseline", "one_at_a_time", "persona"] if c in list(conditions)]
+    x = np.arange(len(order))
+
+    def _pooled_ratio(cond, facet, metric, param):
+        r = df[df["condition"].eq(cond) & df["comparison"].eq("human_vs_pooled_ai")
+               & df["facet"].eq(facet) & df["metric"].eq(metric) & df["param"].eq(param)]
+        if r.empty:
+            return np.nan, np.nan, np.nan
+        r = r.iloc[0]
+        h = float(r["human_value"])
+        ratio = float(r["ai_value"]) / h
+        lo = float(r["ci_lo"]) / h if pd.notna(r["ci_lo"]) and r["ci_lo"] != "" else np.nan
+        hi = float(r["ci_hi"]) / h if pd.notna(r["ci_hi"]) and r["ci_hi"] != "" else np.nan
+        return ratio, lo, hi
+
+    def _lex_by_model(cond):
+        out = {}
+        for comp, label in [("human_vs_claude", "Claude"), ("human_vs_gemini", "Gemini"),
+                            ("human_vs_gpt", "GPT")]:
+            r = df[df["condition"].eq(cond) & df["comparison"].eq(comp)
+                   & df["facet"].eq("lexical_control") & df["metric"].eq("distinct_2")]
+            if not r.empty:
+                out[label] = float(r.iloc[0]["ai_value"]) / float(r.iloc[0]["human_value"])
+        return out
+
+    rich = np.array([_pooled_ratio(c, "richness", "vendi", "q=1") for c in order])   # (n,3)
+    spread = np.array([_pooled_ratio(c, "spread", "mean_pairwise", "") for c in order])
+    lex = [_lex_by_model(c) for c in order]
+    lex_mean = np.array([np.mean(list(d.values())) if d else np.nan for d in lex])
+
+    fig, ax = plt.subplots(figsize=(7.6, 5.4))
+    ax.axhspan(0.95, 1.0, color="0.88", zorder=0)
+    ax.axhline(1.0, ls="--", lw=1.0, color=PARITY_COLOR)
+    ax.text(x[-1] + 0.03, 0.998, "human parity", fontsize=8, color=PARITY_COLOR, va="top", ha="right")
+
+    # Wording control: per-model shape-coded dots + mean line.
+    for xi, d in zip(x, lex):
+        for label, v in d.items():
+            ax.scatter(xi, v, marker=GROUP_MARKERS[label], s=34, facecolor="white",
+                       edgecolor=_WORD_COLOR, linewidth=1.3, zorder=3)
+    h_word, = ax.plot(x, lex_mean, "-o", color=_WORD_COLOR, lw=2.4, ms=9, zorder=5,
+                     label="Wording — lexical control (distinct-2gram)")
+
+    # Idea facets: pooled richness (primary) + spread. Subsample CIs on richness are wide at
+    # n=23 (a descriptive spread, not the paired significance) so they are drawn thin and pale
+    # to keep the point estimates and the wording-vs-idea contrast dominant.
+    h_rich = ax.errorbar(x - 0.015, rich[:, 0], yerr=[rich[:, 0] - rich[:, 1], rich[:, 2] - rich[:, 0]],
+                         fmt="-D", color=_IDEA_COLOR, lw=2.4, ms=8, capsize=2.5,
+                         ecolor="#E8A57E", elinewidth=1.2, zorder=5,
+                         label="Ideas — richness (Vendi VS₁), pooled AI")
+    h_spread, = ax.plot(x + 0.015, spread[:, 0], ":s", color=_IDEA_COLOR, lw=1.7, ms=6, alpha=0.75,
+                        zorder=4, label="Ideas — spread, pooled AI")
+
+    # Annotate the persona gap (the claim), if persona is present.
+    if "persona" in order:
+        pj = order.index("persona")
+        top, bot = lex_mean[pj], rich[pj, 0]
+        if np.isfinite(top) and np.isfinite(bot):
+            ax.annotate("", xy=(pj, bot + 0.008), xytext=(pj, top - 0.008),
+                        arrowprops=dict(arrowstyle="<->", color="0.3", lw=1.2))
+            ax.text(pj - 0.06, (top + bot) / 2, "persona closes\nwording, not ideas",
+                    fontsize=8.5, va="center", ha="right", color="0.2")
+
+    ax.set_xticks(x)
+    ax.set_xticklabels([c.replace("_", "-") for c in order])
+    ax.set_ylim(0.55, 1.03)
+    ax.set_ylabel("AI diversity ÷ human   (1.0 = parity)")
+    ax.set_title(title, fontsize=11)
+    ax.legend([h_word, h_rich, h_spread],
+              ["Wording — lexical control (distinct-2gram)",
+               "Ideas — richness (Vendi VS₁), pooled AI",
+               "Ideas — spread, pooled AI"],
+              fontsize=8.3, loc="lower left", framealpha=0.95)
+    _grid(ax)
+    for s in ("top", "right"):
+        ax.spines[s].set_visible(False)
+    add_direction_badge(fig, "↑ closer to human parity")
+    _caption(fig, "One 'AI ÷ human' axis (parity = 1.0). Wording is the distinct-2gram lexical control (spec 1.9), "
+                  "shown per model (open shapes: Claude □, Gemini △, GPT ◇) with their mean; it is a "
+                  "permutation-tested control, not a facet, so no CI band is drawn. Ideas are the pooled semantic "
+                  "facets richness (Vendi VS₁, pre-registered primary; shown with its without-replacement subsample "
+                  "95% interval at n=23, pale) and spread (point estimate). Under persona the wording control reaches "
+                  "~0.95 (Claude at parity, "
+                  "ns) while richness stays at 0.75 and spread at 0.68, both still significantly below human. Computed "
+                  f"on the {text_version} (style-normalized) branch; on raw text persona wording falls only to its "
+                  "baseline level (SI original-branch table), so this is a residual-wording result, not a claim about "
+                  "the models' unedited prose. self-BLEU corroborates: AI 0.21–0.26 under persona vs 0.34–0.35 "
+                  "under one-at-a-time (human 0.19).")
+    save_fig(fig, out_base)
+
+
+# ---------------------------------------------------------------------------
 # SI panel: claim-level uniqueness (descriptive - complementarity, not diversity)
 # ---------------------------------------------------------------------------
 

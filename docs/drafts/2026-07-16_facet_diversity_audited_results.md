@@ -30,6 +30,46 @@ A separate **displacement** check (not a diversity facet) asks whether AI occupi
 
 ---
 
+## Map of all analyses (so nothing is lost track of)
+
+This report contains **every analysis run by notebooks `02_facets_proposals` and `03_facets_reviews`**. The table is the index; each linked section carries the full "what it is / what question / why it fits / what it means" write-up in plain language. Analyses are computed on both text branches (rephrased = style-normalized, primary; original = raw prose, robustness) and all three elicitation conditions unless noted.
+
+**Shared setup for every analysis below:** all text is embedded with **BioLinkBERT-large** (a biomedical language model; each proposal/review becomes one 1024-number "meaning fingerprint"), distances are **cosine** (1 = identical meaning), and every comparison is made at **matched sample size** (23 vs 23 for proposals; equal-sized panels for reviews). Three models generate/review: **Claude, Gemini, GPT**; humans are 23 proposals (2 cohorts) and their 2–5 expert reviews each.
+
+### Generation side — do AI models propose as varied a set of ideas as humans? (notebook 02)
+
+| # | Analysis | The plain question it answers | Section |
+|---|---|---|---|
+| 1 | **Spread** | Are AI ideas closer together than human ideas, on average? | §2.1 |
+| 2 | **Richness** (Vendi) | How many *effectively different* ideas are there, once near-repeats are discounted? | §2.2 |
+| 3 | **Evenness** | Does AI pile up near-duplicate ideas rather than spacing them out? | §2.3 |
+| 4 | **Dimensionality** | Do AI ideas vary along fewer independent "themes/axes"? | §2.4 |
+| 5 | **Coverage, geometric** | How much of the *territory* of human ideas does AI actually reach? | §2.5 |
+| 6 | **Coverage, domain** | Does AI engage the same *areas of the biomedical literature* (topics, MeSH terms)? | §2.6 |
+| 7 | **Displacement** (MMD² + optimal transport) | Is AI somewhere *else*, or a smaller region *inside* the human one? | §2.7 |
+| 8 | **Wording control** (distinct-n, self-BLEU) | Does raw *wording* narrow too — so the effect can't be blamed on the embedding model? | §2.8 |
+| 9 | **Convergent-validity checks** (multiple estimators + convergence heatmap; kernel & neighborhood-size sensitivity; text-branch contrast) | Do we get the same story when we measure each facet a different way, tune the knobs, or use raw vs normalized text? | §2.9 |
+| 10 | **Condition gradient** | Does idea diversity *recover* as we push harder for it (baseline → one-at-a-time → persona)? | §2.9, §4.4 |
+| 11 | **Model-ordering trend test** (Jonckheere–Terpstra) | Is there a reliable ranking *among* the three models (Claude < Gemini < GPT)? | §2.9 |
+
+### Filtering side — do AI review panels judge a proposal as diversely as human panels? (notebook 03)
+
+| # | Analysis | The plain question it answers | Section |
+|---|---|---|---|
+| 12 | **Spread & richness within panels** | For one proposal, do the AI reviewers say more similar things than the human reviewers? | §3.1 |
+| 13 | **Evenness within panels** | Do AI reviewers produce near-interchangeable reviews (clumps)? | §3.2 |
+| 14 | **Dimensionality within panels** | Do AI reviewers vary along as many axes of critique as humans? | §3.3 |
+| 15 | **Coverage — the "central blanket"** | Does each AI review sit near everything the human reviewers wrote? | §3.4 |
+| 16 | **Displacement of the review cloud** (MMD² + OT) | Do AI reviews carry a systematic "accent" that sets them apart? | §3.5 |
+| 17 | **Gemini-at-baseline flag** | Is the one odd cell a real effect or a data glitch? | §3.6 |
+| 18 | **Interleaving** (SI) | Does either side hold *exclusive territory* the other never reaches? | SI-1 |
+| 19 | **Score-level decision analysis** (SI) | Does the lost disagreement show up in the *numeric scores* a committee uses, and would rankings differ? | SI-3 |
+| 20 | **Claim-level uniqueness** (SI) | At the level of *specific points*, does each panel raise things the other misses? | SI-4 |
+
+*A cross-cutting robustness pass, the **original (raw-text) branch**, repeats the whole battery on unedited prose and is reported in SI-2; the wording-vs-idea contrast (analyses 8 + 2) has its own figure, `si_wording_vs_idea_gap.png`.*
+
+---
+
 ## 1. Results at a glance
 
 ### Table 1a — Generation (proposals): AI ÷ Human diversity retained
@@ -101,6 +141,8 @@ All generation analyses operate on the full text of each proposal, represented i
 
 *What was tested.* The average distance between all pairs of proposals within a group, compared between humans and each AI group by a permutation test (shuffle the group labels 10,000 times and ask how often chance alone produces a gap this large).
 
+*Why it fits.* Spread is the most basic meaning of "variety" — how far ideas sit from one another — and the permutation test makes no assumption about the shape of the data, so it is trustworthy on samples as small as 23. (As a convergent check, spread is also measured five other ways — nearest-neighbor isolation, minimum-spanning-tree dispersion, and others; §2.9 confirms they agree.)
+
 *Result.* Human proposals average 0.416 apart; pooled AI proposals average 0.268–0.293 — AI retains **64–70% of human spread**, significant in every condition (baseline p = .010; one_at_a_time p < .001; persona p = .003). Individual models at n = 23 mostly do not reach significance on their own (the study is powered for the pooled contrast); Gemini is the significant exception under one_at_a_time and persona (ratios 0.45–0.50).
 
 *Implication.* The most direct sense of narrowing — ideas closer together — is present in every condition. But spread alone cannot say *why*: two tight clusters far apart also average a large spread. The next two facets say why.
@@ -108,6 +150,8 @@ All generation analyses operate on the full text of each proposal, represented i
 ### 2.2 Richness — fewer effectively distinct proposals
 
 *What was tested.* The Vendi score VS₁ converts a set's mutual similarities into an "effective number of fully distinct items." The unit is intuitive: the 23 human proposals behave like **3.15 completely independent ideas**, while pooled AI sets behave like **2.09–2.37** (absolute Vendi values are conservative on dense semantic embeddings; the *ratio* is the meaningful quantity).
+
+*Why it fits.* Counting raw proposals is meaningless (every group has 23); the Vendi score is the standard way to turn "how similar is everything to everything else" into an honest count of *genuinely* distinct items — the same idea ecologists use to say a stand of 23 trees from overlapping species behaves like 3 effective species.
 
 *Result.* AI retains **66–75% of human effective richness**, significant in all conditions (pooled p = .005 / <.001 / .004). This is a pre-registered primary result. Gemini is again the weakest single model (0.56 at one_at_a_time).
 
@@ -117,13 +161,17 @@ All generation analyses operate on the full text of each proposal, represented i
 
 *What was tested.* For each group, we count how many close neighbors each proposal has within growing distance thresholds, and compare that against what a random same-size draw of *all* proposals (human and AI together) would produce. Positive excess = more tight clustering than chance ("near-duplicate clumps"); negative = more evenly spaced than chance.
 
+*Why it fits.* Two very different patterns — a few tight clumps, or a smooth even sprinkle — can produce the *same* average spread, so we need a measure aimed specifically at near-duplicate crowding, judged against what a pure chance draw would produce rather than an arbitrary threshold.
+
 *Result.* The starkest qualitative contrast in the study. **Humans are more evenly spread than chance in all three conditions** (excess −0.14 to −0.23), while **pooled AI shows excess clumping in all three** (+0.06 to +0.14; p ≈ .001 throughout, simultaneous-envelope test). In nearest-neighbor terms: at a distance where only ~35% of human proposals have a close "twin," over 80% of Claude's baseline proposals already do.
 
 *Implication.* AI's narrowing takes a specific and recognizable form — it returns to the same wells. This is exactly the failure mode that averaged distance metrics can hide, and it is why the multi-facet design exists.
 
 ### 2.4 Dimensionality — narrowing is *not* a collapse onto fewer axes
 
-*What was tested.* The participation ratio: an effective count of independent directions along which a group's proposals vary.
+*What was tested.* The participation ratio: an effective count of independent directions ("themes/axes") along which a group's proposals vary.
+
+*Why it fits.* Narrowing could mean two very different things — fewer positions along the same axes, or a collapse onto fewer axes entirely; the participation ratio isolates the second by estimating how many independent directions actually carry the variation, so §2.2–2.3 and §2.4 together pin down the mechanism.
 
 *Result.* Essentially null. Ratios are 0.85–1.06 across conditions; only one_at_a_time shows a modest, significant reduction (0.85, p = .02), and under persona AI is numerically *above* parity (1.06, ns).
 
@@ -133,13 +181,17 @@ All generation analyses operate on the full text of each proposal, represented i
 
 *What was tested.* For each human proposal, does any AI proposal fall within its local neighborhood? The benchmark is not 100%: even a second, equally human set would miss some — so AI is judged against how well one random half of the human set covers the other half.
 
+*Why it fits.* Being spread out is not the same as covering the *same ground* — AI could be varied yet clustered off to one side; coverage asks the reach question directly, and using "one human half covering the other" as the yardstick keeps the bar honest instead of demanding an impossible 100%.
+
 *Result.* Pooled AI reaches **81–86% of the human idea-space**, below the human self-benchmark at baseline (p = .038) and persona (p < .001), marginal at one_at_a_time (p = .08). The model split is the striking part: **Claude covers the human space fully (ratio 1.00 at baseline and one_at_a_time), while Gemini reaches only 61%.** A stability check across neighborhood sizes (k = 2, 3, 5) preserves this ordering.
 
 *Implication.* There is a periphery of human proposals — roughly one in six — that the AI pool never approaches, and *which* AI you use matters more here than for any other facet.
 
 ### 2.6 Coverage (domain) — the narrowing is inside topics, not across them
 
-*What was tested.* Each proposal was mapped to its ten nearest abstracts among ~39,500 PubMed papers; a group's domain coverage is how many of the 12 literature regions, and how many unique MeSH subject terms, it collectively touches — always compared at equal group size, with accumulation curves to make the counts honest.
+*What was tested.* Each proposal was mapped to its ten nearest abstracts among ~39,500 PubMed papers; a group's domain coverage is how many of the 12 literature regions, and how many unique MeSH subject terms, it collectively touches — always compared at equal group size, with accumulation curves to make the counts honest. (MeSH = the National Library of Medicine's standardized biomedical subject headings.)
+
+*Why it fits.* The geometric result could have a mundane explanation — maybe AI simply avoids whole areas of biology; anchoring every proposal to its nearest real PubMed papers checks that directly, in units (topic regions, subject headings) a biomedical reader recognizes.
 
 *Result.* Essentially null, and the direction is mixed. All groups touch 5–8 of 12 regions; the only significant cell after correction is pooled AI at one_at_a_time (5.9 vs 7 regions, p_fdr = .008). AI proposals nominally touch *more* unique MeSH terms than humans (e.g., 571–598 vs 504, ns). The region-occupancy maps show only rare exclusive territories (e.g., a clinical-risk/patient-studies region touched only by humans at baseline).
 
@@ -147,24 +199,41 @@ All generation analyses operate on the full text of each proposal, represented i
 
 ### 2.7 Displacement check — a smaller region *inside* the human one
 
-*What was tested.* Whether the AI proposal cloud sits somewhere *else* than the human cloud (kernel two-sample distance MMD², against a shuffle-based null), which would change the story from "narrower" to "different."
+*What was tested.* Whether the AI proposal cloud sits somewhere *else* than the human cloud (kernel two-sample distance MMD² — "how distinguishable are the two clouds?" — against a shuffle-based null), which would change the story from "narrower" to "different." A second, mathematically independent distance, **optimal transport** (Wasserstein — "how much work to slide one cloud onto the other?"), is computed the same way as a cross-check, so the conclusion never rests on a single estimator.
 
-*Result.* Pooled displacement is small and non-significant in every condition (0.032–0.062, all ns; the human split-half floor is ≈ 0). Per model: GPT is essentially undisplaced (persona MMD² = 0.000); Gemini is the only repeat offender (significant at one_at_a_time and persona).
+*Why it fits.* "Less coverage" has two opposite meanings — a smaller region *inside* the human cloud, or a shove into *different* territory — and only a whole-cloud distance test can tell them apart; running two different distances guards against either one having a quirk.
+
+*Result.* Pooled displacement is small and non-significant in every condition (MMD² 0.032–0.062, all ns; the human split-half floor is ≈ 0), and **optimal transport agrees** (same near-zero, non-significant pattern). Per model: GPT is essentially undisplaced (persona MMD² = 0.000); Gemini is the only repeat offender (significant at one_at_a_time and persona).
 
 *Implication.* Low coverage plus low displacement is the specific geometric signature of the central claim: **AI narrows *toward the shared human center*, occupying a competent, plausible core while missing the periphery** — as opposed to wandering into territory of its own. Gemini is the partial exception: narrowest *and* somewhat shifted.
 
-### 2.8 Controls and robustness
+### 2.8 Wording control — does the narrowing show up in raw wording too?
 
-- **Lexical control.** Human proposals are also more diverse in raw wording (distinct 2-gram ratios 1.04–1.24, significant almost everywhere), and AI text repeats its own phrasing more (self-BLEU 0.21–0.35 vs 0.19). Semantic narrowing therefore cannot be an artifact of the text encoder. Notably, **persona nearly closes the wording gap (ratios drop to ~1.04–1.07) while the idea-level gaps of §2.1–2.3 persist** — personas diversify *how* models write more than *what* they propose.
+*What was tested.* Two text-only measures that never touch the embedding: **distinct-n** (the share of word pairs that are unique — higher = more varied wording) and **self-BLEU** (how much a group reuses its own phrasing — higher = more repetitive). Human vs each AI group, per condition, on both text branches.
+
+*Why it fits.* Every facet above is computed inside the BioLinkBERT embedding, so a skeptic could object that the "narrowing" is a quirk of that one model. Wording is measured in plain words instead; if wording narrows the *same way* the embedding does, the encoder cannot be the cause.
+
+*Result.* Human proposals are more varied in raw wording too (distinct-2gram ratios 1.04–1.24, significant almost everywhere) and AI reuses its own phrasing more (self-BLEU 0.21–0.35 vs human 0.19), in every condition — so the semantic narrowing is real, not an encoder artifact. One twist stands out: on the primary (style-normalized) branch, **persona nearly closes the *wording* gap (ratios fall to ~1.04–1.07, Claude at parity) while the idea-level gaps of §2.1–2.3 do not budge** — personas change *how* models write far more than *what* they propose.
+
+*How to read it.* This is a **control, not a diversity facet** (self-BLEU is descriptive, with no significance test), so it sits beside the facets, not among them. The wording-vs-idea contrast has a dedicated figure, `results/figures/synthesis/{rephrased,original}/si_wording_vs_idea_gap.png`: one "AI ÷ human" axis on which the wording line rises to ~0.95 under persona while richness and spread stay at 0.68–0.75. *Caveat:* because the primary branch rewrites all text into one neutral house style, this is a *residual*-wording result; on raw text (SI-2) persona wording only returns to its baseline level, so the "closes to parity" reading is specific to the normalized branch.
+
+### 2.9 Robustness and convergent-validity checks
+
+*Why these exist.* A single number can mislead for boring reasons — the particular estimator chosen, a tuning knob, or raw-versus-edited prose. Each check below re-asks the same question a different way; the findings the synthesis (§4) leans on are the ones that survive all of them.
+
+- **Convergent validity — many estimators per facet.** Each facet is deliberately measured *several ways*: spread six ways (mean pairwise distance, nearest-neighbor isolation, minimum-spanning-tree dispersion, sparseness, spherical variance, centroid distance), dimensionality two ways (participation ratio and effective rank), evenness two ways (Ripley clumping and a Vendi-slope), coverage two ways (geometric support overlap and a density companion), displacement two ways (MMD² and optimal transport). A **convergence heatmap** (`.../proposals/{branch}/_convergence/facet_convergence_heatmap.png`) shows the estimators within each facet move together. *How to read it:* agreement across estimators means the facet is a stable property, not an artifact of one formula — so reporting one headline metric per facet is safe.
 - **Style sensitivity (text branch).** On the unrephrased `original` text, the pooled baseline spread/richness contrasts disappear (ratios 1.02/0.96, ns) — but not because the models agree with humans: Claude and GPT are significantly *narrower* on raw text (0.58–0.87, \*\*\*) while Gemini's raw prose is *wider* than human (spread ratio 1.52), and the opposing style effects cancel in the pool. One_at_a_time and persona replicate on both branches, and geometric coverage narrows on *both* branches (baseline original 0.60, p < .001). The pre-registered primary branch is `rephrased`; the full original-branch results, and what the rephrased-vs-original contrast reveals about style versus ideas, are reported in **SI-2**.
-- **Kernel sensitivity.** The richness result's direction is preserved under an alternative (RBF) similarity kernel across bandwidths; individual per-model significances vary (4–6 of 9 cells), consistent with per-model tests being underpowered rather than direction-unstable.
-- **Ordering across models.** Trend tests for the pre-specified ordering Claude < Gemini < GPT < Human are dominated entirely by the human–AI gap; the internal AI ordering is not supported (Gemini, not Claude, is typically the narrowest). We report "humans above every model" and decline the model-ranking claim.
+- **Kernel and neighborhood-size sensitivity.** The richness result's direction holds under an alternative (RBF) similarity kernel across three bandwidths (per-model significances vary, 4–6 of 9 cells, consistent with per-model tests being underpowered rather than unstable); geometric coverage holds across neighborhood sizes k = 2, 3, 5. *How to read it:* the conclusions do not depend on tuning choices.
+- **Condition gradient — does diversity recover as we push for it?** The same facets are tracked across the three conditions (baseline → one_at_a_time → persona; figure `fig6_condition_gradient.png`, pooled AI subsampled to 23) to see whether stronger diversity pressure closes the gap. *Result:* it does not — no facet reaches human parity in any condition, and persona (the strongest push) leaves the idea-level gaps essentially where baseline had them (§4.4).
+- **Ordering across models (Jonckheere–Terpstra trend test).** A formal trend test for the pre-specified ranking Claude < Gemini < GPT < Human. *Result:* it is dominated entirely by the human–AI gap; the internal AI ordering is not supported (Gemini, not Claude, is typically the narrowest). *How to read it:* we report "humans above every model" and decline any model-ranking claim.
 
 ---
 
 ## 3. Filtering: how AI narrows the judgment of ideas
 
 The filtering analyses respect the nested structure of review: reviews of *different* proposals differ for reasons that have nothing to do with reviewer independence. So every metric is computed *within* a proposal — the 2–5 human reviews of proposal X versus same-sized panels drawn from the AI reviews of proposal X — and then the 23 within-proposal comparisons are combined with a paired test. The human panel is thus the built-in reference: effects are read as "AI panels relative to the human panels of the very same proposals."
+
+*The five facets are the same measures as §2* (spread, richness, evenness, dimensionality, coverage, plus a displacement check), so each facet's "what it is / why it fits" rationale carries over; what changes here is only the **design** — paired within-proposal instead of group-vs-group, and therefore reported as Cliff's δ (consistency of direction) rather than a ratio.
 
 Two reference conventions matter and are stated on every figure: the human self-benchmark for panel *coverage* is leave-one-out self-coverage (how well each human review is covered by the rest of its own panel; 0.83 on average — not 1.0), and panel *clumping* is judged against random same-sized draws from that condition's full review pool.
 
@@ -190,7 +259,7 @@ Two reference conventions matter and are stated on every figure: the human self-
 
 ### 3.5 Displacement and ordering checks
 
-The pooled AI review cloud is significantly displaced from the human cloud in every condition (whole-cloud, exploratory: MMD² = 0.0073 → 0.0116 → 0.0155 from baseline to persona, all p ≤ 2×10⁻⁴) — AI reviews have a systematic stylistic/positional signature that *grows* under structured elicitation even as panel diversity shrinks. (The branch comparison in SI-2 shows this signature is overwhelmingly stylistic: on raw text the displacement is ~20× larger and rephrasing removes almost all of it.) Trend tests across models are uniformly non-significant on the filtering side: no model ordering, again.
+The pooled AI review cloud is significantly displaced from the human cloud in every condition (whole-cloud, exploratory: MMD² = 0.0073 → 0.0116 → 0.0155 from baseline to persona, all p ≤ 2×10⁻⁴; the second distance, optimal transport, shows the same growing pattern) — AI reviews have a systematic stylistic/positional signature that *grows* under structured elicitation even as panel diversity shrinks. (The branch comparison in SI-2 shows this signature is overwhelmingly stylistic: on raw text the displacement is ~20× larger and rephrasing removes almost all of it.) Trend tests across models are uniformly non-significant on the filtering side: no model ordering, again.
 
 ### 3.6 One flagged cell
 
@@ -411,4 +480,4 @@ Two design choices carry the analysis:
 
 - **Audit trail.** The statistical pipeline was audited line-by-line against the design specification (2026-07-15/16): the review-side coverage and evenness pairings, the trend-test direction, domain-coverage inference, FDR family structure, and the evenness-slope metric were corrected; presentation was subsequently re-oriented so that every panel reads "up/right = more diverse" (Direction Rule), with statistics verified byte-identical before and after the visual redesign. AI reviews were regenerated with the corrected prompt on 2026-07-16 and notebooks 03–04 recomputed; proposal-side inputs (embeddings, group structure) were verified unchanged, so generation results carry over exactly.
 - **Superseded result.** An earlier run (incorrect review prompt) showed baseline AI review panels as *more* diverse than human panels; that finding did not survive the prompt correction and should not be cited.
-- **Sources.** Tables: `results/tables/{condition}/{task}/{text_version}/facet_diversity_tests.csv` (+ `facet_fingerprint.csv`, `facet_interleaving.csv`, `facet_diversity_gradient.csv`, curve/null parquets), `results/tables/cross_condition/reviews/score_decision_analysis.csv` (SI-3), and `.../claim_uniqueness.csv` + `claim_uniqueness_examples.csv` (SI-4). Figures: `results/figures/.../facet_fingerprint.png`, per-facet panels, `results/figures/synthesis/{text_version}/fig1–fig6` + `fig2b_human_ai_slopegraph` (+ supplements), and the SI panels `si_interleaving_{proposals,reviews}.png` and `si_claim_uniqueness.png`. Specs: `docs/plans/diversity_facets_design_spec_v2.md`, `docs/plans/facet_visualization_redesign_spec.md`.
+- **Sources.** Tables: `results/tables/{condition}/{task}/{text_version}/facet_diversity_tests.csv` (holds every facet metric *plus* the `lexical_control` rows of §2.8, the `displacement` MMD²/`ot_wasserstein` rows of §2.7/§3.5, and the multiple per-facet estimators of §2.9; + `facet_fingerprint.csv`, `facet_interleaving.csv`, `facet_diversity_gradient.csv` for the condition/model trend tests, curve/null parquets), `results/tables/cross_condition/reviews/score_decision_analysis.csv` (SI-3), and `.../claim_uniqueness.csv` + `claim_uniqueness_examples.csv` (SI-4). Figures: `results/figures/.../facet_fingerprint.png`, per-facet panels, the `_convergence/facet_convergence_heatmap.png` (§2.9), `results/figures/synthesis/{text_version}/fig1–fig6` + `fig2b_human_ai_slopegraph` (+ supplements), and the SI panels `si_interleaving_{proposals,reviews}.png`, `si_claim_uniqueness.png`, and `si_wording_vs_idea_gap.png` (§2.8). Specs: `docs/plans/diversity_facets_design_spec_v2.md`, `docs/plans/facet_visualization_redesign_spec.md`.
