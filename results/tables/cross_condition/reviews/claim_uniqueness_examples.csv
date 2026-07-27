@@ -1,0 +1,31 @@
+condition,target_proposal_uid,nn_distance,polarity,review_uid,source,family,claim_text
+baseline,y1::3,0.14465349711399322,strength,y1::3::1::01,human,human,The research design includes defined milestones and strict adherence to open science principles through public code repositories.
+baseline,y1::3,0.14022518015638252,strength,y1::3::2::01,human,human,The investigators identify numerous substantial databases appropriate for the synthesis phase.
+baseline,y1::5,0.12552956318414776,strength,y1::5::2::01,human,human,The project schedule provides an appropriate timeframe to execute the planned synthesis.
+baseline,y1::1,0.12368356875462239,strength,y1::1::4::01,human,human,The research motivation addresses critical vulnerabilities in agricultural yield and food security.
+baseline,y2::9,0.12279046971217122,strength,y2::9::4::01,human,human,Favorable elements include a practical execution schedule and appropriate institutional support.
+baseline,y1::6,0.1154382797353305,weakness,y1::6::3::01,human,human,Relying heavily on an undergraduate workforce presents risks for timely project completion.
+baseline,y1::5,0.11484218128872303,weakness,y1::5::2::01,human,human,The native folding probability calculation yields questionable baseline values for proteins independent of chaperone interactions.
+baseline,y2::8,0.11439475322676784,weakness,y2::8::1::01,human,human,The analytical approach requires robust methods for resolving orthologs and multiple paralogs between taxa within a constrained timeframe.
+baseline,y2::10,0.11395835098595009,weakness,y2::10::2::01,human,human,The large scope involving ten thousand individual proteins introduces data volume management challenges.
+baseline,y1::12,0.11347202185157457,weakness,y1::12::3::01,human,human,The methodology uses continuous adjustment for final dataset selection rather than predefined inclusion criteria.
+one_at_a_time,y1::3,0.1467682246602673,strength,y1::3::2::01,human,human,The investigators identify numerous substantial databases appropriate for the synthesis phase.
+one_at_a_time,y1::3,0.13289720844456954,strength,y1::3::1::01,human,human,The research design includes defined milestones and strict adherence to open science principles through public code repositories.
+one_at_a_time,y1::2,0.12188696946916389,strength,y1::2::2::01,human,human,A highly capable working group supports the project with an appropriate timeline and suitable resource allocation.
+one_at_a_time,y1::1,0.12176796245087251,strength,y1::1::4::01,human,human,The research motivation addresses critical vulnerabilities in agricultural yield and food security.
+one_at_a_time,y1::5,0.11871971546849402,strength,y1::5::2::01,human,human,The project schedule provides an appropriate timeframe to execute the planned synthesis.
+one_at_a_time,y1::7,0.13609097189989172,weakness,y1::7::3::01,human,human,The foundational structural prediction algorithms operate strictly on ambient pressure data and therefore cannot accurately model the thermodynamic adaptations of extremophilic marine proteins.
+one_at_a_time,y1::5,0.12769102286472866,weakness,y1::5::3::01,human,human,Establishing a causal relationship between protein stability and network topology poses a significant challenge due to biological complexity.
+one_at_a_time,y2::5,0.1180367595786056,weakness,y2::5::2::01,human,human,The narrative presents conflicting information regarding organism selection and dataset balance between hibernating and nonhibernating animals.
+one_at_a_time,y1::3,0.11081423141320457,weakness,y1::3::3::01,human,human,The text provides a preliminary overview of the exact analytical capabilities and specific organism patterns.
+one_at_a_time,y2::7,0.11016096438362555,weakness,y2::7::1::01,human,human,The application necessitates additional explanation of the specific responsibilities assigned to support staff and student researchers.
+persona,y1::5,0.1393507232155058,strength,y1::5::2::01,human,human,The project schedule provides an appropriate timeframe to execute the planned synthesis.
+persona,y1::2,0.13761639313758756,strength,y1::2::2::01,human,human,A highly capable working group supports the project with an appropriate timeline and suitable resource allocation.
+persona,y1::3,0.13231184890255276,strength,y1::3::1::01,human,human,The research design includes defined milestones and strict adherence to open science principles through public code repositories.
+persona,y2::9,0.12954516436447705,strength,y2::9::4::01,human,human,Favorable elements include a practical execution schedule and appropriate institutional support.
+persona,y1::3,0.12874978635951873,strength,y1::3::2::01,human,human,The investigators identify numerous substantial databases appropriate for the synthesis phase.
+persona,y1::7,0.14045707950591335,weakness,y1::7::3::01,human,human,The foundational structural prediction algorithms operate strictly on ambient pressure data and therefore cannot accurately model the thermodynamic adaptations of extremophilic marine proteins.
+persona,y1::6,0.11571763671069979,weakness,y1::6::3::01,human,human,Relying heavily on an undergraduate workforce presents risks for timely project completion.
+persona,y1::8,0.11530156068562836,weakness,y1::8::5::01,human,human,The dataset construction restricts analysis to matched samples rather than incorporating unmatched reference points to expand the analytical scope.
+persona,y2::3,0.11359914119607806,weakness,y2::3::2::01,human,human,The broad methodological overview limits the assessment of approach novelty and rigor.
+persona,y2::4,0.11261458025853943,weakness,y2::4::1::01,human,human,The computational strategy requires formal benchmarking against existing methods to demonstrate novelty and validate the analytical framework.

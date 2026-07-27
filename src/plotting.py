@@ -1165,6 +1165,91 @@ def plot_interleaving_si(inter: pd.DataFrame, out_base: Path, *, task: str, titl
 
 
 # ---------------------------------------------------------------------------
+# SI panel: claim-level uniqueness (descriptive - complementarity, not diversity)
+# ---------------------------------------------------------------------------
+
+def plot_claim_uniqueness_si(claim_df: pd.DataFrame, out_base: Path, *, title: str,
+                             comparison: str = "human_vs_pooled_ai") -> None:
+    """Two-panel SI figure from facet claim_uniqueness.csv.
+
+    Panel A: matched-panel unmatched-claim rates, human-unique vs AI-unique, per
+    condition x polarity - the fair (exact-n) comparison.
+    Panel B: the same human-unique rate under both matchings, showing how much the
+    full-reservoir comparison understates it.
+    Descriptive complementarity: no diversity direction, no inference.
+    """
+    sub = claim_df[claim_df["comparison"].eq(comparison)]
+    conds = ["baseline", "one_at_a_time", "persona"]
+    pols = ["strength", "weakness"]
+    fig, (axA, axB) = plt.subplots(1, 2, figsize=(12.5, 4.8))
+    if sub.empty:
+        axA.text(0.5, 0.5, "No claim-uniqueness rows", ha="center", va="center")
+        axA.set_axis_off(); axB.set_axis_off()
+        save_fig(fig, out_base)
+        return
+
+    def val(cond, pol, matching, stat):
+        r = sub[sub["condition"].eq(cond) & sub["polarity"].eq(pol)
+                & sub["matching"].eq(matching) & sub["stat"].eq(stat)]
+        return 100 * float(r["value"].iloc[0]) if not r.empty else np.nan
+
+    # Panel A - the fair comparison: both sides at matched panel size.
+    xs = np.arange(len(conds) * len(pols))
+    labels = [f"{c}\n{p}" for c in conds for p in pols]
+    hv = [val(c, p, "exact_n", "human_unique_rate") for c in conds for p in pols]
+    av = [val(c, p, "exact_n", "ai_unique_rate") for c in conds for p in pols]
+    w = 0.38
+    axA.bar(xs - w / 2, hv, w, color=PALETTE["Human"], alpha=0.88, edgecolor="black", linewidth=0.6,
+            label="human claims no AI claim matches")
+    axA.bar(xs + w / 2, av, w, color=PALETTE["All AI"], alpha=0.62, hatch="//", edgecolor="black",
+            linewidth=0.6, label="AI claims no human claim matches")
+    for x, v in zip(xs - w / 2, hv):
+        if np.isfinite(v):
+            axA.annotate(f"{v:.0f}%", (x, v), textcoords="offset points", xytext=(0, 3), ha="center", fontsize=8)
+    for x, v in zip(xs + w / 2, av):
+        if np.isfinite(v):
+            axA.annotate(f"{v:.0f}%", (x, v), textcoords="offset points", xytext=(0, 3), ha="center", fontsize=8)
+    axA.set_xticks(xs, labels, fontsize=8)
+    axA.set_ylim(0, max([v for v in hv + av if np.isfinite(v)] + [10]) * 1.3)
+    axA.set_ylabel("% of claims with no counterpart\nin the other panel")
+    axA.set_title("A · Matched panel size (exact-n): each side misses ~half the other's points",
+                  fontsize=9.5, loc="left")
+    axA.legend(fontsize=7.5, loc="upper right")
+    _grid(axA)
+
+    # Panel B - why matching matters: same statistic, two comparison sets.
+    ex = [val(c, p, "exact_n", "human_unique_rate") for c in conds for p in pols]
+    fu = [val(c, p, "full_ai_reservoir", "human_unique_rate") for c in conds for p in pols]
+    axB.bar(xs - w / 2, ex, w, color=PALETTE["Human"], alpha=0.88, edgecolor="black", linewidth=0.6,
+            label="vs matched AI panel (m reviews)")
+    axB.bar(xs + w / 2, fu, w, color=PALETTE["Human"], alpha=0.30, edgecolor="black", linewidth=0.6,
+            label="vs the full AI reservoir (15 reviews)")
+    for x0, x1, a, b in zip(xs - w / 2, xs + w / 2, ex, fu):
+        if np.isfinite(a) and np.isfinite(b):
+            axB.annotate("", xy=(x1, b), xytext=(x0, a),
+                         arrowprops=dict(arrowstyle="->", color=PARITY_COLOR, alpha=0.5, linewidth=1.1))
+    axB.set_xticks(xs, labels, fontsize=8)
+    axB.set_ylim(0, max([v for v in ex + fu if np.isfinite(v)] + [10]) * 1.3)
+    axB.set_ylabel("% of human claims unmatched")
+    axB.set_title("B · Same statistic, two questions: panel replacement vs full reservoir",
+                  fontsize=9.5, loc="left")
+    axB.legend(fontsize=7.5, loc="upper right")
+    _grid(axB)
+
+    fig.suptitle(title, fontsize=11.5)
+    fig.tight_layout()
+    _caption(fig, "Claims = sentences of strengths/weakness fields, embedded with the prep encoder (BioLinkBERT-large, "
+                  "mean pooling). A claim is 'unmatched' when its nearest claim in the other panel is farther than the "
+                  "calibrated threshold — the median nearest-claim distance between DIFFERENT human reviewers of the "
+                  "same proposal (0.084 strengths / 0.094 weaknesses). A: both panels at exact-n (spec 11.1), averaged "
+                  "over enumerated panels — the fair comparison. B: the same human-unique rate drops when compared "
+                  "against all 15 AI reviews, which answers 'does the full reservoir contain this point?' rather than "
+                  "'would an AI panel of the same size have raised it?'. Descriptive; unmatched ≠ substantively novel "
+                  "until hand-coded (see the examples file).")
+    save_fig(fig, out_base)
+
+
+# ---------------------------------------------------------------------------
 # Convergence heatmap (spec 3.4) + cross-condition ratios
 # ---------------------------------------------------------------------------
 
