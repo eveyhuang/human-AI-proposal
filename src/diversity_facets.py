@@ -150,6 +150,79 @@ def vendi_evenness_slope(scores: Dict[Any, float], q_low: float = 0, q_high: flo
     return float((np.log(high) - np.log(low)) / (q_high - q_low))
 
 
+def simpson_similarity(X: np.ndarray, *, kind: str = "gini", kernel: str = "cosine",
+                       sigma: float | None = None) -> float:
+    """Similarity-sensitive Simpson index on the kernel eigenvalue spectrum.
+
+    Simpson's classical index assumes discrete categories with proportions p_i and uses
+    the concentration D = sum(p_i^2). Here the items are points in embedding space with no
+    discrete categories, so we use the eigenvalues lambda_i of the normalized similarity
+    matrix K/n (sum(lambda_i) = 1) in place of p_i -- the standard similarity-sensitive
+    generalization (this is exactly the Vendi / Leinster-Cobbold construction).
+
+        kind="concentration" -> D = sum(lambda_i^2)      Simpson's D; LOWER = more diverse.
+                                 (equals the mean squared cosine similarity, (1/n^2) sum_ij K_ij^2)
+        kind="gini"          -> 1 - sum(lambda_i^2)       Gini-Simpson; 0..1, HIGHER = more diverse.
+        kind="inverse"       -> 1 / sum(lambda_i^2)       inverse Simpson = Vendi VS_2 (order 2);
+                                 an effective count of distinct items, HIGHER = more diverse.
+
+    When K is the hard same/different indicator (block-identical groups), lambda_i reduce to
+    the category proportions p_i and these collapse to the classical Simpson quantities --
+    see `simpson_categorical`.
+    """
+    Xn = l2_normalize(X)
+    n = Xn.shape[0]
+    if n == 0:
+        return np.nan
+    if kernel == "cosine":
+        K = Xn @ Xn.T
+    elif kernel == "rbf":
+        if sigma is None:
+            sigma = median_pairwise_distance(Xn)
+        K = np.exp(-pairwise_sq_euclidean(Xn) / (2.0 * sigma**2))
+    else:
+        raise ValueError(f"Unsupported kernel: {kernel}")
+    w = np.linalg.eigvalsh(K / float(n))
+    w = np.clip(w, 0.0, None)
+    w = w[w > EPS]
+    if w.size == 0:
+        return np.nan
+    concentration = float(np.sum(w**2))
+    if kind == "concentration":
+        return concentration
+    if kind == "gini":
+        return float(1.0 - concentration)
+    if kind == "inverse":
+        return float(1.0 / concentration) if concentration > 0 else np.nan
+    raise ValueError(f"Unknown kind: {kind}")
+
+
+def simpson_categorical(labels: Iterable[Any]) -> Dict[str, float]:
+    """Classical Simpson index on discrete category labels (the textbook formula).
+
+    Given category labels (e.g. the literature region each proposal falls in), forms the
+    proportions p_i = n_i / N and returns:
+        concentration D = sum(p_i^2)          probability two random items share a category
+        gini            = 1 - sum(p_i^2)      Gini-Simpson index (0..1, higher = more diverse)
+        inverse         = 1 / sum(p_i^2)      inverse Simpson = effective number of categories
+        richness        = number of occupied categories (S)
+        n               = number of items counted
+    Labels equal to None/NaN are dropped.
+    """
+    vals = [lab for lab in labels if lab is not None and not (isinstance(lab, float) and np.isnan(lab))]
+    n = len(vals)
+    if n == 0:
+        return {"concentration": np.nan, "gini": np.nan, "inverse": np.nan, "richness": 0, "n": 0}
+    counts: Dict[Any, int] = {}
+    for lab in vals:
+        counts[lab] = counts.get(lab, 0) + 1
+    p = np.asarray(list(counts.values()), dtype=float) / float(n)
+    D = float(np.sum(p**2))
+    return {"concentration": D, "gini": float(1.0 - D),
+            "inverse": float(1.0 / D) if D > 0 else np.nan,
+            "richness": int(len(counts)), "n": int(n)}
+
+
 def vendi_slope(scores: Dict[Any, float]) -> float:
     """Relative q=0 to q=2 Vendi-profile drop; larger means lower evenness."""
     if 0 not in scores or 2 not in scores:

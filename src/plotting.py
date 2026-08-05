@@ -1165,6 +1165,335 @@ def plot_interleaving_si(inter: pd.DataFrame, out_base: Path, *, task: str, titl
 
 
 # ---------------------------------------------------------------------------
+# Gate-keeping: can a panel reproduce the ACTUAL funding decisions?
+# ---------------------------------------------------------------------------
+
+def plot_decision_outcome(proposal_scores: pd.DataFrame, curves: pd.DataFrame, summary: pd.DataFrame,
+                          out_base: Path, *, title: str,
+                          conditions: Sequence[str] = ("baseline", "one_at_a_time", "persona")) -> None:
+    """Three-panel decision-outcome figure (mechanism -> ranking -> funding).
+
+    A: per-proposal panel-mean scores (the mechanism) - AI barely varies across proposals
+       (it rates everything ~4), Human spreads; funded vs not coloured.
+    B: rank agreement with the actual funding ranking vs panel size - Human aggregates
+       upward, AI plateaus low at every condition.
+    C: funding discrimination (AUC) - full AI panels sit at chance in every condition.
+    """
+    conds = [c for c in conditions if c in set(summary[summary.group.eq("AI")].condition)]
+    cond_col = {c: _COND_COLOR.get(c, "#4A90E2") for c in conds}
+    fig, (axA, axB, axC) = plt.subplots(1, 3, figsize=(14.2, 5.0),
+                                        gridspec_kw={"width_ratios": [1.05, 1.5, 1.0]})
+
+    # ---- A: mechanism, per-proposal panel means, on the SAME human-scored proposals ----
+    common = set(proposal_scores[(proposal_scores.group.eq("Human")) & (proposal_scores.condition.eq("all"))
+                                 & proposal_scores["panel_mean"].notna()]["uid"])
+    n_common = len(common)
+    groups = [("Human", "all", PALETTE["Human"])] + [("AI", c, cond_col[c]) for c in conds]
+    rng = np.random.RandomState(0)
+    for xi, (grp, cond, col) in enumerate(groups):
+        d = proposal_scores[(proposal_scores.group.eq(grp)) & (proposal_scores.condition.eq(cond))
+                            & proposal_scores["uid"].isin(common)]
+        vals = d["panel_mean"].to_numpy(float)
+        fund = d["funded"].to_numpy()
+        ok = np.isfinite(vals)
+        vals, fund = vals[ok], fund[ok].astype(bool)
+        axA.boxplot([vals], positions=[xi], widths=0.55, showmeans=True, meanline=True, showfliers=False,
+                    patch_artist=True, medianprops=dict(color="black", lw=1.4),
+                    meanprops=dict(color=col, lw=1.5, ls="--"),
+                    boxprops=dict(facecolor=col, alpha=0.16, edgecolor=col),
+                    whiskerprops=dict(color=col), capprops=dict(color=col), zorder=2)
+        jit = xi + (rng.rand(len(vals)) - 0.5) * 0.26
+        for f in (True, False):
+            m = fund == f
+            axA.scatter(jit[m], vals[m], s=30, facecolor=(col if f else "white"),
+                        edgecolor=col, linewidth=1.0, alpha=0.9, zorder=3)
+        sd = float(np.std(vals, ddof=1)) if len(vals) >= 2 else np.nan
+        axA.text(xi, 5.06, f"SD={sd:.2f}", ha="center", fontsize=8, color=col)
+    axA.set_xticks(range(len(groups)), ["Human"] + [f"AI\n{c.replace('_', '-')}" for c in conds], fontsize=8)
+    axA.set_ylabel("panel mean score (per proposal)")
+    axA.set_ylim(1.8, 5.3)
+    axA.set_title(f"A · AI scores vary less across proposals, and not\nwith funding (same {n_common} scored proposals; ● funded ○ not)",
+                  fontsize=9.2, loc="left")
+    axA.grid(axis="y", alpha=0.2)
+
+    # ---- B: rank agreement vs panel size (x cut to the human range; AI stays flat past it) ----
+    h = curves[curves.group.eq("Human")].sort_values("k")
+    hmax = int(h.k.max()) if not h.empty else 4
+    xmax = hmax + 2
+    ai_full = {c: curves[(curves.group.eq("AI")) & (curves.condition.eq(c))].sort_values("k") for c in conds}
+    if not h.empty:
+        axB.errorbar(h.k, h.rho, yerr=h.se, fmt="o-", color=PALETTE["Human"], lw=2.6, ms=8, capsize=3,
+                     label="Human panel", zorder=5)
+        for _, r in h.iterrows():
+            axB.annotate(f"n={int(r.n_props)}", (r.k, r.rho), textcoords="offset points", xytext=(0, 10),
+                         ha="center", fontsize=6.3, color=PALETTE["Human"])
+    for c in conds:
+        a = ai_full[c][ai_full[c].k <= xmax]
+        if not a.empty:
+            axB.errorbar(a.k, a.rho, yerr=a.se, fmt="s--", color=cond_col[c], lw=2, ms=5, capsize=2,
+                         label=f"AI · {c.replace('_', '-')} (n=23)")
+    axB.axhline(0, color="0.6", lw=1, ls=":")
+    # note the AI asymptote at the full 15-review panel, placed in the empty upper-right,
+    # with a light arrow down to the AI plateau so it never sits on the lines
+    plateau = np.nanmean([ai_full[c]["rho"].iloc[-1] for c in conds if not ai_full[c].empty])
+    axB.annotate(f"AI stays flat to 15 reviewers (ρ≈{plateau:.2f})",
+                 xy=(xmax, plateau + 0.02), xytext=(xmax + 0.4, 0.66),
+                 ha="right", va="center", fontsize=6.8, color="0.35",
+                 arrowprops=dict(arrowstyle="->", color="0.6", lw=0.8))
+    axB.set_xlim(0.5, xmax + 0.5)
+    axB.set_ylim(-0.05, 1.05)
+    axB.set_xlabel(f"# reviewers in panel  (human panels max at {hmax})")
+    axB.set_ylabel("rank agreement with ACTUAL\nfunding ranking (Spearman ρ)")
+    axB.set_title("B · Human review aggregates toward the real ranking;\nAI stays low at every panel size and condition",
+                  fontsize=9.5, loc="left")
+    axB.legend(fontsize=7.3, loc="lower right")
+    _grid(axB)
+
+    # ---- C: funding AUC ----
+    order = [("Human", "all", PALETTE["Human"], "Human")] + \
+            [("AI", c, cond_col[c], "AI\n" + c.replace("_", "-")) for c in conds]
+    for xi, (grp, cond, col, lab) in enumerate(order):
+        srow = summary[(summary.group.eq(grp)) & (summary.condition.eq(cond))]
+        if srow.empty:
+            continue
+        auc = float(srow["funding_auc"].iloc[0])
+        axC.bar(xi, auc, color=col, edgecolor="black", linewidth=0.6)
+        axC.text(xi, auc + 0.01, f"{auc:.2f}", ha="center", fontsize=8.5)
+    axC.axhline(0.5, color="black", ls="--", lw=1.2)
+    axC.text(len(order) - 0.5, 0.51, "chance", ha="right", fontsize=8)
+    axC.set_xticks(range(len(order)), [o[3] for o in order], fontsize=8)
+    axC.set_ylim(0, 0.9)
+    axC.set_ylabel("funding discrimination (AUC:\ncan the panel tell funded from not?)")
+    axC.set_title("C · Full AI panels are at chance\nfor the actual funding decision", fontsize=9.5, loc="left")
+    _grid(axC)
+
+    for ax in (axA, axB, axC):
+        for s in ("top", "right"):
+            ax.spines[s].set_visible(False)
+    fig.suptitle(title, fontsize=12.5)
+    fig.tight_layout(rect=(0, 0.05, 1, 0.95))
+    _caption(fig, "Ground truth = the competition's actual funding ranking / decision for all proposals. A: box (median, "
+                  "quartiles) + dashed mean + one dot per proposal's mean review score, on the SAME human-scored "
+                  "proposals for every group (fair spread comparison); AI panels vary less across proposals (smaller "
+                  "between-proposal SD) and not with funding, so they cannot rank. B: panel mean vs the true ranking by "
+                  "panel size — Human n per point (scores exist for a subset, and fewer proposals have larger panels); "
+                  "AI uses all 23 proposals and stays flat through its full 15-review panel. C: area-under-ROC for "
+                  "funded-vs-not from the full panel (AI all 23); AI sits at chance in every condition. "
+                  "CAVEAT: the ranking was set by the human review process, so the Human curve has a built-in advantage "
+                  "— the load-bearing result is that an AI panel cannot reproduce the decisions, not a human-vs-AI "
+                  "accuracy gap. Exploratory (n=23 proposals; human scores on a 13–14 subset).")
+    save_fig(fig, out_base)
+
+
+# ---------------------------------------------------------------------------
+# Main figure: all-facet Human -> pooled-AI slopegraph grid (dimensionality dropped)
+# ---------------------------------------------------------------------------
+
+# Ordered elicitation conditions -> colorblind-safe (Okabe-Ito) sequence.
+_COND_COLOR = {"baseline": "#0072B2", "one_at_a_time": "#E69F00", "persona": "#009E73"}
+_COND_LABEL = {"baseline": "baseline", "one_at_a_time": "one-at-a-time", "persona": "persona"}
+
+# Facet rows (dimensionality intentionally excluded - never significant). Evenness is
+# plotted as -clumping so that, like the others, DOWN = less diverse.
+_SLOPE_FACETS = [
+    ("spread", "mean_pairwise", "", "Spread\n(mean pairwise)", False),
+    ("richness", "vendi", "q=1", "Richness\n(Vendi VS₁)", False),
+    ("evenness", "ripley_excess", "r=pooled_q01_q50", "Evenness\n(−clumping)", True),
+    ("coverage", "coverage_geometric", None, "Coverage\n(geometric)", False),  # param set per stage
+]
+_COV_PARAM = {"proposals": "k=3", "reviews": "k=panel_adaptive"}
+
+
+def plot_facet_slopegraph_grid(tests: pd.DataFrame, out_base: Path, *, text_version: str,
+                               title: str, conditions: Sequence[str] = ("baseline", "one_at_a_time", "persona")) -> None:
+    """Main-figure candidate: one panel per facet x stage, Human -> pooled-AI slopes.
+
+    Rows = facets (spread, richness, evenness, coverage; dimensionality dropped),
+    columns = stage (generation | gate-keeping). Within each panel the shared Human anchor
+    fans out to the pooled-AI value of each elicitation condition (colour), annotated with
+    the effect (generation: AI÷Human ratio; gate-keeping: Cliff's δ) and significance. Only
+    Human vs pooled AI is shown here; per-model slopes live in the SI (fig2b_*).
+    """
+    df = tests[tests["text_version"].eq(text_version)].copy()
+    df["param"] = df["param"].fillna("")
+    conds = [c for c in conditions if c in df["condition"].unique()]
+    stages = [("proposals", "GENERATION — proposal sets  (AI÷Human ratio)"),
+              ("reviews", "GATE-KEEPING — review panels  (paired Cliff's δ)")]
+    nrow = len(_SLOPE_FACETS)
+    fig, axes = plt.subplots(nrow, 2, figsize=(10.4, 12.2))
+
+    def _row(task, facet, metric, param):
+        r = df[df["task"].eq(task) & df["comparison"].eq("human_vs_pooled_ai") & df["facet"].eq(facet)
+               & df["metric"].eq(metric) & df["param"].eq(param)]
+        return {str(x["condition"]): x for _, x in r.iterrows()}
+
+    for ri, (facet, metric, base_param, rlabel, negate) in enumerate(_SLOPE_FACETS):
+        for ci, (task, _stage_title) in enumerate(stages):
+            ax = axes[ri, ci]
+            param = _COV_PARAM[task] if facet == "coverage" else base_param
+            rows = _row(task, facet, metric, param)
+            sign = -1.0 if negate else 1.0
+            hvals, avals = [], []
+            # vertical label slot by rank of the AI endpoint, so close endpoints never collide
+            av_rank = {c: r for r, c in enumerate(sorted(
+                [c for c in conds if c in rows], key=lambda cc: sign * float(rows[cc]["ai_value"])))}
+            n_present = len(av_rank)
+            for k, c in enumerate(conds):
+                if c not in rows:
+                    continue
+                row = rows[c]
+                hv = sign * float(row["human_value"])
+                av = sign * float(row["ai_value"])
+                hvals.append(hv); avals.append(av)
+                xj = 1.0 + 0.03 * k    # tiny x-jitter so near-equal AI endpoints separate
+                ax.plot([0, xj], [hv, av], "-", color=_COND_COLOR[c], lw=2.0, alpha=0.9, zorder=2)
+                ax.scatter([xj], [av], s=46, color=_COND_COLOR[c], edgecolor="black", linewidth=0.5, zorder=3)
+                # effect annotation, sign-aligned to the plotted (diversity) direction
+                star = star_label(row["p_raw"] if bool(row.get("is_primary")) else row["p_fdr"])
+                if row["effect_type"] == "cliffs_delta":
+                    dval = (-1.0 if negate else 1.0) * float(row["effect_size"])
+                    lab = f"δ={dval:+.2f}{star}"
+                elif facet == "evenness":
+                    lab = star or "ns"    # a ratio of excess-clumping (crosses 0) is meaningless
+                else:  # generation ratio
+                    lab = f"×{float(row['ai_value']) / float(row['human_value']):.2f}{star}"
+                yoff = (av_rank[c] - (n_present - 1) / 2.0) * 12   # rank-based vertical slot
+                ax.annotate(lab, (xj, av), textcoords="offset points", xytext=(9, yoff),
+                            va="center", fontsize=7.3, color=_COND_COLOR[c])
+            # shared Human anchor(s)
+            for hv in (hvals[:1] if len(set(np.round(hvals, 4))) == 1 else hvals):
+                ax.scatter([0], [hv], s=70, color=PALETTE["Human"], edgecolor="black", linewidth=0.6, zorder=4)
+            ax.set_xlim(-0.35, 1.55)
+            ax.set_xticks([0, 1.03], ["Human", "pooled AI"], fontsize=8.5)
+            allv = hvals + avals
+            if allv:
+                pad = 0.14 * (max(allv) - min(allv) + 1e-9)
+                ax.set_ylim(min(allv) - pad, max(allv) + pad * 1.4)
+            if ci == 0:
+                ax.set_ylabel(rlabel, fontsize=9)
+            if ri == 0:
+                ax.set_title(_stage_title, fontsize=10.5, fontweight="bold")
+            # central-blanket exception flag
+            if facet == "coverage" and task == "reviews":
+                ax.annotate("↑ AI covers more\n(central blanket)", (0.5, 0.86), xycoords="axes fraction",
+                            ha="center", fontsize=7.6, color="#7a4d00",
+                            bbox=dict(boxstyle="round,pad=0.25", fc="#fff4e0", ec="#e0b060", lw=0.6))
+            for s in ("top", "right"):
+                ax.spines[s].set_visible(False)
+            ax.grid(axis="y", alpha=0.2, linewidth=0.5)
+
+    handles = [plt.Line2D([0], [0], marker="o", color="w", markerfacecolor=PALETTE["Human"],
+                          markeredgecolor="black", markersize=9, label="Human (n=23)")]
+    handles += [plt.Line2D([0], [0], marker="o", color=_COND_COLOR[c], lw=2.4,
+                           markerfacecolor=_COND_COLOR[c], markeredgecolor="black", markersize=8,
+                           label=f"pooled AI — {_COND_LABEL[c]}") for c in conds]
+    fig.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, 0.975), ncol=4,
+               fontsize=8.5, frameon=True)
+    fig.suptitle(title, fontsize=13, y=1.005)
+    add_direction_badge(fig, "↓ below Human = narrowing")
+    fig.tight_layout(rect=(0, 0.02, 1, 0.94))
+    _caption(fig, "Each panel: the shared Human value (left) fans out to the pooled-AI value of each elicitation "
+                  "condition (right); a downward slope means AI is less diverse. Dimensionality is omitted (never "
+                  "significant). Generation annotations are the AI÷Human ratio; gate-keeping annotations are paired "
+                  "Cliff's δ (AI−Human). Evenness is plotted as −clumping so down = less even, like the other rows; its "
+                  "Human anchor differs slightly by condition because evenness is scored against a condition-specific "
+                  "chance benchmark (the null cloud includes that condition's AI), whereas the other facets' Human value "
+                  "is condition-independent (one shared anchor). "
+                  "Coverage is the one facet that rises on the gate-keeping side: each AI review sits near the whole human "
+                  "review span (the 'central blanket'), so AI panels lose independence, not coverage. Pooled AI "
+                  "subsampled to n=23; per-model slopes and all other facets in SI. Stars: p_raw for pre-registered "
+                  f"primaries, p_fdr otherwise. Branch: {text_version}.")
+    save_fig(fig, out_base)
+
+
+# ---------------------------------------------------------------------------
+# Simpson diversity index (explicit, for reporting)
+# ---------------------------------------------------------------------------
+
+def plot_simpson_summary(simpson_df: pd.DataFrame, out_base: Path, *, title: str,
+                         text_version: str = "rephrased") -> None:
+    """Three-panel Simpson figure from the simpson_diversity tables.
+
+    A: proposals, similarity-sensitive inverse Simpson (= Vendi VS2) - Human vs pooled AI
+       effective-number bars per condition.
+    B: proposals, classical categorical inverse Simpson on literature regions - same.
+    C: reviews, inverse Simpson paired Cliff's delta per condition (negative = AI panels
+       less diverse). Effective numbers (higher = more diverse) throughout A/B; delta in C.
+    """
+    df = simpson_df[simpson_df["text_version"].eq(text_version)].copy() if "text_version" in simpson_df.columns else simpson_df.copy()
+    conds = [c for c in ["baseline", "one_at_a_time", "persona"] if c in df["condition"].unique()]
+    xlab = [c.replace("_", "-") for c in conds]
+    x = np.arange(len(conds))
+    fig, axes = plt.subplots(1, 3, figsize=(14.5, 4.9))
+
+    def _pooled(task, facet, metric, cond):
+        r = df[df["task"].eq(task) & df["facet"].eq(facet) & df["metric"].eq(metric)
+               & df["comparison"].eq("human_vs_pooled_ai") & df["condition"].eq(cond)]
+        return r.iloc[0] if not r.empty else None
+
+    def _v(row, key):
+        return float(row[key]) if row is not None and pd.notna(row[key]) else np.nan
+
+    def _grouped_effnum(ax, facet, subtitle):
+        w = 0.38
+        hv = [_v(_pooled("proposals", facet, "inverse_simpson", c), "human_value") for c in conds]
+        av = [_v(_pooled("proposals", facet, "inverse_simpson", c), "ai_value") for c in conds]
+        ax.bar(x - w / 2, hv, w, color=PALETTE["Human"], edgecolor="black", linewidth=0.6, label="Human")
+        ax.bar(x + w / 2, av, w, color=PALETTE["All AI"], alpha=0.75, hatch="//", edgecolor="black",
+               linewidth=0.6, label="pooled AI (n=23)")
+        ymax = np.nanmax(hv + av)
+        ax.set_ylim(0, ymax * 1.28)
+        for i, c in enumerate(conds):
+            row = _pooled("proposals", facet, "inverse_simpson", c)
+            if row is None:
+                continue
+            star = star_label(row.get("p_raw"))
+            top = max(row["human_value"], row["ai_value"])
+            ax.text(x[i], top + 0.02 * ymax, f"AI/H {row['ai_value']/row['human_value']:.2f}{star}",
+                    ha="center", va="bottom", fontsize=7.6, color="#222")
+        ax.set_xticks(x, xlab, fontsize=8.5)
+        ax.set_ylabel("inverse Simpson  (effective number,\nhigher = more diverse)")
+        ax.set_title(subtitle, fontsize=9.5, loc="left", pad=10)
+        ax.legend(fontsize=7.5, loc="upper right", ncol=1)
+        _grid(ax)
+
+    _grouped_effnum(axes[0], "simpson_similarity",
+                    "A · Proposals — embedding Simpson (1/Σλ² = Vendi VS₂)")
+    _grouped_effnum(axes[1], "simpson_categorical",
+                    "B · Proposals — categorical Simpson (literature regions)")
+
+    # C: reviews paired delta (inverse Simpson).
+    axC = axes[2]
+    dv = [_v(_pooled("reviews", "simpson_similarity", "inverse_simpson", c), "effect_size") for c in conds]
+    cols = [PALETTE["All AI"] if np.isfinite(v) else "#ccc" for v in dv]
+    axC.bar(x, dv, 0.55, color=cols, alpha=0.85, edgecolor="black", linewidth=0.6)
+    axC.axhline(0, color=PARITY_COLOR, lw=1)
+    for i, c in enumerate(conds):
+        row = _pooled("reviews", "simpson_similarity", "inverse_simpson", c)
+        if row is None:
+            continue
+        star = star_label(row.get("p_raw"))
+        axC.text(x[i], dv[i] - 0.05, f"{dv[i]:.2f}{star}", ha="center", va="top", fontsize=8, color="#222")
+    axC.set_xticks(x, xlab, fontsize=8.5)
+    axC.set_ylim(min([v for v in dv if np.isfinite(v)] + [-1]) * 1.25, 0.15)
+    axC.set_ylabel("paired Cliff's δ (AI − Human)\nnegative = AI panels less diverse")
+    axC.set_title("C · Reviews — Simpson within panels (paired δ)", fontsize=9.5, loc="left")
+    _grid(axC)
+
+    fig.suptitle(title, fontsize=12)
+    fig.tight_layout(rect=(0, 0, 1, 0.96))
+    _caption(fig, "Simpson diversity index reported two ways. Embedding (similarity-sensitive) Simpson uses the "
+                  "eigenvalues λ of the normalized cosine-similarity matrix in place of category proportions: "
+                  "inverse Simpson = 1/Σλ² (shown; equals Vendi VS₂), Gini-Simpson = 1−Σλ². Categorical Simpson is the "
+                  "textbook D=Σp² on the discrete literature region each proposal is nearest to (BERTopic; outlier bin "
+                  "dropped). A/B: pooled AI subsampled to n=23 (equal-n), permutation/subsample p on the ratio; ratio "
+                  "AI÷Human and stars annotated. C: reviews paired within proposal, AI = mean over exact-n panels, "
+                  f"Cliff's δ. Branch = {text_version}. Higher effective number = more diverse; both proposal Simpson "
+                  "flavors and the review δ reproduce the narrowing seen in the richness facet.")
+    save_fig(fig, out_base)
+
+
+# ---------------------------------------------------------------------------
 # SI panel: wording (lexical control) vs idea diversity across conditions
 # ---------------------------------------------------------------------------
 

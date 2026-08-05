@@ -41,6 +41,8 @@ from diversity_facets import (
     pairwise_sq_euclidean,
     participation_ratio,
     ripley_K,
+    simpson_categorical,
+    simpson_similarity,
     sparseness,
     spherical_variance,
     vendi_scores,
@@ -1348,3 +1350,178 @@ def write_facet_outputs(
         curves_to_write.to_csv(tables_dir / "facet_diversity_curves.csv", index=False)
     if paired_df is not None and not paired_df.empty:
         paired_df.to_csv(tables_dir / "facet_review_paired_long.csv", index=False)
+
+
+# ---------------------------------------------------------------------------
+# Simpson diversity index (explicit, for reporting) - spec companion to richness.
+# Two flavors, both at matched sample size:
+#   * similarity-sensitive (embedding): Simpson on the kernel eigenvalues; inverse
+#     Simpson == Vendi VS_2, Gini-Simpson == 1 - mean squared cosine similarity.
+#   * classical categorical: textbook D = sum(p_i^2) on discrete literature regions.
+# Inference mirrors the facet battery: per-model 23-vs-23 label permutation, pooled
+# Human-vs-All-AI via cached equal-n subsamples, jackknife CIs; reviews are paired
+# within proposal with Cliff's delta, exactly like the other review facets.
+# ---------------------------------------------------------------------------
+
+_SIMPSON_KINDS = (("gini_simpson", "gini"), ("inverse_simpson", "inverse"))
+
+
+def build_proposal_simpson_tests(
+    embeddings: np.ndarray,
+    master: pd.DataFrame,
+    idx_cache: np.ndarray,
+    *,
+    condition: str,
+    text_branch: str,
+    region_labels: Sequence[Any] | None = None,
+    n_perm: int = 10000,
+    seed: int = 42,
+) -> pd.DataFrame:
+    """Simpson diversity for proposals (similarity-sensitive + optional categorical).
+
+    `embeddings` is the full proposal embedding matrix; `master` provides the group
+    membership; `idx_cache` is the cached (B, n_human) without-replacement subsample of
+    the pooled-AI rows used everywhere else for equal-n comparison; `region_labels`, if
+    given (one discrete literature region per proposal, NaN allowed), adds the classical
+    categorical Simpson. All comparisons are Human vs each model and Human vs pooled AI at
+    matched n = 23.
+    """
+    X = np.asarray(embeddings, dtype=float)
+    groups = _group_indices(master)
+    human_idx = groups["Human"]
+    ai_pool = groups["All AI"]
+    model_groups = [g for g in MODEL_GROUPS if g in groups and len(groups[g])]
+    rows: List[Dict[str, Any]] = []
+    base = dict(condition=condition, task="proposals", text_branch=text_branch, field="whole")
+
+    def _emit_similarity(kind_label, kind):
+        stat = lambda M: simpson_similarity(M, kind=kind)   # noqa: E731
+        h_ci = jackknife_ci(X[human_idx], stat)
+        # Per-model, 23 vs 23, label permutation on the within-group Simpson difference.
+        for g in model_groups:
+            g_ci = jackknife_ci(X[groups[g]], stat)
+            perm = label_permutation_test(X[human_idx], X[groups[g]], stat, B=n_perm, seed=seed, mode="within_diff")
+            rows.append(_metric_row(**base, comparison=f"human_vs_{g.lower()}", facet="simpson_similarity",
+                                    metric=kind_label, param="", human_value=h_ci["point"], ai_value=g_ci["point"],
+                                    effect_size=(g_ci["point"] / h_ci["point"] if h_ci["point"] else np.nan),
+                                    effect_type="ratio", ci_lo=g_ci["lo"], ci_hi=g_ci["hi"],
+                                    human_ci_lo=h_ci["lo"], human_ci_hi=h_ci["hi"], inference="permutation",
+                                    stat=perm["delta_obs"], p_raw=perm["p_two_sided"], n_human=len(human_idx), n_ai=len(groups[g]),
+                                    n_perm_or_boot=n_perm, notes="similarity-sensitive Simpson on kernel eigenvalues; "
+                                    "higher = more diverse; equal-n; ci = 95% jackknife"))
+        # Pooled Human vs All-AI via the shared equal-n subsample cache (idx_cache holds
+        # full-master row indices of the sampled AI proposals, so pass the full matrix).
+        vals = subsample_pooled(X, idx_cache, stat)
+        ai_mean = float(np.nanmean(vals))
+        # two-sided empirical p: how often the equal-n AI draw is at least as extreme as human
+        p = float((np.sum(np.abs(vals - ai_mean) >= abs(h_ci["point"] - ai_mean)) + 1) / (len(vals) + 1))
+        rows.append(_metric_row(**base, comparison="human_vs_pooled_ai", facet="simpson_similarity",
+                                metric=kind_label, param="", human_value=h_ci["point"], ai_value=ai_mean,
+                                effect_size=(ai_mean / h_ci["point"] if h_ci["point"] else np.nan), effect_type="ratio",
+                                ci_lo=float(np.percentile(vals, 2.5)), ci_hi=float(np.percentile(vals, 97.5)),
+                                human_ci_lo=h_ci["lo"], human_ci_hi=h_ci["hi"], inference="same_size_subsample",
+                                stat=h_ci["point"] - ai_mean, p_raw=p, n_human=len(human_idx), n_ai=len(human_idx),
+                                n_perm_or_boot=len(vals), notes="similarity-sensitive Simpson; AI n=23 subsampled from "
+                                "69 (without replacement); higher = more diverse"))
+
+    for kind_label, kind in _SIMPSON_KINDS:
+        _emit_similarity(kind_label, kind)
+
+    if region_labels is not None:
+        labels = np.asarray(region_labels, dtype=float)   # NaN = outlier/unassigned
+
+        def cat_stat(idx, kind):
+            return simpson_categorical(labels[np.asarray(idx, dtype=int)])[kind]
+
+        for kind_label, kind in _SIMPSON_KINDS:
+            h_point = cat_stat(human_idx, kind)
+            # Per-model permutation on the categorical Simpson (shuffle the human/model labels).
+            for g in model_groups:
+                g_point = cat_stat(groups[g], kind)
+                pooled = np.concatenate([human_idx, groups[g]])
+                rng = np.random.default_rng(seed)
+                obs = abs(h_point - g_point)
+                nh = len(human_idx)
+                count = 0
+                for _ in range(n_perm):
+                    perm = rng.permutation(pooled)
+                    d = abs(cat_stat(perm[:nh], kind) - cat_stat(perm[nh:], kind))
+                    if d >= obs - 1e-12:
+                        count += 1
+                p = (count + 1) / (n_perm + 1)
+                rows.append(_metric_row(**base, comparison=f"human_vs_{g.lower()}", facet="simpson_categorical",
+                                        metric=kind_label, param="literature_region", human_value=h_point, ai_value=g_point,
+                                        effect_size=(g_point / h_point if h_point else np.nan), effect_type="ratio",
+                                        inference="permutation", stat=obs, p_raw=p, n_human=len(human_idx), n_ai=len(groups[g]),
+                                        n_perm_or_boot=n_perm, notes="classical Simpson on the nearest-literature-region label "
+                                        "(BERTopic outlier bin dropped); higher = more diverse; equal-n"))
+            # Pooled: categorical Simpson over the same equal-n AI subsamples.
+            vals = np.asarray([cat_stat(sample, kind) for sample in idx_cache], dtype=float)
+            ai_mean = float(np.nanmean(vals))
+            p = float((np.sum(np.abs(vals - ai_mean) >= abs(h_point - ai_mean)) + 1) / (len(vals) + 1))
+            rows.append(_metric_row(**base, comparison="human_vs_pooled_ai", facet="simpson_categorical",
+                                    metric=kind_label, param="literature_region", human_value=h_point, ai_value=ai_mean,
+                                    effect_size=(ai_mean / h_point if h_point else np.nan), effect_type="ratio",
+                                    ci_lo=float(np.percentile(vals, 2.5)), ci_hi=float(np.percentile(vals, 97.5)),
+                                    inference="same_size_subsample", stat=h_point - ai_mean, p_raw=p,
+                                    n_human=len(human_idx), n_ai=len(human_idx), n_perm_or_boot=len(vals),
+                                    notes="classical Simpson on nearest literature region; AI n=23 subsampled from 69"))
+    return pd.DataFrame(rows)
+
+
+def build_review_simpson_tests(
+    review_master: pd.DataFrame,
+    review_embeddings: Mapping[str, Any],
+    combination_cache: Mapping[str, Mapping[str, Dict[str, Any]]],
+    *,
+    condition: str,
+    text_branch: str,
+    field: str = "whole",
+    seed: int = 42,
+) -> pd.DataFrame:
+    """Similarity-sensitive Simpson for review panels, paired within proposal.
+
+    Mirrors `build_review_facet_outputs`: for each target proposal the human panel's
+    Simpson is compared with the mean over the exact-n enumerated AI panels of the same
+    size, then combined across proposals with a paired Wilcoxon and Cliff's delta
+    (AI - Human; negative = AI panels less diverse). Only the embedding (similarity-
+    sensitive) Simpson applies to reviews - there is no literature-region label here.
+    """
+    X = l2_normalize(np.asarray(review_embeddings["embeddings"], dtype=float))
+    uid_to_idx = {str(uid): i for i, uid in enumerate(review_master["review_uid"].astype(str))}
+    rows: List[Dict[str, Any]] = []
+    base = dict(condition=condition, task="reviews", text_branch=text_branch, field=field)
+
+    for comparison in ["all_ai", "claude", "gemini", "gpt"]:
+        comp_map = combination_cache.get(comparison, {})
+        comparison_name = "human_vs_pooled_ai" if comparison == "all_ai" else f"human_vs_{comparison}"
+        for kind_label, kind in _SIMPSON_KINDS:
+            h_vals, a_vals, ns = [], [], []
+            for _target_uid, info in comp_map.items():
+                if not info.get("eligible", False):
+                    continue
+                human_idx = [uid_to_idx[str(u)] for u in info["human_review_uids"]]
+                combos = info["ai_panel_combinations"]
+                if len(human_idx) < 2 or not combos:
+                    continue
+                h_val = simpson_similarity(X[human_idx], kind=kind)
+                combo_vals = [simpson_similarity(X[[uid_to_idx[str(u)] for u in combo]], kind=kind) for combo in combos]
+                h_vals.append(h_val)
+                a_vals.append(float(np.nanmean(combo_vals)))
+                ns.append(len(human_idx))
+            if not h_vals:
+                continue
+            h_arr = np.asarray(h_vals, dtype=float)
+            a_arr = np.asarray(a_vals, dtype=float)
+            test = paired_wilcoxon(h_arr, a_arr)
+            delta_lo, delta_hi = paired_delta_bootstrap_ci(h_arr, a_arr, seed=seed)
+            delta_ai = -test["cliffs_delta"]
+            ci = (-delta_hi if np.isfinite(delta_hi) else np.nan, -delta_lo if np.isfinite(delta_lo) else np.nan)
+            rows.append(_metric_row(**base, comparison=comparison_name, facet="simpson_similarity", metric=kind_label,
+                                    param="", human_value=float(np.nanmean(h_arr)), ai_value=float(np.nanmean(a_arr)),
+                                    effect_size=delta_ai, effect_type="cliffs_delta", ci_lo=ci[0], ci_hi=ci[1],
+                                    inference="paired_wilcoxon", stat=test["W"], p_raw=test["p"],
+                                    n_human=float(np.nanmean(ns)), n_ai=float(np.nanmean(ns)), n_perm_or_boot=test["n_pairs"],
+                                    notes="similarity-sensitive Simpson per panel; paired across proposals; AI = mean over "
+                                    "exact-n panels; Cliff's delta (AI - Human), negative = AI panels less diverse"))
+    return pd.DataFrame(rows)

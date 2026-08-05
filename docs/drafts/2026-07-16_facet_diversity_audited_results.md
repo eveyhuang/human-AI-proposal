@@ -8,9 +8,9 @@
 
 ## Reader's guide (start here)
 
-**The question.** When AI systems both *generate* research proposals and *review* them, does the collective search of science narrow — fewer genuinely different ideas proposed, and less independent judgment filtering them?
+**The question.** When AI systems both *generate* research proposals and *review* them, does the collective search of science narrow — fewer genuinely different ideas proposed, and less independent judgment gate-keeping them?
 
-**The design.** 23 human proposals (two cohorts of biomedical scientists) are compared with 23 proposals from each of three AI models (Claude, Gemini, GPT), under three elicitation conditions: **baseline** (a single request), **one_at_a_time** (ideas requested one per conversation), and **persona** (the model is given a distinct scientist persona per proposal). On the filtering side, each human proposal was reviewed by 2–5 human reviewers and by 5 AI reviewers per model; AI review panels are compared with the human panel *of the same proposal*, at matched panel size.
+**The design.** 23 human proposals (two cohorts of biomedical scientists) are compared with 23 proposals from each of three AI models (Claude, Gemini, GPT), under three elicitation conditions: **baseline** (a single request), **one_at_a_time** (ideas requested one per conversation), and **persona** (the model is given a distinct scientist persona per proposal). On the gate-keeping side, each human proposal was reviewed by 2–5 human reviewers and by 5 AI reviewers per model; AI review panels are compared with the human panel *of the same proposal*, at matched panel size.
 
 **"Diversity" is not one number.** We decompose it into five facets, each answering a different question:
 
@@ -26,7 +26,7 @@ A separate **displacement** check (not a diversity facet) asks whether AI occupi
 
 **How to read significance.** Stars mean `*** p<0.001`, `** p<0.01`, `* p<0.05`, `ns` not significant. Three pre-registered primary comparisons (spread, richness, geometric coverage) are tested at face value; all other tests carry a correction for testing many things at once (Benjamini–Hochberg false-discovery-rate control), so a starred secondary result already accounts for the size of the test battery. Plain-language explanations of every statistical device appear in §5.
 
-**Two different effect sizes, by design.** Generation compares whole groups (23 vs 23), so effects are **ratios**: *AI ÷ Human diversity retained*, where 1.0 = parity and 0.70 = "AI retains 70% of human diversity." Filtering is a *paired* design — each proposal's AI panel vs its own human panel — so effects are **Cliff's δ**, a consistency measure: δ = −1 means the AI panel came out lower for *every single one* of the 23 proposals; δ = 0 means no systematic direction. The two cannot be placed on one axis honestly, but both are oriented so that **negative/below-1 = AI less diverse**.
+**Two different effect sizes, by design.** Generation compares whole groups (23 vs 23), so effects are **ratios**: *AI ÷ Human diversity retained*, where 1.0 = parity and 0.70 = "AI retains 70% of human diversity." Gate-keeping is a *paired* design — each proposal's AI panel vs its own human panel — so effects are **Cliff's δ**, a consistency measure: δ = −1 means the AI panel came out lower for *every single one* of the 23 proposals; δ = 0 means no systematic direction. The two cannot be placed on one axis honestly, but both are oriented so that **negative/below-1 = AI less diverse**.
 
 ---
 
@@ -52,7 +52,7 @@ This report contains **every analysis run by notebooks `02_facets_proposals` and
 | 10 | **Condition gradient** | Does idea diversity *recover* as we push harder for it (baseline → one-at-a-time → persona)? | §2.9, §4.4 |
 | 11 | **Model-ordering trend test** (Jonckheere–Terpstra) | Is there a reliable ranking *among* the three models (Claude < Gemini < GPT)? | §2.9 |
 
-### Filtering side — do AI review panels judge a proposal as diversely as human panels? (notebook 03)
+### Gate-keeping side — do AI review panels judge a proposal as diversely as human panels? (notebook 03)
 
 | # | Analysis | The plain question it answers | Section |
 |---|---|---|---|
@@ -65,8 +65,11 @@ This report contains **every analysis run by notebooks `02_facets_proposals` and
 | 18 | **Interleaving** (SI) | Does either side hold *exclusive territory* the other never reaches? | SI-1 |
 | 19 | **Score-level decision analysis** (SI) | Does the lost disagreement show up in the *numeric scores* a committee uses, and would rankings differ? | SI-3 |
 | 20 | **Claim-level uniqueness** (SI) | At the level of *specific points*, does each panel raise things the other misses? | SI-4 |
+| 22 | **Decision-outcome** (SI) | Using the *actual funding decisions* — can an AI panel reproduce which proposals got funded? | SI-6 |
 
-*A cross-cutting robustness pass, the **original (raw-text) branch**, repeats the whole battery on unedited prose and is reported in SI-2; the wording-vs-idea contrast (analyses 8 + 2) has its own figure, `si_wording_vs_idea_gap.png`.*
+| 21 | **Simpson diversity index** (both stages) | The classic Simpson index, reported explicitly two ways (embedding + categorical) — does it agree with the richness result? | SI-5 |
+
+*A cross-cutting robustness pass, the **original (raw-text) branch**, repeats the whole battery on unedited prose and is reported in SI-2; the wording-vs-idea contrast (analyses 8 + 2) has its own figure, `si_wording_vs_idea_gap.png`; the Simpson index (analysis 21) is the order-2 relative of the richness facet, reported for readers who expect it.*
 
 ---
 
@@ -99,7 +102,7 @@ Cells show the ratio (1.00 = human parity; lower = AI narrower) with significanc
 
 † Evenness is an area statistic (excess close-neighbor mass relative to a same-size chance draw of all proposals), not a ratio. In every condition, humans are *more evenly spread than chance* (excess −0.14 to −0.23) while pooled AI shows *excess clumping* (+0.06 to +0.14); cells summarize direction and significance. ‡ Coverage is judged against how well one random half of the human set covers the other half (the honest "same-distribution" benchmark), not against 100%.
 
-### Table 1b — Filtering (reviews): Cliff's δ, AI panel vs the human panel of the same proposal
+### Table 1b — Gate-keeping (reviews): Cliff's δ, AI panel vs the human panel of the same proposal
 
 δ < 0 = AI panels less diverse; |δ| = 1 means the effect held for all 23 proposals. Human reviewers of a given proposal are the built-in reference (they define zero).
 
@@ -155,7 +158,7 @@ All generation analyses operate on the full text of each proposal, represented i
 
 *Result.* AI retains **66–75% of human effective richness**, significant in all conditions (pooled p = .005 / <.001 / .004). This is a pre-registered primary result. Gemini is again the weakest single model (0.56 at one_at_a_time).
 
-*Implication.* Narrowing is not merely "closer together" — it is genuinely *fewer distinct ideas*. If a funder replaced its human idea pool with an equal-sized AI pool, roughly a quarter to a third of the effective intellectual variety would disappear, under every elicitation strategy tested.
+*Implication.* Narrowing is not merely "closer together" — it is genuinely *fewer distinct ideas*. If a funder replaced its human idea pool with an equal-sized AI pool, roughly a quarter to a third of the effective intellectual variety would disappear, under every elicitation strategy tested. (The **Simpson diversity index** — the order-2 member of this same Vendi/Hill-number family — is reported explicitly in **SI-5** and reproduces this result, as a cross-check for readers who expect the classic index.)
 
 ### 2.3 Evenness — AI re-proposes near-duplicates; humans do not
 
@@ -168,6 +171,8 @@ All generation analyses operate on the full text of each proposal, represented i
 *Implication.* AI's narrowing takes a specific and recognizable form — it returns to the same wells. This is exactly the failure mode that averaged distance metrics can hide, and it is why the multi-facet design exists.
 
 ### 2.4 Dimensionality — narrowing is *not* a collapse onto fewer axes
+
+> **Excluded from the manuscript (null).** Kept here for the completeness of the audit record, but dropped from the paper: dimensionality is non-significant at both stages, so it earns no main-text or SI space in the manuscript.
 
 *What was tested.* The participation ratio: an effective count of independent directions ("themes/axes") along which a group's proposals vary.
 
@@ -205,7 +210,7 @@ All generation analyses operate on the full text of each proposal, represented i
 
 *Result.* Pooled displacement is small and non-significant in every condition (MMD² 0.032–0.062, all ns; the human split-half floor is ≈ 0), and **optimal transport agrees** (same near-zero, non-significant pattern). Per model: GPT is essentially undisplaced (persona MMD² = 0.000); Gemini is the only repeat offender (significant at one_at_a_time and persona).
 
-*Implication.* Low coverage plus low displacement is the specific geometric signature of the central claim: **AI narrows *toward the shared human center*, occupying a competent, plausible core while missing the periphery** — as opposed to wandering into territory of its own. Gemini is the partial exception: narrowest *and* somewhat shifted.
+*Implication.* Low coverage plus low displacement is the specific geometric signature of the central claim: **AI is concentric with and interleaved among the human cloud (same center, same radial extent), but fills it less evenly and thins at the edges** — more clumped (spread 0.70×) and covering the periphery sparsely, so the humans it fails to reach are the peripheral ones (fringe proposals at the 83rd–96th radius percentile). This is *not* strict containment (AI is not a smaller region inside, and small AI-only pockets exist); it is a concentric, more-clumped cloud with an asymmetric human periphery. Gemini is the partial exception: narrowest *and* somewhat shifted. *(The two visible clusters in a UMAP are a real topical split, not the two cohorts — cohorts distribute across both clusters and AI populates both; the UMAP separation is a projection artifact, Chari & Pachter 2023.)*
 
 ### 2.8 Wording control — does the narrowing show up in raw wording too?
 
@@ -229,9 +234,9 @@ All generation analyses operate on the full text of each proposal, represented i
 
 ---
 
-## 3. Filtering: how AI narrows the judgment of ideas
+## 3. Gate-keeping: how AI narrows the judgment of ideas
 
-The filtering analyses respect the nested structure of review: reviews of *different* proposals differ for reasons that have nothing to do with reviewer independence. So every metric is computed *within* a proposal — the 2–5 human reviews of proposal X versus same-sized panels drawn from the AI reviews of proposal X — and then the 23 within-proposal comparisons are combined with a paired test. The human panel is thus the built-in reference: effects are read as "AI panels relative to the human panels of the very same proposals."
+The gate-keeping analyses respect the nested structure of review: reviews of *different* proposals differ for reasons that have nothing to do with reviewer independence. So every metric is computed *within* a proposal — the 2–5 human reviews of proposal X versus same-sized panels drawn from the AI reviews of proposal X — and then the 23 within-proposal comparisons are combined with a paired test. The human panel is thus the built-in reference: effects are read as "AI panels relative to the human panels of the very same proposals."
 
 *The five facets are the same measures as §2* (spread, richness, evenness, dimensionality, coverage, plus a displacement check), so each facet's "what it is / why it fits" rationale carries over; what changes here is only the **design** — paired within-proposal instead of group-vs-group, and therefore reported as Cliff's δ (consistency of direction) rather than a ratio.
 
@@ -249,17 +254,19 @@ Two reference conventions matter and are stated on every figure: the human self-
 
 ### 3.3 Dimensionality — cleanly null
 
-*Result.* Twelve of twelve cells ns, |δ| ≤ 0.18. AI panels vary along as many independent axes of critique as human panels; they simply occupy less of each axis. The generation-side negative (§2.4) is exactly reproduced on the filtering side — a satisfying internal consistency check.
+> **Excluded from the manuscript (null).** Kept here for the audit record only; dropped from the paper (non-significant, 12/12 cells ns).
+
+*Result.* Twelve of twelve cells ns, |δ| ≤ 0.18. AI panels vary along as many independent axes of critique as human panels; they simply occupy less of each axis. The generation-side negative (§2.4) is exactly reproduced on the gate-keeping side — a satisfying internal consistency check.
 
 ### 3.4 Coverage — the "central blanket" pattern
 
-*Result.* This facet runs the *other* way, and the combination is the most diagnostic finding on the filtering side. AI panels cover **95–98%** of the human review span, *exceeding* the human self-benchmark of 83% (pooled δ = +0.37 to +0.44, \*\* in all conditions; Claude δ = +1.00 everywhere).
+*Result.* This facet runs the *other* way, and the combination is the most diagnostic finding on the gate-keeping side. AI panels cover **95–98%** of the human review span, *exceeding* the human self-benchmark of 83% (pooled δ = +0.37 to +0.44, \*\* in all conditions; Claude δ = +1.00 everywhere).
 
 *Implication.* Read §3.1–3.2 and §3.4 together: AI reviews are *individually near everything the humans said* (high coverage) while being *collectively interchangeable* (low spread, high clumping). AI review panels behave like several copies of one thorough, centrally positioned reviewer — a blanket over the human review span — whereas human panels behave like distinct voices that each miss things but disagree informatively. For a decision process, coverage of this kind is not a substitute for independent perspectives: the variance that a deciding committee learns from is precisely what is missing. **Note the resolution limit:** this coverage is measured between whole reviews. At claim resolution (**SI-4**), matched-size panels miss roughly half of each other's specific points — so "near everything the humans said" describes *position*, not *content*.
 
 ### 3.5 Displacement and ordering checks
 
-The pooled AI review cloud is significantly displaced from the human cloud in every condition (whole-cloud, exploratory: MMD² = 0.0073 → 0.0116 → 0.0155 from baseline to persona, all p ≤ 2×10⁻⁴; the second distance, optimal transport, shows the same growing pattern) — AI reviews have a systematic stylistic/positional signature that *grows* under structured elicitation even as panel diversity shrinks. (The branch comparison in SI-2 shows this signature is overwhelmingly stylistic: on raw text the displacement is ~20× larger and rephrasing removes almost all of it.) Trend tests across models are uniformly non-significant on the filtering side: no model ordering, again.
+The pooled AI review cloud is significantly displaced from the human cloud in every condition (whole-cloud, exploratory: MMD² = 0.0073 → 0.0116 → 0.0155 from baseline to persona, all p ≤ 2×10⁻⁴; the second distance, optimal transport, shows the same growing pattern) — AI reviews have a systematic stylistic/positional signature that *grows* under structured elicitation even as panel diversity shrinks. (The branch comparison in SI-2 shows this signature is overwhelmingly stylistic: on raw text the displacement is ~20× larger and rephrasing removes almost all of it.) Trend tests across models are uniformly non-significant on the gate-keeping side: no model ordering, again.
 
 ### 3.6 One flagged cell
 
@@ -271,11 +278,11 @@ Gemini-at-baseline is the only AI cell at parity across spread/richness/evenness
 
 **1. AI narrows the generation of scientific ideas — substantially, in a specific way, in every condition tested.** Pooled across models, AI proposal sets retain roughly two-thirds to three-quarters of human diversity on the facets that count distinct ideas (spread 0.64–0.70, richness 0.66–0.75, all significant), and the loss has a signature: excess near-duplication (humans are more evenly spread than chance; AI is clumpier than chance, every condition) inside a space of undiminished dimensionality and undiminished topical breadth. AI proposals engage the same regions of the biomedical literature, touch as many subject headings, and vary along as many axes — **the narrowing is intra-topic: fewer genuinely different ideas per area of science, with repeated returns to the same ones.** The displacement check certifies the geometry: AI occupies a smaller region *inside* the human territory (low coverage, no displacement), not a different region beside it. And the lexical control shows the same compression in raw wording, ruling out the embedding model as the source.
 
-**2. AI also narrows the filtering of ideas — mildly in magnitude, but with near-deterministic consistency, and most strongly under exactly the elicitation styles that improve generation hygiene.** Given the same proposal, AI review panels are tighter, less rich, and more mutually duplicative than the human panel — for essentially every proposal under one_at_a_time and persona (δ ≈ −0.7 to −1.0), and for two of three models at baseline. Yet AI panels *cover* the human review span better than human reviewers cover each other. The picture is a central blanket: each AI review is competent and touches everything; the panel as a whole contains one voice. Independence of judgment, not quality of judgment, is what filtering loses — with one important refinement from SI-4: at *claim* resolution, matched-size human and AI panels each make ~40–58% points the other does not, so an AI panel also loses about half the specific content a human panel would have raised, even while sitting near it in review space.
+**2. AI also narrows the gate-keeping of ideas — mildly in magnitude, but with near-deterministic consistency, and most strongly under exactly the elicitation styles that improve generation hygiene.** Given the same proposal, AI review panels are tighter, less rich, and more mutually duplicative than the human panel — for essentially every proposal under one_at_a_time and persona (δ ≈ −0.7 to −1.0), and for two of three models at baseline. Yet AI panels *cover* the human review span better than human reviewers cover each other. The picture is a central blanket: each AI review is competent and touches everything; the panel as a whole contains one voice. Independence of judgment, not quality of judgment, is what gate-keeping loses — with one important refinement from SI-4: at *claim* resolution, matched-size human and AI panels each make ~40–58% points the other does not, so an AI panel also loses about half the specific content a human panel would have raised, even while sitting near it in review space.
 
-**3. "Double compression" is real but asymmetric — and honesty about the asymmetry strengthens the paper.** The two stages compress differently: generation loses 25–36% of effective diversity (large magnitude), filtering loses only a few percent in ratio terms but does so for nearly every proposal (large consistency). Compression does not *compound* in the naive multiplicative sense — the slopegraphs rise toward parity from generation to filtering — but the two losses are complementary in kind: generation narrows *what enters the pool*; filtering standardizes *how the pool is judged*. A pipeline with both stages automated would draw from a poorer menu and evaluate it with a single palate.
+**3. "Double compression" is real but asymmetric — and honesty about the asymmetry strengthens the paper.** The two stages compress differently: generation loses 25–36% of effective diversity (large magnitude), gate-keeping loses only a few percent in ratio terms but does so for nearly every proposal (large consistency). Compression does not *compound* in the naive multiplicative sense — the slopegraphs rise toward parity from generation to gate-keeping — but the two losses are complementary in kind: generation narrows *what enters the pool*; gate-keeping standardizes *how the pool is judged*. A pipeline with both stages automated would draw from a poorer menu and evaluate it with a single palate.
 
-**4. Elicitation strategy redistributes the problem; it does not solve it.** The persona manipulation — the strongest candidate rescue — leaves idea-level generation narrowing intact (pooled richness 0.75, p = .004, indistinguishable from baseline) while nearly closing the *wording* gap: personas make models sound more varied without making them think more variedly. On the filtering side the structured conditions actively *strengthen* review compression (baseline δ ≈ −0.3 pooled → −0.9 at one_at_a_time) and increase the displacement of AI reviews from human ones. There is no condition in which either stage reaches human diversity.
+**4. Elicitation strategy redistributes the problem; it does not solve it.** The persona manipulation — the strongest candidate rescue — leaves idea-level generation narrowing intact (pooled richness 0.75, p = .004, indistinguishable from baseline) while nearly closing the *wording* gap: personas make models sound more varied without making them think more variedly. On the gate-keeping side the structured conditions actively *strengthen* review compression (baseline δ ≈ −0.3 pooled → −0.9 at one_at_a_time) and increase the displacement of AI reviews from human ones. There is no condition in which either stage reaches human diversity.
 
 **5. Which AI matters — but not in the predicted order.** The pre-specified capability ordering (Claude < Gemini < GPT < Human) fails on both stages; the defensible statement is "humans above every model." The texture that survives: **Claude** covers the human idea-space fully but with clumped, repetitive proposals; **Gemini** is the narrowest and the only displaced model on the generation side, yet the least compressed reviewer at baseline; **GPT** is unremarkably in between and geometrically the most human-like in position. Model choice shifts *which* facet of diversity you lose, not *whether* you lose one.
 
@@ -310,7 +317,7 @@ A natural question about all of the above: do the coverage and displacement resu
 
 **Reading, reviews — complete interleaving at review resolution; no territory lost on either side.** *Every* human review has an AI review within normal human spacing (fringe = 0% in all conditions) — indeed the closest other opinion to any given human review is usually an AI review (0.030), closer than the nearest fellow human (0.036). AI-only pockets are at or below reference. So the significant review displacement (§3.5) is not territorial: it is a subtle, systematic *accent* — a small shared component carried by every AI review — detectable only because the whole-cloud test runs on 430 reviews. (Note that review MMD², 0.007–0.016, is *smaller* than the non-significant proposal-side MMD², 0.03–0.06; the review result owes its stars to statistical power, not to a large shift.)
 
-**Together, the sharpest one-line contrast in the study:** *on the generation side, AI loses territory — a fifth of the human idea-space goes unvisited; on the filtering side, AI loses no territory at all — only independence.* This is also why the two stages need different remedies: generation narrowing calls for sources of genuinely peripheral ideas, filtering narrowing calls for genuinely independent judges.
+**Together, the sharpest one-line contrast in the study:** *on the generation side, AI loses territory — a fifth of the human idea-space goes unvisited; on the gate-keeping side, AI loses no territory at all — only independence.* This is also why the two stages need different remedies: generation narrowing calls for sources of genuinely peripheral ideas, gate-keeping narrowing calls for genuinely independent judges.
 
 ---
 
@@ -343,7 +350,7 @@ All main-text results use the `rephrased` branch, in which every proposal and re
 
 † Human excess −0.08 to −0.14 (more even than chance) vs. pooled AI +0.07 to +0.11, as on the rephrased branch.
 
-### Table SI-2b — Filtering, original text: Cliff's δ (AI panel − human panel)
+### Table SI-2b — Gate-keeping, original text: Cliff's δ (AI panel − human panel)
 
 | Facet | Condition | Claude | Gemini | GPT | **Pooled AI** |
 |---|---|---|---|---|---|
@@ -377,7 +384,7 @@ All main-text results use the `rephrased` branch, in which every proposal and re
 ### Reading: three patterns
 
 **A. Style-robust conclusions (present on both branches — these are about ideas).**
-Geometric coverage narrowing (original is *stronger*: pooled 0.60–0.89, significant in all conditions); evenness — human sets more even than chance, AI sets clumped, pooled \*\*\* in all six branch×condition cells; filtering compression under one_at_a_time and persona (δ ≈ −0.9 to −1.0 on both branches) and for Claude/GPT at baseline; the Gemini-at-baseline parity anomaly (replicates exactly on raw text: δ = −0.13 to −0.22, ns); and the human-only proposal fringe (13–31% across branches). Everything the synthesis (§4) leans on hardest survives the branch change.
+Geometric coverage narrowing (original is *stronger*: pooled 0.60–0.89, significant in all conditions); evenness — human sets more even than chance, AI sets clumped, pooled \*\*\* in all six branch×condition cells; gate-keeping compression under one_at_a_time and persona (δ ≈ −0.9 to −1.0 on both branches) and for Claude/GPT at baseline; the Gemini-at-baseline parity anomaly (replicates exactly on raw text: δ = −0.13 to −0.22, ns); and the human-only proposal fringe (13–31% across branches). Everything the synthesis (§4) leans on hardest survives the branch change.
 
 **B. Style-dependent magnitudes (direction survives; size is distorted by prose).**
 Raw text distorts the spread/richness facets in *both* directions, and the pooled baseline null (1.02/0.96 ns) is a cancellation, not an agreement: on raw text Claude and GPT are significantly narrower (0.58–0.87 \*\*\*) while Gemini's verbose, varied prose makes it appear *wider than human* (spread 1.52) — opposing style artifacts that sum to zero in the pool. In the other direction, one_at_a_time's raw ratios (0.14–0.28) wildly *overstate* narrowing because each model answers repeated single requests in a near-template voice; rephrasing brings those cells back to 0.45–0.81. The rephrased branch sits between the two distortions, which is precisely why it is the primary: **raw prose can hide idea-level narrowing (varied wording, repeated ideas) or manufacture it (templated wording, distinct ideas).**
@@ -391,7 +398,7 @@ On raw text, every AI model's proposal cloud is significantly displaced from the
 
 ## SI-3. Score-level decision analysis: does the lost disagreement matter for decisions?
 
-A fair challenge to the filtering results runs: *if each AI review covers everything the human reviewers say (SI-1), does the loss of panel diversity matter at all — could review simply be automated?* The facet metrics measure review *text*; funding decisions consume review *scores*. This analysis therefore asks three questions of the numeric `overall_score` data (1–5 scale; never previously used by the diversity pipeline): **(i)** do AI panels disagree less in their scores, proposal by proposal? **(ii)** does human score disagreement predict where human and AI mean scores diverge — i.e., is disagreement carrying information? **(iii)** would AI panels *rank* the proposals differently than the human panels did?
+A fair challenge to the gate-keeping results runs: *if each AI review covers everything the human reviewers say (SI-1), does the loss of panel diversity matter at all — could review simply be automated?* The facet metrics measure review *text*; funding decisions consume review *scores*. This analysis therefore asks three questions of the numeric `overall_score` data (1–5 scale; never previously used by the diversity pipeline): **(i)** do AI panels disagree less in their scores, proposal by proposal? **(ii)** does human score disagreement predict where human and AI mean scores diverge — i.e., is disagreement carrying information? **(iii)** would AI panels *rank* the proposals differently than the human panels did?
 
 **Method in brief.** For each proposal, the human panel's score spread (standard deviation) is compared with AI panel spreads computed at *matched panel size* (averaging over all same-sized subsets of each model's five reviews), combined across proposals with the same paired test as the facet battery. Rankings compare each panel's mean score across proposals (Spearman correlation). Crucially, the rank comparison is read against a **human-vs-human reliability ceiling**: how well half of the human panel's ranking predicts the other half's, estimated over 500 random splits.
 
@@ -420,7 +427,7 @@ Human panel score SD = **0.74** in every condition (shared reviews). δ = Cliff'
 
 ### Interpretation
 
-This analysis strengthens one half of the filtering claim and honestly bounds the other. **Strengthened:** the variance channel — flagged divisiveness, triggered discussion, confidence calibration — is measurably empty in AI panels, in the numeric currency committees actually use, and no elicitation strategy tested restores it. **Bounded:** we cannot show, from this sample, that the resulting *rankings* differ from human ones; on point estimates, AI panels are as human-like as the human panels are self-consistent. The automation question therefore turns on what a panel is *for*: if it is a scoring machine, this data offers no evidence of harm; if it is a deliberation input — where disagreement selects which proposals get argued about — the input is gone. Resolving whether the lost disagreement changes *outcomes* requires either the claim-level uniqueness analysis (do humans catch load-bearing points AI misses?) or a larger corpus of numerically scored human reviews; both are natural next studies.
+This analysis strengthens one half of the gate-keeping claim and honestly bounds the other. **Strengthened:** the variance channel — flagged divisiveness, triggered discussion, confidence calibration — is measurably empty in AI panels, in the numeric currency committees actually use, and no elicitation strategy tested restores it. **Bounded:** we cannot show, from this sample, that the resulting *rankings* differ from human ones; on point estimates, AI panels are as human-like as the human panels are self-consistent. The automation question therefore turns on what a panel is *for*: if it is a scoring machine, this data offers no evidence of harm; if it is a deliberation input — where disagreement selects which proposals get argued about — the input is gone. Resolving whether the lost disagreement changes *outcomes* requires either the claim-level uniqueness analysis (do humans catch load-bearing points AI misses? — now **SI-4**) or a test against real decisions (**SI-6** takes this step using the actual funding outcomes, and finds AI panels reproduce them no better than chance).
 
 ---
 
@@ -464,11 +471,61 @@ Two design choices carry the analysis:
 
 ---
 
+## SI-5. Simpson's diversity index (reported explicitly)
+
+*Why this section exists.* Readers of an ecology/diversity paper often expect the classic **Simpson diversity index**. Our headline richness metric (the Vendi score at order q = 1) is from the same mathematical family, and Simpson is exactly its order-2 member — so we compute Simpson directly here, two ways, and it reproduces the richness result.
+
+*What Simpson is, in plain terms.* Simpson's index answers "if I pick two items at random, how likely are they the *same*?" The concentration is D = Σpᵢ² over the category shares pᵢ. Two friendlier forms: **Gini-Simpson** = 1 − D (the chance two picks *differ*; higher = more diverse) and **inverse Simpson** = 1/D (an *effective number* of equally-common categories; higher = more diverse).
+
+*How we compute it — two ways.*
+
+1. **Embedding (similarity-sensitive) Simpson.** Proposals and reviews are points in meaning-space with no discrete "species," so we substitute the eigenvalues λᵢ of the normalized cosine-similarity matrix K/n (which sum to 1, just like proportions) for the category shares pᵢ. Then **inverse Simpson = 1/Σλᵢ²** and **Gini-Simpson = 1 − Σλᵢ²**. Two exact identities we rely on (and verified numerically): 1/Σλᵢ² equals the **Vendi score at q = 2**, and Σλᵢ² equals the **mean squared cosine similarity** — so Gini-Simpson is literally "1 − average squared similarity." This is the honest Simpson for continuous data; the classic categorical index is its special case when items fall into hard, separate groups.
+2. **Classical categorical Simpson.** The textbook D = Σpᵢ² on genuinely discrete categories: each proposal is assigned to the single **literature region** it sits nearest to (BERTopic; the outlier bin is dropped), and pᵢ is the fraction of a group's proposals in region i.
+
+*Why both.* The embedding version stays consistent with every other facet (same space, same equal-n and permutation machinery). The categorical version is the exact formula a reader pictures, and it adds genuinely new information — diversity *across areas of the literature* — rather than restating the embedding geometry. Reviews get only the embedding flavor (there is no region label for a review).
+
+*Inference (identical to the facets).* Proposals: Human vs each model at 23-vs-23 (label permutation) and Human vs pooled AI over the cached equal-n subsamples, with jackknife CIs. Reviews: paired within proposal (AI = mean over the exact-n panels), Cliff's δ. Higher effective number = more diverse throughout.
+
+### Table SI-5 — Simpson index, pooled AI vs Human (rephrased branch)
+
+| Stage · flavor | quantity | baseline | one_at_a_time | persona |
+|---|---|---|---|---|
+| Proposals · embedding Simpson | inverse Simpson, AI ÷ H | 0.76 \*\* | 0.73 \*\*\* | 0.76 \*\* |
+| Proposals · categorical (regions) | inverse Simpson, AI ÷ H | 0.78 \* | 0.62 \*\*\* | 0.73 \* |
+| Reviews · embedding Simpson | Cliff's δ (AI − H) | −0.39 (p = .09) | −0.83 \*\*\* | −0.74 \*\*\* |
+
+*Absolute values: proposal embedding Simpson — Human behaves like **2.12** effective distinct proposals, pooled AI **1.5–1.6**; categorical region Simpson — Human **4.94** effective regions, pooled AI **3.1–3.9**. Gini-Simpson tells the same story (proposal pooled AI ÷ H ≈ 0.65–0.71). Figure: `results/figures/synthesis/{rephrased,original}/si_simpson_diversity.png`. Tables: `results/tables/{condition}/{proposals,reviews}/{branch}/simpson_diversity.csv` (+ `cross_condition/simpson/simpson_diversity_all.csv`). Code: notebooks 02/03 section "Simpson Diversity Index (for reporting)"; `src/diversity_facets.simpson_similarity` / `simpson_categorical`; `src/diversity_inference.build_{proposal,review}_simpson_tests`.*
+
+### What it means
+
+Both Simpson flavors and the review δ **reproduce the narrowing already seen in richness** — AI proposal sets hold ~24–38% less effective Simpson diversity, and AI review panels are less diverse for nearly every proposal under structured elicitation (baseline marginal, one_at_a_time and persona strong), exactly mirroring the richness facet (§2.2, §3.1). Two things of added value: (i) the **inverse Simpson equals the Vendi VS₂ exactly** (2.122 for human proposals — a numeric agreement confirming the two implementations match), and (ii) the **categorical region Simpson** shows the narrowing is not only geometric but also spread across *fewer effective areas of the biomedical literature* (one_at_a_time strongest at 0.62). Because Simpson (order 2) weights the most common/duplicated items more heavily than the Shannon-based richness (order 1) does, its close agreement with the q = 1 headline confirms the finding is not an artifact of which diversity "order" we chose to report.
+
+---
+
+## SI-6. Decision-outcome analysis: can a panel reproduce the *actual* funding decisions?
+
+Every gate-keeping metric so far measures review *text* (facets, interleaving, claims) or within-panel score spread (SI-3). None asks the question a funder ultimately cares about: **if you swapped the human panel for an AI panel, would the same proposals get funded?** This analysis uses the competition's **real funding ranking and fund/not decision** for all 23 proposals as ground truth.
+
+**What was tested.** For each panel (human; and AI under each condition) we take the panel's mean `overall_score` per proposal and ask: (i) how well it reproduces the actual funding ranking (Spearman ρ); (ii) whether it can tell funded from not-funded proposals (area under the ROC curve; 0.5 = chance); and (iii) whether *adding reviewers* improves the ranking agreement (the error-cancellation / Condorcet question). AI scores are per-condition; human scores are condition-invariant and exist for a 13–14 proposal subset.
+
+**Why it fits.** A review panel's job is not to enumerate issues — which AI does about as well as humans (SI-4) — but to make a reliable fund/reject decision. Two mechanisms give a panel that reliability, and both require *disagreement*: **error cancellation** (independent judgments average out idiosyncratic error; *correlated* judgments do not — the diversity-prediction theorem, and the Condorcet jury theorem's conditional-independence assumption) and **discrimination** (a panel can only rank proposals if its scores actually vary across them). Testing against the real outcome measures both.
+
+**Result.**
+- **AI panels are at chance for the funding decision: AUC = 0.50 (baseline), 0.47 (one-at-a-time), 0.50 (persona), versus 0.77 for the human panel.** A 15-reviewer AI panel's mean score cannot tell which proposals were funded.
+- **AI rank-agreement with the actual funding ranking plateaus at ρ ≈ 0.43** in every condition and at every panel size — going from 1 to 12 AI reviewers barely moves it — while human review *aggregates upward* (ρ 0.62 → 0.99 as reviewers are added, on the scored subset).
+- **The mechanism.** AI panel scores vary *less across proposals* than human scores (between-proposal SD 0.31–0.44 vs 0.62 on the shared scored proposals), and — critically — even where AI does vary (persona), its variation does not align with the funding outcome (AUC still 0.50). AI's score-convergence (the "central blanket," §3.4), in the currency of the decision, means the panel cannot discriminate proposals.
+
+**How to read it / implications.** An AI panel, however many reviewers it has, reproduces the real funding decisions no better than chance — an automated panel would fund materially different proposals. This is the decision-currency version of the gate-keeping thesis: what an AI panel loses is not issue *coverage* (SI-4) but the *independent, discriminating judgment* that lets a panel rank, and that a funder actually consumes. It rests on well-established theory about why judgment diversity matters for collective decisions: the **diversity-prediction theorem** (collective error = average individual error − judgment diversity), the **Condorcet jury theorem's** requirement of conditionally independent voters, **algorithmic monoculture** (shared models → correlated, systemic failures), and the epistemic value of **transient disagreement** (premature consensus converges on worse answers). *(Manuscript citations to be finalized.)*
+
+**Caveats, stated plainly.** The funding ranking was set by the human review process, so the **human curve has a built-in advantage** — the human-vs-AI gap is *not* a task-independent accuracy comparison. The load-bearing, defensible result is the **AI side alone: an AI panel cannot reproduce the funding decisions.** Numeric human scores exist for only 13–14 proposals (the human curve's high-*k* points rest on ~6 proposals); the AI results use all 23. The analysis is **exploratory** at n = 23. Figure: `results/figures/synthesis/rephrased/si_decision_outcome.png`. Tables: `results/tables/cross_condition/reviews/decision_outcome_{proposal_scores,curves,summary}.csv`. Code: notebook `03_facets_reviews` section "Decision-outcome Analysis (SI)"; `src/decision_outcome.py`.
+
+---
+
 ## 5. Statistical notes for the general reader
 
 - **Permutation test.** To ask whether two groups differ more than chance allows, we repeatedly shuffle the group labels (10,000 times) and recompute the difference. The p-value is the fraction of shuffles producing a gap as large as the real one. No distributional assumptions.
 - **Cliff's δ (paired).** For each of the 23 proposals we ask: did the AI panel come out lower or higher than the human panel? δ is the balance of those outcomes: −1 (lower every time) to +1 (higher every time). It measures *consistency of direction*, complementing the raw magnitude. Its p-value comes from the exact paired Wilcoxon test, whose floor at n = 23 is ~2×10⁻⁷ — values at that floor mean "as significant as this design can express."
-- **Effective numbers (Vendi score).** A set's similarity structure is converted into "this set of 23 behaves like N fully distinct items." It is the same mathematics ecologists use to say a forest with 23 trees of highly overlapping species behaves like 3 effective species.
+- **Effective numbers (Vendi score).** A set's similarity structure is converted into "this set of 23 behaves like N fully distinct items." It is the same mathematics ecologists use to say a forest with 23 trees of highly overlapping species behaves like 3 effective species. These "effective numbers" form a family indexed by an order q; **richness (our headline) is order 1** (the Shannon-equivalent) and **Simpson's index is order 2** (weights common items more). We report richness as primary and Simpson explicitly in **SI-5**; they agree.
 - **Chance references (nulls).** Wherever a metric has no natural zero, we manufacture the honest benchmark: random same-sized draws from the pooled data (for clumping), one random half of the human set covering the other (for coverage), or leave-one-out self-coverage (for review panels). "Significant" always means "outside what those benchmarks produce."
 - **Confidence intervals.** Set-level metrics use leave-one-out (jackknife) intervals — recompute 23 times, each time omitting one proposal. Pooled-AI values use 1,000 subsamples of 23 drawn without replacement. We never resample with replacement, which would inject duplicates into metrics that are exquisitely sensitive to duplicates.
 - **Multiple testing.** With ~7 metric families × 3 models × 3 conditions × 2 stages, some "significant" results would arise by chance. Three comparisons were designated primary in advance and read at face value; every other p-value shown has been inflated by the Benjamini–Hochberg procedure to control the expected fraction of false discoveries.
@@ -480,4 +537,4 @@ Two design choices carry the analysis:
 
 - **Audit trail.** The statistical pipeline was audited line-by-line against the design specification (2026-07-15/16): the review-side coverage and evenness pairings, the trend-test direction, domain-coverage inference, FDR family structure, and the evenness-slope metric were corrected; presentation was subsequently re-oriented so that every panel reads "up/right = more diverse" (Direction Rule), with statistics verified byte-identical before and after the visual redesign. AI reviews were regenerated with the corrected prompt on 2026-07-16 and notebooks 03–04 recomputed; proposal-side inputs (embeddings, group structure) were verified unchanged, so generation results carry over exactly.
 - **Superseded result.** An earlier run (incorrect review prompt) showed baseline AI review panels as *more* diverse than human panels; that finding did not survive the prompt correction and should not be cited.
-- **Sources.** Tables: `results/tables/{condition}/{task}/{text_version}/facet_diversity_tests.csv` (holds every facet metric *plus* the `lexical_control` rows of §2.8, the `displacement` MMD²/`ot_wasserstein` rows of §2.7/§3.5, and the multiple per-facet estimators of §2.9; + `facet_fingerprint.csv`, `facet_interleaving.csv`, `facet_diversity_gradient.csv` for the condition/model trend tests, curve/null parquets), `results/tables/cross_condition/reviews/score_decision_analysis.csv` (SI-3), and `.../claim_uniqueness.csv` + `claim_uniqueness_examples.csv` (SI-4). Figures: `results/figures/.../facet_fingerprint.png`, per-facet panels, the `_convergence/facet_convergence_heatmap.png` (§2.9), `results/figures/synthesis/{text_version}/fig1–fig6` + `fig2b_human_ai_slopegraph` (+ supplements), and the SI panels `si_interleaving_{proposals,reviews}.png`, `si_claim_uniqueness.png`, and `si_wording_vs_idea_gap.png` (§2.8). Specs: `docs/plans/diversity_facets_design_spec_v2.md`, `docs/plans/facet_visualization_redesign_spec.md`.
+- **Sources.** Tables: `results/tables/{condition}/{task}/{text_version}/facet_diversity_tests.csv` (holds every facet metric *plus* the `lexical_control` rows of §2.8, the `displacement` MMD²/`ot_wasserstein` rows of §2.7/§3.5, and the multiple per-facet estimators of §2.9; + `facet_fingerprint.csv`, `facet_interleaving.csv`, `facet_diversity_gradient.csv` for the condition/model trend tests, curve/null parquets), `results/tables/cross_condition/reviews/score_decision_analysis.csv` (SI-3), and `.../claim_uniqueness.csv` + `claim_uniqueness_examples.csv` (SI-4), and `.../decision_outcome_{proposal_scores,curves,summary}.csv` (SI-6). Figures: `results/figures/.../facet_fingerprint.png`, per-facet panels, the `_convergence/facet_convergence_heatmap.png` (§2.9), `results/figures/synthesis/{text_version}/fig1–fig6` + `fig2b_human_ai_slopegraph` (+ supplements), and the SI panels `si_interleaving_{proposals,reviews}.png`, `si_claim_uniqueness.png`, `si_wording_vs_idea_gap.png` (§2.8), `si_simpson_diversity.png` (SI-5), and `si_decision_outcome.png` (SI-6); Simpson tables `.../{proposals,reviews}/{branch}/simpson_diversity.csv` (+ `cross_condition/simpson/`). Specs: `docs/plans/diversity_facets_design_spec_v2.md`, `docs/plans/facet_visualization_redesign_spec.md`.
