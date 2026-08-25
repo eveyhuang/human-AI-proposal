@@ -1258,13 +1258,24 @@ def plot_decision_outcome(proposal_scores: pd.DataFrame, curves: pd.DataFrame, s
             continue
         auc = float(srow["funding_auc"].iloc[0])
         axC.bar(xi, auc, color=col, edgecolor="black", linewidth=0.6)
-        axC.text(xi, auc + 0.01, f"{auc:.2f}", ha="center", fontsize=8.5)
+        # 95% stratified-bootstrap CI + label-permutation p, when 03 exported them.
+        lo = float(srow["funding_auc_ci_lo"].iloc[0]) if "funding_auc_ci_lo" in srow else np.nan
+        hi = float(srow["funding_auc_ci_hi"].iloc[0]) if "funding_auc_ci_hi" in srow else np.nan
+        if np.isfinite(lo) and np.isfinite(hi):
+            axC.errorbar(xi, auc, yerr=[[auc - lo], [hi - auc]], fmt="none", ecolor="black",
+                         elinewidth=1.3, capsize=5, capthick=1.3, zorder=4)
+            axC.text(xi, hi + 0.025, f"{auc:.2f}", ha="center", fontsize=8.5)
+            pv = float(srow["funding_auc_p_perm"].iloc[0]) if "funding_auc_p_perm" in srow else np.nan
+            if np.isfinite(pv):
+                axC.text(xi, hi + 0.085, f"p={pv:.2f}", ha="center", fontsize=6.8, color="0.35")
+        else:
+            axC.text(xi, auc + 0.01, f"{auc:.2f}", ha="center", fontsize=8.5)
     axC.axhline(0.5, color="black", ls="--", lw=1.2)
-    axC.text(len(order) - 0.5, 0.51, "chance", ha="right", fontsize=8)
+    axC.text(-0.45, 0.515, "chance", ha="left", fontsize=8)
     axC.set_xticks(range(len(order)), [o[3] for o in order], fontsize=8)
-    axC.set_ylim(0, 0.9)
+    axC.set_ylim(0, 1.22)
     axC.set_ylabel("funding discrimination (AUC:\ncan the panel tell funded from not?)")
-    axC.set_title("C · Full AI panels are at chance\nfor the actual funding decision", fontsize=9.5, loc="left")
+    axC.set_title("C · No panel separates funded from not at this n;\nAI point estimates sit exactly at chance", fontsize=9.5, loc="left")
     _grid(axC)
 
     for ax in (axA, axB, axC):
@@ -1278,10 +1289,15 @@ def plot_decision_outcome(proposal_scores: pd.DataFrame, curves: pd.DataFrame, s
                   "between-proposal SD) and not with funding, so they cannot rank. B: panel mean vs the true ranking by "
                   "panel size — Human n per point (scores exist for a subset, and fewer proposals have larger panels); "
                   "AI uses all 23 proposals and stays flat through its full 15-review panel. C: area-under-ROC for "
-                  "funded-vs-not from the full panel (AI all 23); AI sits at chance in every condition. "
+                  "funded-vs-not from the full panel (AI all 23), with 95% stratified-bootstrap CIs and "
+                  "two-sided label-permutation p-values (B=10,000 each). AI point estimates sit at chance in every "
+                  "condition, but the intervals are ~±0.25 wide at this n: the data are consistent with chance and do "
+                  "NOT exclude a moderate effect — read panel C as absence of evidence, not a precise null. The Human "
+                  "AUC (0.77) is likewise not separable from chance here (CI 0.48–1.00, p=.09). "
                   "CAVEAT: the ranking was set by the human review process, so the Human curve has a built-in advantage "
-                  "— the load-bearing result is that an AI panel cannot reproduce the decisions, not a human-vs-AI "
-                  "accuracy gap. Exploratory (n=23 proposals; human scores on a 13–14 subset).")
+                  "— the load-bearing result is that an AI panel shows no funding signal, not a demonstrated "
+                  "human-vs-AI accuracy gap. Exploratory (n=23 proposals; human scores on a 14-proposal subset, "
+                  "8 funded vs 6 not).")
     save_fig(fig, out_base)
 
 

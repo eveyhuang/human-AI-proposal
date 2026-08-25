@@ -8,13 +8,20 @@ as ground truth, and asks whether a panel's mean score reproduces it, and whethe
 reviewers helps (the error-cancellation / Condorcet question).
 
 The mechanism it exposes: AI panel scores barely vary *across* proposals (the "central
-blanket" / score-convergence finding, in the currency of the decision), so an AI panel
-cannot discriminate proposals — it rates everything ~4 and lands at chance.
+blanket" / score-convergence finding, in the currency of the decision), so an AI panel has
+no measurable ability to discriminate proposals — it rates everything ~4 and lands at chance.
+
+**Precision, not just direction.** `funding_auc_inference` attaches a stratified bootstrap
+95% CI and a label-permutation p to every AUC, because "AUC = 0.50" at n = 23 is ambiguous
+between a demonstrated null and an underpowered one. On this data the intervals run ~+/-0.25,
+so the honest reading is *absence of evidence* (no funding signal detectable, permutation
+p = .84-.99) rather than a proven null; the Human AUC is likewise not separable from chance
+(0.77, CI 0.48-1.00, p = .09). Consumers should quote the interval alongside the point.
 
 **Honest caveat, baked into every consumer:** the funding ranking was set by the human
 review process, so the human curve has a built-in advantage. The load-bearing result is
-therefore the AI side alone — *an AI panel cannot reproduce the decisions* — not a
-human-vs-AI accuracy gap.
+therefore the AI side alone — *an AI panel's scores show no funding signal* — not a
+human-vs-AI accuracy gap, which these intervals do not establish.
 
 All functions are pure (operate on DataFrames / arrays); no I/O.
 """
@@ -61,6 +68,138 @@ def funding_auc(means: Mapping[str, float], funded: Mapping[str, bool]) -> float
     return float(np.mean([(p > n) + 0.5 * (p == n) for p in pos for n in neg]))
 
 
+def funding_auc_inference(means: Mapping[str, float], funded: Mapping[str, bool], *,
+                          n_boot: int = 10_000, n_perm: int = 10_000,
+                          seed: int = 3) -> Dict[str, Any]:
+    """Point estimate, bootstrap CI, and permutation p-value for the funding AUC.
+
+    The AUC alone cannot say whether "0.50" means "demonstrably at chance" or "too few
+    proposals to tell" — with 23 proposals both readings are live. Two devices separate
+    them, and neither assumes a distribution:
+
+    * **Stratified bootstrap CI.** Funded and not-funded proposals are resampled *within
+      class* with replacement, holding both class sizes fixed, so every draw keeps a
+      computable AUC (an unstratified draw can empty a class). The 2.5/97.5 percentiles
+      of the resulting AUCs are the interval. It answers "how much would this AUC move
+      with a different sample of proposals?"
+    * **Label permutation.** The funded/not-funded labels are shuffled across the scored
+      proposals, holding the scores fixed, and the AUC recomputed. The two-sided p-value
+      is the share of shuffles whose |AUC - 0.5| is at least the observed |AUC - 0.5|.
+      It answers "could this AUC have arisen from scores carrying no outcome signal?"
+
+    Returns point/ci_lo/ci_hi/p_perm/n_funded/n_not_funded (all NaN-safe: if either class
+    is empty the AUC is undefined and every field comes back NaN / 0).
+    """
+    us = [u for u in means if np.isfinite(means[u]) and u in funded]
+    y = np.asarray([bool(funded[u]) for u in us])
+    s = np.asarray([means[u] for u in us], dtype=float)
+    pos_idx, neg_idx = np.flatnonzero(y), np.flatnonzero(~y)
+    n_pos, n_neg = len(pos_idx), len(neg_idx)
+    out: Dict[str, Any] = {"point": np.nan, "ci_lo": np.nan, "ci_hi": np.nan,
+                           "p_perm": np.nan, "n_funded": n_pos, "n_not_funded": n_neg}
+    if not n_pos or not n_neg:
+        return out
+
+    def _auc(scores: np.ndarray, labels: np.ndarray) -> float:
+        # Vectorized twin of funding_auc() above (same tie handling, 0.5 credit); the
+        # resampling loops call this ~20,000 times per group, so it broadcasts instead
+        # of iterating over the pos x neg pairs.
+        pos, neg = scores[labels], scores[~labels]
+        d = pos[:, None] - neg[None, :]
+        return float((np.count_nonzero(d > 0) + 0.5 * np.count_nonzero(d == 0)) / d.size)
+
+    out["point"] = _auc(s, y)
+    rng = np.random.default_rng(seed)
+    boot = np.empty(n_boot)
+    for b in range(n_boot):
+        take = np.concatenate([rng.choice(pos_idx, n_pos, replace=True),
+                               rng.choice(neg_idx, n_neg, replace=True)])
+        boot[b] = _auc(s[take], y[take])
+    out["ci_lo"], out["ci_hi"] = (float(x) for x in np.percentile(boot, [2.5, 97.5]))
+
+    obs_dev = abs(out["point"] - 0.5)
+    hits = 0
+    for _ in range(n_perm):
+        hits += abs(_auc(s, rng.permutation(y)) - 0.5) >= obs_dev - 1e-12
+    out["p_perm"] = float((hits + 1) / (n_perm + 1))
+    return out
+
+
+def _auc_arrays(scores: np.ndarray, labels: np.ndarray) -> float:
+    """AUC from parallel score/label arrays; ties get 0.5 credit (as funding_auc)."""
+    pos, neg = scores[labels], scores[~labels]
+    if not pos.size or not neg.size:
+        return np.nan
+    d = pos[:, None] - neg[None, :]
+    return float((np.count_nonzero(d > 0) + 0.5 * np.count_nonzero(d == 0)) / d.size)
+
+
+def matched_funding_auc(master: pd.DataFrame, funded: Mapping[str, bool],
+                        *, source: str = "ai", model: str = None,
+                        panel_sizes: Mapping[str, int] = None, uids: Sequence[str] = None,
+                        n_draws: int = 2_000, n_boot: int = 2_000, n_perm: int = 2_000,
+                        seed: int = 3) -> Dict[str, Any]:
+    """Funding AUC for AI panels drawn at the HUMAN panel size, on the HUMAN proposal set.
+
+    `build_decision_outcome`'s headline AUC pools all 15 AI reviews over all 23 proposals,
+    while the human AUC uses 1-4 scored reviews over the 14 proposals that have any. That
+    asymmetry is fine for the AI-side-alone question ("do AI scores carry funding signal?")
+    but it is NOT a fair human-vs-AI contrast: the panels differ in size, the proposal sets
+    differ, and the human set is 11/14 cohort y2. This function removes all three, matching
+    the exact-n convention used everywhere else in notebook 03 (spec 11.1).
+
+    For each proposal in `uids`, an AI panel of exactly `panel_sizes[uid]` reviews is drawn
+    without replacement from that proposal's AI reviews (pooled, or one `model`), the panel
+    mean is taken, and the AUC is computed across proposals. That repeats `n_draws` times;
+    the point estimate is the mean AUC over draws. The CI resamples proposals within class
+    (stratified bootstrap) *and* redraws panels, so it carries both sources of uncertainty;
+    the permutation p shuffles the funded labels with the scores held fixed.
+
+    Returns point / draw_lo / draw_hi (panel-draw spread only) / ci_lo / ci_hi (proposals +
+    draws) / p_perm / n_props / n_funded / n_not_funded / mean_panel_size.
+    """
+    sub = master[master["review_source"].eq(source)]
+    if model is not None:
+        sub = sub[sub["source_family"].eq(model)]
+    pool = {u: g["overall_score"].dropna().to_numpy(float)
+            for u, g in sub.groupby(master["target_proposal_uid"].astype(str))}
+    us = [u for u in uids if u in funded and panel_sizes.get(u, 0) >= 1
+          and len(pool.get(u, [])) >= panel_sizes[u]]
+    y = np.asarray([bool(funded[u]) for u in us])
+    sizes = np.asarray([panel_sizes[u] for u in us])
+    out: Dict[str, Any] = {"point": np.nan, "draw_lo": np.nan, "draw_hi": np.nan,
+                           "ci_lo": np.nan, "ci_hi": np.nan, "p_perm": np.nan,
+                           "n_props": len(us), "n_funded": int(y.sum()),
+                           "n_not_funded": int((~y).sum()),
+                           "mean_panel_size": float(np.mean(sizes)) if len(sizes) else np.nan}
+    if not y.any() or y.all():
+        return out
+    rng = np.random.default_rng(seed)
+
+    def _draw() -> np.ndarray:
+        return np.asarray([float(np.mean(rng.choice(pool[u], m, replace=False)))
+                           for u, m in zip(us, sizes)])
+
+    draws = np.asarray([_auc_arrays(_draw(), y) for _ in range(n_draws)])
+    out["point"] = float(np.nanmean(draws))
+    out["draw_lo"], out["draw_hi"] = (float(x) for x in np.nanpercentile(draws, [2.5, 97.5]))
+
+    pos_idx, neg_idx = np.flatnonzero(y), np.flatnonzero(~y)
+    boot = np.empty(n_boot)
+    for b in range(n_boot):
+        take = np.concatenate([rng.choice(pos_idx, len(pos_idx), replace=True),
+                               rng.choice(neg_idx, len(neg_idx), replace=True)])
+        s = _draw()
+        boot[b] = _auc_arrays(s[take], y[take])
+    out["ci_lo"], out["ci_hi"] = (float(x) for x in np.nanpercentile(boot, [2.5, 97.5]))
+
+    obs_dev = abs(out["point"] - 0.5)
+    hits = sum(abs(_auc_arrays(_draw(), rng.permutation(y)) - 0.5) >= obs_dev - 1e-12
+               for _ in range(n_perm))
+    out["p_perm"] = float((hits + 1) / (n_perm + 1))
+    return out
+
+
 def _spearman(a: Sequence[float], b: Sequence[float]) -> float:
     ra = pd.Series(a).rank().to_numpy()
     rb = pd.Series(b).rank().to_numpy()
@@ -99,7 +238,7 @@ def rank_corr_vs_k(master: pd.DataFrame, source: str, uids: Sequence[str],
 
 def build_decision_outcome(ai_masters: Mapping[str, pd.DataFrame], human_master: pd.DataFrame,
                            summary: pd.DataFrame, *, kmax_ai: int = 12, kmax_human: int = 4,
-                           seed: int = 3):
+                           seed: int = 3, n_boot_auc: int = 10_000, n_perm_auc: int = 10_000):
     """Assemble the three tidy tables for the decision-outcome analysis.
 
     ai_masters: {condition -> review_master} (AI scores are condition-specific).
@@ -125,8 +264,12 @@ def build_decision_outcome(ai_masters: Mapping[str, pd.DataFrame], human_master:
         for r in rank_corr_vs_k(master, source, uids, rank, kmax=kmax, seed=seed):
             curve_rows.append({"group": group, "condition": condition, **r})
         full = {u: means[u] for u in uids if np.isfinite(means[u])}
+        auc = funding_auc_inference(means, funded, n_boot=n_boot_auc, n_perm=n_perm_auc, seed=seed)
         summ_rows.append({"group": group, "condition": condition,
                           "funding_auc": funding_auc(means, funded),
+                          "funding_auc_ci_lo": auc["ci_lo"], "funding_auc_ci_hi": auc["ci_hi"],
+                          "funding_auc_p_perm": auc["p_perm"],
+                          "n_funded": auc["n_funded"], "n_not_funded": auc["n_not_funded"],
                           "between_proposal_sd": between_proposal_sd(means),
                           "n_props": int(len(full))})
 
@@ -137,5 +280,5 @@ def build_decision_outcome(ai_masters: Mapping[str, pd.DataFrame], human_master:
     return (pd.DataFrame(prop_rows), pd.DataFrame(curve_rows), pd.DataFrame(summ_rows))
 
 
-__all__ = ["panel_means", "between_proposal_sd", "funding_auc", "rank_corr_vs_k",
-           "build_decision_outcome"]
+__all__ = ["panel_means", "between_proposal_sd", "funding_auc", "funding_auc_inference",
+           "matched_funding_auc", "rank_corr_vs_k", "build_decision_outcome"]
