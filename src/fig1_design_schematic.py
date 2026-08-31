@@ -54,7 +54,7 @@ def build(out_base: Path) -> None:
 
     # column headers: the two stages
     _text(ax, 33, 96, "STAGE 1 · GENERATION", size=12, weight="bold")
-    _text(ax, 72, 96, "STAGE 2 · FILTERING", size=12, weight="bold")
+    _text(ax, 72, 96, "STAGE 2 · GATE-KEEPING", size=12, weight="bold")
     _text(ax, 33, 92.3, "who proposes the ideas", size=9, color=MUTED, style="italic")
     _text(ax, 72, 92.3, "who judges the ideas", size=9, color=MUTED, style="italic")
 
@@ -107,10 +107,10 @@ def build(out_base: Path) -> None:
     _box(ax, 14, 7, 79, 15, fc=BAND_FILL, ec="#cccccc", lw=1.0)
     _text(ax, 53.5, 18.3, "HOW DIVERSITY IS MEASURED", size=10.5, weight="bold")
     _text(ax, 53.5, 13.6,
-          "standardize the writing style  ·  embed with BioLinkBERT  ·  five facets in the full space",
+          "standardize the writing style  ·  embed with BioLinkBERT  ·  four facets in the full space",
           size=9, color=INK)
     _text(ax, 53.5, 10.3,
-          "spread · richness · evenness · dimensionality · coverage,  AI vs Human at matched n = 23",
+          "spread · richness · evenness · coverage,  AI vs Human at matched n = 23",
           size=9, color=MUTED)
 
     pl.save_fig(fig, out_base)

@@ -1,0 +1,24 @@
+proposal_uid,title,cohort,is_funded_human,is_top5_ranked_human,ranking,centroid_dist,knn3_dist,local_density,miss_rate_baseline,miss_rate_one_at_a_time,miss_rate_persona,miss_rate_mean
+y1::1,CYTOKINETIC BOTTLENECKS OF HEAT WAVES,y1,True,True,1.0,0.5276251,0.06425943,13,0.0,0.0,0.0,0.0
+y1::10,Transposable elements and the emergence of genomic innovation,y1,True,True,1.0,0.50886446,0.050909024,13,0.0,0.0,0.0,0.0
+y1::11,Searching the crosslinking mass spectrometry universe for new protein-protein interactions,y1,True,True,4.0,0.7643688,0.15467834,1,0.646,0.286,1.0,0.644
+y1::12,Intelligent metadata compilation to enhance the reusability and discoverability of mass spectrometry-based proteomics data,y1,True,True,4.0,0.8113914,0.19854076,0,1.0,1.0,1.0,1.0
+y1::2,Elucidating genome structure-function relationships in human brain cells,y1,True,False,7.0,0.5027842,0.0418244,13,0.0,0.0,0.0,0.0
+y1::3,MaiTool - LLM-powered bioinformatics tools for microbiome analysis,y1,False,False,10.0,0.5088406,0.052037597,13,0.0,0.0,0.0,0.0
+y1::4,Synthesizing gene expression data to create an atlas of bacterial cell states,y1,True,True,1.0,0.79536045,0.13940503,2,0.076,0.111,0.482,0.223
+y1::5,Energetic Origins of Connectivity within Protein Interaction Networks,y1,True,False,10.0,0.7657813,0.13660234,3,0.646,0.049,0.143,0.2793333333333334
+y1::6,Elucidating emergent structures in cellular RNA-protein interaction networks,y1,False,True,4.0,0.46890023,0.036831975,13,0.0,0.0,0.0,0.0
+y1::7,Oceans of Disorder: Elucidating the Role of Disordered Proteins in Cellular Adaptation,y1,True,False,8.0,0.48652384,0.04595661,13,0.0,0.0,0.0,0.0
+y1::8,Multimodel single-cell frameworks for cell lines with extensive multi-omics data,y1,True,False,9.0,0.48642483,0.039515138,13,0.0,0.0,0.0,0.0
+y1::9,From image data and biophysical simulations to principles of mesoscale organization through integrated transfer learning,y1,False,False,12.0,0.78046507,0.12859465,3,0.054,0.056,0.275,0.12833333333333333
+y2::1,Emergent Order Parameters of Allostery: An AI Framework for Predicting and Engineering Protein Regulation,y2,True,False,7.0,0.4692966,0.03369574,13,0.0,0.0,0.0,0.0
+y2::10,Integrating AI and Molecular Dynamics Simulations for Quantitative Prediction of Enzyme Functions,y2,False,False,10.0,0.4927928,0.04192221,13,0.0,0.0,0.0,0.0
+y2::11,Discovery and functional analysis of bacterial organelles through mining and refinement of omics data,y2,False,False,8.0,0.8159147,0.23694742,0,1.0,1.0,1.0,1.0
+y2::2,From Protein Knots to Pierced Lassos: Unraveling the Evolutionary Origin of Complex Topologies,y2,True,False,6.0,0.5003009,0.04146977,13,0.0,0.0,0.0,0.0
+y2::3,Deciphering systemic biological networks through AI-driven multi-omic integration,y2,False,False,11.0,0.7939051,0.1261019,4,0.196,0.038,0.433,0.22233333333333336
+y2::4,Conserved Disorder: Learning Sequence Conservation from Functional Constraints in Intrinsically Disordered Regions,y2,True,True,4.0,0.48522723,0.033263285,13,0.0,0.0,0.0,0.0
+y2::5,Integrative Multi-Omics Synthesis to Identify Shared Molecular Mechanisms of Mammalian Hibernation,y2,False,False,9.0,0.8430413,0.17023374,1,1.0,1.0,1.0,1.0
+y2::6,Revealing the Ontology of Allostery through Community-Scale Synthesis,y2,False,True,3.0,0.4959878,0.032465857,13,0.0,0.0,0.0,0.0
+y2::7,SynEvo: Discovering Evolutionary Principles of Molecular Organization through Cross-Species Data Synthesis,y2,False,True,5.0,0.48150817,0.045332074,13,0.0,0.0,0.0,0.0
+y2::8,A Unified Framework for Analyses of Proteome Turnover Dynamics,y2,True,True,2.0,0.4835061,0.038790982,13,0.0,0.0,0.0,0.0
+y2::9,Predictive Synthesis Framework for Elucidating Biophysical Cell State from Spatial Transcriptomics and Proteomics,y2,True,True,1.0,0.8138559,0.15971975,0,0.687,0.68,0.691,0.6859999999999999
