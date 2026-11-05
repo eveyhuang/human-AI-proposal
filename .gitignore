@@ -210,3 +210,8 @@ __marimo__/
 data/embeddings/literature/relevant_literature_embeddings.pkl
 data/embeddings/literature/lit_bertopic_model.pkl
 data/embeddings/literature/lit_umap_reducer.pkl
+
+# Large local literature models and embeddings (including reorganized data paths)
+**/embeddings/literature/lit_bertopic_model.pkl
+**/embeddings/literature/lit_umap_reducer.pkl
+**/embeddings/literature/relevant_literature_embeddings.pkl
