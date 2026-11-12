@@ -215,3 +215,7 @@ data/embeddings/literature/lit_umap_reducer.pkl
 **/embeddings/literature/lit_bertopic_model.pkl
 **/embeddings/literature/lit_umap_reducer.pkl
 **/embeddings/literature/relevant_literature_embeddings.pkl
+
+# PDFs and docx
+*.pdf
+*.docx
