@@ -219,3 +219,7 @@ data/embeddings/literature/lit_umap_reducer.pkl
 # PDFs and docx
 *.pdf
 *.docx
+
+# original data
+data/NCEMS-data/human-proposals/original_proposals_pdf
+data/NOVO-data

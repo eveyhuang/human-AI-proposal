@@ -1,0 +1,571 @@
+{
+  "scope": "Original proposal PDFs only; reviewer reports, standalone CVs/biosketches, and standalone administrative tables are not separate proposals.",
+  "full_draft_scope": "Preserves the existing field convention: complete main narrative from Introduction through resources and timeline, including in-body tables and figure captions. Title, contacts, and abstract remain in their existing fields; bibliography is in references. Supplementary dataset/participant tables and CVs are excluded except dataset rows explicitly cited as references. Captions/tables that interrupt wrapped paragraphs are retained after the narrative. Diagram artwork is not represented in this text field.",
+  "method": "Poppler pdftotext layout and bounding-box extraction; rendered main pages visually inspected; manual correction of image-only timelines and malformed mathematical text layers. Whitespace, common ligatures, wrapped URLs and line-break hyphenation normalized. No citation metadata was fetched or invented. Leading numeric reference labels removed; citation text and source order preserved.",
+  "summary": {
+    "proposal_pdfs_matched": 21,
+    "new_proposals_added": 0,
+    "json_proposals": 23,
+    "full_drafts_refreshed": 21,
+    "reference_entries": 639,
+    "entries_missing_source_pdfs": 2
+  },
+  "proposals": [
+    {
+      "year": 1,
+      "proposal_id": "1",
+      "proposal_title": "CYTOKINETIC BOTTLENECKS OF HEAT WAVES",
+      "source_pdf": "original_proposals_pdf/y1/proposals/1 - Cytokinetic bottlenecks of heatwaves.pdf",
+      "source_sha256": "d1da0930ba3c8f746426af3cd6497bc5d809d827d27438dda9e7df63ffe84863",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7
+      ],
+      "previous_full_draft_characters": 14864,
+      "full_draft_characters": 18441,
+      "reference_count": 28,
+      "notes": [
+        "Image-only timeline task labels transcribed from PDF page 5. Quarter axis labels retained; graphical bar positions are not prose."
+      ],
+      "full_draft_sha256": "6783ea22d0f2f385be13cbad621673772b346adb73d04bf094a43559585b3374"
+    },
+    {
+      "year": 1,
+      "proposal_id": "2",
+      "proposal_title": "Elucidating genome structure-function relationships in human brain cells",
+      "source_pdf": "original_proposals_pdf/y1/proposals/2 - Elucidating genome structure-function relationships in human brain cells.pdf",
+      "source_sha256": "b81d211640a14d2535ce5e40b3f3848df331143afde891006d579d66ccdc092b",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7
+      ],
+      "previous_full_draft_characters": 14822,
+      "full_draft_characters": 19392,
+      "reference_count": 32,
+      "notes": [],
+      "full_draft_sha256": "6b7ce9921053a3ee1880ab6cef1ad6f6918de1c032b54ed5254ac4ccf29da886"
+    },
+    {
+      "year": 1,
+      "proposal_id": "3",
+      "proposal_title": "MaiTool - LLM-powered bioinformatics tools for microbiome analysis",
+      "source_pdf": "original_proposals_pdf/y1/proposals/3 - MaiTool - LLM-powered bioinformatics tools for microbiome analysis.pdf",
+      "source_sha256": "7a1036b4d6ca17895863acdfb8f957830e148421e87a5e570273f6cfe1b0145e",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6
+      ],
+      "previous_full_draft_characters": 12169,
+      "full_draft_characters": 12510,
+      "reference_count": 16,
+      "notes": [],
+      "full_draft_sha256": "6117a9c89a3259a82195580fc6c483ef7650b9724706c619f400a38a0b488543"
+    },
+    {
+      "year": 1,
+      "proposal_id": "4",
+      "proposal_title": "Synthesizing gene expression data to create an atlas of bacterial cell states",
+      "source_pdf": "original_proposals_pdf/y1/proposals/4 - Synthesizing gene expression data to create an atlas of bacterial cell states.pdf",
+      "source_sha256": "d555d543822ca12176ef6c3245992b33d606b78d4311f143f874628ed14846cf",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7,
+        8
+      ],
+      "previous_full_draft_characters": 9954,
+      "full_draft_characters": 19907,
+      "reference_count": 48,
+      "notes": [],
+      "full_draft_sha256": "123c6952be1b6cbead218d872c7d057beb09c5de626aef161d1a295c5f020430"
+    },
+    {
+      "year": 1,
+      "proposal_id": "5",
+      "proposal_title": "Energetic Origins of Connectivity within Protein Interaction Networks",
+      "source_pdf": "original_proposals_pdf/y1/proposals/5 - Energetic origins of connectivity within protein interaction networks.pdf",
+      "source_sha256": "ef2ba40833ded76fb0b9fdefc7fcf540aa52e47f39c932ce9eb60d1bd4e5bfff",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "previous_full_draft_characters": 11739,
+      "full_draft_characters": 19726,
+      "reference_count": 57,
+      "notes": [
+        "Duplicated mathematical glyphs in the text layer corrected against the rendered PDF to plain-text equations."
+      ],
+      "full_draft_sha256": "5a95be6dde995a54c750853c4f1c56d9835cf34c285e148f3a71ca4aba4e3b2a"
+    },
+    {
+      "year": 1,
+      "proposal_id": "6",
+      "proposal_title": "Elucidating emergent structures in cellular RNA-protein interaction networks",
+      "source_pdf": "original_proposals_pdf/y1/proposals/6 - Elucidating emergent structures in cellular RNA-protein interaction networks.pdf",
+      "source_sha256": "e9c534bdeba9893bf0be9650b652c3e5e89067f5278cabb0769b799c80b2ca86",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7
+      ],
+      "previous_full_draft_characters": 14228,
+      "full_draft_characters": 19783,
+      "reference_count": 33,
+      "notes": [
+        "Image-only timeline labels and month ranges transcribed from PDF page 5."
+      ],
+      "full_draft_sha256": "9011c77bb1c676f227fa3e74be88858aaa8152836b44f9fe79102dd33dfb2b42"
+    },
+    {
+      "year": 1,
+      "proposal_id": "7",
+      "proposal_title": "Oceans of Disorder: Elucidating the Role of Disordered Proteins in Cellular Adaptation",
+      "source_pdf": "original_proposals_pdf/y1/proposals/7 - Oceans of Disorder Elucidating the role of disordered proteins in cellular adaptation.pdf",
+      "source_sha256": "1317c98a1b873e201d8be7536e9520d6183ed1b0202ad660e49476b70467f770",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7
+      ],
+      "previous_full_draft_characters": 15702,
+      "full_draft_characters": 22818,
+      "reference_count": 30,
+      "notes": [],
+      "full_draft_sha256": "aa06d371c91b09458572e404949417581770a4c061922a3231dbdd14178dee24"
+    },
+    {
+      "year": 1,
+      "proposal_id": "8",
+      "proposal_title": "Multimodel single-cell frameworks for cell lines with extensive multi-omics data",
+      "source_pdf": null,
+      "status": "source_pdf_missing",
+      "reference_count": 0,
+      "notes": [
+        "Original proposal PDF absent from supplied proposal directories. Existing full_draft preserved without verification; references=[] means unavailable, not a verified absence of references."
+      ],
+      "full_draft_characters": 0,
+      "full_draft_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "year": 1,
+      "proposal_id": "9",
+      "proposal_title": "From image data and biophysical simulations to principles of mesoscale organization through integrated transfer learning",
+      "source_pdf": null,
+      "status": "source_pdf_missing",
+      "reference_count": 0,
+      "notes": [
+        "Original proposal PDF absent from supplied proposal directories. Existing full_draft preserved without verification; references=[] means unavailable, not a verified absence of references."
+      ],
+      "full_draft_characters": 11672,
+      "full_draft_sha256": "9aa32788c86836c76b16606f030b9ea1f7ec7669b4159af8c9bfde60cbc7130a"
+    },
+    {
+      "year": 1,
+      "proposal_id": "10",
+      "proposal_title": "Transposable elements and the emergence of genomic innovation",
+      "source_pdf": "original_proposals_pdf/y1/proposals/10 - Transposable elements and the emergence of genomic innovation.pdf",
+      "source_sha256": "ac3c2fc3fc405f39d2cb3a4a41b8094667ea94467b8fcfa2845256659b1fab9e",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7
+      ],
+      "previous_full_draft_characters": 7672,
+      "full_draft_characters": 17804,
+      "reference_count": 43,
+      "notes": [],
+      "full_draft_sha256": "7d222abe8fa9c2f87cd2a4898374e2d8687e82cce49cfb079fea1072a4031251"
+    },
+    {
+      "year": 1,
+      "proposal_id": "11",
+      "proposal_title": "Searching the crosslinking mass spectrometry universe for new protein-protein interactions",
+      "source_pdf": "original_proposals_pdf/y1/proposals/11 - Searching the crosslinking mass spectrometry universe for new protein-protein interactions.pdf",
+      "source_sha256": "c32cd32a77a40fd11efa8fc50353d40c8c4ba1c6be5d3592e37d0c0eb806b63e",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7
+      ],
+      "previous_full_draft_characters": 8308,
+      "full_draft_characters": 14955,
+      "reference_count": 26,
+      "notes": [
+        "The source repeats reference numbers 19 and 22, omits 20, and contains 26 entries. All 26 entries retained in source order; leading numeric labels removed."
+      ],
+      "full_draft_sha256": "e342a1b446064eaf8fc454971d13bd6438db3ab4b563b35ca2b6fab8c2374190"
+    },
+    {
+      "year": 1,
+      "proposal_id": "12",
+      "proposal_title": "Intelligent metadata compilation to enhance the reusability and discoverability of mass spectrometry-based proteomics data",
+      "source_pdf": "original_proposals_pdf/y1/proposals/12 - Intelligent metadata compilation to enhance the reusability and discoverability of mass spectrometry-based proteomics data.pdf",
+      "source_sha256": "f6509046e13a0c2a4165f23e87027c0d5a06417eed8728887c52e7c9ae564d2a",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7
+      ],
+      "previous_full_draft_characters": 8611,
+      "full_draft_characters": 14204,
+      "reference_count": 23,
+      "notes": [],
+      "full_draft_sha256": "d1c57e8fb3b9cadc7296c5f2bb22a3b02ee4db95337c217456bd943eddbb2ccb"
+    },
+    {
+      "year": 2,
+      "proposal_id": "1",
+      "proposal_title": "Emergent Order Parameters of Allostery: An AI Framework for Predicting and Engineering Protein Regulation",
+      "source_pdf": "original_proposals_pdf/y2/proposals/Banu Ozkan et al./NCEMS-PROPOSAL-OzkanVoelzOkafor.pdf",
+      "source_sha256": "6771e0e62c5a6e1e4c611612380dfe240fb9f03816d2a47e13b83de49ec670c6",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7,
+        8
+      ],
+      "previous_full_draft_characters": 18768,
+      "full_draft_characters": 19069,
+      "reference_count": 30,
+      "notes": [],
+      "full_draft_sha256": "e289c7def803164856de19a6194cecccc8c08b17558d19318109469d1d1458af"
+    },
+    {
+      "year": 2,
+      "proposal_id": "2",
+      "proposal_title": "From Protein Knots to Pierced Lassos: Unraveling the Evolutionary Origin of Complex Topologies",
+      "source_pdf": "original_proposals_pdf/y2/proposals/Ellinor Haglund et al./NCEMS_Proposal_Entanglement_2025.pdf",
+      "source_sha256": "e01d5ac0ac88f318af9ece46d850ef8799dcd6d99df2d4a67c8f9466f7630a75",
+      "status": "extracted",
+      "body_pdf_pages": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        5,
+        6,
+        9,
+        10,
+        11,
+        12
+      ],
+      "previous_full_draft_characters": 13847,
+      "full_draft_characters": 13842,
+      "reference_count": 23,
+      "notes": [
+        "References 1–18 are dataset-table source rows, explicitly designated as references by the proposal. Included source URLs/names and descriptions; excluded acquisition constraints. References 19–23 extracted from bibliography. Malformed DOI strings in references 22 and 23 retained as printed."
+      ],
+      "full_draft_sha256": "ff624d1d2a79a377e67dc6bf60070df4420609aa4f14b624a75d4d24aa13fb1b"
+    },
+    {
+      "year": 2,
+      "proposal_id": "3",
+      "proposal_title": "Deciphering systemic biological networks through AI-driven multi-omic integration",
+      "source_pdf": "original_proposals_pdf/y2/proposals/Gustavo Nader et al./NCEMS Full Proposal-Nader-Kandemir-Hao.pdf",
+      "source_sha256": "08b6d74006637339da0143dee41d63c75fb7300dfbcbf52925e8d8e9a2b6ae35",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "reference_pdf_pages": [
+        4,
+        8
+      ],
+      "previous_full_draft_characters": 11629,
+      "full_draft_characters": 11632,
+      "reference_count": 11,
+      "notes": [
+        "Included seven main references and four Additional references on PDF page 8. Reaction–diffusion equation and staff ligature text corrected against rendered source."
+      ],
+      "full_draft_sha256": "e3cf6639643900310db7a07a738ed989f24d618722a1c1e539e4b04e07fa7c84"
+    },
+    {
+      "year": 2,
+      "proposal_id": "4",
+      "proposal_title": "Conserved Disorder: Learning Sequence Conservation from Functional Constraints in Intrinsically Disordered Regions",
+      "source_pdf": "original_proposals_pdf/y2/proposals/Jeetain Mittal et al./NCEMS_proposal_Mittal_Soranno_Zheng.pdf",
+      "source_sha256": "2c993dc3f07d2d1b3b100f21767645120b4d72cc311bbdd092f05ba3f29c71bd",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7,
+        8
+      ],
+      "previous_full_draft_characters": 16218,
+      "full_draft_characters": 16461,
+      "reference_count": 24,
+      "notes": [],
+      "full_draft_sha256": "b37221a2c71355939f4bc3de77991e4552cca33a34ecfb86426d5261720a6ca6"
+    },
+    {
+      "year": 2,
+      "proposal_id": "5",
+      "proposal_title": "Integrative Multi-Omics Synthesis to Identify Shared Molecular Mechanisms of Mammalian Hibernation",
+      "source_pdf": "original_proposals_pdf/y2/proposals/Joanna Kelley et al./NCEMS-Hibernation.pdf",
+      "source_sha256": "1fc12fe3995cd7dc6185dc63ee6fe8c7dcc692c0d08a390c80cd36bdb47ed5f3",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7
+      ],
+      "previous_full_draft_characters": 15334,
+      "full_draft_characters": 15322,
+      "reference_count": 24,
+      "notes": [],
+      "full_draft_sha256": "53f40a5137da64953c2b1499fe7945959b03f518eb50ac5c0ad189596650e960"
+    },
+    {
+      "year": 2,
+      "proposal_id": "6",
+      "proposal_title": "Revealing the Ontology of Allostery through Community-Scale Synthesis",
+      "source_pdf": "original_proposals_pdf/y2/proposals/Kim Reynolds et al./2025_AllosteryOntology_final.pdf",
+      "source_sha256": "ff6e6e1eb239cd1ce3b6a64dac03f0bb091f92f8a83b92a2d540b498866337f4",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "reference_pdf_pages": [
+        12,
+        13
+      ],
+      "previous_full_draft_characters": 16606,
+      "full_draft_characters": 16591,
+      "reference_count": 23,
+      "notes": [],
+      "full_draft_sha256": "3aacaa1fd37cf60ad6eeea16e6edc5437a301aa253a4283493a06f789106f707"
+    },
+    {
+      "year": 2,
+      "proposal_id": "7",
+      "proposal_title": "SynEvo: Discovering Evolutionary Principles of Molecular Organization through Cross-Species Data Synthesis",
+      "source_pdf": "original_proposals_pdf/y2/proposals/Rajib Saha et al./SynEvo-NCEMS-Working Group Proposal.pdf",
+      "source_sha256": "28887ab91865cd2c7493c94f1d05476d8540a12b9bd9296254ce40be2bdc2f49",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7,
+        8
+      ],
+      "previous_full_draft_characters": 16329,
+      "full_draft_characters": 16325,
+      "reference_count": 42,
+      "notes": [],
+      "full_draft_sha256": "943568ec3b23d588dfe932b709bb7daf9c59677581f6d1a7ae4195ea810bc92d"
+    },
+    {
+      "year": 2,
+      "proposal_id": "8",
+      "proposal_title": "A Unified Framework for Analyses of Proteome Turnover Dynamics",
+      "source_pdf": "original_proposals_pdf/y2/proposals/Sina Ghaemmaghami et al./NCEMS Proposal_Protein Turnover_04112025.pdf",
+      "source_sha256": "fc54a0d3f53700b447717c3db256a69a38db634e9c7e2dc632b7282b820a6922",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7
+      ],
+      "previous_full_draft_characters": 18910,
+      "full_draft_characters": 18904,
+      "reference_count": 29,
+      "notes": [],
+      "full_draft_sha256": "9b72e176e36bd80b94768cd02eabde3703a00099b3eba356977ada10450a011e"
+    },
+    {
+      "year": 2,
+      "proposal_id": "9",
+      "proposal_title": "Predictive Synthesis Framework for Elucidating Biophysical Cell State from Spatial Transcriptomics and Proteomics",
+      "source_pdf": "original_proposals_pdf/y2/proposals/Tai-Yen Chen et al./NCEMS 2025_JF_TC_SP.pdf",
+      "source_sha256": "c5668370fb0843bd86b439b3a058d5dbdfbf800c1ad525d69bd9d312a236d414",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7
+      ],
+      "previous_full_draft_characters": 14647,
+      "full_draft_characters": 14644,
+      "reference_count": 15,
+      "notes": [],
+      "full_draft_sha256": "f616623d45f02859f4750c26d3935373acd2abdf71749a5f9eb176036eefb8ae"
+    },
+    {
+      "year": 2,
+      "proposal_id": "10",
+      "proposal_title": "Integrating AI and Molecular Dynamics Simulations for Quantitative Prediction of Enzyme Functions",
+      "source_pdf": "original_proposals_pdf/y2/proposals/Xingcheng Lin et al./Lin_Chen_Shen_Lagard.pdf",
+      "source_sha256": "c876f4746d6215cf01009a14bc6bc48c291bf84d201d1891e2bbfde6fe545939",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "previous_full_draft_characters": 17686,
+      "full_draft_characters": 18758,
+      "reference_count": 71,
+      "notes": [],
+      "full_draft_sha256": "a35108c4ca4daaa6a049d0e0ca895d56b50ae5bf798781894fe78be48e5e95de"
+    },
+    {
+      "year": 2,
+      "proposal_id": "11",
+      "proposal_title": "Discovery and functional analysis of bacterial organelles through mining and refinement of omics data",
+      "source_pdf": "original_proposals_pdf/y2/proposals/Y Hoang et al./NCEMS proposal_Nov4.pdf",
+      "source_sha256": "c92704ea91c1610c0bd307ab4b7f4462fd5151ab9c2f6d92b3f4d79f5accba93",
+      "status": "extracted",
+      "body_pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "reference_pdf_pages": [
+        6
+      ],
+      "previous_full_draft_characters": 16925,
+      "full_draft_characters": 16810,
+      "reference_count": 11,
+      "notes": [],
+      "full_draft_sha256": "6ea2eef956b9f99c8c6fe570f16c6e2dbd1d635dfa374d73e00baec5ae52ec2a"
+    }
+  ]
+}
